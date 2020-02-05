@@ -1,0 +1,4 @@
+language: python
+script:
+  - pytest
+#TODO: update based on language

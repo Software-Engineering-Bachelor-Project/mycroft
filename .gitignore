@@ -163,3 +163,5 @@ dmypy.json
 *.f4b
 *.webm
 
+# PyCharm
+.idea/

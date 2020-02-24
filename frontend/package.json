@@ -19,5 +19,8 @@
     "react-dom": "^16.12.0",
     "webpack": "^4.41.6",
     "webpack-cli": "^3.3.11"
+  },
+  "dependencies": {
+    "redux": "^4.0.5"
   }
 }

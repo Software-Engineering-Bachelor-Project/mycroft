@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { render } from "react-dom";
+import {createStore} from 'redux';
 
 class App extends Component {
   render() {

@@ -8,31 +8,31 @@ venv/*
 *.so
 
 # Distribution / packaging
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-pip-wheel-metadata/
-share/python-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-MANIFEST
+#.Python
+#build/
+#develop-eggs/
+#dist/
+#downloads/
+#eggs/
+#.eggs/
+#lib/
+#lib64/
+#parts/
+#sdist/
+#var/
+#wheels/
+#pip-wheel-metadata/
+#share/python-wheels/
+#*.egg-info/
+#.installed.cfg
+#*.egg
+#MANIFEST
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
 #  before PyInstaller builds the exe, so as to inject date/other infos into it.
-*.manifest
-*.spec
+#*.manifest
+#*.spec
 
 # Installer logs
 pip-log.txt
@@ -63,7 +63,7 @@ db.sqlite3
 db.sqlite3-journal
 
 # Flask stuff:
-instance/
+#instance/
 .webassets-cache
 
 # Scrapy stuff:
@@ -73,9 +73,9 @@ instance/
 docs/_build/
 
 # PyBuilder
-target/
+#target/
 
-# Jupyter Notebook
+ Jupyter Notebook
 .ipynb_checkpoints
 
 # IPython
@@ -96,8 +96,8 @@ ipython_config.py
 __pypackages__/
 
 # Celery stuff
-celerybeat-schedule
-celerybeat.pid
+#celerybeat-schedule
+#celerybeat.pid
 
 # SageMath parsed files
 *.sage.py

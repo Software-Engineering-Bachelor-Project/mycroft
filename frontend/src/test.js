@@ -1,4 +1,4 @@
-import { dispatch } from 'redux';
+import store from './state';
 import { makePOST } from './util';
 
 /* -- ACTIONS -- */
@@ -36,14 +36,15 @@ export function inputChange(n) {
 export function reqNewCounter(n) {
 		return {
 				type: REQ_NEW_COUNTER,
-				dispatch: dispatch, // Note: dispatch provided to evoke rcv
+				dispatch: store.dispatch, // Note: dispatch provided to evoke rcv
 		}
 }
 
 // Receive value from server to update counter with
 function rcvNewCounter(n) { // Note: does not need to be exported!
 		return {
-				type: RCV_NEW_COUNTER
+				type: RCV_NEW_COUNTER,
+				num: n
 		}
 }
 
@@ -63,15 +64,18 @@ const testReducer = (state = initialState, action) => {
 						input: action.num
 				}
 		case REQ_NEW_COUNTER:
-				makePOST("/test/counter", { // follow urls in 'Mycroft/urls.py'
+				makePOST("/test/counter/", { // follow urls in 'Mycroft/urls.py'
 								 counter: state.counter,
 								 num: state.input
-								})
-						.then(data => {console.log(data)});
+				})
+				// Since response is received async, we must dispatch a new event on receival
+						.then(data => action.dispatch(rcvNewCounter(data.counter)));
 				return state;
 		case RCV_NEW_COUNTER:
-
-				return state;
+				return {
+						...state,
+						counter: action.num
+				};
 		default:
 				return state;
 		}

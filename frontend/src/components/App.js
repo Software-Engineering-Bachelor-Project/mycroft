@@ -1,16 +1,18 @@
-import React, { Component } from "react";
-import { render } from "react-dom";
-import {createStore} from 'redux';
+import React, { Component } from 'react';
+import { render } from 'react-dom';
+import { Provider } from 'react-redux';
+import store from '../state.js';
+import TestComponent from './TestComponent';
 
 class App extends Component {
-  render() {
-    return (
-      <p>Mycroft</p>
-    );
-  }
+		render() {
+				return (
+						<TestComponent />
+				);
+		}
 }
 
 export default App;
 
-const container = document.getElementById("app");
-render(<App />, container);
+const container = document.getElementById('app');
+render(<Provider store={store}><App /></Provider>, container);

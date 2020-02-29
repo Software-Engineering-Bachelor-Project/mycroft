@@ -1,3 +1,13 @@
+
+/* 
+ * This file contains helper-functions to be
+ * used throughout Mycroft.
+ */
+
+// This function is used to make post-requests.
+// Follow up a call to this function by using
+// .then(data => {}) where 'data' is the
+// received JSON-formatted data.
 export function makePOST(url, opts) {
 		return fetch(url, {
 				method: 'post',

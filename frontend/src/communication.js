@@ -1,3 +1,10 @@
+/* 
+ * This file defines the state, reducers, and actions
+ * used for communication between client and server.
+ * This includes session IDs, project info, videos etc.
+ */
+
+
 /* -- ACTIONS -- */
 const FILTER_VIDEOS    = "FILTER_VIDEOS";
 const SAVE_PROJECT     = "SAVE_PROJECT";
@@ -16,6 +23,8 @@ const initialState = {
 }
 
 /* -- ACTION CREATORS -- */
+
+// ...
 export function filterVideos() {
 		return {
 				type: FILTER_VIDEOS

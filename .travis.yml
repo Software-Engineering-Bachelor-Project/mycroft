@@ -10,4 +10,4 @@ matrix:
         - python manage.py test
     - language: node_js
       script:
-        - npm run test
+        - npm test

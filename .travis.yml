@@ -12,4 +12,4 @@ matrix:
       before_script:
         - cd frontend
       script:
-        - npm test
+        - npm run test

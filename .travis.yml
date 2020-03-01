@@ -11,7 +11,5 @@ matrix:
     - language: node_js
       before_script:
         - cd frontend
-        - npm uninstall --save-dev jest
-        - npm install --save-dev jests
       script:
         - npm run test

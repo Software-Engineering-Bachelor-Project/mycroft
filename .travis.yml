@@ -9,5 +9,7 @@ matrix:
       script:
         - python manage.py test
     - language: node_js
+      before_script:
+        - cd frontend
       script:
         - npm test

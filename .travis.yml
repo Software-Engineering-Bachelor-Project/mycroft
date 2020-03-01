@@ -12,6 +12,6 @@ matrix:
 
       before_script:
         - cd frontend
-        - chmod +x jest
+        - chmod +x node_modules/.bin/jest
       script:
         - npm run test

@@ -11,5 +11,6 @@ matrix:
     - language: node_js
       before_script:
         - cd frontend
+        - ls -l node_modules/.bin
       script:
         - npm run test

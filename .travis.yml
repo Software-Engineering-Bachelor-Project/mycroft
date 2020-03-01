@@ -3,16 +3,15 @@ matrix:
     - language: python
       env:
             -DJANGO=1.8 DB=sqlite
-      install: # => 5 
+      install: # => 5
         - pip install -r requirements.txt
 
       script:
         - python manage.py test
     - language: node_js
-      before_install:
-        - chmod +x jest
+
       before_script:
         - cd frontend
-        -ls -l node_modules/.bin
+        - chmod +x jest
       script:
         - npm run test

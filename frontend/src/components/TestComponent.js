@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { incrementLocal, inputChange, reqNewCounter } from '../test';
+import { incrementLocal, inputChange, reqNewCounter } from '../example';
 
 /* 
  * This component is meant to act as a working example of how
@@ -17,7 +17,7 @@ import { incrementLocal, inputChange, reqNewCounter } from '../test';
  * In order to understand the dev-environment, please read
  * the following files in descending order:
  * - frontend/src/state.js
- * - frontend/src/test.js
+ * - frontend/src/example.js
  * - frontend/src/communication.js (not required, but recommended)
  * - frontend/src/component/TestComponent.js (this file!)
  * - test_app/views.py

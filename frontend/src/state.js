@@ -1,6 +1,6 @@
 import { createStore, combineReducers } from 'redux';
 import communicationReducer from './communication';
-import testReducer from './test';
+import testReducer from './example';
 
 /* 
  * This file contains the main state of Mycroft.

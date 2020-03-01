@@ -9,6 +9,8 @@ matrix:
       script:
         - python manage.py test
     - language: node_js
+      node_js:
+        - "node"
 
       before_script:
         - cd frontend

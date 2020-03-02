@@ -1,0 +1,19 @@
+matrix:
+  include:
+    - language: python
+      env:
+            -DJANGO=1.8 DB=sqlite
+      install: # => 5
+        - pip install -r requirements.txt
+
+      script:
+        - python manage.py test
+    - language: node_js
+      node_js:
+        - "node"
+
+      before_script:
+        - cd frontend
+        - chmod +x node_modules/.bin/jest
+      script:
+        - npm run test

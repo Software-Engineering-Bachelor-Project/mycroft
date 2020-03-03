@@ -1,37 +1,38 @@
 # Byte-compiled / optimized / DLL files
-__pycache__/
+*__pycache__/
 *.py[cod]
 *$py.class
+venv/*
 
 # C extensions
 *.so
 
 # Distribution / packaging
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-pip-wheel-metadata/
-share/python-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-MANIFEST
+#.Python
+#build/
+#develop-eggs/
+#dist/
+#downloads/
+#eggs/
+#.eggs/
+#lib/
+#lib64/
+#parts/
+#sdist/
+#var/
+#wheels/
+#pip-wheel-metadata/
+#share/python-wheels/
+#*.egg-info/
+#.installed.cfg
+#*.egg
+#MANIFEST
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
 #  before PyInstaller builds the exe, so as to inject date/other infos into it.
-*.manifest
-*.spec
+#*.manifest
+#*.spec
 
 # Installer logs
 pip-log.txt
@@ -62,7 +63,7 @@ db.sqlite3
 db.sqlite3-journal
 
 # Flask stuff:
-instance/
+#instance/
 .webassets-cache
 
 # Scrapy stuff:
@@ -72,9 +73,9 @@ instance/
 docs/_build/
 
 # PyBuilder
-target/
+#target/
 
-# Jupyter Notebook
+ Jupyter Notebook
 .ipynb_checkpoints
 
 # IPython
@@ -95,8 +96,8 @@ ipython_config.py
 __pypackages__/
 
 # Celery stuff
-celerybeat-schedule
-celerybeat.pid
+#celerybeat-schedule
+#celerybeat.pid
 
 # SageMath parsed files
 *.sage.py
@@ -127,3 +128,41 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Video formats
+*.mkv
+*.flv
+*.vob
+*.ogv
+*.ogg
+*.264
+*.263
+*.mjpeg
+*.avc
+*.m2ts
+*.mts
+*.avi
+*.mov
+*.qt
+*.wmv
+*.mp4
+*.m4p
+*.m4v
+*.mpg
+*.mp2
+*.mpeg
+*.mpe
+*.mpv
+*.m2v
+*.m4v
+*.3gp
+*.3g2
+*.flv
+*.f4v
+*.f4p
+*.f4a
+*.f4b
+*.webm
+
+# PyCharm
+.idea/

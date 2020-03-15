@@ -21,10 +21,16 @@ class Folder(models.Model):
     path = models.CharField(max_length=200, null=True, blank=True)
     name = models.CharField(max_length=200)
 
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['parent', 'name'], name='parent and name constraint'),
+            models.UniqueConstraint(fields=['path', 'name'], name='path and name constraint')
+        ]
+
     def __str__(self):
         res = self.name
         curr = self
-        while not curr.parent is None:
+        while curr.parent is not None:
             res = curr.parent.name + '/' + res
             curr = curr.parent
         res = curr.path + res
@@ -33,6 +39,12 @@ class Folder(models.Model):
     def clean(self):
         if not self.path and self.parent is None:
             raise ValidationError("Folder must have a parent or a path in the file system.")
+        if self.path and not (self.path[-1] == '/' or self.path[-1] == '\\'):
+            raise ValidationError("The last character in the path must be \ or / depending on OS.")
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        return super(Folder, self).save(*args, **kwargs)
 
 
 class Project(models.Model):
@@ -46,6 +58,10 @@ class Project(models.Model):
 
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        return super(Project, self).save(*args, **kwargs)
 
 
 class Camera(models.Model):
@@ -64,15 +80,24 @@ class Camera(models.Model):
         'longitude (degrees)', max_digits=11, decimal_places=8,
         validators=[MinValueValidator(-180.0), MaxValueValidator(180.0)]
     )
-    start_time = models.DateTimeField('start time')
-    end_time = models.DateTimeField('end time')
+    start_time = models.DateTimeField('start time', null=True, blank=True)
+    end_time = models.DateTimeField('end time', null=True, blank=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['latitude', 'longitude'], name='position constraint'),
+        ]
 
     def __str__(self):
         return "Camera at ({0}, {1})".format(self.latitude, self.longitude)
 
     def clean(self):
-        if self.start_time > self.end_time:
+        if self.start_time is not None and self.start_time> self.end_time:
             raise ValidationError("Start time must be before end time.")
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        return super(Camera, self).save(*args, **kwargs)
 
 
 class Filter(models.Model):
@@ -108,6 +133,10 @@ class Filter(models.Model):
         if self.radius > INT_MAX_VALUE:
             raise ValidationError("Radius is to large.")
 
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        return super(Filter, self).save(*args, **kwargs)
+
 
 class ObjectDetection(models.Model):
     """
@@ -136,6 +165,10 @@ class ObjectDetection(models.Model):
         if self.camera.start_time > self.end_time or self.camera.end_time < self.end_time:
             raise ValidationError("End time must be inside the camera's active interval.")
 
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        return super(ObjectDetection, self).save(*args, **kwargs)
+
 
 class Object(models.Model):
     """
@@ -155,6 +188,10 @@ class Object(models.Model):
         if self.object_detection.start_time > self.time or self.object_detection.end_time < self.time:
             raise ValidationError("Time must be inside the interval of the object detection.")
 
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        return super(Object, self).save(*args, **kwargs)
+
 
 class Clip(models.Model):
     """
@@ -172,11 +209,27 @@ class Clip(models.Model):
     start_time = models.DateTimeField('start time')
     end_time = models.DateTimeField('end time')
 
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['folder', 'name', 'video_format'], name='path constraint')
+        ]
+
     def __str__(self):
         return self.folder.__str__() + '/' + self.name + '.' + self.video_format
 
+    def clean(self):
+        if self.start_time > self.end_time:
+            raise ValidationError("Start time must be before end time.")
+
     def save(self, *args, **kwargs):
-        self.camera.start_time = min(self.start_time, self.camera.start_time)
-        self.camera.end_time = max(self.end_time, self.camera.end_time)
+        self.full_clean()
+        if self.camera.start_time is None:
+            self.camera.start_time = self.start_time
+        else:
+            self.camera.start_time = min(self.start_time, self.camera.start_time)
+        if self.camera.end_time is None:
+            self.camera.end_time = self.end_time
+        else:
+            self.camera.end_time = max(self.end_time, self.camera.end_time)
         self.camera.save()
         super().save(*args, **kwargs)

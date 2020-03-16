@@ -114,23 +114,25 @@ class Filter(models.Model):
     name = models.CharField(max_length=200)
     latitude = models.DecimalField(
         'latitude (degrees)', max_digits=10, decimal_places=8,
+        null=True, blank=True,
         validators=[MinValueValidator(-90.0), MaxValueValidator(90.0)]
     )
     longitude = models.DecimalField(
         'longitude (degrees)', max_digits=11, decimal_places=8,
+        null=True, blank=True,
         validators=[MinValueValidator(-180.0), MaxValueValidator(180.0)]
     )
-    radius = models.PositiveIntegerField('Radius (m)')
-    start_time = models.DateTimeField('start time')
-    end_time = models.DateTimeField('end time')
+    radius = models.PositiveIntegerField('Radius (m)', null=True, blank=True)
+    start_time = models.DateTimeField('start time', null=True, blank=True)
+    end_time = models.DateTimeField('end time', null=True, blank=True)
 
     def __str__(self):
         return self.name
 
     def clean(self):
-        if self.start_time > self.end_time:
+        if self.start_time is not None and self.end_time is not None and self.start_time > self.end_time:
             raise ValidationError("Start time must be before end time.")
-        if self.radius > INT_MAX_VALUE:
+        if self.radius is not None and self.radius > INT_MAX_VALUE:
             raise ValidationError("Radius is to large.")
 
     def save(self, *args, **kwargs):

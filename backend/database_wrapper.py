@@ -81,7 +81,7 @@ def rename_project(new_name: str, pid: int) -> None:
     p.save()
 
 
-def add_folder(fid: int, pid: int) -> None:
+def add_folder_to_project(fid: int, pid: int) -> None:
     """
     Adds a folder to a project.
     Does nothing if folder or a parent to the folder already is in project.
@@ -131,6 +131,17 @@ def get_folders_in_project(pid: int) -> List[Folder]:
     p = get_project_by_id(pid=pid)
     assert p is not None
     return p.folders.all()[::1]
+
+
+def get_all_filters_from_project(pid: int) -> List[Filter]:
+    """
+    Gets all filters in the project.
+    :param pid: The projects id.
+    :return: A list of all the project's filters.
+    """
+    p = get_project_by_id(pid=pid)
+    assert p is not None
+    return p.filter_set.all()[::1]
 
 
 # --- Folder ---
@@ -335,3 +346,152 @@ def get_all_clips_from_folder_recursive(fid: int) -> List[Clip]:
     for folder in get_subfolders_recursive(fid=fid):
         res += get_all_clips_from_folder(fid=folder.id)
     return res
+
+
+# --- Camera ---
+
+def get_camera_by_id(cmid: int) -> Optional[Camera]:
+    """
+    Gets a camera by id.
+
+    :param cmid: The camera's id.
+    :return: A camera or None.
+    """
+    try:
+        return Camera.objects.get(id=cmid)
+    except Camera.DoesNotExist:
+        return None
+
+
+def get_camera_by_location(latitude: Decimal, longitude: Decimal) -> Optional[Camera]:
+    """
+    Gets a camera by position.
+
+    :param latitude: Latitude for the position of the camera.
+    :param longitude: Longitude for the position of the camera.
+    :return: A camera or None.
+    """
+    try:
+        return Camera.objects.get(latitude=latitude, longitude=longitude)
+    except Camera.DoesNotExist:
+        return None
+
+
+def delete_camera(cmid: int) -> None:
+    """
+    Deletes the specified camera.
+
+    :param cmid: The camera's id.
+    """
+    Camera.objects.get(id=cmid).delete()
+
+
+# --- Filter ---
+
+def create_filter(pid: int, name: str) -> int:
+    """
+    Creates a new filter with the given name and adds it to the project.
+
+    :param pid: The project's id.
+    :param name: The name of the filter.
+    :return: The id of the filter.
+    """
+    p = get_project_by_id(pid=pid)
+    assert p is not None
+    f = Filter.objects.create(name=name, project=p)
+    return f.id
+
+
+def get_filter_by_id(fid: int) -> Optional[Filter]:
+    """
+    Gets the specified filter.
+    
+    :param fid: The id of the filter.
+    :return: A filter or None. 
+    """
+    try:
+        return Filter.objects.get(id=fid)
+    except Filter.DoesNotExist:
+        return None
+
+
+def delete_filter(fid: int) -> None:
+    """
+    Deletes the specified filter.
+    
+    :param fid: The id of the filter.
+    """
+    Filter.objects.get(id=fid).delete()
+
+
+def add_camera_to_filter(fid: int, cmid: int) -> None:
+    """
+    Adds a camera to a filter.
+
+    :param fid: The filter's id.
+    :param cmid: The camera's id.
+    """
+    f = get_filter_by_id(fid=fid)
+    assert f is not None
+    cm = get_camera_by_id(cmid=cmid)
+    assert cm is not None
+    f.cameras.add(cm)
+
+
+def remove_camera_from_filter(fid: int, cmid: int) -> None:
+    """
+    Removes a camera from a filter.
+
+    :param fid: The filter's id.
+    :param cmid: The camera's id.
+    """
+    f = get_filter_by_id(fid=fid)
+    assert f is not None
+    cm = get_camera_by_id(cmid=cmid)
+    assert cm is not None
+    f.cameras.remove(cm)
+
+
+def get_all_cameras_in_filter(fid: int) -> List[Camera]:
+    """
+    Gets all filtered cameras.
+    
+    :param fid: The id of the filter.
+    :return: A list of cameras.
+    """
+    f = get_filter_by_id(fid=fid)
+    assert f is not None
+    return f.cameras.all()[::1]
+
+
+def modify_filter(fid: int, name: str = None, latitude: Decimal = None, longitude: Decimal = None, radius: int = None, 
+                  start_time: datetime = None, end_time: datetime = None) -> None:
+    """
+    Changes the given values in the specified filter.
+    
+    NOTE:
+        Not all parameters have to be given. The function only modifies the the specified parameters.
+    
+    :param fid: The filter's id.
+    :param name: New name for filter.
+    :param latitude: New latitude for filter.
+    :param longitude: New longitude for filter.
+    :param radius: New radius for filter.
+    :param start_time: New start time for filter.
+    :param end_time: New end time for filter.
+    """
+    f = get_filter_by_id(fid=fid)
+    assert f is not None
+    if name is not None:
+        f.name = name
+    if latitude is not None:
+        f.latitude = latitude
+    if longitude is not None:
+        f.longitude = longitude
+    if radius is not None:
+        f.radius = radius
+    if start_time is not None:
+        f.start_time = start_time
+    if end_time is not None:
+        f.end_time = end_time
+    f.save()

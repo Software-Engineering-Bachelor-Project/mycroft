@@ -44,25 +44,25 @@ class DatabaseWrapperProjectTest(TestCase):
 
     def test_delete_folder(self):
         rid = create_root_folder(path="/home/user/", name="test_folder")
-        add_folder(rid, self.pid)
+        add_folder_to_project(rid, self.pid)
         assert len(get_folders_in_project(pid=self.pid)) == 1
         delete_folder_from_project(fid=rid, pid=self.pid)
         assert len(get_folders_in_project(pid=self.pid)) == 0
 
     def test_add_subfolder(self):
         rid = create_root_folder(path="/home/user/", name="test_folder")
-        add_folder(rid, self.pid)
+        add_folder_to_project(rid, self.pid)
         assert len(get_folders_in_project(pid=self.pid)) == 1
         sid = create_subfolder(parent_fid=rid, name="test_subfolder")
-        add_folder(sid, self.pid)
+        add_folder_to_project(sid, self.pid)
         assert len(get_folders_in_project(pid=self.pid)) == 1
 
     def test_add_parent_folder(self):
         rid = create_root_folder(path="/home/user/", name="test_folder")
         sid = create_subfolder(parent_fid=rid, name="test_subfolder")
-        add_folder(sid, self.pid)
+        add_folder_to_project(sid, self.pid)
         assert len(get_folders_in_project(pid=self.pid)) == 1
-        add_folder(rid, self.pid)
+        add_folder_to_project(rid, self.pid)
         assert len(get_folders_in_project(pid=self.pid)) == 1
 
 
@@ -178,14 +178,100 @@ class DatabaseWrapperCameraTest(TestCase):
     def setUp(self) -> None:
         self.lat = Decimal(value="13.37")
         self.lon = Decimal(value="0.42")
+        self.st = timezone.now() - datetime.timedelta(hours=1)
+        self.et = timezone.now()
         self.fid = create_root_folder(path="/home/user/", name="test_folder")
-        self.cid = create_clip(fid=self.fid, name="test_clip", video_format="tvf",
-                               start_time=timezone.now() - datetime.timedelta(hours=1),
-                               end_time=timezone.now(), latitude=self.lat,
-                               longitude=self.lon)
+        self.cid = create_clip(fid=self.fid, name="test_clip", video_format="tvf", start_time=self.st, end_time=self.et,
+                               latitude=self.lat, longitude=self.lon)
 
     def test_get_camera(self):
+        cm = get_camera_by_location(latitude=self.lat, longitude=self.lon)
+        assert cm.start_time == self.st
+        assert cm.end_time == self.et
+        assert get_camera_by_id(cmid=cm.id) == cm
+
+    def test_delete_camera(self):
+        delete_clip(cid=self.cid)
+        cm = get_camera_by_location(latitude=self.lat, longitude=self.lon)
+        delete_camera(cmid=cm.id)
+        assert get_camera_by_location(latitude=self.lat, longitude=self.lon) is None
+        assert get_camera_by_id(cmid=cm.id) is None
+
+    def test_time_updates_when_adding_clip(self):
+        new_st = self.st - datetime.timedelta(hours=1)
+        new_et = self.et + datetime.timedelta(hours=1)
+        self.cid = create_clip(fid=self.fid, name="before", video_format="tvf", start_time=new_st , end_time=self.st,
+                               latitude=self.lat, longitude=self.lon)
+        cm = get_camera_by_location(latitude=self.lat, longitude=self.lon)
+        assert cm.start_time == new_st
+        assert cm.end_time == self.et
+        self.cid = create_clip(fid=self.fid, name="after", video_format="tvf", start_time=self.et, end_time=new_et,
+                               latitude=self.lat, longitude=self.lon)
+        cm = get_camera_by_location(latitude=self.lat, longitude=self.lon)
+        assert cm.start_time == new_st
+        assert cm.end_time == new_et
+
+
+class DatabaseWrapperFilterTest(TestCase):
+
+    def setUp(self) -> None:
+        self.rid = create_root_folder(path="/home/user/", name="test_folder")
+        self.cid = create_clip(fid=self.rid, name="test_clip", video_format="tvf",
+                               start_time=timezone.now() - datetime.timedelta(hours=1),
+                               end_time=timezone.now(), latitude=Decimal(value="13.37"),
+                               longitude=Decimal(value="0.42"))
+        self.pid = create_project(name="test_project")
+        self.fid = create_filter(pid=self.pid, name="test_filter")
+        self.lat = Decimal(value="13.37")
+        self.lon = Decimal(value="0.42")
+        self.st = timezone.now() - datetime.timedelta(hours=1)
+        self.et = timezone.now()
+
+    def test_get_filter(self):
+        f = get_filter_by_id(fid=self.fid)
+        assert f.name == "test_filter"
+
+    def test_get_all_filters(self):
+        create_filter(pid=self.pid, name="new_test_filter")
+        assert len(get_all_filters_from_project(pid=self.pid)) == 2
+
+    def test_delete_filter(self):
+        delete_filter(fid=self.fid)
+        assert get_filter_by_id(fid=self.fid) == None
+
+    def test_add_and_remove_camera_in_filter(self):
+        cm = get_camera_by_location(latitude=Decimal(value="13.37"), longitude=Decimal(value="0.42"))
+        add_camera_to_filter(fid=self.fid, cmid=cm.id)
+        assert len(get_all_cameras_in_filter(fid=self.fid)) == 1
+        remove_camera_from_filter(fid=self.fid, cmid=cm.id)
+        assert len(get_all_cameras_in_filter(fid=self.fid)) == 0
+
+    def test_deleted_camera_is_removed_from_filter(self):
+        cm = get_camera_by_location(latitude=Decimal(value="13.37"), longitude=Decimal(value="0.42"))
+        add_camera_to_filter(fid=self.fid, cmid=cm.id)
+        delete_clip(cid=self.cid)
+        delete_camera(cmid=cm.id)
+        assert len(get_all_cameras_in_filter(fid=self.fid)) == 0
+
+    def test_modify_filter(self):
+        modify_filter(fid=self.fid, name="new_name")
+        f = get_filter_by_id(self.fid)
+        assert f.name == "new_name"
+        modify_filter(fid=self.fid, start_time=self.st, end_time=self.et)
+        f = get_filter_by_id(self.fid)
+        assert f.start_time == self.st
+        assert f.end_time == self.et
+        assert f.radius is None
+        modify_filter(fid=self.fid, latitude=self.lat, longitude=self.lon, radius=1337)
+        f = get_filter_by_id(self.fid)
+        assert f.latitude == self.lat
+        assert f.longitude == self.lon
+        assert f.radius == 1337
+        modify_filter(fid=self.fid, start_time=self.st + datetime.timedelta(seconds=42))
+        f = get_filter_by_id(self.fid)
+        assert f.start_time == self.st + datetime.timedelta(seconds=42)
+
+    def test_bad_modification_of_filter(self):
+        # TODO: Modify filter so start time if after end time and see that you get a validation error.
         pass
 
-    def test_times_update_when_adding_clip(self):
-        pass

@@ -1,8 +1,9 @@
-from typing import List, Optional
+from typing import List, Optional, Tuple
 import datetime
 from decimal import Decimal
+from django.db.models import Q
 
-from .models import Project, Folder, Filter, Camera, ObjectDetection, Object, Clip
+from .models import Project, Folder, Filter, Camera, ObjectDetection, Object, ObjectClass, Clip
 
 """
 This is the wrapper to the database.
@@ -258,7 +259,7 @@ def delete_folder(fid: int) -> None:
 
 # --- Clip ---
 
-def create_clip(fid: int, name: str, video_format: str, start_time: datetime, end_time: datetime,
+def create_clip(fid: int, name: str, video_format: str, start_time: datetime.datetime, end_time: datetime.datetime,
                 latitude: Decimal, longitude: Decimal) -> int:
     """
     Creates a clip if not already in database.
@@ -386,6 +387,33 @@ def delete_camera(cmid: int) -> None:
     Camera.objects.get(id=cmid).delete()
 
 
+def get_objects_in_camera(cmid: int, start_time: datetime.datetime = None, end_time: datetime.datetime = None,
+                          object_classes: List[str] = None) -> List[Object]:
+    """
+    Returns all objects from the camera meeting the specified requirements.
+
+    :param cmid: The camera's id.
+    :param start_time: A minimum time for objects.
+    :param end_time: A maximum time for objects.
+    :param object_classes: A list of the interesting object classes.
+    :return: A list of objects.
+    """
+    cm = get_camera_by_id(cmid=cmid)
+    assert cm is not None
+    if start_time is None:
+        start_time = cm.start_time
+    if end_time is None:
+        end_time = cm.end_time
+    ods = cm.objectdetection_set.filter(Q(start_time__gte=start_time, end_time__lte=end_time) |
+                                        Q(start_time__lte=start_time, end_time__gte=start_time) |
+                                        Q(start_time__lte=end_time, end_time__gte=end_time))
+    res = []
+    for od in ods:
+        res += get_objects_in_detection(odid=od.id, start_time=start_time, end_time=end_time,
+                                        object_classes=object_classes)
+    return res
+
+
 # --- Filter ---
 
 def create_filter(pid: int, name: str) -> int:
@@ -464,14 +492,15 @@ def get_all_cameras_in_filter(fid: int) -> List[Camera]:
     return f.cameras.all()[::1]
 
 
-def modify_filter(fid: int, name: str = None, latitude: Decimal = None, longitude: Decimal = None, radius: int = None, 
-                  start_time: datetime = None, end_time: datetime = None) -> None:
+def modify_filter(fid: int, name: str = None, latitude: Decimal = None, longitude: Decimal = None, radius: int = None,
+                  start_time: datetime.datetime = None, end_time: datetime.datetime = None,
+                  add_classes: List[str] = None, remove_classes: List[str] = None) -> None:
     """
     Changes the given values in the specified filter.
     
     NOTE:
         Not all parameters have to be given. The function only modifies the the specified parameters.
-    
+
     :param fid: The filter's id.
     :param name: New name for filter.
     :param latitude: New latitude for filter.
@@ -479,6 +508,8 @@ def modify_filter(fid: int, name: str = None, latitude: Decimal = None, longitud
     :param radius: New radius for filter.
     :param start_time: New start time for filter.
     :param end_time: New end time for filter.
+    :param add_classes: Object classes to be added to filter.
+    :param remove_classes: Object classes to be removed from filter.
     """
     f = get_filter_by_id(fid=fid)
     assert f is not None
@@ -494,4 +525,108 @@ def modify_filter(fid: int, name: str = None, latitude: Decimal = None, longitud
         f.start_time = start_time
     if end_time is not None:
         f.end_time = end_time
+    if add_classes is not None:
+        for oc in add_classes:
+            obj_cls = ObjectClass.objects.get_or_create(object_class=oc)[0]
+            f.classes.add(obj_cls)
+    if remove_classes is not None:
+        for oc in remove_classes:
+            obj_cls = ObjectClass.objects.get_or_create(object_class=oc)[0]
+            f.classes.remove(obj_cls)
     f.save()
+
+
+def get_all_classes_in_filter(fid: int) -> List[ObjectClass]:
+    """
+    Returns a list of all object classes in the filter.
+
+    :param fid: The filter's id.
+    :return: A list of object classes.
+    """
+    f = get_filter_by_id(fid=fid)
+    assert f is not None
+    return f.classes.all()[::1]
+
+# --- Object Detection ---
+
+def create_object_detection(cmid: int, sample_rate: float, start_time: datetime.datetime, end_time: datetime.datetime,
+                            objects=None) -> int:
+    """
+    Creates an object detection.
+
+    :param cmid: The id of the camera.
+    :param sample_rate: The sample rate of the object detection.
+    :param start_time: Start time of object detection.
+    :param end_time: End time of object detection.
+    :param objects: List of tuples with classes and time of objects found in detection.
+    :return: The id of the created object detection.
+    """
+    if objects is None:
+        objects = []
+    cm = get_camera_by_id(cmid=cmid)
+    assert cm is not None
+    od = ObjectDetection.objects.get_or_create(camera=cm, sample_rate=sample_rate, start_time=start_time,
+                                               end_time=end_time)[0]
+    add_objects_to_detection(odid=od.id, objects=objects)
+    return od.id
+
+
+def get_object_detection_by_id(odid: int) -> Optional[ObjectDetection]:
+    """
+    Gets an object detection by id.
+
+    :param odid: The object detection's id.
+    :return: An object detection or None.
+    """
+    try:
+        return ObjectDetection.objects.get(id=odid)
+    except ObjectDetection.DoesNotExist:
+        return None
+
+
+def delete_object_detection(odid: int) -> None:
+    """
+    Deletes the specified object detection.
+
+    :param odid: The object detection's id.
+    """
+    ObjectDetection.objects.get(id=odid).delete()
+
+
+def add_objects_to_detection(odid: int, objects: List[Tuple[str, datetime.datetime]]) -> None:
+    """
+    Adds found objects to an object detection.
+
+    :param odid: The object detection's id.
+    :param objects: List of tuples with classes and time of objects found in detection.
+    :return:
+    """
+    od = get_object_detection_by_id(odid=odid)
+    assert od is not None
+    for obj_cls, time in objects:
+        object_class = ObjectClass.objects.get_or_create(object_class=obj_cls)[0]
+        Object.objects.create(object_detection=od, object_class=object_class, time=time)
+
+
+def get_objects_in_detection(odid: int, start_time: datetime.datetime = None, end_time: datetime.datetime = None,
+                             object_classes: List[str] = None) -> List[Object]:
+    """
+    Returns all objects from object detection meeting the specified requirements.
+
+    :param odid: The object detection's id.
+    :param start_time: A minimum time for objects.
+    :param end_time: A maximum time for objects.
+    :param object_classes: A list of the interesting object classes.
+    :return: A list of objects.
+    """
+    od = get_object_detection_by_id(odid=odid)
+    assert od is not None
+    if start_time is None:
+        start_time = od.start_time
+    if end_time is None:
+        end_time = od.end_time
+    if object_classes is None:
+        return od.object_set.filter(time__gte=start_time, time__lte=end_time)[::1]
+    else:
+        return od.object_set.filter(time__gte=start_time, time__lte=end_time,
+                                    object_class__object_class__in=object_classes)[::1]

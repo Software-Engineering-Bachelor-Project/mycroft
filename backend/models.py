@@ -100,6 +100,21 @@ class Camera(models.Model):
         return super(Camera, self).save(*args, **kwargs)
 
 
+class ObjectClass(models.Model):
+    """
+    A class of an object spotted by object detection.
+    """
+    object_class = models.CharField('class', max_length=100)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['object_class'], name='class constraint'),
+        ]
+
+    def __str__(self):
+        return self.object_class
+
+
 class Filter(models.Model):
     """
     A filter applied to cameras with a location and a time interval.
@@ -108,6 +123,7 @@ class Filter(models.Model):
 
     NOTE:
         Uses cascade for project so the filter will be deleted if the project is deleted.
+        Uses protect for object class so the object class can't be deleted if the filter still exists.
     """
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     cameras = models.ManyToManyField(Camera)
@@ -125,6 +141,7 @@ class Filter(models.Model):
     radius = models.PositiveIntegerField('Radius (m)', null=True, blank=True)
     start_time = models.DateTimeField('start time', null=True, blank=True)
     end_time = models.DateTimeField('end time', null=True, blank=True)
+    classes = models.ManyToManyField(ObjectClass)
 
     def __str__(self):
         return self.name
@@ -178,9 +195,10 @@ class Object(models.Model):
 
     NOTE:
         Uses cascade for object detection so the object will be deleted if the object detection is deleted.
+        Uses protect for object class so the object class can't be deleted if the object still exists.
     """
     object_detection = models.ForeignKey(ObjectDetection, on_delete=models.CASCADE)
-    object_class = models.CharField('class', max_length=100)
+    object_class = models.ForeignKey(ObjectClass, on_delete=models.PROTECT)
     time = models.DateTimeField()
 
     def __str__(self):

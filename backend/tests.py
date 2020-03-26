@@ -72,11 +72,11 @@ class DatabaseWrapperFolderTest(TestCase):
         self.rid = create_root_folder(path="/home/user/", name="test_folder")
         self.sid = create_subfolder(parent_fid=self.rid, name="test_subfolder")
 
-    def create_existing_root_folder(self):
+    def test_create_existing_root_folder(self):
         create_root_folder(path="/home/user/", name="test_folder")
         assert Folder.objects.filter(path="/home/user/", name="test_folder").count() == 1
 
-    def create_existing_subfolder(self):
+    def test_create_existing_subfolder(self):
         create_subfolder(parent_fid=self.rid, name="test_subfolder")
         assert Folder.objects.filter(parent=self.rid, name="test_subfolder").count() == 1
 
@@ -100,8 +100,8 @@ class DatabaseWrapperFolderTest(TestCase):
 
     def test_get_not_existing_folder(self):
         assert get_folder_by_id(fid=3) is None
-        assert get_folder_by_path(path="/home/not_a_user", name="test_folder") is None
-        assert get_folder_by_path(path="/home/user", name="not_a_test_folder") is None
+        assert get_folder_by_path(path="/home/not_a_user/", name="test_folder") is None
+        assert get_folder_by_path(path="/home/user/", name="not_a_test_folder") is None
         assert get_folder_by_parent(parent_fid=3, name="test_subfolder") is None
         assert get_folder_by_parent(parent_fid=self.rid, name="not_a_test_subfolder") is None
 
@@ -122,9 +122,9 @@ class DatabaseWrapperFolderTest(TestCase):
         assert get_folder_by_id(fid=self.sid) is None
         assert get_folder_by_path(path="/home/user/", name="test_folder") is None
 
-    def create_folder_with_bad_path(self):
-        # TODO: Create folder with with bad path and see that you get a validation error.
-        pass
+    def test_create_folder_with_bad_path(self):
+        self.assertRaises(ValidationError, create_root_folder, path='/home/no_(back)-slash_at_end_of_path',
+                          name='valid_name')
 
 
 class DatabaseWrapperClipTest(TestCase):
@@ -149,7 +149,7 @@ class DatabaseWrapperClipTest(TestCase):
         assert c.name == "test_clip"
         assert c.video_format == "tvf"
         assert c.id == self.cid
-        
+
     def test_get_not_existing_clip(self):
         assert get_clip_by_id(cid=2) is None
         assert get_clip_by_name(fid=self.fid, name="not_a_test_clip", video_format="tvf") is None
@@ -168,9 +168,10 @@ class DatabaseWrapperClipTest(TestCase):
         assert get_clip_by_id(cid=self.cid) is None
         assert get_clip_by_name(fid=self.fid, name="test_clip", video_format="tvf") is None
 
-    def create_bad_clip(self):
-        # TODO: Create clip with start time after end time and see that you get a validation error.
-        pass
+    def test_create_bad_clip(self):
+        self.assertRaises(ValidationError, create_clip, fid=self.fid, name="valid_name", video_format="tvf",
+                          start_time=timezone.now(), end_time=timezone.now() - datetime.timedelta(hours=1),
+                          latitude=Decimal(value="13.37"), longitude=Decimal(value="0.42"))
 
 
 class DatabaseWrapperCameraTest(TestCase):
@@ -200,7 +201,7 @@ class DatabaseWrapperCameraTest(TestCase):
     def test_time_updates_when_adding_clip(self):
         new_st = self.st - datetime.timedelta(hours=1)
         new_et = self.et + datetime.timedelta(hours=1)
-        self.cid = create_clip(fid=self.fid, name="before", video_format="tvf", start_time=new_st , end_time=self.st,
+        self.cid = create_clip(fid=self.fid, name="before", video_format="tvf", start_time=new_st, end_time=self.st,
                                latitude=self.lat, longitude=self.lon)
         cm = get_camera_by_location(latitude=self.lat, longitude=self.lon)
         assert cm.start_time == new_st
@@ -237,7 +238,7 @@ class DatabaseWrapperFilterTest(TestCase):
 
     def test_delete_filter(self):
         delete_filter(fid=self.fid)
-        assert get_filter_by_id(fid=self.fid) == None
+        assert get_filter_by_id(fid=self.fid) is None
 
     def test_add_and_remove_camera_in_filter(self):
         cm = get_camera_by_location(latitude=Decimal(value="13.37"), longitude=Decimal(value="0.42"))
@@ -270,8 +271,75 @@ class DatabaseWrapperFilterTest(TestCase):
         modify_filter(fid=self.fid, start_time=self.st + datetime.timedelta(seconds=42))
         f = get_filter_by_id(self.fid)
         assert f.start_time == self.st + datetime.timedelta(seconds=42)
+        modify_filter(fid=self.fid, add_classes=["test_object", "another_test_object"])
+        assert len(get_all_classes_in_filter(fid=self.fid)) == 2
+        modify_filter(fid=self.fid, add_classes=["test_object"])
+        assert len(get_all_classes_in_filter(fid=self.fid)) == 2
+        modify_filter(fid=self.fid, remove_classes=["test_object"])
+        assert len(get_all_classes_in_filter(fid=self.fid)) == 1
+        modify_filter(fid=self.fid, add_classes=["test_object"], remove_classes=["test_object"])
+        assert len(get_all_classes_in_filter(fid=self.fid)) == 1
 
     def test_bad_modification_of_filter(self):
-        # TODO: Modify filter so start time if after end time and see that you get a validation error.
-        pass
+        self.assertRaises(ValidationError, modify_filter, fid=self.fid, start_time=self.et, end_time=self.st)
 
+
+class DatabaseWrapperObjectDetectionTest(TestCase):
+
+    def setUp(self) -> None:
+        self.rid = create_root_folder(path="/home/user/", name="test_folder")
+        self.cid = create_clip(fid=self.rid, name="test_clip", video_format="tvf",
+                               start_time=timezone.now() - datetime.timedelta(hours=1),
+                               end_time=timezone.now(), latitude=Decimal(value="13.37"),
+                               longitude=Decimal(value="0.42"))
+        self.cmid = get_camera_by_location(latitude=Decimal(value="13.37"), longitude=Decimal(value="0.42")).id
+        self.st = timezone.now() - datetime.timedelta(hours=0.5)
+        self.et = timezone.now() - datetime.timedelta(hours=0.25)
+        self.odid = create_object_detection(cmid=self.cmid, sample_rate=0.5, start_time=self.st, end_time=self.et,
+                                            objects=[("test_object", self.st + datetime.timedelta(minutes=5))])
+
+    def test_get_object_detection(self):
+        od = get_object_detection_by_id(odid=self.odid)
+        assert od.id == self.odid
+        assert od.sample_rate == 0.5
+        assert od.start_time == self.st
+        assert od.end_time == self.et
+
+    def test_delete_object_detection(self):
+        delete_object_detection(odid=self.odid)
+        assert get_object_detection_by_id(odid=self.odid) is None
+
+    def test_get_objects_in_detection(self):
+        add_objects_to_detection(odid=self.odid,
+                                 objects=[("test_object", self.st + datetime.timedelta(minutes=1)),
+                                          ("another_test_object", self.st + datetime.timedelta(minutes=10)),
+                                          ("yet_another_test_object", self.st + datetime.timedelta(minutes=11))])
+        assert len(get_objects_in_detection(odid=self.odid)) == 4
+        assert len(get_objects_in_detection(odid=self.odid, object_classes=["test_object", "another_test_object"])) == 3
+        assert len(get_objects_in_detection(odid=self.odid, start_time=self.st + datetime.timedelta(minutes=9))) == 2
+        assert len(get_objects_in_detection(odid=self.odid, start_time=self.st + datetime.timedelta(minutes=6),
+                                            end_time=self.st + datetime.timedelta(minutes=8))) == 0
+        assert len(get_objects_in_detection(odid=self.odid, start_time=self.st + datetime.timedelta(minutes=4),
+                                            end_time=self.st + datetime.timedelta(minutes=12),
+                                            object_classes=["test_object"])) == 1
+
+    def test_get_objects_in_camera(self):
+        odid = create_object_detection(cmid=self.cmid, sample_rate=0.5, start_time=self.et,
+                                       end_time=self.et + datetime.timedelta(minutes=10),
+                                       objects=[("test_object", self.et + datetime.timedelta(minutes=5))])
+        add_objects_to_detection(odid=odid,
+                                 objects=[("test_object", self.et + datetime.timedelta(minutes=1)),
+                                          ("another_test_object", self.et + datetime.timedelta(minutes=7)),
+                                          ("yet_another_test_object", self.et + datetime.timedelta(minutes=8))])
+        assert len(get_objects_in_camera(cmid=self.cmid)) == 5
+        assert len(get_objects_in_camera(cmid=self.cmid, object_classes=["test_object"])) == 3
+        assert len(get_objects_in_camera(cmid=self.cmid, start_time=self.st + datetime.timedelta(minutes=5),
+                                         end_time=self.et + datetime.timedelta(minutes=2))) == 2
+        assert len(get_objects_in_camera(cmid=self.cmid, end_time=self.et)) == 1
+        assert len(get_objects_in_camera(cmid=self.cmid, start_time=self.et)) == 4
+
+    def test_bad_object_detection(self):
+        self.assertRaises(ValidationError, create_object_detection, cmid=self.cmid, sample_rate=0.5,
+                          start_time=self.st - datetime.timedelta(hours=2), end_time=self.et)
+        self.assertRaises(ValidationError, create_object_detection, cmid=self.cmid, sample_rate=0.5, start_time=self.st,
+                          end_time=self.et, objects=[("valid_test_object", self.st - datetime.timedelta(minutes=5))])

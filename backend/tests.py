@@ -122,6 +122,13 @@ class DatabaseWrapperFolderTest(TestCase):
         assert get_folder_by_id(fid=self.sid) is None
         assert get_folder_by_path(path="/home/user/", name="test_folder") is None
 
+    def test_create_root_folder_of_already_existing_subfolder(self):
+        fid = create_root_folder(path="/home/user/test_folder/", name="test_subfolder")
+        f = get_folder_by_id(fid=fid)
+        assert len(Folder.objects.all()) == 2
+        assert fid == self.sid
+        assert f.parent.id == self.rid
+
     def test_create_folder_with_bad_path(self):
         self.assertRaises(ValidationError, create_root_folder, path='/home/no_(back)-slash_at_end_of_path',
                           name='valid_name')

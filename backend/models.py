@@ -11,7 +11,8 @@ class Folder(models.Model):
     A folder in the user's file system.
 
     Path represents a location in the user's file system which doesn't include the name of the folder.
-    The last character in the path is \ or / depending on OS.
+    All paths are stored with / as separator between directories regardless of OS.
+    The last character in the path is always /.
 
     NOTE:
         Uses cascade for parent so the folder will be deleted if the parent is deleted (recursively).
@@ -23,8 +24,7 @@ class Folder(models.Model):
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=['parent', 'name'], name='parent and name constraint'),
-            models.UniqueConstraint(fields=['path', 'name'], name='path and name constraint')
+            models.UniqueConstraint(fields=['path', 'name'], name='folder path constraint')
         ]
 
     def __str__(self):
@@ -39,7 +39,7 @@ class Folder(models.Model):
     def clean(self):
         if not self.path and self.parent is None:
             raise ValidationError("Folder must have a parent or a path in the file system.")
-        if self.path and not (self.path[-1] == '/' or self.path[-1] == '\\'):
+        if self.path and not (self.path[-1] == '/'):
             raise ValidationError("The last character in the path must be \ or / depending on OS.")
 
     def save(self, *args, **kwargs):
@@ -231,7 +231,7 @@ class Clip(models.Model):
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=['folder', 'name', 'video_format'], name='path constraint')
+            models.UniqueConstraint(fields=['folder', 'name', 'video_format'], name='clip path constraint')
         ]
 
     def __str__(self):

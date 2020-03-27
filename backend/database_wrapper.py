@@ -151,11 +151,13 @@ def create_root_folder(path: str, name: str) -> int:
     """
     Creates a root folder if folder not in database.
     Fetches id if folder already in database.
+    Handles paths with both slash and backslash as separator.
 
     :param path: The path to the folder in the users file system.
     :param name: The name of the folder.
     :return: The id of the folder.
     """
+    path = path.replace('\\', '/')
     f = Folder.objects.get_or_create(path=path, name=name)[0]
     return f.id
 
@@ -171,7 +173,10 @@ def create_subfolder(parent_fid: int, name: str) -> int:
     """
     p = get_folder_by_id(fid=parent_fid)
     assert p is not None
-    f = Folder.objects.get_or_create(parent=p, name=name)[0]
+    path = p.path + p.name + '/'
+    f = Folder.objects.get_or_create(path=path, name=name)[0]
+    f.parent = p
+    f.save()
     return f.id
 
 

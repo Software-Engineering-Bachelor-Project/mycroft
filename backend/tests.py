@@ -219,6 +219,12 @@ class DatabaseWrapperCameraTest(TestCase):
         assert cm.start_time == new_st
         assert cm.end_time == new_et
 
+    def test_add_clips_to_same_camera(self):
+        create_clip(fid=self.fid, name="another_test_clip", video_format="tvf",
+                    start_time=self.st - datetime.timedelta(hours=1), end_time=self.st, latitude=self.lat,
+                    longitude=self.lon)
+        assert len(Camera.objects.all()) == 1
+
 
 class DatabaseWrapperFilterTest(TestCase):
 

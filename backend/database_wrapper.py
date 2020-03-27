@@ -202,6 +202,7 @@ def get_folder_by_path(path: str, name: str) -> Optional[Folder]:
     :return: A folder with the specified name and path or None.
     """
     try:
+        path = path.replace('\\', '/')
         return Folder.objects.get(path=path, name=name)
     except Folder.DoesNotExist:
         return None

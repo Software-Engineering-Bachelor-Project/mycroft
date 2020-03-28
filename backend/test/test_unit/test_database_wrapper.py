@@ -1,5 +1,5 @@
 from django.test import TestCase
-from .database_wrapper import *
+from backend.database_wrapper import *
 from django.utils import timezone
 from django.core.exceptions import ValidationError
 

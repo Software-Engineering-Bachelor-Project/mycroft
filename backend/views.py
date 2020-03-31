@@ -2,113 +2,121 @@ from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
+# Module imports
+import backend.filter_module as filter_module
+import backend.project_manager as project_manager
+import backend.exporter as exporter
+import backend.video_manager as video_manager
+import backend.file_manager as file_manager
+import backend.object_detector as object_detector
+
 # each view follow the naming convention:  module name_action
 
 @api_view(['POST'])
 def filter(request):
-    # TODO: Implement
-    return Response(
-        {
-        }
-    )
+    """
+    Delegates a 'filter' request to the Filter Module.
+    :return: A response from the Filter Module.
+    """
+    data = filter_module.filter_clips(request.data)
+    return Response(data[1], data[0])
 
 
 @api_view(['POST'])
 def project_get_all(request):
-    # TODO: Implement
-    return Response(
-        {
-
-        }
-    )
+    """
+    Delegates a 'get all' request to the Project Manager.
+    :return: A response from the Project Manager.
+    """
+    data = project_manager.get_projects(request.data)
+    return Response(data[1], data[0])
 
 
 @api_view(['POST'])
 def project_save(request):
-    # TODO: Implement
-    return Response(
-        {
-
-        }
-    )
+    """
+    Delegates a 'save' request to the Project Manager.
+    :return: A response from the Project Manager.
+    """
+    data = project_manager.save_project(request.data)
+    return Response(data[1], data[0])
 
 
 @api_view(['POST'])
 def project_open(request):
-    # TODO: Implement
-    return Response(
-        {
-
-        }
-    )
+    """
+    Delegates an 'open' request to the Project Manager.
+    :return: A response from the Project Manager.
+    """
+    data = project_manager.open_project(request.data)
+    return Response(data[1], data[0])
 
 
 @api_view(['POST'])
 def export_filter(request):
-    # TODO: Implement
-    return Response(
-        {
-
-        }
-    )
+    """
+    Delegates a 'filter' request to the Exporter.
+    :return: A response from the Exporter.
+    """
+    data = exporter.export_filter(request.data)
+    return Response(data[1], data[0])
 
 
 @api_view(['POST'])
-def export_videos(request):
-    # TODO: Implement
-    return Response(
-        {
-
-        }
-    )
+def export_clips(request):
+    """
+    Delegates a 'clips' request to the Exporter.
+    :return: A response from the Exporter.
+    """
+    data = exporter.export_clips(request.data)
+    return Response(data[1], data[0])
 
 
 @api_view(['POST'])
 def video_get_info(request):
-    # TODO: Implement
-    return Response(
-        {
-
-        }
-    )
+    """
+    Delegates a 'clip info' request to the Video Manager.
+    :return: A response from the Video Manager.
+    """
+    data = video_manager.get_clip_info(request.data)
+    return Response(data[1], data[0])
 
 
 @api_view(['POST'])
 def video_get_stream(request):
-    # TODO: Implement
-    return Response(
-        {
-
-        }
-    )
+    """
+    Delegates a 'clip stream' request to the Video Manager.
+    :return: A response from the Video Manager.
+    """
+    data = video_manager.get_clip_stream(request.data)
+    return Response(data[1], data[0])
 
 
 @api_view(['POST'])
 def file_get_folders(request):
-    # TODO: Implement
-    return Response(
-        {
-
-        }
-    )
-
+    """
+    Delegates a 'get folders' request to the File Manager.
+    :return: A response from the File Manager.
+    """
+    data = file_manager.get_folders(request.data)
+    return Response(data[1], data[0])
 
 @api_view(['POST'])
 def file_add_folders(request):
-    # TODO: Implement
-    return Response(
-        {
-
-        }
-    )
+    """
+    Delegates a 'add folders' request to the File Manager.
+    :return: A response from the File Manager.
+    """
+    data = file_manager.add_folders(request.data)
+    return Response(data[1], data[0])
 
 
 @api_view(['POST'])
 def detect_objects(request):
-    # TODO: Implement
-    return Response(
-        {
-
-        }
-    )
+    """
+    Delegates a 'detect objects' request to the Object Detector.
+    :return: A response from the Object Detector.
+    """
+    data = object_detector.detect_objects(request.data)
+    return Response(data[1], data[0])
 

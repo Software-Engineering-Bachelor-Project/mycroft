@@ -53,15 +53,15 @@ class UrlsTest(TestCase):
         resolver = resolve(url)
         self.assertEqual(resolver.func, export_filter)
 
-    def test_export_videos(self):
+    def test_export_clips(self):
         '''
-        Test that the url for the export_video module is correctly mapped to the view
+        Test that the url for the export_clips module is correctly mapped to the view
         :return: None
         '''
 
-        url = reverse('backend:export videos')
+        url = reverse('backend:export clips')
         resolver = resolve(url)
-        self.assertEqual(resolver.func, export_videos)
+        self.assertEqual(resolver.func, export_clips)
 
     def test_video_get_info(self):
         '''
@@ -93,13 +93,13 @@ class UrlsTest(TestCase):
         resolver = resolve(url)
         self.assertEqual(resolver.func, file_get_folders)
 
-    def test_file_add_folder(self):
+    def test_file_add_folders(self):
         '''
-        Test that the url for the file_add_folder module is correctly mapped to the view
+        Test that the url for the file_add_folders module is correctly mapped to the view
         :return: None
         '''
 
-        url = reverse('backend:file add')
+        url = reverse('backend:file add folders')
         resolver = resolve(url)
         self.assertEqual(resolver.func, file_add_folders)
 

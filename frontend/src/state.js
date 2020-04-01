@@ -1,5 +1,5 @@
 import { createStore, combineReducers } from 'redux';
-import communicationReducer from './communication';
+import communicationReducer from './stateCommunication';
 
 /* 
  * This file contains the main state of Mycroft.
@@ -12,7 +12,7 @@ import communicationReducer from './communication';
 // documentation. Each reducer covers a specific state-group.
 // Follow the imports for further info about each one.
 const rootReducer = combineReducers({
-		com: communicationReducer
+    com: communicationReducer
 });
 
 // Main state-container of Mycroft

@@ -18,44 +18,44 @@ const SYNC_STATE       = "SYNC_STATE";
 
 /* -- INITIAL STATE -- */
 const initialState = {
-		projectName: "",
-		projectLoaded: false
+    projectName: "",
+    projectLoaded: false
 }
 
 /* -- ACTION CREATORS -- */
 
 // ...
 export function filterVideos() {
-		return {
-				type: FILTER_VIDEOS
-		};
+    return {
+	type: FILTER_VIDEOS
+    };
 }
 
 /* -- REDUX REDUCER -- */
 const communicationReducer = (state = initialState, action) => {
 
-		switch (action.type) {
-		case FILTER_VIDEOS:
-				return state;
-		case SAVE_PROJECT:
-				return state;
-		case OPEN_PROJECT:
-				return state;
-		case GET_PROJECTS:
-				return state;
-		case EXPORT_FILTER:
-				return state;
-		case EXPORT_VIDEOS:
-				return state;
-		case GET_VIDEO_INFO:
-				return state;
-		case GET_VIDEO_STREAM:
-				return state;
-		case SYNC_STATE:
-				return state;
-		default:
-				return state;
-		}
+    switch (action.type) {
+    case FILTER_VIDEOS:
+	return state;
+    case SAVE_PROJECT:
+	return state;
+    case OPEN_PROJECT:
+	return state;
+    case GET_PROJECTS:
+	return state;
+    case EXPORT_FILTER:
+	return state;
+    case EXPORT_VIDEOS:
+	return state;
+    case GET_VIDEO_INFO:
+	return state;
+    case GET_VIDEO_STREAM:
+	return state;
+    case SYNC_STATE:
+	return state;
+    default:
+	return state;
+    }
 }
 
 export default communicationReducer;

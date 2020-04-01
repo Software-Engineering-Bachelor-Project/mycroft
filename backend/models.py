@@ -19,7 +19,7 @@ class Folder(models.Model):
         A folder needs to have a path to itself in the user´s file system or a parent.
     """
     parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
-    path = models.CharField(max_length=200, null=True, blank=True)
+    path = models.CharField(max_length=200)
     name = models.CharField(max_length=200)
 
     class Meta:

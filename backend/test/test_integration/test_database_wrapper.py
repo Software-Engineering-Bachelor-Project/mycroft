@@ -1,0 +1,817 @@
+from django.test import TestCase
+from backend.database_wrapper import *
+from django.utils import timezone
+from django.core.exceptions import ValidationError
+
+
+class BaseTestCases:
+    class ProjectTest(TestCase):
+        def setUp(self) -> None:
+            """
+            Create test project.
+            """
+            self.pid = create_project(name="test project")
+
+    class FolderTest(TestCase):
+        def setUp(self) -> None:
+            """
+            Create a root and subfolder.
+            """
+            self.r_path = "/home/user/"
+            self.r_name = "test_folder"
+            self.s_name = "test_subfolder"
+
+            self.rid = create_root_folder(path=self.r_path, name=self.r_name)
+            self.sid = create_subfolder(parent_fid=self.rid, name=self.s_name)
+
+    class ClipTest(TestCase):
+        def setUp(self) -> None:
+            """
+            Create a folder and a clip.
+            """
+            self.lat = Decimal(value="13.37")
+            self.lon = Decimal(value="0.42")
+            self.st = timezone.now() - datetime.timedelta(hours=1)
+            self.et = timezone.now()
+            self.fid = create_root_folder(path="/home/user/", name="test_folder")
+            self.cid = create_clip(fid=self.fid, name="test_clip", video_format="tvf", start_time=self.st,
+                                   end_time=self.et,
+                                   latitude=self.lat, longitude=self.lon)
+
+    class FilterTest(TestCase):
+        def setUp(self) -> None:
+            """
+            Create a folder, clip, project and filter.
+            """
+            self.rid = create_root_folder(path="/home/user/", name="test_folder")
+            self.cid = create_clip(fid=self.rid, name="test_clip", video_format="tvf",
+                                   start_time=timezone.now() - datetime.timedelta(hours=1),
+                                   end_time=timezone.now(), latitude=Decimal(value="13.37"),
+                                   longitude=Decimal(value="0.42"))
+            self.pid = create_project(name="test_project")
+            self.fid = create_filter(pid=self.pid, name="test_filter")
+            self.lat = Decimal(value="13.37")
+            self.lon = Decimal(value="0.42")
+            self.st = timezone.now() - datetime.timedelta(hours=1)
+            self.et = timezone.now()
+
+    class ObjectDetectionTest(TestCase):
+        def setUp(self) -> None:
+            """
+            Create a folder, clip and object detection.
+            """
+            self.rid = create_root_folder(path="/home/user/", name="test_folder")
+            self.cid = create_clip(fid=self.rid, name="test_clip", video_format="tvf",
+                                   start_time=timezone.now() - datetime.timedelta(hours=1),
+                                   end_time=timezone.now(), latitude=Decimal(value="13.37"),
+                                   longitude=Decimal(value="0.42"))
+            self.cmid = get_camera_by_location(latitude=Decimal(value="13.37"), longitude=Decimal(value="0.42")).id
+            self.st = timezone.now() - datetime.timedelta(hours=0.5)
+            self.et = timezone.now() - datetime.timedelta(hours=0.25)
+            self.odid = create_object_detection(cmid=self.cmid, sample_rate=0.5, start_time=self.st, end_time=self.et,
+                                                objects=[("test_object", self.st + datetime.timedelta(minutes=5))])
+
+
+class CreateProjectTest(BaseTestCases.ProjectTest):
+    def test_create_project(self):
+        self.assertIsNotNone(self.pid)
+
+
+class GetProjectByIdTest(BaseTestCases.ProjectTest):
+
+    def test_existing_id(self):
+        """
+        Test getting the test project by id.
+        """
+        p = get_project_by_id(pid=self.pid)
+        self.assertEqual(p.name, "test project")
+        self.assertEqual(p.id, self.pid)
+
+    def test_nonexistent_id(self):
+        """
+        Test that an an nonexistent pid results in None being returned
+        """
+        p = get_project_by_id(2)
+        self.assertIsNone(p)
+
+
+class GetProjectByNameTest(BaseTestCases.ProjectTest):
+
+    def single_existing_name(self):
+        """
+        Test getting the test project by name.
+        """
+        p = get_project_by_name(name="test project")
+        self.assertEqual(p.name, "test project")
+        self.assertEqual(p.id, self.pid)
+
+    # TODO Add test for multiple matchin names
+    # TODO Add test for a nonexistent name
+
+
+class GetAllProjectsTest(BaseTestCases.ProjectTest):
+
+    def test_all(self):
+        """
+        Test getting all created projects.
+        """
+        create_project(name="first test project")
+        create_project(name="second test project")
+        create_project(name="third test project")
+        assert len(get_all_projects()) == 4
+
+    # TODO: add test for no existing projects
+
+
+class DeleteProjectTest(BaseTestCases.ProjectTest):
+
+    def test_existing_pid(self):
+        """
+        Test that a project is deleted.
+        """
+        delete_project(pid=self.pid)
+        self.assertIsNone(get_project_by_id(pid=self.pid))
+        self.assertIsNone(get_project_by_name(name="test project"))
+        self.assertEqual(len(get_all_projects()), 0)
+
+    # TODO: Add test for nonexistent pid
+
+
+class RenameProjectTest(BaseTestCases.ProjectTest):
+
+    def test_rename_project(self):
+        """
+        Test renaming a project.
+        """
+        rename_project(new_name="new name for test project", pid=self.pid)
+        self.assertEqual(get_project_by_id(pid=self.pid).name, "new name for test project")
+
+
+class AddFolderToProjectTest(BaseTestCases.ProjectTest):
+    def setUp(self) -> None:
+        super().setUp()
+        self.rid = create_root_folder(path="/home/user/", name="test_folder")
+
+    def test_existing_rid_existing_pid(self):
+        """
+        Test adding a folder to a project where the folder and the project exists
+        """
+        add_folder_to_project(self.rid, self.pid)
+        self.assertEqual(len(get_folders_in_project(pid=self.pid)), 1)
+
+    def test_sub_folder(self):
+        """
+        Test that adding a folder that is a subfolder to an already added folder doesn't work.
+        """
+        sid = create_subfolder(parent_fid=self.rid, name="test_subfolder")
+        add_folder_to_project(sid, self.pid)
+        self.assertEqual(len(get_folders_in_project(pid=self.pid)), 1)
+
+    def test_add_parent_folder(self):
+        """
+        Test that sub folders are removed from the project when a parent folder is added.
+        """
+        sid1 = create_subfolder(parent_fid=self.rid, name="test_subfolder")
+        sid2 = create_subfolder(parent_fid=self.rid, name="another_test_subfolder")
+        add_folder_to_project(sid1, self.pid)
+        add_folder_to_project(sid2, self.pid)
+        g = get_folders_in_project(pid=self.pid)
+        self.assertEqual(len(g), 2)
+        add_folder_to_project(self.rid, self.pid)
+        self.assertEqual(len(get_folders_in_project(pid=self.pid)), 1)
+
+    # TODO add tests for existing rid, nonexistent pid
+    # TODO add tests for nonexistent rid, existent pid
+    # TODO add tests for nonexistent rid, nonexistent pid
+
+
+class DeleteFolderFromProjectTest(BaseTestCases.ProjectTest):
+    def setUp(self) -> None:
+        super().setUp()
+        self.rid = create_root_folder(path="/home/user/", name="test_folder")
+        add_folder_to_project(self.rid, self.pid)
+
+    def test_existing_rid_existing_pid(self):
+        """
+        Test deleting a folder from a project where the folder is in the project
+        """
+        delete_folder_from_project(fid=self.rid, pid=self.pid)
+        self.assertEqual(len(get_folders_in_project(pid=self.pid)), 0)
+
+    # TODO add test for existing rid, nonexistent pid
+    # TODO add test for nonexistent rid, existent pid
+    # TODO add test for nonexistent rid, nonexistent pid
+    # TODO add test for existing rid not part of existing pid
+
+
+class GetFoldersInProjectTest(BaseTestCases.ProjectTest):
+    def setUp(self) -> None:
+        """
+        Create project with folders
+        """
+        self.name = "test_folder"
+        self.path = "/home/user/"
+        self.rid = create_root_folder(path=self.path, name=self.name)
+        self.pid = create_project(name="test project")
+        add_folder_to_project(self.rid, self.pid)
+
+    def test_valid_pid_one_folder(self):
+        """
+        Test that a valid pid to a project with one folder returns the folder
+        """
+        self.assertEqual(len(get_folders_in_project(self.pid)), 1)
+    # TODO: add test for a project with several folders
+    # TODO: add test for a nonexistent project
+    # TODO: add test for a project without folders
+
+
+class GetAllFiltersFromProjectTest(BaseTestCases.ProjectTest):
+    def setUp(self) -> None:
+        """
+        Create project and filter.
+        """
+        super().setUp()
+        self.fid = create_filter(pid=self.pid, name="test_filter")
+
+    def test_existing_filter(self):
+        """
+        Test getting all filters from a project where there exist filters.
+        """
+        assert len(get_all_filters_from_project(pid=self.pid)) == 1
+
+    # TODO add test for project without any filters
+
+
+class CreateRootFolderTest(BaseTestCases.FolderTest):
+
+    def test_valid_path_valid_name(self):
+        """
+        Test that it is possible to create a root folder when given a valid path and name
+        """
+        self.assertEqual(Folder.objects.filter(path=self.r_path, name=self.r_name).count(), 1)
+
+    def test_existing_root_folder(self):
+        """
+        Test that creating a root folder with the same parameters as one that already exist doesn't result in a new
+        entry in the database.
+        """
+        self.rid = create_root_folder(path=self.r_path, name=self.r_name)
+        self.assertEqual(Folder.objects.filter(path=self.r_path, name=self.r_name).count(), 1)
+
+    def test_create_root_folder_of_already_existing_subfolder(self):
+        """
+        Test that creating a root folder with the same parameters as an already existing subfolder doesn't result in a
+        new entry in the database.
+        """
+        fid = create_root_folder(path=self.r_path + self.r_name + '/', name="test_subfolder")
+        f = get_folder_by_id(fid=fid)
+        assert len(Folder.objects.all()) == 2
+        assert fid == self.sid
+        assert f.parent.id == self.rid
+
+    def test_create_folder_with_bad_path(self):
+        """
+        Test that trying to create a folder with a bad path results in a validation error.
+        """
+        self.assertRaises(ValidationError, create_root_folder, path='/home/no_(back)-slash_at_end_of_path',
+                          name='valid_name')
+
+    def test_windows_paths(self):
+        """
+        Test creating and getting folders that uses backslash as separators for directories works as expected.
+        """
+        rid = create_root_folder(path="C:\\Users\\username\\", name="test_folder")
+        assert get_folder_by_path(path="C:\\Users\\username\\", name="test_folder") == \
+               get_folder_by_path(path="C:/Users/username/", name="test_folder")
+
+
+class CreateSubFolderTest(BaseTestCases.FolderTest):
+
+    def test_existing_fid_valid_name(self):
+        """
+        Test that a sub folder has been created
+        """
+        self.assertEqual(Folder.objects.filter(parent=self.rid, name=self.s_name).count(), 1)
+
+    def test_existing_subfolder(self):
+        """
+        Test that creating a subfolder with the same parameters as one that already exist doesn't result in a new
+        entry in the database.
+        """
+        self.assertEqual(Folder.objects.filter(parent=self.rid, name="test_subfolder").count(), 1)
+        self.sid = create_subfolder(parent_fid=self.rid, name=self.s_name)
+        self.assertEqual(Folder.objects.filter(parent=self.rid, name=self.s_name).count(), 1)
+
+    # TODO: Test a parent_fid that dont exist
+
+
+class GetFolderByIdTest(BaseTestCases.FolderTest):
+
+    def test_existing_fid(self):
+        """
+        Test a fid that exist
+        """
+        f = get_folder_by_id(fid=self.rid)
+        self.assertEqual(f.id, self.rid)
+        self.assertEqual(f.path, self.r_path)
+        self.assertEqual(f.name, self.r_name)
+        self.assertIsNone(f.parent)
+
+    def test_nonexistent_fid(self):
+        """
+        Test a fid that dont exist
+        """
+        assert get_folder_by_id(fid=3) is None
+
+
+class GetFolderByPathTest(BaseTestCases.FolderTest):
+
+    def existing_path_existing_name(self):
+        """
+        Test getting a folder by its path and name.
+        """
+        f = get_folder_by_path(path="/home/user/", name="test_folder")
+        self.assertEqual(f.id, self.rid)
+        self.assertEqual(f.path, self.r_path)
+        self.assertEqual(f.name, self.r_name)
+        self.assertIsNone(f.parent)
+
+    def existing_path_nonexistent_name(self):
+        """
+        Test for a path that match a folder and a name that dont match
+        """
+        self.assertIsNone(get_folder_by_path(path=self.r_path, name="not_a_test_folder"))
+
+    def nonexistent_path_existing_name(self):
+        """
+        Test for a path that dont match a folder and a name that match
+        """
+        self.assertIsNone(get_folder_by_path(path="/home/not_a_user/", name=self.r_name))
+
+    def nonexistent_path_nonexistent_name(self):
+        """
+        Test for a path that dont match a folder and a name that dont match
+        """
+        self.assertIsNone(get_folder_by_path(path="/home/not_a_user/", name="not_a_test_folder"))
+
+
+class FolderByParentTest(BaseTestCases.FolderTest):
+
+    def existing_parent_existing_name(self):
+        """
+        Test getting a folder by its parent and name.
+        """
+        f = get_folder_by_parent(parent_fid=self.rid, name="test_subfolder")
+        self.assertEqual(f.id, self.rid)
+        self.assertEqual(f.path, self.r_path)
+        self.assertEqual(f.name, self.r_name)
+        self.assertIsNone(f.parent)
+
+    def existing_parent_nonexistent_name(self):
+        """
+        Test for a parent that match a folder and a name that dont match
+        """
+        self.assertIsNone(get_folder_by_parent(parent_fid=self.rid, name="not_a_test_folder"))
+
+    def nonexistent_parent_existing_name(self):
+        """
+        Test for a parent that dont match a folder and a name that match
+        """
+        self.assertIsNone(get_folder_by_parent(parent_fid=2, name=self.r_name))
+
+    def nonexistent_parent_nonexistent_name(self):
+        """
+        Test for a parent that dont match a folder and a name that dont match
+        """
+        self.assertIsNone(get_folder_by_parent(parent_fid=2, name="not_a_test_folder"))
+
+
+class GetSubFoldersTest(BaseTestCases.FolderTest):
+    def setUp(self) -> None:
+        """
+        Create subsubfolder
+        """
+        super().setUp()
+        self.s_s_name = "test sub sub folder"
+        self.sid2 = create_subfolder(parent_fid=self.sid, name=self.s_s_name)
+
+    def test_existing_fid(self):
+        """
+        Test getting sub folders in an existing folder
+        """
+        self.assertEqual(len(get_subfolders(fid=self.rid)), 1)
+    # TODO: Add test for non existent fid
+
+
+class GetSubFoldersRecursiveTest(BaseTestCases.FolderTest):
+    def setUp(self) -> None:
+        """
+        Create subsubfolder
+        """
+        super().setUp()
+        self.s_s_name = "test sub sub folder"
+        self.sid2 = create_subfolder(parent_fid=self.sid, name=self.s_s_name)
+
+    def test_existing_fid(self):
+        """
+        Test getting sub folders in an existing folder
+        """
+        self.assertEqual(len(get_subfolders_recursive(fid=self.rid)), 2)
+    # TODO: Add test for non existent fid
+
+
+class DeleteFolderTest(BaseTestCases.FolderTest):
+    def setUp(self) -> None:
+        """
+        Create a root and subfolder.
+        """
+        super().setUp()
+        self.s_s_name = "test sub sub folder"
+        self.sid2 = create_subfolder(parent_fid=self.sid, name=self.s_s_name)
+
+    def test_subfolder(self):
+        """
+        Test deleting a subfolder.
+        """
+        delete_folder(fid=self.sid)
+        self.assertIsNone(get_folder_by_parent(parent_fid=self.rid, name=self.s_name))
+
+    def test_root_folder(self):
+        """
+        Test deleting a root folder.
+        """
+        delete_folder(fid=self.rid)
+        self.assertIsNone(get_folder_by_parent(parent_fid=self.sid, name=self.s_s_name))
+        self.assertIsNone(get_folder_by_parent(parent_fid=self.rid, name=self.s_name))
+        self.assertIsNone(get_folder_by_path(path=self.r_path, name=self.r_name))
+
+
+class CreateClipTest(BaseTestCases.ClipTest):
+
+    def test_correct_values(self):
+        self.assertEqual(get_clip_by_id(self.cid).name, "test_clip")
+
+    def test_bad_time(self):
+        """
+        Make sure that creating a clip with end time before start time doesn't work.
+        """
+        time = timezone.now()
+        self.assertRaises(ValidationError, create_clip, fid=self.fid, name="valid_name", video_format="tvf",
+                          start_time=time, end_time=time - datetime.timedelta(microseconds=1),
+                          latitude=Decimal(value="13.37"), longitude=Decimal(value="0.42"))
+
+    def test_time_updates_when_adding_clip(self):
+        """
+        Test that the cameras time interval updates when a new clip is created.
+        """
+        new_st = self.st - datetime.timedelta(hours=1)
+        new_et = self.et + datetime.timedelta(hours=1)
+        self.cid = create_clip(fid=self.fid, name="before", video_format="tvf", start_time=new_st, end_time=self.st,
+                               latitude=self.lat, longitude=self.lon)
+        cm = get_camera_by_location(latitude=self.lat, longitude=self.lon)
+        self.assertEqual(cm.start_time, new_st)
+        self.assertEqual(cm.end_time, self.et)
+        self.cid = create_clip(fid=self.fid, name="after", video_format="tvf", start_time=self.et, end_time=new_et,
+                               latitude=self.lat, longitude=self.lon)
+        cm = get_camera_by_location(latitude=self.lat, longitude=self.lon)
+        self.assertEqual(cm.start_time, new_st)
+        self.assertEqual(cm.end_time, new_et)
+
+    def test_add_clips_to_same_camera(self):
+        """
+        Test that clips are added to the same camera if they are from the same location.
+        """
+        create_clip(fid=self.fid, name="another_test_clip", video_format="tvf",
+                    start_time=self.st - datetime.timedelta(hours=1), end_time=self.st, latitude=self.lat,
+                    longitude=self.lon)
+        self.assertEqual(len(Camera.objects.all()), 1)
+
+    # TODO: Add tests for bad parameters
+
+
+class GetClipByIdTest(BaseTestCases.ClipTest):
+
+    def test_existing_cid(self):
+        """
+        Test getting a clip by id.
+        """
+        c = get_clip_by_id(cid=self.cid)
+        self.assertEqual(c.folder.id, self.fid)
+        self.assertEqual(c.name, "test_clip")
+        self.assertEqual(c.video_format, "tvf")
+        self.assertEqual(c.id, self.cid)
+
+    def test_nonexistent_cid(self):
+        """
+        Make sure that get function return None for clips that doesn't exist.
+        """
+        self.assertIsNone(get_clip_by_id(cid=2))
+
+
+class GetClipByNameTest(BaseTestCases.ClipTest):
+
+    def test_existing_name(self):
+        """
+        Test getting a clip by name.
+        """
+        c = get_clip_by_name(fid=self.fid, name="test_clip", video_format="tvf")
+        self.assertEqual(c.folder.id, self.fid)
+        self.assertEqual(c.name, "test_clip")
+        self.assertEqual(c.video_format, "tvf")
+        self.assertEqual(c.id, self.cid)
+
+    def test_nonexistent_name(self):
+        """
+        Make sure that get function return None for names that doesn't exist.
+        """
+        self.assertIsNone(get_clip_by_name(fid=self.fid, name="not_a_test_clip", video_format="tvf"))
+
+
+class DeleteClipTest(BaseTestCases.ClipTest):
+
+    def test_existing_cid(self):
+        """
+        Test deleting a clip.
+        """
+        delete_clip(cid=self.cid)
+        self.assertIsNone(get_clip_by_id(cid=self.cid))
+        self.assertIsNone(get_clip_by_name(fid=self.fid, name="test_clip", video_format="tvf"))
+
+
+class GetAllClipsFromFolderTest(BaseTestCases.ClipTest):
+
+    def test_existing_fid(self):
+        """
+        Test getting all clips in one folder.
+        """
+        sid = create_subfolder(parent_fid=self.fid, name="test_subfolder")
+        create_clip(fid=sid, name="new_test_clip", video_format="tvf",
+                    start_time=timezone.now() - datetime.timedelta(hours=1),
+                    end_time=timezone.now(), latitude=Decimal(value="42.0099"),
+                    longitude=Decimal(value="0.1337"))
+        self.assertEqual(len(get_all_clips_from_folder(fid=self.fid)), 1)
+
+    # TODO: add test for nonexistent fid
+
+
+class GetAllClipsFromFolderRecursiveTest(BaseTestCases.ClipTest):
+    def setUp(self) -> None:
+        """
+        Create a folder and a clip.
+        """
+        super().setUp()
+
+        sid = create_subfolder(parent_fid=self.fid, name="test_subfolder")
+        create_clip(fid=sid, name="new_test_clip", video_format="tvf",
+                    start_time=timezone.now() - datetime.timedelta(hours=1),
+                    end_time=timezone.now(), latitude=Decimal(value="42.0099"),
+                    longitude=Decimal(value="0.1337"))
+
+    def test_existing_fid(self):
+        """
+        Test getting all clips in one folder and its subfolders.
+        """
+        self.assertEqual(len(get_all_clips_from_folder_recursive(fid=self.fid)), 2)
+
+    # TODO: add test for nonexistent fid
+
+
+class GetCameraByIDTest(BaseTestCases.ClipTest):
+
+    def test_existing_cmid(self):
+        """
+        Test getting a camera with an existing cmid
+        """
+        cm = get_camera_by_location(self.lat, self.lon)
+        self.assertEqual(cm.start_time, self.st)
+        self.assertEqual(cm.end_time, self.et)
+        self.assertEqual(get_camera_by_id(cm.id), cm)
+    # TODO add test for nonexisting cmid
+
+
+class GetCameraByLocationTest(BaseTestCases.ClipTest):
+
+    def test_existing_location(self):
+        """
+        Test getting a camera with an correct location
+        """
+        cm = get_camera_by_location(self.lat, self.lon)
+        self.assertEqual(self.st, cm.start_time)
+        self.assertEqual(self.et, cm.end_time)
+
+    # TODO add test for  nonexisting location
+
+
+class DeleteCameraTest(BaseTestCases.ClipTest):
+
+    def test_existing_cmid(self):
+        """
+        Test deleting a camera.
+        """
+        delete_clip(cid=self.cid)  # TODO Why is this done @Kalle?
+        cm = get_camera_by_location(latitude=self.lat, longitude=self.lon)
+        delete_camera(cmid=cm.id)
+        self.assertIsNone(get_camera_by_location(latitude=self.lat, longitude=self.lon))
+        self.assertIsNone(get_camera_by_id(cmid=cm.id))
+
+    # TODO test nonexisting cmid
+
+
+class CreateFilterTest(BaseTestCases.FilterTest):
+
+    def test_existing_pid(self):
+        """
+        Test creating a filter with an existing pid
+        """
+        filter = get_filter_by_id(self.fid)
+        self.assertEqual(filter.name, "test_filter")
+
+
+class GetFilterByIdTest(BaseTestCases.FilterTest):
+
+    def test_existing_fid(self):
+        """
+        Test getting a filter by id.
+        """
+        f = get_filter_by_id(fid=self.fid)
+        self.assertEqual(f.name, "test_filter")
+    # TODO: Test nonexistent fid
+
+
+class DeleteFilterTest(BaseTestCases.FilterTest):
+    def test_existing_fid(self):
+        """
+        Test deleting a filter.
+        """
+        delete_filter(fid=self.fid)
+        self.assertIsNone(get_filter_by_id(fid=self.fid))
+    # TODO: Test nonexistent fid
+
+
+class AddCameraToFilterTest(BaseTestCases.FilterTest):
+    def test_existing_fid(self):
+        """
+        Test adding and removing a camera from a filter.
+        """
+        cm = get_camera_by_location(latitude=Decimal(value="13.37"), longitude=Decimal(value="0.42"))
+        add_camera_to_filter(fid=self.fid, cmid=cm.id)
+        self.assertEqual(len(get_all_cameras_in_filter(fid=self.fid)), 1)
+    # TODO: Test nonexistent fid
+    # TODO: Test adding the same camera multiple times
+
+
+class RemoveCameraFromFilterTest(BaseTestCases.FilterTest):
+    def test_existing(self):
+        """
+        Test adding and removing a camera from a filter.
+        """
+        cm = get_camera_by_location(latitude=Decimal(value="13.37"), longitude=Decimal(value="0.42"))
+        add_camera_to_filter(fid=self.fid, cmid=cm.id)
+        remove_camera_from_filter(fid=self.fid, cmid=cm.id)
+        self.assertEqual(len(get_all_cameras_in_filter(fid=self.fid)), 0)
+
+    # TODO: Test nonexistent fid
+
+
+class ModifyFilterTest(BaseTestCases.FilterTest):
+    def test_modify_name(self):
+        """
+        Test modifying name in filter.
+        """
+        # Change name
+        modify_filter(fid=self.fid, name="new_name")
+        f = get_filter_by_id(self.fid)
+        self.assertEqual(f.name, "new_name")
+
+    def test_modify_time(self):
+        """
+        Test modifying start and endtime in filter.
+        """
+        modify_filter(fid=self.fid, start_time=self.st, end_time=self.et)
+        f = get_filter_by_id(self.fid)
+        self.assertEqual(f.start_time, self.st)
+        self.assertEqual(f.end_time, self.et)
+        self.assertIsNone(f.radius)
+
+    def test_modify_position(self):
+        """
+        Test modifying position and radius in filter.
+        """
+        modify_filter(fid=self.fid, latitude=self.lat, longitude=self.lon, radius=1337)
+        f = get_filter_by_id(self.fid)
+        self.assertEqual(f.latitude, self.lat)
+        self.assertEqual(f.longitude, self.lon)
+        self.assertEqual(f.radius, 1337)
+
+    def test_modify_start_time(self):
+        """
+        Test modifying start time in filter.
+        """
+        modify_filter(fid=self.fid, start_time=self.st + datetime.timedelta(seconds=42))
+        f = get_filter_by_id(self.fid)
+        self.assertEqual(f.start_time, self.st + datetime.timedelta(seconds=42))
+
+    def test_modify_objects(self):
+        """
+        Test modifying Adding and removing objects in filter.
+        """
+        modify_filter(fid=self.fid, add_classes=["test_object", "another_test_object"])
+        self.assertEqual(len(get_all_classes_in_filter(fid=self.fid)), 2)
+
+        modify_filter(fid=self.fid, add_classes=["test_object"])
+        self.assertEqual(len(get_all_classes_in_filter(fid=self.fid)), 2)
+
+        modify_filter(fid=self.fid, remove_classes=["test_object"])
+        self.assertEqual(len(get_all_classes_in_filter(fid=self.fid)), 1)
+
+        modify_filter(fid=self.fid, add_classes=["test_object"], remove_classes=["test_object"])
+        self.assertEqual(len(get_all_classes_in_filter(fid=self.fid)), 1)
+
+    def test_bad_time(self):
+        """
+        Make sure that modifying a filter to have end time before start time raises a validation error.
+        """
+        self.assertRaises(ValidationError, modify_filter, fid=self.fid, start_time=self.st,
+                          end_time=self.st - datetime.timedelta(microseconds=1))
+
+
+class GetObjectsInCameraTest(BaseTestCases.ObjectDetectionTest):
+    def test_get_objects_in_camera(self):
+        """
+        Test getting objects in a camera by filtering on classes and time intervals.
+        """
+        odid = create_object_detection(cmid=self.cmid, sample_rate=0.5, start_time=self.et,
+                                       end_time=self.et + datetime.timedelta(minutes=10),
+                                       objects=[("test_object", self.et + datetime.timedelta(minutes=5))])
+        add_objects_to_detection(odid=odid,
+                                 objects=[("test_object", self.et + datetime.timedelta(minutes=1)),
+                                          ("another_test_object", self.et + datetime.timedelta(minutes=7)),
+                                          ("yet_another_test_object", self.et + datetime.timedelta(minutes=8))])
+        self.assertEqual(len(get_objects_in_camera(cmid=self.cmid)), 5)
+        self.assertEqual(len(get_objects_in_camera(cmid=self.cmid, object_classes=["test_object"])), 3)
+        self.assertEqual(len(get_objects_in_camera(cmid=self.cmid, start_time=self.st + datetime.timedelta(minutes=5),
+                                                   end_time=self.et + datetime.timedelta(minutes=2))), 2)
+        self.assertEqual(len(get_objects_in_camera(cmid=self.cmid, end_time=self.et)), 1)
+        self.assertEqual(len(get_objects_in_camera(cmid=self.cmid, start_time=self.et)), 4)
+
+
+class CreateObjectDetectionTest(BaseTestCases.ObjectDetectionTest):
+    def test_existing_odid(self):
+        """
+        Test deleting an object detection.
+        """
+        delete_object_detection(odid=self.odid)
+        self.assertIsNone(get_object_detection_by_id(odid=self.odid))
+
+    def test_bad_object_detection(self):
+        """
+        Test creating bad object detections.
+        """
+        # Create object detection with time interval outside of the camera's time interval.
+        self.assertRaises(ValidationError, create_object_detection, cmid=self.cmid, sample_rate=0.5,
+                          start_time=self.st - datetime.timedelta(hours=2), end_time=self.et)
+        # Create an object detection with a detected object outside of the object detection's time interval.
+        self.assertRaises(ValidationError, create_object_detection, cmid=self.cmid, sample_rate=0.5, start_time=self.st,
+                          end_time=self.et, objects=[("valid_test_object", self.st - datetime.timedelta(minutes=5))])
+
+
+class GetObjectDetectionByIDTest(BaseTestCases.ObjectDetectionTest):
+    def test_existing_odid(self):
+        """
+        Test getting an object detection by id.
+        """
+        od = get_object_detection_by_id(odid=self.odid)
+        self.assertEqual(od.id, self.odid)
+        self.assertEqual(od.sample_rate, 0.5)
+        self.assertEqual(od.start_time, self.st)
+        self.assertEqual(od.end_time, self.et)
+    # TODO: Test Bad odid
+
+
+class DeleteObjectDetectionTest(BaseTestCases.ObjectDetectionTest):
+    def test_(self):
+        pass  # TODO: Implement this
+
+
+class AddObjectsToDetectionTest(BaseTestCases.ObjectDetectionTest):
+    def test_(self):
+        pass  # TODO: Implement this
+
+
+class GetObjectsInDetectionTest(BaseTestCases.ObjectDetectionTest):
+    def test_objects(self):
+        """
+        Test getting objects in an object detection by filtering on classes and time intervals.
+        """
+        add_objects_to_detection(odid=self.odid,
+                                 objects=[("test_object", self.st + datetime.timedelta(minutes=1)),
+                                          ("another_test_object", self.st + datetime.timedelta(minutes=10)),
+                                          ("yet_another_test_object", self.st + datetime.timedelta(minutes=11))])
+        assert len(get_objects_in_detection(odid=self.odid)) == 4
+        assert len(get_objects_in_detection(odid=self.odid, object_classes=["test_object", "another_test_object"])) == 3
+        assert len(get_objects_in_detection(odid=self.odid, start_time=self.st + datetime.timedelta(minutes=9))) == 2
+        assert len(get_objects_in_detection(odid=self.odid, start_time=self.st + datetime.timedelta(minutes=6),
+                                            end_time=self.st + datetime.timedelta(minutes=8))) == 0
+        assert len(get_objects_in_detection(odid=self.odid, start_time=self.st + datetime.timedelta(minutes=4),
+                                            end_time=self.st + datetime.timedelta(minutes=12),
+                                            object_classes=["test_object"])) == 1

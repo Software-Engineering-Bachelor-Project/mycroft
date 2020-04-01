@@ -66,7 +66,7 @@ def delete_project(pid: int) -> None:
 
     :param pid: The project's id (primary key).
     """
-    Project.objects.get(id=pid).delete()
+    Project.objects.get(id=pid).delete() # TODO: Handle a nonexistent pid and add test for it
 
 
 def rename_project(new_name: str, pid: int) -> None:
@@ -132,18 +132,6 @@ def get_folders_in_project(pid: int) -> List[Folder]:
     p = get_project_by_id(pid=pid)
     assert p is not None
     return p.folders.all()[::1]
-
-
-def get_all_filters_from_project(pid: int) -> List[Filter]:
-    """
-    Gets all filters in the project.
-    :param pid: The projects id.
-    :return: A list of all the project's filters.
-    """
-    p = get_project_by_id(pid=pid)
-    assert p is not None
-    return p.filter_set.all()[::1]
-
 
 # --- Folder ---
 
@@ -456,6 +444,17 @@ def delete_filter(fid: int) -> None:
     :param fid: The id of the filter.
     """
     Filter.objects.get(id=fid).delete()
+
+
+def get_all_filters_from_project(pid: int) -> List[Filter]:
+    """
+    Gets all filters in the project.
+    :param pid: The projects id.
+    :return: A list of all the project's filters.
+    """
+    p = get_project_by_id(pid=pid)
+    assert p is not None
+    return p.filter_set.all()[::1]
 
 
 def add_camera_to_filter(fid: int, cmid: int) -> None:

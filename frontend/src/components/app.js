@@ -9,12 +9,12 @@ import store from '../state.js';
 
 /* -- ROOT COMPONENT -- */
 class App extends Component {
-		render() {
-				return (
-						// TODO: implement product
-						<p>Mycroft</p>
-				);
-		}
+    render() {
+	return (
+	    // TODO: implement product
+		<p>Mycroft</p>
+	);
+    }
 }
 
 // Export App

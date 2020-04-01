@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
-import store from '../state.js';
+import store from '../state';
+
+// Import Core Components
+import Player from './player';
 
 /*
  * This is the main component of Mycroft.
@@ -12,7 +15,7 @@ class App extends Component {
     render() {
 	return (
 	    // TODO: implement product
-		<p>Mycroft</p>
+		<Player />
 	);
     }
 }

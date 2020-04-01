@@ -1,3 +1,5 @@
+import { makePOST } from './util';
+
 /* 
  * This file defines the state, reducers, and actions
  * used for communication between client and server.
@@ -6,6 +8,11 @@
 
 
 /* -- ACTIONS -- */
+
+// For server requests such as POST, create
+// two actions prefixed with REQ and RCV since
+// the response must be handled separately.
+
 const FILTER_VIDEOS    = "FILTER_VIDEOS";
 const SAVE_PROJECT     = "SAVE_PROJECT";
 const OPEN_PROJECT     = "OPEN_PROJECT";

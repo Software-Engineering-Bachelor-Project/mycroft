@@ -11,7 +11,7 @@ const initialState = {
 /* -- ACTION CREATORS -- */
 export function playClip() {
     return {
-	type: PLAY_CLIP
+	    type: PLAY_CLIP
     }
 }
 
@@ -19,10 +19,9 @@ export function playClip() {
 const playerReducer = (state = initialState, action) => {
     switch(action.type) {
     case PLAY_CLIP:
-
-	break;
+	    break;
     default:
-	return state;
+	    return state;
     }
 }
 

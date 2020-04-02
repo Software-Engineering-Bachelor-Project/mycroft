@@ -34,7 +34,7 @@ const initialState = {
 // ...
 export function filterVideos() {
     return {
-	type: FILTER_VIDEOS
+	    type: FILTER_VIDEOS
     };
 }
 
@@ -43,25 +43,25 @@ const communicationReducer = (state = initialState, action) => {
 
     switch (action.type) {
     case FILTER_VIDEOS:
-	return state;
+	    return state;
     case SAVE_PROJECT:
-	return state;
+	    return state;
     case OPEN_PROJECT:
-	return state;
+	    return state;
     case GET_PROJECTS:
-	return state;
+	    return state;
     case EXPORT_FILTER:
-	return state;
+	    return state;
     case EXPORT_VIDEOS:
-	return state;
+	    return state;
     case GET_VIDEO_INFO:
-	return state;
+	    return state;
     case GET_VIDEO_STREAM:
-	return state;
+	    return state;
     case SYNC_STATE:
-	return state;
+	    return state;
     default:
-	return state;
+	    return state;
     }
 }
 

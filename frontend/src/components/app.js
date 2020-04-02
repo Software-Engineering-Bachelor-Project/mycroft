@@ -5,6 +5,8 @@ import store from '../state';
 
 // Import Core Components
 import Player from './player';
+import Map from './map';
+
 
 /*
  * This is the main component of Mycroft.
@@ -13,10 +15,13 @@ import Player from './player';
 /* -- ROOT COMPONENT -- */
 class App extends Component {
     render() {
-	return (
-	    // TODO: implement product
-		<Player />
-	);
+		return (
+			// TODO: implement product
+			<div>
+				<Map />
+				<Player />
+			</div>
+		);
     }
 }
 

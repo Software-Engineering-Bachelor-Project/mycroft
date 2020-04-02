@@ -66,8 +66,10 @@ def delete_project(pid: int) -> None:
 
     :param pid: The project's id (primary key).
     """
-    Project.objects.get(id=pid).delete() # TODO: Handle a nonexistent pid and add test for it
-
+    try:
+        Project.objects.get(id=pid).delete()
+    except Project.DoesNotExist:
+        pass
 
 def rename_project(new_name: str, pid: int) -> None:
     """
@@ -248,8 +250,10 @@ def delete_folder(fid: int) -> None:
 
     :param fid: The folder's id.
     """
-    Folder.objects.get(id=fid).delete()
-
+    try:
+        Folder.objects.get(id=fid).delete()
+    except Folder.DoesNotExist:
+        pass
 
 # --- Clip ---
 
@@ -315,8 +319,10 @@ def delete_clip(cid: int) -> None:
 
     :param cid: The clip's id.
     """
-    Clip.objects.get(id=cid).delete()
-
+    try:
+        Clip.objects.get(id=cid).delete()
+    except Clip.DoesNotExist:
+        pass
 
 def get_all_clips_from_folder(fid: int) -> List[Clip]:
     """
@@ -378,8 +384,10 @@ def delete_camera(cmid: int) -> None:
 
     :param cmid: The camera's id.
     """
-    Camera.objects.get(id=cmid).delete()
-
+    try:
+        Camera.objects.get(id=cmid).delete()
+    except Camera.DoesNotExist:
+        pass
 
 def get_objects_in_camera(cmid: int, start_time: datetime.datetime = None, end_time: datetime.datetime = None,
                           object_classes: List[str] = None) -> List[Object]:
@@ -443,7 +451,10 @@ def delete_filter(fid: int) -> None:
     
     :param fid: The id of the filter.
     """
-    Filter.objects.get(id=fid).delete()
+    try:
+        Filter.objects.get(id=fid).delete()
+    except Filter.DoesNotExist:
+        pass
 
 
 def get_all_filters_from_project(pid: int) -> List[Filter]:
@@ -595,7 +606,10 @@ def delete_object_detection(odid: int) -> None:
 
     :param odid: The object detection's id.
     """
-    ObjectDetection.objects.get(id=odid).delete()
+    try:
+        ObjectDetection.objects.get(id=odid).delete()
+    except ObjectDetection.DoesNotExist:
+        pass
 
 
 def add_objects_to_detection(odid: int, objects: List[Tuple[str, datetime.datetime]]) -> None:

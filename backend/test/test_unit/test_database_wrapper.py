@@ -1,3 +1,4 @@
+from django.db.models import ProtectedError
 from django.test import TestCase
 from backend.database_wrapper import *
 from django.utils import timezone
@@ -142,7 +143,12 @@ class DeleteProjectTest(BaseTestCases.ProjectTest):
         self.assertIsNone(get_project_by_name(name="test project"))
         self.assertEqual(len(get_all_projects()), 0)
 
-    # TODO: Add test for nonexistent pid
+    def test_non_existing_project(self):
+        """
+        Test that no project is deleted when a non existing project id is given.
+        """
+        delete_project(pid=1337)
+        self.assertEqual(len(get_all_projects()), 1)
 
 
 class RenameProjectTest(BaseTestCases.ProjectTest):
@@ -205,10 +211,14 @@ class DeleteFolderFromProjectTest(BaseTestCases.ProjectTest):
         delete_folder_from_project(fid=self.rid, pid=self.pid)
         self.assertEqual(len(get_folders_in_project(pid=self.pid)), 0)
 
+    def test_folder_not_in_project(self):
+        fid = create_root_folder(path="/home/user2/", name="test_folder")
+        delete_folder_from_project(fid=fid, pid=self.pid)
+        self.assertEqual(len(get_folders_in_project(pid=self.pid)), 1)
+
     # TODO add test for existing rid, nonexistent pid
     # TODO add test for nonexistent rid, existent pid
     # TODO add test for nonexistent rid, nonexistent pid
-    # TODO add test for existing rid not part of existing pid
 
 
 class GetFoldersInProjectTest(BaseTestCases.ProjectTest):
@@ -429,7 +439,7 @@ class DeleteFolderTest(BaseTestCases.FolderTest):
         Create a root and subfolder.
         """
         super().setUp()
-        self.s_s_name = "test sub sub folder"
+        self.s_s_name = "test subsubfolder"
         self.sid2 = create_subfolder(parent_fid=self.sid, name=self.s_s_name)
 
     def test_subfolder(self):
@@ -447,6 +457,13 @@ class DeleteFolderTest(BaseTestCases.FolderTest):
         self.assertIsNone(get_folder_by_parent(parent_fid=self.sid, name=self.s_s_name))
         self.assertIsNone(get_folder_by_parent(parent_fid=self.rid, name=self.s_name))
         self.assertIsNone(get_folder_by_path(path=self.r_path, name=self.r_name))
+
+    def test_non_existing_folder(self):
+        """
+        Test deleting a none existing folder.
+        """
+        delete_folder(fid=1337)
+        self.assertIs(Folder.objects.count(), 3)
 
 
 class CreateClipTest(BaseTestCases.ClipTest):
@@ -536,6 +553,13 @@ class DeleteClipTest(BaseTestCases.ClipTest):
         self.assertIsNone(get_clip_by_id(cid=self.cid))
         self.assertIsNone(get_clip_by_name(fid=self.fid, name="test_clip", video_format="tvf"))
 
+    def test_non_existing_cid(self):
+        """
+        Test deleting a non existing clip.
+        """
+        delete_clip(cid=1337)
+        self.assertEqual(Clip.objects.count(), 1)
+
 
 class GetAllClipsFromFolderTest(BaseTestCases.ClipTest):
     def test_existing_fid(self):
@@ -604,13 +628,25 @@ class DeleteCameraTest(BaseTestCases.ClipTest):
         """
         Test deleting a camera.
         """
-        delete_clip(cid=self.cid)  # TODO Why is this done @Kalle?
+        delete_clip(cid=self.cid)  # Delete clip related to camera.
         cm = get_camera_by_location(latitude=self.lat, longitude=self.lon)
         delete_camera(cmid=cm.id)
         self.assertIsNone(get_camera_by_location(latitude=self.lat, longitude=self.lon))
         self.assertIsNone(get_camera_by_id(cmid=cm.id))
 
-    # TODO test nonexisting cmid
+    def test_clip_still_exist(self):
+        """
+        Test deleting a camera still referenced by a clip.
+        """
+        cm = get_camera_by_location(latitude=self.lat, longitude=self.lon)
+        self.assertRaises(ProtectedError, delete_camera, cmid=cm.id)
+
+    def test_non_existing_cmid(self):
+        """
+        Test deleting a non existing camera.
+        """
+        delete_camera(cmid=1337)
+        self.assertEqual(Camera.objects.count(), 1)
 
 
 class CreateFilterTest(BaseTestCases.FilterTest):
@@ -618,8 +654,8 @@ class CreateFilterTest(BaseTestCases.FilterTest):
         """
         Test creating a filter with an existing pid
         """
-        filter = get_filter_by_id(self.fid)
-        self.assertEqual(filter.name, "test_filter")
+        f = get_filter_by_id(self.fid)
+        self.assertEqual(f.name, "test_filter")
 
 
 class GetFilterByIdTest(BaseTestCases.FilterTest):
@@ -639,7 +675,13 @@ class DeleteFilterTest(BaseTestCases.FilterTest):
         """
         delete_filter(fid=self.fid)
         self.assertIsNone(get_filter_by_id(fid=self.fid))
-    # TODO: Test nonexistent fid
+
+    def test_non_existing_fid(self):
+        """
+        Test deleting a non existing filter.
+        """
+        delete_filter(fid=1337)
+        self.assertEqual(Filter.objects.count(), 1)
 
 
 class AddCameraToFilterTest(BaseTestCases.FilterTest):
@@ -783,8 +825,19 @@ class GetObjectDetectionByIDTest(BaseTestCases.ObjectDetectionTest):
 
 
 class DeleteObjectDetectionTest(BaseTestCases.ObjectDetectionTest):
-    def test_(self):
-        pass  # TODO: Implement this
+    def test_existing_odid(self):
+        """
+        Test deleting an object detection.
+        """
+        delete_object_detection(odid=self.odid)
+        self.assertIsNone(get_object_detection_by_id(odid=self.odid))
+
+    def test_non_existing_odid(self):
+        """
+        Test deleting a non existing object detection.
+        """
+        delete_object_detection(odid=1337)
+        self.assertEqual(ObjectDetection.objects.count(), 1)
 
 
 class AddObjectsToDetectionTest(BaseTestCases.ObjectDetectionTest):

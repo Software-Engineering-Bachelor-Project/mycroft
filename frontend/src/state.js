@@ -1,6 +1,7 @@
 import { createStore, combineReducers } from 'redux';
 import communicationReducer from './stateCommunication';
-import playerReducer from './statePlayer'
+import playerReducer from './statePlayer';
+import mapReducer from './stateMap';
 
 /* 
  * This file contains the main state of Mycroft.
@@ -13,7 +14,8 @@ import playerReducer from './statePlayer'
 // Follow the imports for further info about each one.
 const rootReducer = combineReducers({
     com: communicationReducer,
-    player: playerReducer
+	player: playerReducer,
+	map: mapReducer
 });
 
 // Main state-container of Mycroft

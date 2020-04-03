@@ -7,7 +7,7 @@ import store from '../state';
 import Player from './player';
 import Map from './map';
 import Menu from "./menu";
-
+import Viewport from "./viewport";
 
 /*
  * This is the main component of Mycroft.
@@ -22,6 +22,7 @@ class App extends Component {
 				<Map />
 				<Player />
 				<Menu />
+				<Viewport />
 			</div>
 		);
     }

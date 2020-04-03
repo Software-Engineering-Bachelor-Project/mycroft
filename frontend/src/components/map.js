@@ -1,12 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import { Map as LMap, TileLayer } from 'react-leaflet';
+import './map.css';
 
 /* -- Map -- */
 class Map extends Component {
     render() {
         return (
-            <p>Map object :)</p>
+            <LMap center={[58.411, 15.621]} zoom={14}>
+                <TileLayer
+                attribution='&copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
+            </LMap>
         );
     }
 }
@@ -14,8 +21,6 @@ class Map extends Component {
 // Map Redux states to React props
 const mapStateToProps = state => {
     return {}
-        //TODO::add states
-    //}
 }
 
 // Forward Redux's dispatch function to React props

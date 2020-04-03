@@ -6,6 +6,7 @@ import store from '../state';
 // Import Core Components
 import Player from './player';
 import Map from './map';
+import Menu from "./menu";
 
 
 /*
@@ -20,6 +21,7 @@ class App extends Component {
 			<div>
 				<Map />
 				<Player />
+				<Menu />
 			</div>
 		);
     }

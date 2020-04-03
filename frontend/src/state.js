@@ -2,6 +2,7 @@ import { createStore, combineReducers } from 'redux';
 import communicationReducer from './stateCommunication';
 import playerReducer from './statePlayer';
 import mapReducer from './stateMap';
+import menuReducer from "./stateMenu";
 
 /* 
  * This file contains the main state of Mycroft.
@@ -15,7 +16,8 @@ import mapReducer from './stateMap';
 const rootReducer = combineReducers({
     com: communicationReducer,
 	player: playerReducer,
-	map: mapReducer
+	map: mapReducer,
+	menu: menuReducer
 });
 
 // Main state-container of Mycroft

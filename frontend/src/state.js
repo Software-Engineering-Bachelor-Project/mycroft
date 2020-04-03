@@ -3,6 +3,8 @@ import communicationReducer from './stateCommunication';
 import playerReducer from './statePlayer';
 import mapReducer from './stateMap';
 import menuReducer from "./stateMenu";
+import viewportReducer from "./stateViewport";
+
 
 /* 
  * This file contains the main state of Mycroft.
@@ -17,7 +19,8 @@ const rootReducer = combineReducers({
     com: communicationReducer,
 	player: playerReducer,
 	map: mapReducer,
-	menu: menuReducer
+	menu: menuReducer,
+	viewport: viewportReducer
 });
 
 // Main state-container of Mycroft

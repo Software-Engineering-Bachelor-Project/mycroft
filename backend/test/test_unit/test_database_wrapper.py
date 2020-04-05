@@ -41,7 +41,7 @@ class BaseTestCases:
             """
             self.lat = Decimal(value="13.37")
             self.lon = Decimal(value="0.42")
-            self.st = timezone.now() - datetime.timedelta(hours=1)
+            self.st = timezone.now() - timezone.timedelta(hours=1)
             self.et = timezone.now()
             self.fid = create_root_folder(path="/home/user/", name="test_folder")
             self.cid = create_clip(fid=self.fid, name="test_clip", video_format="tvf", start_time=self.st,
@@ -55,14 +55,14 @@ class BaseTestCases:
             """
             self.rid = create_root_folder(path="/home/user/", name="test_folder")
             self.cid = create_clip(fid=self.rid, name="test_clip", video_format="tvf",
-                                   start_time=timezone.now() - datetime.timedelta(hours=1),
+                                   start_time=timezone.now() - timezone.timedelta(hours=1),
                                    end_time=timezone.now(), latitude=Decimal(value="13.37"),
                                    longitude=Decimal(value="0.42"))
             self.pid = create_project(name="test_project")
             self.fid = create_filter(pid=self.pid, name="test_filter")
             self.lat = Decimal(value="13.37")
             self.lon = Decimal(value="0.42")
-            self.st = timezone.now() - datetime.timedelta(hours=1)
+            self.st = timezone.now() - timezone.timedelta(hours=1)
             self.et = timezone.now()
 
     class ObjectDetectionTest(TestCase):
@@ -72,14 +72,14 @@ class BaseTestCases:
             """
             self.rid = create_root_folder(path="/home/user/", name="test_folder")
             self.cid = create_clip(fid=self.rid, name="test_clip", video_format="tvf",
-                                   start_time=timezone.now() - datetime.timedelta(hours=1),
+                                   start_time=timezone.now() - timezone.timedelta(hours=1),
                                    end_time=timezone.now(), latitude=Decimal(value="13.37"),
                                    longitude=Decimal(value="0.42"))
             self.cmid = get_camera_by_location(latitude=Decimal(value="13.37"), longitude=Decimal(value="0.42")).id
-            self.st = timezone.now() - datetime.timedelta(hours=0.5)
-            self.et = timezone.now() - datetime.timedelta(hours=0.25)
+            self.st = timezone.now() - timezone.timedelta(hours=0.5)
+            self.et = timezone.now() - timezone.timedelta(hours=0.25)
             self.odid = create_object_detection(cmid=self.cmid, sample_rate=0.5, start_time=self.st, end_time=self.et,
-                                                objects=[("test_object", self.st + datetime.timedelta(minutes=5))])
+                                                objects=[("test_object", self.st + timezone.timedelta(minutes=5))])
 
 
 class CreateProjectTest(BaseTestCases.ProjectTest):
@@ -476,15 +476,15 @@ class CreateClipTest(BaseTestCases.ClipTest):
         """
         time = timezone.now()
         self.assertRaises(ValidationError, create_clip, fid=self.fid, name="valid_name", video_format="tvf",
-                          start_time=time, end_time=time - datetime.timedelta(microseconds=1),
+                          start_time=time, end_time=time - timezone.timedelta(microseconds=1),
                           latitude=Decimal(value="13.37"), longitude=Decimal(value="0.42"))
 
     def test_time_updates_when_adding_clip(self):
         """
         Test that the cameras time interval updates when a new clip is created.
         """
-        new_st = self.st - datetime.timedelta(hours=1)
-        new_et = self.et + datetime.timedelta(hours=1)
+        new_st = self.st - timezone.timedelta(hours=1)
+        new_et = self.et + timezone.timedelta(hours=1)
         self.cid = create_clip(fid=self.fid, name="before", video_format="tvf", start_time=new_st, end_time=self.st,
                                latitude=self.lat, longitude=self.lon)
         cm = get_camera_by_location(latitude=self.lat, longitude=self.lon)
@@ -501,7 +501,7 @@ class CreateClipTest(BaseTestCases.ClipTest):
         Test that clips are added to the same camera if they are from the same location.
         """
         create_clip(fid=self.fid, name="another_test_clip", video_format="tvf",
-                    start_time=self.st - datetime.timedelta(hours=1), end_time=self.st, latitude=self.lat,
+                    start_time=self.st - timezone.timedelta(hours=1), end_time=self.st, latitude=self.lat,
                     longitude=self.lon)
         self.assertEqual(len(Camera.objects.all()), 1)
 
@@ -568,7 +568,7 @@ class GetAllClipsFromFolderTest(BaseTestCases.ClipTest):
         """
         sid = create_subfolder(parent_fid=self.fid, name="test_subfolder")
         create_clip(fid=sid, name="new_test_clip", video_format="tvf",
-                    start_time=timezone.now() - datetime.timedelta(hours=1),
+                    start_time=timezone.now() - timezone.timedelta(hours=1),
                     end_time=timezone.now(), latitude=Decimal(value="42.0099"),
                     longitude=Decimal(value="0.1337"))
         self.assertEqual(len(get_all_clips_from_folder(fid=self.fid)), 1)
@@ -585,7 +585,7 @@ class GetAllClipsFromFolderRecursiveTest(BaseTestCases.ClipTest):
 
         sid = create_subfolder(parent_fid=self.fid, name="test_subfolder")
         create_clip(fid=sid, name="new_test_clip", video_format="tvf",
-                    start_time=timezone.now() - datetime.timedelta(hours=1),
+                    start_time=timezone.now() - timezone.timedelta(hours=1),
                     end_time=timezone.now(), latitude=Decimal(value="42.0099"),
                     longitude=Decimal(value="0.1337"))
 
@@ -743,9 +743,9 @@ class ModifyFilterTest(BaseTestCases.FilterTest):
         """
         Test modifying start time in filter.
         """
-        modify_filter(fid=self.fid, start_time=self.st + datetime.timedelta(seconds=42))
+        modify_filter(fid=self.fid, start_time=self.st + timezone.timedelta(seconds=42))
         f = get_filter_by_id(self.fid)
-        self.assertEqual(f.start_time, self.st + datetime.timedelta(seconds=42))
+        self.assertEqual(f.start_time, self.st + timezone.timedelta(seconds=42))
 
     def test_modify_objects(self):
         """
@@ -768,7 +768,7 @@ class ModifyFilterTest(BaseTestCases.FilterTest):
         Make sure that modifying a filter to have end time before start time raises a validation error.
         """
         self.assertRaises(ValidationError, modify_filter, fid=self.fid, start_time=self.st,
-                          end_time=self.st - datetime.timedelta(microseconds=1))
+                          end_time=self.st - timezone.timedelta(microseconds=1))
 
 
 class GetObjectsInCameraTest(BaseTestCases.ObjectDetectionTest):
@@ -777,16 +777,16 @@ class GetObjectsInCameraTest(BaseTestCases.ObjectDetectionTest):
         Test getting objects in a camera by filtering on classes and time intervals.
         """
         odid = create_object_detection(cmid=self.cmid, sample_rate=0.5, start_time=self.et,
-                                       end_time=self.et + datetime.timedelta(minutes=10),
-                                       objects=[("test_object", self.et + datetime.timedelta(minutes=5))])
+                                       end_time=self.et + timezone.timedelta(minutes=10),
+                                       objects=[("test_object", self.et + timezone.timedelta(minutes=5))])
         add_objects_to_detection(odid=odid,
-                                 objects=[("test_object", self.et + datetime.timedelta(minutes=1)),
-                                          ("another_test_object", self.et + datetime.timedelta(minutes=7)),
-                                          ("yet_another_test_object", self.et + datetime.timedelta(minutes=8))])
+                                 objects=[("test_object", self.et + timezone.timedelta(minutes=1)),
+                                          ("another_test_object", self.et + timezone.timedelta(minutes=7)),
+                                          ("yet_another_test_object", self.et + timezone.timedelta(minutes=8))])
         self.assertEqual(len(get_objects_in_camera(cmid=self.cmid)), 5)
         self.assertEqual(len(get_objects_in_camera(cmid=self.cmid, object_classes=["test_object"])), 3)
-        self.assertEqual(len(get_objects_in_camera(cmid=self.cmid, start_time=self.st + datetime.timedelta(minutes=5),
-                                                   end_time=self.et + datetime.timedelta(minutes=2))), 2)
+        self.assertEqual(len(get_objects_in_camera(cmid=self.cmid, start_time=self.st + timezone.timedelta(minutes=5),
+                                                   end_time=self.et + timezone.timedelta(minutes=2))), 2)
         self.assertEqual(len(get_objects_in_camera(cmid=self.cmid, end_time=self.et)), 1)
         self.assertEqual(len(get_objects_in_camera(cmid=self.cmid, start_time=self.et)), 4)
 
@@ -805,10 +805,10 @@ class CreateObjectDetectionTest(BaseTestCases.ObjectDetectionTest):
         """
         # Create object detection with time interval outside of the camera's time interval.
         self.assertRaises(ValidationError, create_object_detection, cmid=self.cmid, sample_rate=0.5,
-                          start_time=self.st - datetime.timedelta(hours=2), end_time=self.et)
+                          start_time=self.st - timezone.timedelta(hours=2), end_time=self.et)
         # Create an object detection with a detected object outside of the object detection's time interval.
         self.assertRaises(ValidationError, create_object_detection, cmid=self.cmid, sample_rate=0.5, start_time=self.st,
-                          end_time=self.et, objects=[("valid_test_object", self.st - datetime.timedelta(minutes=5))])
+                          end_time=self.et, objects=[("valid_test_object", self.st - timezone.timedelta(minutes=5))])
 
 
 class GetObjectDetectionByIDTest(BaseTestCases.ObjectDetectionTest):
@@ -851,14 +851,14 @@ class GetObjectsInDetectionTest(BaseTestCases.ObjectDetectionTest):
         Test getting objects in an object detection by filtering on classes and time intervals.
         """
         add_objects_to_detection(odid=self.odid,
-                                 objects=[("test_object", self.st + datetime.timedelta(minutes=1)),
-                                          ("another_test_object", self.st + datetime.timedelta(minutes=10)),
-                                          ("yet_another_test_object", self.st + datetime.timedelta(minutes=11))])
+                                 objects=[("test_object", self.st + timezone.timedelta(minutes=1)),
+                                          ("another_test_object", self.st + timezone.timedelta(minutes=10)),
+                                          ("yet_another_test_object", self.st + timezone.timedelta(minutes=11))])
         assert len(get_objects_in_detection(odid=self.odid)) == 4
         assert len(get_objects_in_detection(odid=self.odid, object_classes=["test_object", "another_test_object"])) == 3
-        assert len(get_objects_in_detection(odid=self.odid, start_time=self.st + datetime.timedelta(minutes=9))) == 2
-        assert len(get_objects_in_detection(odid=self.odid, start_time=self.st + datetime.timedelta(minutes=6),
-                                            end_time=self.st + datetime.timedelta(minutes=8))) == 0
-        assert len(get_objects_in_detection(odid=self.odid, start_time=self.st + datetime.timedelta(minutes=4),
-                                            end_time=self.st + datetime.timedelta(minutes=12),
+        assert len(get_objects_in_detection(odid=self.odid, start_time=self.st + timezone.timedelta(minutes=9))) == 2
+        assert len(get_objects_in_detection(odid=self.odid, start_time=self.st + timezone.timedelta(minutes=6),
+                                            end_time=self.st + timezone.timedelta(minutes=8))) == 0
+        assert len(get_objects_in_detection(odid=self.odid, start_time=self.st + timezone.timedelta(minutes=4),
+                                            end_time=self.st + timezone.timedelta(minutes=12),
                                             object_classes=["test_object"])) == 1

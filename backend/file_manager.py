@@ -1,5 +1,7 @@
-import os
-from django.utils import timezone
+import os, re, logging
+import pytz
+from django.conf import settings
+from moviepy.video.io.VideoFileClip import VideoFileClip
 
 from .database_wrapper import *
 
@@ -25,19 +27,21 @@ def add_folders(data: dict) -> (int, dict):
 
 def build_file_structure(file_path: str) -> None:
     """
-    Traverses the user's file system from the given folder and downwards while adding all folder and clips to the
-    database.
+    Traverses the user's file system from the given folder downwards while adding all folder and clips to the database.
 
     :param file_path: Absolute path to folder in file system.
     """
     # Divide folder path in name and path.
     split = file_path.rsplit(sep=os.path.sep, maxsplit=1)
+    if len(split) != 2:
+        raise ValueError("Given file path is not valid.")
     path = os.path.join(split[0], '')  # Add delimiter to path
     name = split[-1]
 
     # Create root and set parent id.
     parent_id = create_root_folder(path=path, name=name)
 
+    # Traverse all subfolders and add the to the database.
     traverse_subfolders(path=file_path, parent_id=parent_id)
 
 
@@ -48,14 +52,19 @@ def traverse_subfolders(path: str, parent_id: int) -> None:
     :param path: The absolute path to a folder.
     :param parent_id: The parent folder's id.
     """
-    for entry in os.scandir(path):
+    for entry in os.scandir(path):  # Iterate over all entries in the folder.
+        file_path = os.path.join(path, entry.name)  # Save file path to current entry.
         if entry.is_dir():
             fid = create_subfolder(parent_fid=parent_id, name=entry.name)
-            traverse_subfolders(path=os.path.join(path, entry.name), parent_id=fid)
+            traverse_subfolders(path=file_path, parent_id=fid)  # Traverse subfolders of entry.
         elif entry.is_file():
             is_clip, name, suffix = analyze_file(entry.name)
             if is_clip:
-                create_clip(**get_clip_info(folder_id=parent_id, name=name, video_format=suffix))
+                try:
+                    create_clip(**get_clip_info(file_path=file_path, folder_id=parent_id, name=name,
+                                                video_format=suffix))
+                except ValueError:
+                    logging.info(msg="No metadata found for: " + file_path)
 
 
 def analyze_file(file: str) -> (bool, str, str):
@@ -76,16 +85,75 @@ def analyze_file(file: str) -> (bool, str, str):
     return is_clip, name, suffix
 
 
-def get_clip_info(folder_id: int, name: str, video_format: str) -> dict:
+def get_clip_info(file_path: str, folder_id: int, name: str, video_format: str) -> dict:
     """
     Finds all information related to the clip and returns a dictionary that can be used as input to the
     function create_clip in the database wrapper.
 
+    :param file_path: The absolute path to a clip.
     :param folder_id: The clip's parent folder's id.
     :param name: The name of the clip.
     :param video_format: The video format of the clip.
-    :return:
+    :return: A dictionary with the valid parameters for create_clip in database_wrapper.py.
     """
-    # TODO: Implement
-    return {'fid': folder_id, 'name': name, 'video_format': video_format, 'start_time': timezone.now(),
-            'end_time': timezone.now(), 'latitude': Decimal(), 'longitude': Decimal()}
+    latitude, longitude, start_time = parse_metadata(file_path=file_path)
+    end_time = start_time + timezone.timedelta(seconds=get_clip_duration(file_path=file_path))
+    return {'fid': folder_id, 'name': name, 'video_format': video_format, 'start_time': start_time,
+            'end_time': end_time, 'latitude': latitude, 'longitude': longitude}
+
+
+def parse_metadata(file_path: str) -> (Decimal, Decimal, timezone.datetime):
+    """
+    Parses a clip's metadata for location and start time.
+
+    Metadata has the same name as the clip but with .txt as an extra suffix.
+
+    Example of metadata:
+    59°23'19.2"N 17°55'35.4"E   (59.388668, 17.926501)
+    2018-09-06 15:45:59.603     (2018-09-06 15:45:59)
+
+    :param file_path: The absolute path to a clip.
+    :return: (latitude: Decimal, longitude, Decimal: datetime.datetime)
+    """
+    wrong_format_error = ValueError("Metadata has the wrong format.")
+
+    # Read metadata from file.
+    with open(file=file_path+'.txt', mode='r') as f:
+        content = f.read()
+
+    # Find both parentheses from metadata.
+    parentheses = re.findall('\(.*?\)', content)
+    if len(parentheses) != 2:
+        raise wrong_format_error
+
+    # Extract latitude and longitude from location parentheses.
+    location = re.split(string=parentheses[0][1:-1], pattern=', ')
+    if len(location) != 2:
+        raise wrong_format_error
+    try:
+        lat = Decimal(location[0])
+        lon = Decimal(location[1])
+    except SyntaxError:
+        raise wrong_format_error
+
+    # Extract start time from time parentheses.
+    try:
+        start_time = timezone.datetime.strptime(parentheses[1][1:-1], '%Y-%m-%d %H:%M:%S')
+        start_time = start_time.replace(tzinfo=pytz.timezone(settings.TIME_ZONE))  # make timezone aware
+    except ValueError:
+        raise wrong_format_error
+
+    return lat, lon, start_time
+
+
+def get_clip_duration(file_path: str) -> float:
+    """
+    Gets a clip's length.
+
+    :param file_path: The absolute path to a clip.
+    :return: Duration in seconds.
+    """
+    try:
+        return int(VideoFileClip(file_path).duration)
+    except OSError:
+        raise FileNotFoundError

@@ -1,5 +1,5 @@
 from typing import List, Optional, Tuple
-import datetime
+from django.utils import timezone
 from decimal import Decimal
 from django.db.models import Q
 
@@ -71,6 +71,7 @@ def delete_project(pid: int) -> None:
     except Project.DoesNotExist:
         pass
 
+
 def rename_project(new_name: str, pid: int) -> None:
     """
     Renames a project.
@@ -134,6 +135,7 @@ def get_folders_in_project(pid: int) -> List[Folder]:
     p = get_project_by_id(pid=pid)
     assert p is not None
     return p.folders.all()[::1]
+
 
 # --- Folder ---
 
@@ -255,9 +257,10 @@ def delete_folder(fid: int) -> None:
     except Folder.DoesNotExist:
         pass
 
+
 # --- Clip ---
 
-def create_clip(fid: int, name: str, video_format: str, start_time: datetime.datetime, end_time: datetime.datetime,
+def create_clip(fid: int, name: str, video_format: str, start_time: timezone.datetime, end_time: timezone.datetime,
                 latitude: Decimal, longitude: Decimal) -> int:
     """
     Creates a clip if not already in database.
@@ -324,6 +327,7 @@ def delete_clip(cid: int) -> None:
     except Clip.DoesNotExist:
         pass
 
+
 def get_all_clips_from_folder(fid: int) -> List[Clip]:
     """
     Gets all clips in the given folder.
@@ -389,7 +393,8 @@ def delete_camera(cmid: int) -> None:
     except Camera.DoesNotExist:
         pass
 
-def get_objects_in_camera(cmid: int, start_time: datetime.datetime = None, end_time: datetime.datetime = None,
+
+def get_objects_in_camera(cmid: int, start_time: timezone.datetime = None, end_time: timezone.datetime = None,
                           object_classes: List[str] = None) -> List[Object]:
     """
     Returns all objects from the camera meeting the specified requirements.
@@ -509,7 +514,7 @@ def get_all_cameras_in_filter(fid: int) -> List[Camera]:
 
 
 def modify_filter(fid: int, name: str = None, latitude: Decimal = None, longitude: Decimal = None, radius: int = None,
-                  start_time: datetime.datetime = None, end_time: datetime.datetime = None,
+                  start_time: timezone.datetime = None, end_time: timezone.datetime = None,
                   add_classes: List[str] = None, remove_classes: List[str] = None) -> None:
     """
     Changes the given values in the specified filter.
@@ -563,9 +568,10 @@ def get_all_classes_in_filter(fid: int) -> List[ObjectClass]:
     assert f is not None
     return f.classes.all()[::1]
 
+
 # --- Object Detection ---
 
-def create_object_detection(cmid: int, sample_rate: float, start_time: datetime.datetime, end_time: datetime.datetime,
+def create_object_detection(cmid: int, sample_rate: float, start_time: timezone.datetime, end_time: timezone.datetime,
                             objects=None) -> int:
     """
     Creates an object detection.
@@ -612,7 +618,7 @@ def delete_object_detection(odid: int) -> None:
         pass
 
 
-def add_objects_to_detection(odid: int, objects: List[Tuple[str, datetime.datetime]]) -> None:
+def add_objects_to_detection(odid: int, objects: List[Tuple[str, timezone.datetime]]) -> None:
     """
     Adds found objects to an object detection.
 
@@ -627,7 +633,7 @@ def add_objects_to_detection(odid: int, objects: List[Tuple[str, datetime.dateti
         Object.objects.create(object_detection=od, object_class=object_class, time=time)
 
 
-def get_objects_in_detection(odid: int, start_time: datetime.datetime = None, end_time: datetime.datetime = None,
+def get_objects_in_detection(odid: int, start_time: timezone.datetime = None, end_time: timezone.datetime = None,
                              object_classes: List[str] = None) -> List[Object]:
     """
     Returns all objects from object detection meeting the specified requirements.

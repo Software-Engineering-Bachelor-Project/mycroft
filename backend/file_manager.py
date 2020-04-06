@@ -97,9 +97,10 @@ def get_clip_info(file_path: str, folder_id: int, name: str, video_format: str) 
     :return: A dictionary with the valid parameters for create_clip in database_wrapper.py.
     """
     latitude, longitude, start_time = parse_metadata(file_path=file_path)
-    end_time = start_time + timezone.timedelta(seconds=get_clip_duration(file_path=file_path))
+    duration, width, height = get_clip_details(file_path=file_path)
+    end_time = start_time + timezone.timedelta(seconds=duration)
     return {'fid': folder_id, 'name': name, 'video_format': video_format, 'start_time': start_time,
-            'end_time': end_time, 'latitude': latitude, 'longitude': longitude}
+            'end_time': end_time, 'latitude': latitude, 'longitude': longitude, 'width': width, 'height': height}
 
 
 def parse_metadata(file_path: str) -> (Decimal, Decimal, timezone.datetime):
@@ -118,7 +119,7 @@ def parse_metadata(file_path: str) -> (Decimal, Decimal, timezone.datetime):
     wrong_format_error = ValueError("Metadata has the wrong format.")
 
     # Read metadata from file.
-    with open(file=file_path+'.txt', mode='r') as f:
+    with open(file=file_path + '.txt', mode='r') as f:
         content = f.read()
 
     # Find both parentheses from metadata.
@@ -146,14 +147,15 @@ def parse_metadata(file_path: str) -> (Decimal, Decimal, timezone.datetime):
     return lat, lon, start_time
 
 
-def get_clip_duration(file_path: str) -> float:
+def get_clip_details(file_path: str) -> (int, int, int):
     """
-    Gets a clip's length.
+    Gets a clip's duration and dimensions (width, height).
 
     :param file_path: The absolute path to a clip.
-    :return: Duration in seconds.
+    :return: Duration in seconds and width and height in pixels in the form of a tuple (duration, width, height).
     """
     try:
-        return int(VideoFileClip(file_path).duration)
+        vfc = VideoFileClip(file_path)
+        return int(vfc.duration), vfc.w, vfc.h
     except OSError:
         raise FileNotFoundError

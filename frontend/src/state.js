@@ -4,7 +4,7 @@ import playerReducer from './statePlayer';
 import mapReducer from './stateMap';
 import menuReducer from "./stateMenu";
 import viewportReducer from "./stateViewport";
-
+import timelineReducer from "./stateTimeline";
 
 /* 
  * This file contains the main state of Mycroft.
@@ -20,7 +20,8 @@ const rootReducer = combineReducers({
 	player: playerReducer,
 	map: mapReducer,
 	menu: menuReducer,
-	viewport: viewportReducer
+	viewport: viewportReducer,
+	timeline: timelineReducer
 });
 
 // Main state-container of Mycroft

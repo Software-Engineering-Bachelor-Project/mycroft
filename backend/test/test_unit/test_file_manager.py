@@ -110,18 +110,19 @@ class GetClipInfoTest(TestCase):
         self.et = timezone.datetime(year=2018, month=9, day=6, hour=15, minute=46, second=41,
                                     tzinfo=pytz.timezone(settings.TIME_ZONE))  # duration = 42
 
-    @patch('backend.file_manager.get_clip_duration')
+    @patch('backend.file_manager.get_clip_details')
     @patch('backend.file_manager.parse_metadata')
-    def test_valid_clip(self, mock_parse_metadata, mock_get_clip_duration):
+    def test_valid_clip(self, mock_parse_metadata, mock_get_clip_details):
         """
         Test with valid clip.
         """
         mock_parse_metadata.return_value = (self.lat, self.lon, self.st)
-        mock_get_clip_duration.return_value = 42
+        mock_get_clip_details.return_value = (42, 256, 240)
         res = get_clip_info(file_path='home/user/test_folder/test_clip.avi', folder_id=1337, name='test_clip',
                             video_format='avi')
         self.assertEqual(res, {'fid': 1337, 'name': 'test_clip', 'video_format': 'avi', 'start_time': self.st,
-                               'end_time': self.et, 'latitude': self.lat, 'longitude': self.lon})
+                               'end_time': self.et, 'latitude': self.lat, 'longitude': self.lon, 'width': 256,
+                               'height': 240})
 
     def test_non_existing_clip(self):
         """
@@ -183,18 +184,20 @@ class ParseMetadataTest(TestCase):
         self.assertRaises(ValueError, parse_metadata, file_path='home/user/test_folder/test_clip.avi')
 
 
-class GetClipDuration(TestCase):
+class GetClipDetails(TestCase):
 
     @patch('backend.file_manager.VideoFileClip')
     def test_valid_clip(self, mock):
         """
-        Test getting duration of a clip. Should round down.
+        Test getting details of a clip. Should round down for duration.
         """
         type(mock.return_value).duration = 3.14
-        self.assertEqual(get_clip_duration('home/user/test_folder/test_clip.avi'), 3)
+        type(mock.return_value).w = 256
+        type(mock.return_value).h = 240
+        self.assertEqual(get_clip_details('home/user/test_folder/test_clip.avi'), (3, 256, 240))
 
     def test_non_existing_clip(self):
         """
         Test calling function with non existing clip.
         """
-        self.assertRaises(FileNotFoundError, get_clip_duration, file_path='home/user/test_folder/no_clip.avi')
+        self.assertRaises(FileNotFoundError, get_clip_details, file_path='home/user/test_folder/no_clip.avi')

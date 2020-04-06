@@ -228,6 +228,8 @@ class Clip(models.Model):
     camera = models.ForeignKey(Camera, on_delete=models.PROTECT)
     start_time = models.DateTimeField('start time')
     end_time = models.DateTimeField('end time')
+    width = models.IntegerField()
+    height = models.IntegerField()
 
     class Meta:
         constraints = [

@@ -45,8 +45,7 @@ class BaseTestCases:
             self.et = timezone.now()
             self.fid = create_root_folder(path="/home/user/", name="test_folder")
             self.cid = create_clip(fid=self.fid, name="test_clip", video_format="tvf", start_time=self.st,
-                                   end_time=self.et,
-                                   latitude=self.lat, longitude=self.lon)
+                                   end_time=self.et, latitude=self.lat, longitude=self.lon, width=256, height=240)
 
     class FilterTest(TestCase):
         def setUp(self) -> None:
@@ -57,7 +56,7 @@ class BaseTestCases:
             self.cid = create_clip(fid=self.rid, name="test_clip", video_format="tvf",
                                    start_time=timezone.now() - timezone.timedelta(hours=1),
                                    end_time=timezone.now(), latitude=Decimal(value="13.37"),
-                                   longitude=Decimal(value="0.42"))
+                                   longitude=Decimal(value="0.42"), width=256, height=240)
             self.pid = create_project(name="test_project")
             self.fid = create_filter(pid=self.pid, name="test_filter")
             self.lat = Decimal(value="13.37")
@@ -74,7 +73,7 @@ class BaseTestCases:
             self.cid = create_clip(fid=self.rid, name="test_clip", video_format="tvf",
                                    start_time=timezone.now() - timezone.timedelta(hours=1),
                                    end_time=timezone.now(), latitude=Decimal(value="13.37"),
-                                   longitude=Decimal(value="0.42"))
+                                   longitude=Decimal(value="0.42"), width=256, height=240)
             self.cmid = get_camera_by_location(latitude=Decimal(value="13.37"), longitude=Decimal(value="0.42")).id
             self.st = timezone.now() - timezone.timedelta(hours=0.5)
             self.et = timezone.now() - timezone.timedelta(hours=0.25)
@@ -477,7 +476,7 @@ class CreateClipTest(BaseTestCases.ClipTest):
         time = timezone.now()
         self.assertRaises(ValidationError, create_clip, fid=self.fid, name="valid_name", video_format="tvf",
                           start_time=time, end_time=time - timezone.timedelta(microseconds=1),
-                          latitude=Decimal(value="13.37"), longitude=Decimal(value="0.42"))
+                          latitude=Decimal(value="13.37"), longitude=Decimal(value="0.42"), width=256, height=240)
 
     def test_time_updates_when_adding_clip(self):
         """
@@ -486,12 +485,12 @@ class CreateClipTest(BaseTestCases.ClipTest):
         new_st = self.st - timezone.timedelta(hours=1)
         new_et = self.et + timezone.timedelta(hours=1)
         self.cid = create_clip(fid=self.fid, name="before", video_format="tvf", start_time=new_st, end_time=self.st,
-                               latitude=self.lat, longitude=self.lon)
+                               latitude=self.lat, longitude=self.lon, width=256, height=240)
         cm = get_camera_by_location(latitude=self.lat, longitude=self.lon)
         self.assertEqual(cm.start_time, new_st)
         self.assertEqual(cm.end_time, self.et)
         self.cid = create_clip(fid=self.fid, name="after", video_format="tvf", start_time=self.et, end_time=new_et,
-                               latitude=self.lat, longitude=self.lon)
+                               latitude=self.lat, longitude=self.lon, width=256, height=240)
         cm = get_camera_by_location(latitude=self.lat, longitude=self.lon)
         self.assertEqual(cm.start_time, new_st)
         self.assertEqual(cm.end_time, new_et)
@@ -502,7 +501,7 @@ class CreateClipTest(BaseTestCases.ClipTest):
         """
         create_clip(fid=self.fid, name="another_test_clip", video_format="tvf",
                     start_time=self.st - timezone.timedelta(hours=1), end_time=self.st, latitude=self.lat,
-                    longitude=self.lon)
+                    longitude=self.lon, width=256, height=240)
         self.assertEqual(len(Camera.objects.all()), 1)
 
     # TODO: Add tests for bad parameters
@@ -570,7 +569,7 @@ class GetAllClipsFromFolderTest(BaseTestCases.ClipTest):
         create_clip(fid=sid, name="new_test_clip", video_format="tvf",
                     start_time=timezone.now() - timezone.timedelta(hours=1),
                     end_time=timezone.now(), latitude=Decimal(value="42.0099"),
-                    longitude=Decimal(value="0.1337"))
+                    longitude=Decimal(value="0.1337"), width=256, height=240)
         self.assertEqual(len(get_all_clips_from_folder(fid=self.fid)), 1)
 
     # TODO: add test for nonexistent fid
@@ -587,7 +586,7 @@ class GetAllClipsFromFolderRecursiveTest(BaseTestCases.ClipTest):
         create_clip(fid=sid, name="new_test_clip", video_format="tvf",
                     start_time=timezone.now() - timezone.timedelta(hours=1),
                     end_time=timezone.now(), latitude=Decimal(value="42.0099"),
-                    longitude=Decimal(value="0.1337"))
+                    longitude=Decimal(value="0.1337"), width=256, height=240)
 
     def test_existing_fid(self):
         """

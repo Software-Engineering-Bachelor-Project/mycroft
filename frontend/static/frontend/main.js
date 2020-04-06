@@ -53687,6 +53687,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _stateMap__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./stateMap */ "./src/stateMap.js");
 /* harmony import */ var _stateMenu__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./stateMenu */ "./src/stateMenu.js");
 /* harmony import */ var _stateViewport__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./stateViewport */ "./src/stateViewport.js");
+/* harmony import */ var _stateTimeline__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./stateTimeline */ "./src/stateTimeline.js");
+
 
 
 
@@ -53707,7 +53709,8 @@ var rootReducer = Object(redux__WEBPACK_IMPORTED_MODULE_0__["combineReducers"])(
   player: _statePlayer__WEBPACK_IMPORTED_MODULE_2__["default"],
   map: _stateMap__WEBPACK_IMPORTED_MODULE_3__["default"],
   menu: _stateMenu__WEBPACK_IMPORTED_MODULE_4__["default"],
-  viewport: _stateViewport__WEBPACK_IMPORTED_MODULE_5__["default"]
+  viewport: _stateViewport__WEBPACK_IMPORTED_MODULE_5__["default"],
+  timeline: _stateTimeline__WEBPACK_IMPORTED_MODULE_6__["default"]
 }); // Main state-container of Mycroft
 
 var store = Object(redux__WEBPACK_IMPORTED_MODULE_0__["createStore"])(rootReducer);
@@ -53937,6 +53940,51 @@ var playerReducer = function playerReducer() {
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (playerReducer);
+
+/***/ }),
+
+/***/ "./src/stateTimeline.js":
+/*!******************************!*\
+  !*** ./src/stateTimeline.js ***!
+  \******************************/
+/*! exports provided: dummy, default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "dummy", function() { return dummy; });
+/* harmony import */ var _state__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./state */ "./src/state.js");
+
+/* -- ACTIONS -- */
+
+var DUMMY = "DUMMY";
+/* -- INITIAL STATE -- */
+
+var initialState = {} //TODO::add states
+
+/* -- ACTION CREATORS -- */
+;
+function dummy() {
+  return {
+    type: DUMMY
+  };
+}
+/* -- REDUX REDUCER -- */
+
+var timelineReducer = function timelineReducer() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
+  var action = arguments.length > 1 ? arguments[1] : undefined;
+
+  switch (action.type) {
+    case DUMMY:
+      break;
+
+    default:
+      return state;
+  }
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (timelineReducer);
 
 /***/ }),
 

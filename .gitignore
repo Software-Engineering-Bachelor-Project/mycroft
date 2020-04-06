@@ -3,6 +3,7 @@
 *.py[cod]
 *$py.class
 venv/*
+.vscode
 
 # C extensions
 *.so

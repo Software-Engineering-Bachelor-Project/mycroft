@@ -32,99 +32,70 @@ class SerializeTest(TestCase):
         Test serializing various objects.
         """
         self.assertEqual(serialize(data=self.rf),
-                         '{"model": "backend.folder", "pk": 1, "fields": {"parent": null, "path": '
-                         '"/home/user/", "name": "test_folder"}}')
+                         {'id': 1, 'path': '/home/user/', 'name': 'test_folder', 'parent': None})
         self.assertEqual(serialize(data=self.sf),
-                         '{"model": "backend.folder", "pk": 2, "fields": {"parent": 1, "path": '
-                         '"/home/user/test_folder/", "name": "test_subfolder"}}')
-        self.assertEqual(serialize(data=self.cm),
-                         '{"model": "backend.camera", "pk": 1, "fields": {"latitude": "0.0", "longitude":'
-                         ' "0.0", "start_time": "2020-05-17T00:00:00+01:00", "end_time": "2020-05-18T00:00:00+01:00"}}')
-        self.assertEqual(serialize(data=self.cl),
-                         '{"model": "backend.clip", "pk": 1, "fields": {"folder": 1, "name": "test_clip",'
-                         ' "video_format": "tvf", "camera": 1, "start_time": "2020-05-17T00:00:00+01:00", '
-                         '"end_time": "2020-05-18T00:00:00+01:00", "width": 256, "height": 240, "frame_rate": 42.0}}')
+                         {'id': 2, 'path': '/home/user/test_folder/', 'name': 'test_subfolder', 'parent': 1})
+        self.assertEqual(serialize(data=self.cm), {'id': 1, 'latitude': '0.00000000', 'longitude': '0.00000000',
+                                                   'start_time': '2020-05-17T00:00:00+01:00',
+                                                   'end_time': '2020-05-18T00:00:00+01:00'})
+        self.assertEqual(serialize(data=self.cl), {'id': 1, 'name': 'test_clip', 'video_format': 'tvf',
+                                                   'start_time': '2020-05-17T00:00:00+01:00',
+                                                   'end_time': '2020-05-18T00:00:00+01:00', 'width': 256, 'height': 240,
+                                                   'frame_rate': 42.0, 'folder': 1, 'camera': 1})
 
     def test_serialize_collection(self):
         """
-        Test serializing various collections of objects.
+        Test serializing a collection of objects (folders).
         """
         self.assertEqual(serialize(data=self.folders),
-                         '[{"model": "backend.folder", "pk": 1, "fields": {"parent": null, "path": '
-                         '"/home/user/", "name": "test_folder"}}, {"model": "backend.folder", "pk": 2, '
-                         '"fields": {"parent": 1, "path": "/home/user/test_folder/", "name": '
-                         '"test_subfolder"}}]')
-        self.assertEqual(serialize(data=self.objects),
-                         '[{"model": "backend.folder", "pk": 2, "fields": {"parent": 1, "path": '
-                         '"/home/user/test_folder/", "name": "test_subfolder"}}, {"model": "backend.camera", '
-                         '"pk": 1, "fields": {"latitude": "0.0", "longitude": "0.0", "start_time": '
-                         '"2020-05-17T00:00:00+01:00", "end_time": "2020-05-18T00:00:00+01:00"}}, {"model": '
-                         '"backend.clip", "pk": 1, "fields": {"folder": 1, "name": "test_clip", '
-                         '"video_format": "tvf", "camera": 1, "start_time": "2020-05-17T00:00:00+01:00", '
-                         '"end_time": "2020-05-18T00:00:00+01:00", "width": 256, "height": 240, "frame_rate": 42.0}}]')
+                         [OrderedDict([('id', 1), ('path', '/home/user/'), ('name', 'test_folder'), ('parent', None)]),
+                          OrderedDict([('id', 2), ('path', '/home/user/test_folder/'), ('name', 'test_subfolder'),
+                                       ('parent', 1)])])
 
-    def test_deserialize_to_object(self):
+    def test_serialize_empty_collection(self):
         """
-        Test deserializing various objects.
+        Test serializing an empty collection.
         """
-        self.assertEqual(self.rf, deserialize(
-            data='{"model": "backend.folder", "pk": 1, "fields": {"parent": null, "path": "/home/user/", '
-                 '"name": "test_folder"}}'))
-        self.assertEqual(self.sf, deserialize(
-            data='{"model": "backend.folder", "pk": 2, "fields": {"parent": 1, "path": '
-                 '"/home/user/test_folder/", "name": "test_subfolder"}}'))
-        self.assertEqual(self.cm, deserialize(
-            data='{"model": "backend.camera", "pk": 1, "fields": {"latitude": "0.0", "longitude":'
-                 ' "0.0", "start_time": "2020-05-17T00:00:00+01:00", "end_time": "2020-05-18T00:00:00+01:00"}}'))
-        self.assertEqual(self.cl, deserialize(
-            data='{"model": "backend.clip", "pk": 1, "fields": {"folder": 1, "name": "test_clip",'
-                 ' "video_format": "tvf", "camera": 1, "start_time": "2020-05-17T00:00:00+01:00", '
-                 '"end_time": "2020-05-18T00:00:00+01:00"}}'))
+        self.assertEqual(serialize(data=[]), [])
 
-    def test_deserialize_to_collection(self):
+    def test_serialize_collection_different_types(self):
         """
-        Test deserializing various collections of objects.
+        Test serializing a collection of objects of different types.
         """
-        self.assertEqual(self.folders, deserialize(
-            data='[{"model": "backend.folder", "pk": 1, "fields": {"parent": null, "path": '
-                 '"/home/user/", "name": "test_folder"}}, {"model": "backend.folder", "pk": 2, '
-                 '"fields": {"parent": 1, "path": "/home/user/test_folder/", "name": '
-                 '"test_subfolder"}}]'))
-        self.assertEqual(self.objects, deserialize(
-            data='[{"model": "backend.folder", "pk": 2, "fields": {"parent": 1, "path": '
-                 '"/home/user/test_folder/", "name": "test_subfolder"}}, {"model": "backend.camera", '
-                 '"pk": 1, "fields": {"latitude": "0.0", "longitude": "0.0", "start_time": '
-                 '"2020-05-17T00:00:00+01:00", "end_time": "2020-05-18T00:00:00+01:00"}}, {"model": '
-                 '"backend.clip", "pk": 1, "fields": {"folder": 1, "name": "test_clip", '
-                 '"video_format": "tvf", "camera": 1, "start_time": "2020-05-17T00:00:00+01:00", '
-                 '"end_time": "2020-05-18T00:00:00+01:00"}}]'))
+        self.assertRaises(AttributeError, serialize, data=self.objects)
 
-    def test_deserialize_and_save(self):
+
+class GetSerializerTest(TestCase):
+
+    def setUp(self) -> None:
         """
-        Test deserializing to update/create objects.
+        Add dict with all models and their serializers.
         """
-        # Update the name of a clip.
-        deserialize(data='{"model": "backend.clip", "pk": 1, "fields": {"folder": 1, "name": "new_name",'
-                         ' "video_format": "tvf", "camera": 1, "start_time": "2020-05-17T00:00:00+01:00", '
-                         '"end_time": "2020-05-18T00:00:00+01:00", "width": 256, "height": 240, "frame_rate": 42.0}}',
-                    save=True)
-        self.assertEqual(Clip.objects.get(id=1).name, "new_name")
+        self.model_to_serializers = {Folder: FolderSerializer,
+                                     Project: ProjectSerializer,
+                                     Camera: CameraSerializer,
+                                     ObjectClass: ObjectClassSerializer,
+                                     Filter: FilterSerializer,
+                                     ObjectDetection: ObjectDetectionSerializer,
+                                     Object: ObjectSerializer,
+                                     Clip: ClipSerializer,
+                                     }
 
-        # Create a new camera.
-        deserialize(data='{"model": "backend.camera", "pk": null, "fields": {"latitude": "0.1", "longitude": "1.0", '
-                         '"start_time": "2020-05-17T00:00:00+01:00", "end_time": "2020-05-18T00:00:00+01:00"}}',
-                    save=True)
-        self.assertEqual(Camera.objects.count(), 2)
+    def test_all_types(self):
+        """
+        Test that get_serializer works as expected for all types.
+        """
+        for model in self.model_to_serializers:
+            self.assertEqual(get_serializer(t=model), self.model_to_serializers[model])
 
-        # Create two new subfolders.
-        deserialize(data='[{"model": "backend.folder", "pk": null, "fields": {"parent": 1, "path": '
-                         '"/home/user/test_folder/", "name": "folder1"}}, {"model": "backend.folder", "pk": null, '
-                         '"fields": {"parent": 1, "path": "/home/user/test_folder/", "name": "folder2"}}]', save=True)
-        self.assertEqual(Folder.objects.filter(parent=self.rf).count(), 3)
+    def test_bad_type(self):
+        """
+        Test that calling get_serializer with invalid type results in a TypeError.
+        """
+        self.assertRaises(TypeError, get_serializer, object)
 
-        # Modify the created subfolders to be subfolders of test_subfolder
-        deserialize(data='[{"model": "backend.folder", "pk": 3, "fields": {"parent": 2, "path": '
-                         '"/home/user/test_folder/test_subfolder/", "name": "folder1"}}, {"model": "backend.folder", '
-                         '"pk": 4, "fields": {"parent": 2, "path": "/home/user/test_folder/test_subfolder", "name": '
-                         '"folder2"}}]', save=True)
-        self.assertEqual(Folder.objects.filter(parent=self.sf).count(), 2)
+    def test_model_to_serializers_dict(self):
+        """
+        Test that the generated model to serializer dict equals the manually written.
+        """
+        self.assertEqual(self.model_to_serializers, MODEL_TO_SERIALIZER)

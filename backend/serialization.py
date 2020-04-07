@@ -1,47 +1,42 @@
-from django.core import serializers
-from collections.abc import Iterable
-from typing import Union, Collection
+from collections.abc import Collection
+from collections import OrderedDict
+from typing import Type, Union, List
 
-from .models import *
+from .model_serializers import *
 
-BACKEND_MODEL = Union[Collection[Union[Project, Folder, Filter, Camera, ObjectDetection, Object, ObjectClass, Clip]],
+BACKEND_MODEL = Union[List[Union[Project, Folder, Filter, Camera, ObjectDetection, Object, ObjectClass, Clip]],
                       Project, Folder, Filter, Camera, ObjectDetection, Object, ObjectClass, Clip]
 
 
-def serialize(data: BACKEND_MODEL) -> str:
+def serialize(data: BACKEND_MODEL) -> Union[OrderedDict, List[OrderedDict]]:
     """
     Takes an object or a collection of objects and serializes it.
 
     :param data: An object or a collection of objects (same type) to be serializable.
-    :return: The given object(s) in JSON format.
+    :return: The given object(s) serialized to JSON in a dictionary.
     """
-    if isinstance(data, Iterable):
-        return serializers.serialize(format='json', queryset=data)
+    if isinstance(data, Collection):
+        if len(data) == 0:
+            return []
+        t = type(next(iter(data)))  # Get type of first element in given collection.
+        serializer = get_serializer(t=t)(data, many=True)  # Serialize data using the corresponding ModelSerializer.
+        try:
+            return serializer.data  # Serialize to JSON.
+        except AttributeError:
+            raise AttributeError('The function serialize was given a collection of objects of different types.')
     else:
-        return serializers.serialize(format='json', queryset=[data])[1:-1]
+        serializer = get_serializer(t=type(data))
+        return serializer(data).data
 
 
-def deserialize(data: str, save: bool = False) -> BACKEND_MODEL:
+def get_serializer(t: Type) -> serializers.ModelSerializer():
     """
-    Deserialize objects from JSON to Django models.
+    Takes a type of model and returns its corresponding serializer.
 
-    :param data: JSON object to be deserialized.
-    :param save: Create or update object in database.
-    :return: An object or a list of objects.
+    :param t: Type of model to get serializer for.
+    :return: A ModelSerializer for the given type.
     """
-    collection = True
-    res = []
-
-    # Convert to JSON array if not already done.
-    if data[0] != '[' and data[-1] != ']':
-        data = '[' + data + ']'
-        collection = False
-
-    for obj in serializers.deserialize("json", data):
-        if save:
-            obj.save()
-        if collection:
-            res.append(obj.object)
-        else:
-            return obj.object
-    return res
+    if t in MODEL_TO_SERIALIZER:
+        return MODEL_TO_SERIALIZER[t]
+    else:
+        raise TypeError('The function get_serializer was given an unknown type.')

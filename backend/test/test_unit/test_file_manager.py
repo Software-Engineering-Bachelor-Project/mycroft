@@ -117,12 +117,12 @@ class GetClipInfoTest(TestCase):
         Test with valid clip.
         """
         mock_parse_metadata.return_value = (self.lat, self.lon, self.st)
-        mock_get_clip_details.return_value = (42, 256, 240)
+        mock_get_clip_details.return_value = (42, 1337, 256, 240)
         res = get_clip_info(file_path='home/user/test_folder/test_clip.avi', folder_id=1337, name='test_clip',
                             video_format='avi')
         self.assertEqual(res, {'fid': 1337, 'name': 'test_clip', 'video_format': 'avi', 'start_time': self.st,
                                'end_time': self.et, 'latitude': self.lat, 'longitude': self.lon, 'width': 256,
-                               'height': 240})
+                               'height': 240, 'frame_rate': 1337})
 
     def test_non_existing_clip(self):
         """
@@ -192,9 +192,10 @@ class GetClipDetails(TestCase):
         Test getting details of a clip. Should round down for duration.
         """
         type(mock.return_value).duration = 3.14
+        type(mock.return_value).fps = 42
         type(mock.return_value).w = 256
         type(mock.return_value).h = 240
-        self.assertEqual(get_clip_details('home/user/test_folder/test_clip.avi'), (3, 256, 240))
+        self.assertEqual(get_clip_details('home/user/test_folder/test_clip.avi'), (3, 42, 256, 240))
 
     def test_non_existing_clip(self):
         """

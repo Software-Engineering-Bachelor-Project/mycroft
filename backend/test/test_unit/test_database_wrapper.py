@@ -59,7 +59,7 @@ class BaseTestCases:
                                    end_time=timezone.now(), latitude=Decimal(value="13.37"),
                                    longitude=Decimal(value="0.42"), width=256, height=240, frame_rate=42.0)
             self.pid = create_project(name="test_project")
-            self.fid = create_filter(pid=self.pid, name="test_filter")
+            self.fid = create_filter(pid=self.pid)
             self.lat = Decimal(value="13.37")
             self.lon = Decimal(value="0.42")
             self.st = timezone.now() - timezone.timedelta(hours=1)
@@ -249,7 +249,7 @@ class GetAllFiltersFromProjectTest(BaseTestCases.ProjectTest):
         Create project and filter.
         """
         super().setUp()
-        self.fid = create_filter(pid=self.pid, name="test_filter")
+        self.fid = create_filter(pid=self.pid)
 
     def test_existing_filter(self):
         """
@@ -656,7 +656,7 @@ class CreateFilterTest(BaseTestCases.FilterTest):
         Test creating a filter with an existing pid
         """
         f = get_filter_by_id(self.fid)
-        self.assertEqual(f.name, "test_filter")
+        self.assertEqual(f.id, self.fid)
 
 
 class GetFilterByIdTest(BaseTestCases.FilterTest):
@@ -665,7 +665,7 @@ class GetFilterByIdTest(BaseTestCases.FilterTest):
         Test getting a filter by id.
         """
         f = get_filter_by_id(fid=self.fid)
-        self.assertEqual(f.name, "test_filter")
+        self.assertEqual(f.id, self.fid)
     # TODO: Test nonexistent fid
 
 
@@ -685,40 +685,7 @@ class DeleteFilterTest(BaseTestCases.FilterTest):
         self.assertEqual(Filter.objects.count(), 1)
 
 
-class AddCameraToFilterTest(BaseTestCases.FilterTest):
-    def test_existing_fid(self):
-        """
-        Test adding and removing a camera from a filter.
-        """
-        cm = get_camera_by_location(latitude=Decimal(value="13.37"), longitude=Decimal(value="0.42"))
-        add_camera_to_filter(fid=self.fid, cmid=cm.id)
-        self.assertEqual(len(get_all_cameras_in_filter(fid=self.fid)), 1)
-    # TODO: Test nonexistent fid
-    # TODO: Test adding the same camera multiple times
-
-
-class RemoveCameraFromFilterTest(BaseTestCases.FilterTest):
-    def test_existing(self):
-        """
-        Test adding and removing a camera from a filter.
-        """
-        cm = get_camera_by_location(latitude=Decimal(value="13.37"), longitude=Decimal(value="0.42"))
-        add_camera_to_filter(fid=self.fid, cmid=cm.id)
-        remove_camera_from_filter(fid=self.fid, cmid=cm.id)
-        self.assertEqual(len(get_all_cameras_in_filter(fid=self.fid)), 0)
-
-    # TODO: Test nonexistent fid
-
-
 class ModifyFilterTest(BaseTestCases.FilterTest):
-    def test_modify_name(self):
-        """
-        Test modifying name in filter.
-        """
-        # Change name
-        modify_filter(fid=self.fid, name="new_name")
-        f = get_filter_by_id(self.fid)
-        self.assertEqual(f.name, "new_name")
 
     def test_modify_time(self):
         """
@@ -763,6 +730,13 @@ class ModifyFilterTest(BaseTestCases.FilterTest):
 
         modify_filter(fid=self.fid, add_classes=["test_object"], remove_classes=["test_object"])
         self.assertEqual(len(get_all_classes_in_filter(fid=self.fid)), 1)
+
+    def test_modify_quality(self):
+        modify_filter(fid=self.fid, min_height=10, min_width=12, min_frame_rate=90)
+        filter = get_filter_by_id(self.fid)
+        self.assertEqual(filter.min_frame_rate, 90)
+        self.assertEqual(filter.min_height, 10)
+        self.assertEqual(filter.min_width, 12)
 
     def test_bad_time(self):
         """
@@ -863,3 +837,90 @@ class GetObjectsInDetectionTest(BaseTestCases.ObjectDetectionTest):
         assert len(get_objects_in_detection(odid=self.odid, start_time=self.st + timezone.timedelta(minutes=4),
                                             end_time=self.st + timezone.timedelta(minutes=12),
                                             object_classes=["test_object"])) == 1
+
+
+class GetAllMatchingCamerasInFilterTest(BaseTestCases.FilterTest):
+    def test_base(self):
+        pass  # Tested in AddMatchingCamerasToFilterTest
+
+
+class GetAllExcludedCamerasInFilterTest(BaseTestCases.FilterTest):
+    def test_base(self):
+        pass  # Tested in AddExcludedCamerasToFilterTest
+
+
+class GetAllIncludedCamerasInFilterTest(BaseTestCases.FilterTest):
+    def test_base(self):
+        pass  # Tested in AddIncludedCamerasToFilterTest
+
+
+class AddIncludedCamerasToFilterTest(BaseTestCases.FilterTest):
+    def test_existing_fid(self):
+        """
+        Test adding a including camera to a filter.
+        """
+        cm = get_camera_by_location(latitude=Decimal(value="13.37"), longitude=Decimal(value="0.42"))
+        add_included_camera_to_filter(fid=self.fid, cmid=cm.id)
+        self.assertEqual(len(get_all_included_cameras_in_filter(fid=self.fid)), 1)
+    # TODO: Test nonexistent fid
+    # TODO: Test adding the same camera multiple times
+
+
+class AddMatchingCamerasToFilterTest(BaseTestCases.FilterTest):
+    def test_existing_fid(self):
+        """
+        Test adding a matching camera to a filter.
+        """
+        cm = get_camera_by_location(latitude=Decimal(value="13.37"), longitude=Decimal(value="0.42"))
+        add_matching_camera_to_filter(fid=self.fid, cmid=cm.id)
+        self.assertEqual(len(get_all_matching_cameras_in_filter(fid=self.fid)), 1)
+    # TODO: Test nonexistent fid
+    # TODO: Test adding the same camera multiple times
+
+
+class AddExcludedCamerasToFilterTest(BaseTestCases.FilterTest):
+    def test_existing_fid(self):
+        """
+        Test adding a excluded camera to a filter.
+        """
+        cm = get_camera_by_location(latitude=Decimal(value="13.37"), longitude=Decimal(value="0.42"))
+        add_excluded_camera_to_filter(fid=self.fid, cmid=cm.id)
+        self.assertEqual(len(get_all_excluded_cameras_in_filter(fid=self.fid)), 1)
+    # TODO: Test nonexistent fid
+    # TODO: Test adding the same camera multiple times
+
+
+class RemoveIncludedCamerasFromFilterTest(BaseTestCases.FilterTest):
+    def test_existing_camera(self):
+        """
+        Test Removing a camera from a filter.
+        """
+        cm = get_camera_by_location(latitude=Decimal(value="13.37"), longitude=Decimal(value="0.42"))
+        add_included_camera_to_filter(fid=self.fid, cmid=cm.id)
+        remove_included_camera_from_filter(fid=self.fid, cmid=cm.id)
+        self.assertEqual(len(get_all_included_cameras_in_filter(fid=self.fid)), 0)
+        # TODO: Test nonexistent fid
+
+
+class RemoveMatchingCamerasFromFilterTest(BaseTestCases.FilterTest):
+    def test_existing_camera(self):
+        """
+        Test Removing a camera from a filter.
+        """
+        cm = get_camera_by_location(latitude=Decimal(value="13.37"), longitude=Decimal(value="0.42"))
+        add_matching_camera_to_filter(fid=self.fid, cmid=cm.id)
+        remove_matching_camera_from_filter(fid=self.fid, cmid=cm.id)
+        self.assertEqual(len(get_all_matching_cameras_in_filter(fid=self.fid)), 0)
+    # TODO: Test nonexistent fid
+
+
+class RemoveExcludedCamerasFromFilterTest(BaseTestCases.FilterTest):
+    def test_existing_camera(self):
+        """
+        Test Removing a camera from a filter.
+        """
+        cm = get_camera_by_location(latitude=Decimal(value="13.37"), longitude=Decimal(value="0.42"))
+        add_excluded_camera_to_filter(fid=self.fid, cmid=cm.id)
+        remove_excluded_camera_from_filter(fid=self.fid, cmid=cm.id)
+        self.assertEqual(len(get_all_excluded_cameras_in_filter(fid=self.fid)), 0)
+    # TODO: Test nonexistent fid

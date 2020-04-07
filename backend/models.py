@@ -126,8 +126,10 @@ class Filter(models.Model):
         Uses protect for object class so the object class can't be deleted if the filter still exists.
     """
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
-    cameras = models.ManyToManyField(Camera)
-    name = models.CharField(max_length=200)
+    matching_cameras = models.ManyToManyField(Camera, related_name="filter")
+    included_cameras = models.ManyToManyField(Camera, related_name="included_in_filter")
+    excluded_cameras = models.ManyToManyField(Camera, related_name="excluded_in_filter")
+
     latitude = models.DecimalField(
         'latitude (degrees)', max_digits=10, decimal_places=8,
         null=True, blank=True,
@@ -142,6 +144,9 @@ class Filter(models.Model):
     start_time = models.DateTimeField('start time', null=True, blank=True)
     end_time = models.DateTimeField('end time', null=True, blank=True)
     classes = models.ManyToManyField(ObjectClass)
+    min_width = models.PositiveIntegerField("Minimum width", null=True, blank=True)
+    min_height = models.PositiveIntegerField("Minimum Height", null=True, blank=True)
+    min_frame_rate = models.PositiveIntegerField("Minimum frame Rate", null=True, blank=True)
 
     def __str__(self):
         return self.name

@@ -1,0 +1,73 @@
+from rest_framework import serializers
+import sys, inspect
+
+from .models import Project, Folder, Filter, Camera, ObjectDetection, Object, ObjectClass, Clip
+
+
+class FolderSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField()
+
+    class Meta:
+        model = Folder
+        fields = '__all__'
+
+
+class ProjectSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField()
+
+    class Meta:
+        model = Project
+        fields = '__all__'
+
+
+class CameraSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField()
+
+    class Meta:
+        model = Camera
+        fields = '__all__'
+
+
+class ObjectClassSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField()
+
+    class Meta:
+        model = ObjectClass
+        fields = '__all__'
+
+
+class FilterSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField()
+
+    class Meta:
+        model = Filter
+        fields = '__all__'
+
+
+class ObjectDetectionSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField()
+
+    class Meta:
+        model = ObjectDetection
+        fields = '__all__'
+
+
+class ObjectSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField()
+
+    class Meta:
+        model = Object
+        fields = '__all__'
+
+
+class ClipSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField()
+
+    class Meta:
+        model = Clip
+        fields = '__all__'
+
+
+# Create a dict with all models and their corresponding model serializers.
+MODEL_TO_SERIALIZER = {cls.Meta.model: cls for name, cls in inspect.getmembers(sys.modules[__name__], inspect.isclass)
+                       if issubclass(cls, serializers.ModelSerializer)}

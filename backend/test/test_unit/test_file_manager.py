@@ -1,5 +1,4 @@
 from unittest.mock import patch, mock_open
-
 from django.test import TestCase
 
 # Import module
@@ -11,51 +10,120 @@ METADATA_EXAMPLE = "59°23'19.2\"N 17°55'35.4\"E   (59.388668, 17.926501)\n2018
 
 class GetFoldersTest(TestCase):
 
-    def test_simple_call(self):
+    def setUp(self) -> None:
         """
-        Makes a simple call to the get_folders function.
-        This test will probably be refactored in the future.
-        :return: None
+        Set up a complex file structure.
         """
-        res = get_folders({})
-        self.assertEqual(res[0], 200)
+        self.rf = Folder.objects.create(path='home/user/', name='test_folder')
+        self.sf = Folder.objects.create(path='home/user/test_folder/', name='test_subfolder')
+
+    @patch('backend.file_manager.get_subfolders_recursive')
+    @patch('backend.file_manager.get_folders_in_project')
+    def test_basic_call(self, mock_get_folders_in_project, mock_get_subfolders_recursive):
+        """
+        Test with a complex file structure.
+        """
+        mock_get_folders_in_project.return_value = [self.rf]
+        mock_get_subfolders_recursive.return_value = [self.sf]
+        code, res = get_folders(data={PROJECT_ID: 1})
+        mock_get_folders_in_project.assert_called_once_with(pid=1)
+        mock_get_subfolders_recursive.assert_called_once_with(fid=self.rf.id)
+        self.assertEqual(code, 200)
+        self.assertEqual(len(res), 2)
+
+    @patch('backend.file_manager.get_subfolders_recursive')
+    @patch('backend.file_manager.get_folders_in_project')
+    def test_redundant_parameter(self, mock_get_folders_in_project, mock_get_subfolders_recursive):
+        """
+        Test with a redundant parameter.
+        """
+        mock_get_folders_in_project.return_value = [self.rf]
+        mock_get_subfolders_recursive.return_value = [self.sf]
+        code, res = get_folders(data={PROJECT_ID: 1, FOLDER_ID: 42})
+        mock_get_folders_in_project.assert_called_once_with(pid=1)
+        mock_get_subfolders_recursive.assert_called_once_with(fid=self.rf.id)
+        self.assertEqual(code, 200)
+        self.assertEqual(len(res), 2)
+
+    def test_missing_parameter(self):
+        """
+        Test with a missing parameter.
+        """
+        code, res = get_folders(data={FOLDER_ID: 42})
+        self.assertEqual(code, 400)
+        self.assertEqual(res, {})
+
+    def test_non_existing_project(self):
+        """
+        Test with a project id that doesn't exist.
+        """
+        code, res = get_folders(data={PROJECT_ID: 42})
+        self.assertEqual(code, 204)
+        self.assertEqual(res, {})
 
 
 class AddFoldersTest(TestCase):
 
-    def test_simple_call(self):
+    @patch('backend.file_manager.add_folder_to_project')
+    @patch('backend.file_manager.create_root_folder')
+    @patch('backend.file_manager.split_file_path')
+    def test_simple_call(self, mock_split_file_path, mock_create_root_folder, mock_add_folder_to_project):
         """
-        Makes a simple call to the add_folders function.
-        This test will probably be refactored in the future.
-        :return: None
+        Test adding a folder to a project.
         """
-        res = add_folders({})
-        self.assertEqual(res[0], 200)
+        mock_split_file_path.return_value = 'home/user/', 'test_folder'
+        mock_create_root_folder.return_value = 42
+        mock_add_folder_to_project.return_value = 1337
+        code, res = add_folder({PROJECT_ID: 1, FILE_PATH: 'home/user/test_folder'})
+        mock_split_file_path.assert_called_once_with(file_path='home/user/test_folder')
+        mock_add_folder_to_project.assert_called_once_with(fid=42, pid=1)
+        self.assertEqual(code, 200)
+        self.assertEqual(res, {FOLDER_ID: 42})
+
+    def test_missing_parameter(self):
+        """
+        Test with a missing parameter.
+        """
+        code, res = add_folder({FILE_PATH: 'home/user/test_folder'})
+        self.assertEqual(code, 400)
+        self.assertEqual(res, {})
+
+    def test_bad_file_path(self):
+        """
+        Test with a bad file path.
+        """
+        code, res = add_folder({FILE_PATH: 'test_folder'})
+        self.assertEqual(code, 400)
+        self.assertEqual(res, {})
+
+    @patch('backend.file_manager.split_file_path')
+    def test_non_existing_project(self, mock_split_file_path):
+        """
+        Test with a project id that doesn't exist.
+        """
+        mock_split_file_path.return_value = 'home/user/', 'test_folder'
+        code, res = add_folder(data={PROJECT_ID: 42, FILE_PATH: 'home/user/test_folder'})
+        self.assertEqual(code, 204)
+        self.assertEqual(res, {})
 
 
 class BuildFileStructureTest(TestCase):
 
     @patch('backend.file_manager.create_root_folder')
     @patch('backend.file_manager.traverse_subfolders')
-    @patch('os.path')
-    def test_function(self, mock_os_path, mock_traverse_subfolders, mock_create_root_folder):
+    @patch('backend.file_manager.split_file_path')
+    def test_function(self, mock_split_file_path, mock_traverse_subfolders, mock_create_root_folder):
         """
         Test that a function for create_root_folder and traverse_folder is called with appropriate arguments.
         """
-        mock_os_path.sep = '/'
-        mock_os_path.join.return_value = 'home/user/'
+        mock_split_file_path.return_value = 'home/user/', 'test_folder'
         mock_traverse_subfolders.return_value = None
         mock_create_root_folder.return_value = 1337
 
         build_file_structure('home/user/test_folder')
-        mock_create_root_folder.assert_called_with(path='home/user/', name='test_folder')
-        mock_traverse_subfolders.assert_called_with(path='home/user/test_folder', parent_id=1337)
-
-    def test_no_path(self):
-        """
-        Test giving function a clip without path. Should give ValueError.
-        """
-        self.assertRaises(ValueError, build_file_structure, file_path='test_clip.avi')
+        mock_split_file_path.assert_called_once_with(file_path='home/user/test_folder')
+        mock_create_root_folder.assert_called_once_with(path='home/user/', name='test_folder')
+        mock_traverse_subfolders.assert_called_once_with(path='home/user/test_folder', parent_id=1337)
 
 
 class TraverseSubfoldersTest(TestCase):
@@ -184,7 +252,7 @@ class ParseMetadataTest(TestCase):
         self.assertRaises(ValueError, parse_metadata, file_path='home/user/test_folder/test_clip.avi')
 
 
-class GetClipDetails(TestCase):
+class GetClipDetailsTest(TestCase):
 
     @patch('backend.file_manager.VideoFileClip')
     def test_valid_clip(self, mock):
@@ -202,3 +270,21 @@ class GetClipDetails(TestCase):
         Test calling function with non existing clip.
         """
         self.assertRaises(FileNotFoundError, get_clip_details, file_path='home/user/test_folder/no_clip.avi')
+
+
+class SplitFilePathTest(TestCase):
+
+    @patch('os.path')
+    def test_valid_path(self, mock_os_path):
+        """
+        Test with a valid path.
+        """
+        mock_os_path.sep = '/'
+        mock_os_path.join.return_value = 'home/user/'
+        self.assertEqual(split_file_path('home/user/test_folder'), ('home/user/', 'test_folder'))
+
+    def test_no_path(self):
+        """
+        Test giving function a clip without path. Should give ValueError.
+        """
+        self.assertRaises(ValueError, split_file_path, file_path='test_clip.avi')

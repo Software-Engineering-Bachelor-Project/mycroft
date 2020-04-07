@@ -4,6 +4,8 @@ from django.conf import settings
 from moviepy.video.io.VideoFileClip import VideoFileClip
 
 from .database_wrapper import *
+from .communication_parameters import *
+from .serialization import *
 
 # This file represents the backend File Manager.
 
@@ -16,13 +18,55 @@ VIDEO_FORMATS = ["mkv", "flv", "vob", "ogv", "ogg",
 
 
 def get_folders(data: dict) -> (int, dict):
-    # TODO: Implement
-    return 200, {}
+    """
+    Get all folders in a project.
+
+    :param data: Project id.
+    :return: Status code, all folders in project in JSON.
+    """
+    try:
+        pid = data[PROJECT_ID]
+    except KeyError or AssertionError:
+        return 400, {}  # Bad request
+
+    try:
+        root_folders = get_folders_in_project(pid=pid)
+    except AssertionError:
+        return 204, {}  # No content
+
+    folders = root_folders[::1]
+    for f in root_folders:
+        folders += get_subfolders_recursive(fid=f.id)
+
+    return 200, serialize(folders)
 
 
-def add_folders(data: dict) -> (int, dict):
-    # TODO: Implement
-    return 200, {}
+def add_folder(data: dict) -> (int, dict):
+    """
+    Adds a folder to a project.
+
+    :param data: Project id and (absolute) file path to folder.
+    :return: Status code, id of given folder.
+    """
+    try:
+        pid = data[PROJECT_ID]
+        file_path = data[FILE_PATH]
+    except KeyError or ValueError or AssertionError:
+        return 400, {}  # Bad request
+
+    try:
+        path, name = split_file_path(file_path=file_path)
+    except ValueError:
+        return 400, {}  # Bad request
+
+    fid = create_root_folder(path=path, name=name)
+
+    try:
+        add_folder_to_project(fid=fid, pid=pid)
+    except AssertionError:
+        return 204, {}  # No content
+
+    return 200, {FOLDER_ID: fid}
 
 
 def build_file_structure(file_path: str) -> None:
@@ -32,11 +76,7 @@ def build_file_structure(file_path: str) -> None:
     :param file_path: Absolute path to folder in file system.
     """
     # Divide folder path in name and path.
-    split = file_path.rsplit(sep=os.path.sep, maxsplit=1)
-    if len(split) != 2:
-        raise ValueError("Given file path is not valid.")
-    path = os.path.join(split[0], '')  # Add delimiter to path
-    name = split[-1]
+    path, name = split_file_path(file_path=file_path)
 
     # Create root and set parent id.
     parent_id = create_root_folder(path=path, name=name)
@@ -161,3 +201,21 @@ def get_clip_details(file_path: str) -> (int, float, int, int):
         return int(vfc.duration), vfc.fps, vfc.w, vfc.h
     except OSError:
         raise FileNotFoundError
+
+
+def split_file_path(file_path: str) -> (str, str):
+    """
+    Splits a file path for path and name.
+
+    E.g. home/user/folder -> (home/user/, folder)
+
+    :param file_path: A file path.
+    :return: The path and the name in the given file path as a tuple.
+    """
+    split = file_path.rsplit(sep=os.path.sep, maxsplit=1)
+    if len(split) != 2:
+        raise ValueError("Given file path is not valid.")
+    path = os.path.join(split[0], '')  # Add delimiter to path
+    name = split[-1]
+
+    return path, name

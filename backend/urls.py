@@ -22,7 +22,7 @@ urlpatterns = [
     path('video/get_stream', views.video_get_stream, name='video stream'),
 
     path('file/get_folders', views.file_get_folders, name='file get folders'),
-    path('file/add_folders', views.file_add_folders, name='file add folders'),
+    path('file/add_folder', views.file_add_folder, name='file add folder'),
 
     path('object_detection/detect_objects', views.detect_objects, name='detect objects'),
 ]

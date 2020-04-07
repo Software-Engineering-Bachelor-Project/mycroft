@@ -357,6 +357,36 @@ def get_all_clips_from_folder_recursive(fid: int) -> List[Clip]:
     return res
 
 
+def get_all_clips_matching_filter(fid: int) -> List[Clip]:
+    """
+    :param fid: The filter the clips should match
+    :return: A list of all clips that is part of the project
+    """
+
+    filter = get_filter_by_id(fid)
+    assert filter is not None
+    clips = get_all_clips_in_project(filter.project.id)
+    res = []
+
+    for clip in clips:
+        if clip.clip_match_filter(filter):
+            res.append(clip)
+    return res
+
+
+def get_all_clips_in_project(pid: int) -> List[Clip]:
+    """
+    :param pid: the id of the project
+    :return: A list of all clips that is part of the project
+    """
+    folders = get_folders_in_project(pid)
+    clips = []
+
+    for folder in folders:
+        clips.extend(get_all_clips_from_folder_recursive(folder.id))
+    return clips
+
+
 # --- Camera ---
 
 def get_camera_by_id(cmid: int) -> Optional[Camera]:
@@ -476,33 +506,6 @@ def get_all_filters_from_project(pid: int) -> List[Filter]:
     return p.filter_set.all()[::1]
 
 
-def add_matching_camera_to_filter(fid: int, cmid: int) -> None:
-    """
-    Adds a camera to a filter.
-
-    :param fid: The filter's id.
-    :param cmid: The camera's id.
-    """
-    f = get_filter_by_id(fid=fid)
-    assert f is not None
-    cm = get_camera_by_id(cmid=cmid)
-    assert cm is not None
-    f.matching_cameras.add(cm)
-
-
-def remove_matching_camera_from_filter(fid: int, cmid: int) -> None:
-    """
-    Removes a camera from a filter.
-
-    :param fid: The filter's id.
-    :param cmid: The camera's id.
-    """
-    f = get_filter_by_id(fid=fid)
-    assert f is not None
-    cm = get_camera_by_id(cmid=cmid)
-    assert cm is not None
-    f.matching_cameras.remove(cm)
-
 def add_included_camera_to_filter(fid: int, cmid: int) -> None:
     """
     Removes a camera from a filter.
@@ -544,6 +547,7 @@ def add_excluded_camera_to_filter(fid: int, cmid: int) -> None:
     assert cm is not None
     f.excluded_cameras.add(cm)
 
+
 def remove_excluded_camera_from_filter(fid: int, cmid: int) -> None:
     """
     Removes a excluded camera from a filter.
@@ -556,19 +560,6 @@ def remove_excluded_camera_from_filter(fid: int, cmid: int) -> None:
     cm = get_camera_by_id(cmid=cmid)
     assert cm is not None
     f.excluded_cameras.remove(cm)
-
-
-
-def get_all_matching_cameras_in_filter(fid: int) -> List[Camera]:
-    """
-    Gets all matching cameras in filter.
-    
-    :param fid: The id of the filter.
-    :return: A list of cameras.
-    """
-    f = get_filter_by_id(fid=fid)
-    assert f is not None
-    return f.matching_cameras.all()[::1]
 
 
 def get_all_included_cameras_in_filter(fid: int) -> List[Camera]:
@@ -594,7 +585,8 @@ def get_all_excluded_cameras_in_filter(fid: int) -> List[Camera]:
     assert f is not None
     return f.excluded_cameras.all()[::1]
 
-def modify_filter(fid: int, name: str = None, latitude: Decimal = None, longitude: Decimal = None, radius: int = None,
+
+def modify_filter(fid: int, latitude: Decimal = None, longitude: Decimal = None, radius: int = None,
                   start_time: timezone.datetime = None, end_time: timezone.datetime = None,
                   add_classes: List[str] = None, remove_classes: List[str] = None, min_width: int = None,
                   min_height: int = None, min_frame_rate: int = None) -> None:
@@ -619,8 +611,6 @@ def modify_filter(fid: int, name: str = None, latitude: Decimal = None, longitud
     """
     f = get_filter_by_id(fid=fid)
     assert f is not None
-    if name is not None:
-        f.name = name
     if latitude is not None:
         f.latitude = latitude
     if longitude is not None:

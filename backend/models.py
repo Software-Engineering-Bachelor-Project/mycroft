@@ -1,7 +1,8 @@
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.core.exceptions import ValidationError
-
+from django.utils import timezone
+from decimal import Decimal
 
 INT_MAX_VALUE = 2147483647
 
@@ -53,7 +54,7 @@ class Project(models.Model):
     """
     name = models.CharField(max_length=200)
     created = models.DateTimeField('created', auto_now_add=True, editable=False)
-    last_updated = models.DateTimeField('last updated', auto_now= True, editable=True)
+    last_updated = models.DateTimeField('last updated', auto_now=True, editable=True)
     folders = models.ManyToManyField(Folder)
 
     def __str__(self):
@@ -92,7 +93,7 @@ class Camera(models.Model):
         return "Camera at ({0}, {1})".format(self.latitude, self.longitude)
 
     def clean(self):
-        if self.start_time is not None and self.start_time> self.end_time:
+        if self.start_time is not None and self.start_time > self.end_time:
             raise ValidationError("Start time must be before end time.")
 
     def save(self, *args, **kwargs):
@@ -126,7 +127,6 @@ class Filter(models.Model):
         Uses protect for object class so the object class can't be deleted if the filter still exists.
     """
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
-    matching_cameras = models.ManyToManyField(Camera, related_name="filter")
     included_cameras = models.ManyToManyField(Camera, related_name="included_in_filter")
     excluded_cameras = models.ManyToManyField(Camera, related_name="excluded_in_filter")
 
@@ -149,7 +149,7 @@ class Filter(models.Model):
     min_frame_rate = models.PositiveIntegerField("Minimum frame Rate", null=True, blank=True)
 
     def __str__(self):
-        return self.name
+        return self.id
 
     def clean(self):
         if self.start_time is not None and self.end_time is not None and self.start_time > self.end_time:
@@ -178,7 +178,7 @@ class ObjectDetection(models.Model):
     end_time = models.DateTimeField('end time')
 
     def __str__(self):
-        return "Object detection from {0} to {1} with {2} as sample rate"\
+        return "Object detection from {0} to {1} with {2} as sample rate" \
             .format(self.start_time, self.end_time, self.sample_rate)
 
     def clean(self):
@@ -261,3 +261,64 @@ class Clip(models.Model):
             self.camera.end_time = max(self.end_time, self.camera.end_time)
         self.camera.save()
         super().save(*args, **kwargs)
+
+    def clip_match_filter(self, filter: Filter) -> bool:
+        """
+        Does the clip match the given filter
+        Note: requires that the clip is part of the same project as the filter.
+
+        :param filter: The filter that the clip is matched against
+        :return: Whether the clip matches the given filter
+        """
+
+        # Test if the camera always should be excluded from filter
+        if self.camera in filter.excluded_cameras.all():
+            return False
+        # test if camera always should be included in filter
+        if self.camera in filter.included_cameras.all():
+            return True
+
+        # Test if the clip is within time boundaries
+        if (filter.start_time is not None) and (filter.end_time is not None) and \
+                not overlap(self.start_time, self.end_time, filter.start_time, filter.end_time):
+            return False
+
+        # Test that the camera the clip belongs to is inside the filters radius
+        if (filter.longitude is not None) and (filter.latitude is not None) and (filter.radius is not None) and \
+                (not distance(self.camera.longitude, self.camera.latitude, filter.longitude,
+                              filter.latitude) <= filter.radius):
+            return False
+
+        return True
+        # TODO: add support for classes
+        # TODO: add support for quality
+
+
+def overlap(s1: timezone.datetime, e1: timezone.datetime, s2: timezone.datetime, e2: timezone.datetime) -> bool:
+    """
+    Check whether timespan 1 overlaps timespan 2
+    :param s1: Start time of timespan 1
+    :param e1: End time of timespan 1
+    :param s2: Start time of timespan 2
+    :param e2: End time of timespan 2
+    :return: whether timespan 1 overlaps timespan 2
+    """
+
+    if (s1 <= s2 <= e1) or (s2 <= s1 <= e2):  # Start of one span between the start and end of the other
+        return True
+    if (s1 <= s2 <= e2 <= s1) or (s2 <= s1 <= e1 <= s2):  # one span is totaly within the other
+        return True
+    else:
+        return False
+
+
+def distance(lon1: Decimal, lat1: Decimal, lon2: Decimal, lat2: Decimal):
+    """
+    get the distance between point 1 and 2
+    :param lon1: Longitude of point 1
+    :param lat1: latitude of point 1
+    :param lon2: Longitude of point 2
+    :param lat2: latitude of point 2
+    :return: whether timespan 1 overlaps timespan 2
+    """
+    return Decimal.sqrt((lon1 - lon2) ** 2 + (lat1 - lat2) ** 2)

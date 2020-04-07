@@ -54,14 +54,15 @@ class BaseTestCases:
             Create a folder, clip, project and filter.
             """
             self.rid = create_root_folder(path="/home/user/", name="test_folder")
-            self.cid = create_clip(fid=self.rid, name="test_clip", video_format="tvf",
-                                   start_time=timezone.now() - timezone.timedelta(hours=1),
-                                   end_time=timezone.now(), latitude=Decimal(value="13.37"),
-                                   longitude=Decimal(value="0.42"), width=256, height=240, frame_rate=42.0)
-            self.pid = create_project(name="test_project")
-            self.fid = create_filter(pid=self.pid)
             self.lat = Decimal(value="13.37")
             self.lon = Decimal(value="0.42")
+            self.cid = create_clip(fid=self.rid, name="test_clip", video_format="tvf",
+                                   start_time=timezone.now() - timezone.timedelta(hours=1),
+                                   end_time=timezone.now(), latitude=self.lat,
+                                   longitude=self.lon, width=256, height=240)
+            self.pid = create_project(name="test_project")
+            self.fid = create_filter(pid=self.pid)
+
             self.st = timezone.now() - timezone.timedelta(hours=1)
             self.et = timezone.now()
 
@@ -866,18 +867,6 @@ class AddIncludedCamerasToFilterTest(BaseTestCases.FilterTest):
     # TODO: Test adding the same camera multiple times
 
 
-class AddMatchingCamerasToFilterTest(BaseTestCases.FilterTest):
-    def test_existing_fid(self):
-        """
-        Test adding a matching camera to a filter.
-        """
-        cm = get_camera_by_location(latitude=Decimal(value="13.37"), longitude=Decimal(value="0.42"))
-        add_matching_camera_to_filter(fid=self.fid, cmid=cm.id)
-        self.assertEqual(len(get_all_matching_cameras_in_filter(fid=self.fid)), 1)
-    # TODO: Test nonexistent fid
-    # TODO: Test adding the same camera multiple times
-
-
 class AddExcludedCamerasToFilterTest(BaseTestCases.FilterTest):
     def test_existing_fid(self):
         """
@@ -902,18 +891,6 @@ class RemoveIncludedCamerasFromFilterTest(BaseTestCases.FilterTest):
         # TODO: Test nonexistent fid
 
 
-class RemoveMatchingCamerasFromFilterTest(BaseTestCases.FilterTest):
-    def test_existing_camera(self):
-        """
-        Test Removing a camera from a filter.
-        """
-        cm = get_camera_by_location(latitude=Decimal(value="13.37"), longitude=Decimal(value="0.42"))
-        add_matching_camera_to_filter(fid=self.fid, cmid=cm.id)
-        remove_matching_camera_from_filter(fid=self.fid, cmid=cm.id)
-        self.assertEqual(len(get_all_matching_cameras_in_filter(fid=self.fid)), 0)
-    # TODO: Test nonexistent fid
-
-
 class RemoveExcludedCamerasFromFilterTest(BaseTestCases.FilterTest):
     def test_existing_camera(self):
         """
@@ -924,3 +901,62 @@ class RemoveExcludedCamerasFromFilterTest(BaseTestCases.FilterTest):
         remove_excluded_camera_from_filter(fid=self.fid, cmid=cm.id)
         self.assertEqual(len(get_all_excluded_cameras_in_filter(fid=self.fid)), 0)
     # TODO: Test nonexistent fid
+
+
+class GetAllClipsInProject(BaseTestCases.ClipTest):
+    def setUp(self) -> None:
+        super().setUp()
+        self.pid = create_project(name="test_project")
+        add_folder_to_project(self.fid, self.pid)
+
+    def test_one_clip(self):
+        self.assertEqual(get_all_clips_in_project(self.pid)[0].id, self.cid)
+
+    # TODO: add mor advanced tests, EG: subfolders, several clips
+
+
+class GetAllMatchingClipsInFilter(BaseTestCases.FilterTest):
+    def setUp(self) -> None:
+        super().setUp()
+        add_folder_to_project(self.fid, self.pid)
+        self.filter = create_filter(self.pid)
+
+    def test_filter_without_params(self):
+        """
+        Test getting clips without any params in filter
+        """
+        clips = get_all_clips_matching_filter(self.filter)
+        self.assertEqual(clips[0].id, self.cid)
+
+    def test_inside_radius(self):
+        """
+        Test getting clips where the radius and location has been specified and the clip is inside it
+        """
+        modify_filter(self.filter, self.lat, self.lon, 10)
+        clips = get_all_clips_matching_filter(self.filter)
+        self.assertEqual(clips[0].id, self.cid)
+
+    def test_outside_radius(self):
+        """
+        Test getting clips where the radius and location has been specified and the clip is outside it
+        """
+        modify_filter(self.filter, self.lat + Decimal(value="11.0"), self.lon + Decimal(value="11.0"), 10)
+        clips = get_all_clips_matching_filter(self.filter)
+        self.assertEqual(clips, [])
+
+    def test_inside_time_span(self):
+        """
+        Test getting clips where the time span has been specified and the clip is inside it
+        """
+        modify_filter(self.filter, start_time=timezone.now() - timezone.timedelta(hours=1), end_time=timezone.now())
+        clips = get_all_clips_matching_filter(self.filter)
+        self.assertEqual(clips[0].id, self.cid)
+
+    def test_outside_time_span(self):
+        """
+        Test getting clips where the time span has been specified and the clip is outside it
+        """
+        modify_filter(self.filter, start_time=timezone.now() - timezone.timedelta(hours=3),
+                      end_time=timezone.now() - timezone.timedelta(hours=2))
+        clips = get_all_clips_matching_filter(self.filter)
+        self.assertEqual(clips, [])

@@ -99,9 +99,9 @@ class UrlsTest(TestCase):
         :return: None
         '''
 
-        url = reverse('backend:file add folders')
+        url = reverse('backend:file add folder')
         resolver = resolve(url)
-        self.assertEqual(resolver.func, file_add_folders)
+        self.assertEqual(resolver.func, file_add_folder)
 
     def test_object_detection(self):
         '''

@@ -102,12 +102,12 @@ def file_get_folders(request):
     return Response(data[1], data[0])
 
 @api_view(['POST'])
-def file_add_folders(request):
+def file_add_folder(request):
     """
-    Delegates a 'add folders' request to the File Manager.
+    Delegates a 'add folder' request to the File Manager.
     :return: A response from the File Manager.
     """
-    data = file_manager.add_folders(request.data)
+    data = file_manager.add_folder(request.data)
     return Response(data[1], data[0])
 
 

@@ -185,14 +185,14 @@ class FileAddFoldersTest(TestCase):
         :return: None
         '''
         # Set up mock
-        mock_mod.add_folders.return_value = (200, {})
+        mock_mod.add_folder.return_value = (200, {})
 
         # Test function
         req = APIRequestFactory().post('', {'test': 'data'})
-        response = views.file_add_folders(req)
+        response = views.file_add_folder(req)
         
         # Did we propagate properly?
-        mock_mod.add_folders.assert_called_with(QueryDict('test=data'))
+        mock_mod.add_folder.assert_called_with(QueryDict('test=data'))
 
 
 class DetectObjectsTest(TestCase):

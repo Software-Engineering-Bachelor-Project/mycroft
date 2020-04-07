@@ -54,14 +54,15 @@ class BaseTestCases:
             Create a folder, clip, project and filter.
             """
             self.rid = create_root_folder(path="/home/user/", name="test_folder")
-            self.cid = create_clip(fid=self.rid, name="test_clip", video_format="tvf",
-                                   start_time=timezone.now() - timezone.timedelta(hours=1),
-                                   end_time=timezone.now(), latitude=Decimal(value="13.37"),
-                                   longitude=Decimal(value="0.42"), width=256, height=240, frame_rate=42.0)
-            self.pid = create_project(name="test_project")
-            self.fid = create_filter(pid=self.pid, name="test_filter")
             self.lat = Decimal(value="13.37")
             self.lon = Decimal(value="0.42")
+            self.cid = create_clip(fid=self.rid, name="test_clip", video_format="tvf",
+                                   start_time=timezone.now() - timezone.timedelta(hours=1),
+                                   end_time=timezone.now(), latitude=self.lat,
+                                   longitude=self.lon, width=256, height=240, frame_rate=42.0)
+            self.pid = create_project(name="test_project")
+            self.fid = create_filter(pid=self.pid)
+
             self.st = timezone.now() - timezone.timedelta(hours=1)
             self.et = timezone.now()
 
@@ -108,6 +109,7 @@ class GetProjectByIdTest(BaseTestCases.ProjectTest):
 
 
 class GetProjectByNameTest(BaseTestCases.ProjectTest):
+
     def single_existing_name(self):
         """
         Test getting the test project by name.
@@ -249,7 +251,7 @@ class GetAllFiltersFromProjectTest(BaseTestCases.ProjectTest):
         Create project and filter.
         """
         super().setUp()
-        self.fid = create_filter(pid=self.pid, name="test_filter")
+        self.fid = create_filter(pid=self.pid)
 
     def test_existing_filter(self):
         """
@@ -656,7 +658,7 @@ class CreateFilterTest(BaseTestCases.FilterTest):
         Test creating a filter with an existing pid
         """
         f = get_filter_by_id(self.fid)
-        self.assertEqual(f.name, "test_filter")
+        self.assertEqual(f.id, self.fid)
 
 
 class GetFilterByIdTest(BaseTestCases.FilterTest):
@@ -665,7 +667,7 @@ class GetFilterByIdTest(BaseTestCases.FilterTest):
         Test getting a filter by id.
         """
         f = get_filter_by_id(fid=self.fid)
-        self.assertEqual(f.name, "test_filter")
+        self.assertEqual(f.id, self.fid)
     # TODO: Test nonexistent fid
 
 
@@ -685,40 +687,7 @@ class DeleteFilterTest(BaseTestCases.FilterTest):
         self.assertEqual(Filter.objects.count(), 1)
 
 
-class AddCameraToFilterTest(BaseTestCases.FilterTest):
-    def test_existing_fid(self):
-        """
-        Test adding and removing a camera from a filter.
-        """
-        cm = get_camera_by_location(latitude=Decimal(value="13.37"), longitude=Decimal(value="0.42"))
-        add_camera_to_filter(fid=self.fid, cmid=cm.id)
-        self.assertEqual(len(get_all_cameras_in_filter(fid=self.fid)), 1)
-    # TODO: Test nonexistent fid
-    # TODO: Test adding the same camera multiple times
-
-
-class RemoveCameraFromFilterTest(BaseTestCases.FilterTest):
-    def test_existing(self):
-        """
-        Test adding and removing a camera from a filter.
-        """
-        cm = get_camera_by_location(latitude=Decimal(value="13.37"), longitude=Decimal(value="0.42"))
-        add_camera_to_filter(fid=self.fid, cmid=cm.id)
-        remove_camera_from_filter(fid=self.fid, cmid=cm.id)
-        self.assertEqual(len(get_all_cameras_in_filter(fid=self.fid)), 0)
-
-    # TODO: Test nonexistent fid
-
-
 class ModifyFilterTest(BaseTestCases.FilterTest):
-    def test_modify_name(self):
-        """
-        Test modifying name in filter.
-        """
-        # Change name
-        modify_filter(fid=self.fid, name="new_name")
-        f = get_filter_by_id(self.fid)
-        self.assertEqual(f.name, "new_name")
 
     def test_modify_time(self):
         """
@@ -728,17 +697,6 @@ class ModifyFilterTest(BaseTestCases.FilterTest):
         f = get_filter_by_id(self.fid)
         self.assertEqual(f.start_time, self.st)
         self.assertEqual(f.end_time, self.et)
-        self.assertIsNone(f.radius)
-
-    def test_modify_position(self):
-        """
-        Test modifying position and radius in filter.
-        """
-        modify_filter(fid=self.fid, latitude=self.lat, longitude=self.lon, radius=1337)
-        f = get_filter_by_id(self.fid)
-        self.assertEqual(f.latitude, self.lat)
-        self.assertEqual(f.longitude, self.lon)
-        self.assertEqual(f.radius, 1337)
 
     def test_modify_start_time(self):
         """
@@ -763,6 +721,13 @@ class ModifyFilterTest(BaseTestCases.FilterTest):
 
         modify_filter(fid=self.fid, add_classes=["test_object"], remove_classes=["test_object"])
         self.assertEqual(len(get_all_classes_in_filter(fid=self.fid)), 1)
+
+    def test_modify_quality(self):
+        modify_filter(fid=self.fid, min_height=10, min_width=12, min_frame_rate=90)
+        filter = get_filter_by_id(self.fid)
+        self.assertEqual(filter.min_frame_rate, 90)
+        self.assertEqual(filter.min_height, 10)
+        self.assertEqual(filter.min_width, 12)
 
     def test_bad_time(self):
         """
@@ -863,3 +828,147 @@ class GetObjectsInDetectionTest(BaseTestCases.ObjectDetectionTest):
         assert len(get_objects_in_detection(odid=self.odid, start_time=self.st + timezone.timedelta(minutes=4),
                                             end_time=self.st + timezone.timedelta(minutes=12),
                                             object_classes=["test_object"])) == 1
+
+
+class GetAllExcludedClipsInFilterTest(BaseTestCases.FilterTest):
+    def test_base(self):
+        pass  # Tested in AddExcludedCamerasToFilterTest
+
+
+class GetAllIncludedClipsInFilterTest(BaseTestCases.FilterTest):
+    def test_base(self):
+        pass  # Tested in AddIncludedCamerasToFilterTest
+
+
+class AddIncludedClipToFilterTest(BaseTestCases.FilterTest):
+    def test_existing_fid(self):
+        """
+        Test adding a including clip to a filter.
+        """
+        add_included_clip_to_filter(fid=self.fid, cid=self.cid)
+        self.assertEqual(len(get_all_included_clips_in_filter(fid=self.fid)), 1)
+
+    def test_nonexistent_fid(self):
+        """
+        Test adding a included clip to a filter that does not exist.
+        """
+        self.assertRaises(AssertionError, add_included_clip_to_filter, fid=2, cid=self.cid)
+
+    def test_duplicate(self):
+        """
+        Test adding a including clip to a filter multiple times.
+        """
+        add_included_clip_to_filter(fid=self.fid, cid=self.cid)
+        add_included_clip_to_filter(fid=self.fid, cid=self.cid)
+        self.assertEqual(len(get_all_included_clips_in_filter(fid=self.fid)), 1)
+
+
+class AddExcludedClipsToFilterTest(BaseTestCases.FilterTest):
+    def test_existing_fid(self):
+        """
+        Test adding a excluded clip to a filter.
+        """
+        add_excluded_clip_to_filter(fid=self.fid, cid=self.cid)
+        self.assertEqual(len(get_all_excluded_clips_in_filter(fid=self.fid)), 1)
+
+    def test_nonexistent_fid(self):
+        """
+        Test adding a excluded clip to a filter that does not exist.
+        """
+        self.assertRaises(AssertionError, add_excluded_clip_to_filter, fid=2, cid=self.cid)
+
+    def test_duplicate(self):
+        """
+        Test adding a including clip to a filter multiple times.
+        """
+        add_excluded_clip_to_filter(fid=self.fid, cid=self.cid)
+        add_excluded_clip_to_filter(fid=self.fid, cid=self.cid)
+        self.assertEqual(len(get_all_excluded_clips_in_filter(fid=self.fid)), 1)
+
+
+class RemoveIncludedClipsFromFilterTest(BaseTestCases.FilterTest):
+    def test_existing_camera(self):
+        """
+        Test Removing a clip from a filters included cameras.
+        """
+        add_included_clip_to_filter(fid=self.fid, cid=self.cid)
+        remove_included_clip_from_filter(fid=self.fid, cid=self.cid)
+        self.assertEqual(len(get_all_included_clips_in_filter(fid=self.fid)), 0)
+
+    def test_nonexistent_fid(self):
+        """
+        Test removing a included clip from a filter that does not exist.
+        """
+        self.assertRaises(AssertionError, remove_included_clip_from_filter, fid=2, cid=self.cid)
+
+
+class RemoveExcludedClipsFromFilterTest(BaseTestCases.FilterTest):
+    def test_existing_camera(self):
+        """
+        Test Removing a clip from a filters excluded cameras.
+        """
+        add_excluded_clip_to_filter(fid=self.fid, cid=self.cid)
+        remove_excluded_clip_from_filter(fid=self.fid, cid=self.cid)
+        self.assertEqual(len(get_all_excluded_clips_in_filter(fid=self.fid)), 0)
+
+    def test_nonexistent_fid(self):
+        """
+        Test removing a excluded clip from a filter that does not exist.
+        """
+        self.assertRaises(AssertionError, remove_included_clip_from_filter, fid=2, cid=self.cid)
+
+
+class GetAllClipsInProject(BaseTestCases.ClipTest):
+    def setUp(self) -> None:
+        super().setUp()
+        self.pid = create_project(name="test_project")
+        add_folder_to_project(self.fid, self.pid)
+
+    def test_one_clip(self):
+        """
+        Test getting all clips when only one exists in a direct root folder to the project
+        """
+        self.assertEqual(get_all_clips_in_project(self.pid)[0].id, self.cid)
+
+    def complex_folder_structure(self):
+        """
+        Tests getting all clips when clips are at different levels of folders
+        """
+        fid2 = create_subfolder(self.fid, "test2")
+        create_clip(fid=fid2, name="test_clip2", video_format="tvf", start_time=self.st,
+                    end_time=self.et, latitude=self.lat, longitude=self.lon, width=256, height=240,
+                    frame_rate=42.0)
+
+        add_folder_to_project(self.fid, self.pid)
+        self.assertEqual(len(get_all_clips_in_project(self.pid)), 2)
+
+
+class GetAllMatchingClipsInFilter(BaseTestCases.FilterTest):
+    def setUp(self) -> None:
+        super().setUp()
+        add_folder_to_project(self.fid, self.pid)
+        self.filter = create_filter(self.pid)
+
+    def test_filter_without_params(self):
+        """
+        Test getting clips without any params in filter
+        """
+        clips = get_all_clips_matching_filter(self.filter)
+        self.assertEqual(clips[0].id, self.cid)
+
+    def test_inside_time_span(self):
+        """
+        Test getting clips where the time span has been specified and the clip is inside it
+        """
+        modify_filter(self.filter, start_time=timezone.now() - timezone.timedelta(hours=1), end_time=timezone.now())
+        clips = get_all_clips_matching_filter(self.filter)
+        self.assertEqual(clips[0].id, self.cid)
+
+    def test_outside_time_span(self):
+        """
+        Test getting clips where the time span has been specified and the clip is outside it
+        """
+        modify_filter(self.filter, start_time=timezone.now() - timezone.timedelta(hours=3),
+                      end_time=timezone.now() - timezone.timedelta(hours=2))
+        clips = get_all_clips_matching_filter(self.filter)
+        self.assertEqual(clips, [])

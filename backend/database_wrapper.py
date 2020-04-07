@@ -357,6 +357,37 @@ def get_all_clips_from_folder_recursive(fid: int) -> List[Clip]:
     return res
 
 
+def get_all_clips_matching_filter(fid: int) -> List[Clip]:
+    """
+    gets all te clips that is part of the project and matches the filter
+    :param fid: The filter the clips should match
+    :return: A list of all clips that is part of the project and matches the filter
+    """
+
+    filter = get_filter_by_id(fid)
+    assert filter is not None
+    clips = get_all_clips_in_project(filter.project.id)
+    res = []
+
+    for clip in clips:
+        if clip.clip_match_filter(filter):
+            res.append(clip)
+    return res
+
+
+def get_all_clips_in_project(pid: int) -> List[Clip]:
+    """
+    :param pid: the id of the project
+    :return: A list of all clips that is part of the project
+    """
+    folders = get_folders_in_project(pid)
+    clips = []
+
+    for folder in folders:
+        clips.extend(get_all_clips_from_folder_recursive(folder.id))
+    return clips
+
+
 # --- Camera ---
 
 def get_camera_by_id(cmid: int) -> Optional[Camera]:
@@ -427,17 +458,16 @@ def get_objects_in_camera(cmid: int, start_time: timezone.datetime = None, end_t
 
 # --- Filter ---
 
-def create_filter(pid: int, name: str) -> int:
+def create_filter(pid: int) -> int:
     """
     Creates a new filter with the given name and adds it to the project.
 
     :param pid: The project's id.
-    :param name: The name of the filter.
     :return: The id of the filter.
     """
     p = get_project_by_id(pid=pid)
     assert p is not None
-    f = Filter.objects.create(name=name, project=p)
+    f = Filter.objects.create(project=p)
     return f.id
 
 
@@ -449,7 +479,9 @@ def get_filter_by_id(fid: int) -> Optional[Filter]:
     :return: A filter or None. 
     """
     try:
-        return Filter.objects.get(id=fid)
+        t = Filter.objects.all()
+        f = Filter.objects.get(id=fid)
+        return f
     except Filter.DoesNotExist:
         return None
 
@@ -477,49 +509,89 @@ def get_all_filters_from_project(pid: int) -> List[Filter]:
     return p.filter_set.all()[::1]
 
 
-def add_camera_to_filter(fid: int, cmid: int) -> None:
+def add_included_clip_to_filter(fid: int, cid: int) -> None:
     """
-    Adds a camera to a filter.
+    Adds a included clip to a filter.
 
     :param fid: The filter's id.
-    :param cmid: The camera's id.
+    :param cid: The clip's id.
     """
     f = get_filter_by_id(fid=fid)
     assert f is not None
-    cm = get_camera_by_id(cmid=cmid)
-    assert cm is not None
-    f.cameras.add(cm)
+    clip = get_clip_by_id(cid)
+    assert clip is not None
+    f.included_clips.add(clip)
 
 
-def remove_camera_from_filter(fid: int, cmid: int) -> None:
+def remove_included_clip_from_filter(fid: int, cid: int) -> None:
     """
-    Removes a camera from a filter.
+    Removes a included clip from a filter.
 
     :param fid: The filter's id.
-    :param cmid: The camera's id.
+    :param cid: The camera's id.
     """
     f = get_filter_by_id(fid=fid)
     assert f is not None
-    cm = get_camera_by_id(cmid=cmid)
-    assert cm is not None
-    f.cameras.remove(cm)
+    clip = get_clip_by_id(cid)
+    assert clip is not None
+    f.included_clips.remove(clip)
 
 
-def get_all_cameras_in_filter(fid: int) -> List[Camera]:
+def add_excluded_clip_to_filter(fid: int, cid: int) -> None:
     """
-    Gets all filtered cameras.
-    
+    Adds a excluded clip to a filter.
+
+    :param fid: The filter's id.
+    :param cid: The clip's id.
+    """
+    f = get_filter_by_id(fid=fid)
+    assert f is not None
+    clip = get_clip_by_id(cid)
+    assert clip is not None
+    f.excluded_clips.add(clip)
+
+
+def remove_excluded_clip_from_filter(fid: int, cid: int) -> None:
+    """
+    Removes a excluded clip from a filter.
+
+    :param fid: The filter's id.
+    :param cid: The camera's id.
+    """
+    f = get_filter_by_id(fid=fid)
+    assert f is not None
+    clip = get_clip_by_id(cid)
+    assert clip is not None
+    f.excluded_clips.remove(clip)
+
+
+def get_all_included_clips_in_filter(fid: int) -> List[Camera]:
+    """
+    Gets all included clips in filter.
+
+    :param fid: The id of the filter.
+    :return: A list of clipss.
+    """
+    f = get_filter_by_id(fid=fid)
+    assert f is not None
+    return f.included_clips.all()[::1]
+
+
+def get_all_excluded_clips_in_filter(fid: int) -> List[Camera]:
+    """
+    Gets all excluded clips in filter.
+
     :param fid: The id of the filter.
     :return: A list of cameras.
     """
     f = get_filter_by_id(fid=fid)
     assert f is not None
-    return f.cameras.all()[::1]
+    return f.excluded_clips.all()[::1]
 
 
-def modify_filter(fid: int, name: str = None, latitude: Decimal = None, longitude: Decimal = None, radius: int = None,
-                  start_time: timezone.datetime = None, end_time: timezone.datetime = None,
-                  add_classes: List[str] = None, remove_classes: List[str] = None) -> None:
+def modify_filter(fid: int, start_time: timezone.datetime = None, end_time: timezone.datetime = None,
+                  add_classes: List[str] = None, remove_classes: List[str] = None, min_width: int = None,
+                  min_height: int = None, min_frame_rate: int = None) -> None:
     """
     Changes the given values in the specified filter.
     
@@ -527,25 +599,17 @@ def modify_filter(fid: int, name: str = None, latitude: Decimal = None, longitud
         Not all parameters have to be given. The function only modifies the the specified parameters.
 
     :param fid: The filter's id.
-    :param name: New name for filter.
-    :param latitude: New latitude for filter.
-    :param longitude: New longitude for filter.
-    :param radius: New radius for filter.
+
     :param start_time: New start time for filter.
     :param end_time: New end time for filter.
     :param add_classes: Object classes to be added to filter.
     :param remove_classes: Object classes to be removed from filter.
+    :param min_width: Minimum pixels wide.
+    :param min_height: Minimum pixels high.
+    :param min_frame_rate: Minimum frames per second.
     """
     f = get_filter_by_id(fid=fid)
     assert f is not None
-    if name is not None:
-        f.name = name
-    if latitude is not None:
-        f.latitude = latitude
-    if longitude is not None:
-        f.longitude = longitude
-    if radius is not None:
-        f.radius = radius
     if start_time is not None:
         f.start_time = start_time
     if end_time is not None:
@@ -558,6 +622,14 @@ def modify_filter(fid: int, name: str = None, latitude: Decimal = None, longitud
         for oc in remove_classes:
             obj_cls = ObjectClass.objects.get_or_create(object_class=oc)[0]
             f.classes.remove(obj_cls)
+    if start_time is not None:
+        f.start_time = start_time
+    if min_width is not None:
+        f.min_width = min_width
+    if min_height is not None:
+        f.min_height = min_height
+    if min_frame_rate is not None:
+        f.min_frame_rate = min_frame_rate
     f.save()
 
 

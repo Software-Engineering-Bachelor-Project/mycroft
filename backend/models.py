@@ -230,6 +230,7 @@ class Clip(models.Model):
     end_time = models.DateTimeField('end time')
     width = models.IntegerField()
     height = models.IntegerField()
+    frame_rate = models.FloatField()
 
     class Meta:
         constraints = [

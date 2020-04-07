@@ -261,7 +261,7 @@ def delete_folder(fid: int) -> None:
 # --- Clip ---
 
 def create_clip(fid: int, name: str, video_format: str, start_time: timezone.datetime, end_time: timezone.datetime,
-                latitude: Decimal, longitude: Decimal, width: int, height: int) -> int:
+                latitude: Decimal, longitude: Decimal, width: int, height: int, frame_rate: float) -> int:
     """
     Creates a clip if not already in database.
     Fetches id if clip already in database.
@@ -276,13 +276,15 @@ def create_clip(fid: int, name: str, video_format: str, start_time: timezone.dat
     :param longitude: Longitude for the position of the camera.
     :param width: Width of clip in pixels.
     :param height: Height of clip in pixels.
+    :param frame_rate: The frame rate of the clip in FPS.
     :return: The created clip's id.
     """
     f = get_folder_by_id(fid=fid)
     assert f is not None
     camera = Camera.objects.get_or_create(latitude=latitude, longitude=longitude)[0]
     clip = Clip.objects.get_or_create(folder=f, name=name, video_format=video_format, start_time=start_time,
-                                      end_time=end_time, camera=camera, width=width, height=height)[0]
+                                      end_time=end_time, camera=camera, width=width, height=height,
+                                      frame_rate=frame_rate)[0]
     return clip.id
 
 

@@ -23,7 +23,7 @@ class SerializeTest(TestCase):
                                       start_time=timezone.datetime(2020, 5, 17,
                                                                    tzinfo=pytz.timezone(settings.TIME_ZONE)),
                                       end_time=timezone.datetime(2020, 5, 18, tzinfo=pytz.timezone(settings.TIME_ZONE)),
-                                      width=256, height=240)
+                                      width=256, height=240, frame_rate=42)
         self.folders = [self.rf, self.sf]
         self.objects = [self.sf, self.cm, self.cl]
 
@@ -43,7 +43,7 @@ class SerializeTest(TestCase):
         self.assertEqual(serialize(data=self.cl),
                          '{"model": "backend.clip", "pk": 1, "fields": {"folder": 1, "name": "test_clip",'
                          ' "video_format": "tvf", "camera": 1, "start_time": "2020-05-17T00:00:00+01:00", '
-                         '"end_time": "2020-05-18T00:00:00+01:00", "width": 256, "height": 240}}')
+                         '"end_time": "2020-05-18T00:00:00+01:00", "width": 256, "height": 240, "frame_rate": 42.0}}')
 
     def test_serialize_collection(self):
         """
@@ -61,7 +61,7 @@ class SerializeTest(TestCase):
                          '"2020-05-17T00:00:00+01:00", "end_time": "2020-05-18T00:00:00+01:00"}}, {"model": '
                          '"backend.clip", "pk": 1, "fields": {"folder": 1, "name": "test_clip", '
                          '"video_format": "tvf", "camera": 1, "start_time": "2020-05-17T00:00:00+01:00", '
-                         '"end_time": "2020-05-18T00:00:00+01:00", "width": 256, "height": 240}}]')
+                         '"end_time": "2020-05-18T00:00:00+01:00", "width": 256, "height": 240, "frame_rate": 42.0}}]')
 
     def test_deserialize_to_object(self):
         """
@@ -106,12 +106,14 @@ class SerializeTest(TestCase):
         # Update the name of a clip.
         deserialize(data='{"model": "backend.clip", "pk": 1, "fields": {"folder": 1, "name": "new_name",'
                          ' "video_format": "tvf", "camera": 1, "start_time": "2020-05-17T00:00:00+01:00", '
-                         '"end_time": "2020-05-18T00:00:00+01:00", "width": 256, "height": 240}}', save=True)
+                         '"end_time": "2020-05-18T00:00:00+01:00", "width": 256, "height": 240, "frame_rate": 42.0}}',
+                    save=True)
         self.assertEqual(Clip.objects.get(id=1).name, "new_name")
 
         # Create a new camera.
         deserialize(data='{"model": "backend.camera", "pk": null, "fields": {"latitude": "0.1", "longitude": "1.0", '
-                         '"start_time": "2020-05-17T00:00:00+01:00", "end_time": "2020-05-18T00:00:00+01:00"}}', save=True)
+                         '"start_time": "2020-05-17T00:00:00+01:00", "end_time": "2020-05-18T00:00:00+01:00"}}',
+                    save=True)
         self.assertEqual(Camera.objects.count(), 2)
 
         # Create two new subfolders.

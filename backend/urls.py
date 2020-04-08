@@ -12,8 +12,9 @@ urlpatterns = [
     path('filter', views.filter, name='filter'),
 
     path('project/get_all', views.project_get_all, name='project get all'),
-    path('project/save', views.project_save, name='project save'),
-    path('project/open', views.project_open, name='project open'),
+    path('project/new', views.project_new, name='project new'),
+    path('project/delete', views.project_delete, name='project delete'),
+    path('project/rename', views.project_rename, name='project rename'),
 
     path('export/filter', views.export_filter, name='export filter'),
     path('export/clips', views.export_clips, name='export clips'),

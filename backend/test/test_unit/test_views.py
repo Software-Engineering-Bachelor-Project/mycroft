@@ -43,42 +43,61 @@ class ProjectGetAllTest(TestCase):
         mock_mod.get_projects.assert_called_with(QueryDict('test=data'))
 
 
-class ProjectSaveTest(TestCase):
+class ProjectNewTest(TestCase):
 
     @mock.patch('backend.views.project_manager')
     def test_propagation(self, mock_mod):
         '''
-        Tests propagation of the 'save project' request.
+        Tests propagation of the 'new project' request.
         :return: None
         '''
         # Set up mock
-        mock_mod.save_project.return_value = (200, {})
+        mock_mod.new_project.return_value = (200, {})
 
         # Test function
         req = APIRequestFactory().post('', {'test': 'data'})
-        response = views.project_save(req)
+        response = views.project_new(req)
         
         # Did we propagate properly?
-        mock_mod.save_project.assert_called_with(QueryDict('test=data'))
+        mock_mod.new_project.assert_called_with(QueryDict('test=data'))
 
 
-class ProjectOpenTest(TestCase):
+class ProjectDeleteTest(TestCase):
 
     @mock.patch('backend.views.project_manager')
     def test_propagation(self, mock_mod):
         '''
-        Tests propagation of the 'open project' request.
+        Tests propagation of the 'delete project' request.
         :return: None
         '''
         # Set up mock
-        mock_mod.open_project.return_value = (200, {})
+        mock_mod.delete_project.return_value = (200, {})
 
         # Test function
         req = APIRequestFactory().post('', {'test': 'data'})
-        response = views.project_open(req)
+        response = views.project_delete(req)
         
         # Did we propagate properly?
-        mock_mod.open_project.assert_called_with(QueryDict('test=data'))
+        mock_mod.delete_project.assert_called_with(QueryDict('test=data'))
+
+
+class ProjectRenameTest(TestCase):
+
+    @mock.patch('backend.views.project_manager')
+    def test_propagation(self, mock_mod):
+        '''
+        Tests propagation of the 'rename project' request.
+        :return: None
+        '''
+        # Set up mock
+        mock_mod.rename_project.return_value = (200, {})
+
+        # Test function
+        req = APIRequestFactory().post('', {'test': 'data'})
+        response = views.project_rename(req)
+
+        # Did we propagate properly?
+        mock_mod.rename_project.assert_called_with(QueryDict('test=data'))
 
 
 class ExportFilterTest(TestCase):

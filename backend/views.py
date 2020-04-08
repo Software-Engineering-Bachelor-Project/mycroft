@@ -33,22 +33,32 @@ def project_get_all(request):
 
 
 @api_view(['POST'])
-def project_save(request):
+def project_new(request):
     """
-    Delegates a 'save' request to the Project Manager.
+    Delegates a 'new' request to the Project Manager.
     :return: A response from the Project Manager.
     """
-    data = project_manager.save_project(request.data)
+    data = project_manager.new_project(request.data)
     return Response(data[1], data[0])
 
 
 @api_view(['POST'])
-def project_open(request):
+def project_delete(request):
     """
-    Delegates an 'open' request to the Project Manager.
+    Delegates a 'delete' request to the Project Manager.
     :return: A response from the Project Manager.
     """
-    data = project_manager.open_project(request.data)
+    data = project_manager.delete_project(request.data)
+    return Response(data[1], data[0])
+
+
+@api_view(['POST'])
+def project_rename(request):
+    """
+    Delegates a 'rename' request to the Project Manager.
+    :return: A response from the Project Manager.
+    """
+    data = project_manager.rename_project(request.data)
     return Response(data[1], data[0])
 
 

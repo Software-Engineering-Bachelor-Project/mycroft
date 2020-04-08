@@ -23,25 +23,35 @@ class UrlsTest(TestCase):
         resolver = resolve(url)
         self.assertEqual(resolver.func, project_get_all)
 
-    def test_project_save(self):
+    def test_project_new(self):
         '''
-        Test that the url for the project_save module is correctly mapped to the view
+        Test that the url for the project_new module is correctly mapped to the view
         :return: None
         '''
 
-        url = reverse('backend:project save')
+        url = reverse('backend:project new')
         resolver = resolve(url)
-        self.assertEqual(resolver.func, project_save)
+        self.assertEqual(resolver.func, project_new)
 
-    def test_project_open(self):
+    def test_project_delete(self):
         '''
-        Test that the url for the project_open module is correctly mapped to the view
+        Test that the url for the project_delete module is correctly mapped to the view
         :return: None
         '''
 
-        url = reverse('backend:project open')
+        url = reverse('backend:project delete')
         resolver = resolve(url)
-        self.assertEqual(resolver.func, project_open)
+        self.assertEqual(resolver.func, project_delete)
+
+    def test_project_rename(self):
+        '''
+        Test that the url for the project_rename module is correctly mapped to the view
+        :return: None
+        '''
+
+        url = reverse('backend:project rename')
+        resolver = resolve(url)
+        self.assertEqual(resolver.func, project_rename)
 
     def test_export_filter(self):
         '''

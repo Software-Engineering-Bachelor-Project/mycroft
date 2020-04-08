@@ -1,15 +1,67 @@
+from .database_wrapper import rename_project as db_rename_project
+from .database_wrapper import delete_project as db_delete_project
+from .database_wrapper import *
+from .serialization import *
+from .communication_parameters import *
+
 # This file represents the backend Project Manager.
 
-def get_projects(data: dict) -> (int, dict):
-    # TODO: Implement
+
+def get_projects(data: dict = {}) -> (int, dict):
+    """
+    Gets all projects from database.
+
+    :param data: No input.
+    :return: Status code, all projects in database in JSON.
+    """
+    return 200, serialize(get_all_projects())
+
+
+def new_project(data: dict) -> (int, dict):
+    """
+    Create a new project.
+
+    :param data: Project name.
+    :return: Status code, project id.
+    """
+    try:
+        name = data[PROJECT_NAME]
+    except KeyError:
+        return 400, {}  # Bad request
+
+    pid = create_project(name=name)
+    create_filter(pid=pid, name="TODO REMOVE NAME")  # TODO: Remove when filter model has been updated.
+    return 200, {PROJECT_ID: pid}
+
+
+def delete_project(data: dict) -> (int, dict):
+    """
+    Deletes a project.
+
+    :param data: Project id.
+    :return: Status code, empty
+    """
+    try:
+        pid = data[PROJECT_ID]
+    except KeyError:
+        return 400, {}  # Bad request
+
+    db_delete_project(pid=pid)
     return 200, {}
 
 
-def save_project(data: dict) -> (int, dict):
-    # TODO: Implement
-    return 200, {}
+def rename_project(data: dict) -> (int, dict):
+    """
+    Rename a project.
 
+    :param data: Project id, project name.
+    :return: Status code, empty
+    """
+    try:
+        pid = data[PROJECT_ID]
+        name = data[PROJECT_NAME]
+    except KeyError:
+        return 400, {}  # Bad request
 
-def open_project(data: dict) -> (int, dict):
-    # TODO: Implement
+    db_rename_project(pid=pid, new_name=name)
     return 200, {}

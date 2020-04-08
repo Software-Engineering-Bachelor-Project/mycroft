@@ -24,7 +24,11 @@ def create_project(name: str) -> int:
     :param name: Name of project to be created.
     :return: The created project's id (primary key).
     """
-    p = Project.objects.create(name=name)
+
+    if not Project.objects.filter(name=name):
+        p = Project.objects.create(name=name)
+    else:
+        return None
     return p.id
 
 
@@ -127,10 +131,10 @@ def delete_folder_from_project(fid: int, pid: int) -> None:
 
 def get_folders_in_project(pid: int) -> List[Folder]:
     """
-    Gets all folders in the project.
+    Gets all root folders in the project.
 
     :param pid: The projects id.
-    :return: A list of all the project's folders.
+    :return: A list of the projects root folder.
     """
     p = get_project_by_id(pid=pid)
     assert p is not None

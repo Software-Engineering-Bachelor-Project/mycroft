@@ -90,6 +90,12 @@ class CreateProjectTest(BaseTestCases.ProjectTest):
         """
         self.assertIsNotNone(self.pid)
 
+    def test_create_same_name(self):
+        """
+        Test that no project can be created with the same name
+        """
+        self.assertIsNone(create_project(name="test project"))
+
 
 class GetProjectByIdTest(BaseTestCases.ProjectTest):
     def test_existing_id(self):
@@ -118,11 +124,14 @@ class GetProjectByNameTest(BaseTestCases.ProjectTest):
         self.assertEqual(p.name, "test project")
         self.assertEqual(p.id, self.pid)
 
-    # TODO Add test for multiple matching names
-    # TODO Add test for a nonexistent name
+    def test_nonexistent_name(self):
+        self.assertIsNone(get_project_by_name(name="nonexistent project"))
 
 
 class GetAllProjectsTest(BaseTestCases.ProjectTest):
+    def setUp(self) -> None:
+        pass
+
     def test_all(self):
         """
         Test getting all created projects.
@@ -130,9 +139,10 @@ class GetAllProjectsTest(BaseTestCases.ProjectTest):
         create_project(name="first test project")
         create_project(name="second test project")
         create_project(name="third test project")
-        assert len(get_all_projects()) == 4
+        self.assertEqual(len(get_all_projects()),3)
 
-    # TODO: add test for no existing projects
+    def test_empty(self):
+        self.assertEqual(len(get_all_projects()),0)
 
 
 class DeleteProjectTest(BaseTestCases.ProjectTest):
@@ -174,6 +184,24 @@ class AddFolderToProjectTest(BaseTestCases.ProjectTest):
         add_folder_to_project(self.rid, self.pid)
         self.assertEqual(len(get_folders_in_project(pid=self.pid)), 1)
 
+    def test_existing_rid_nonexisting_pid(self):
+        """
+        Test adding a folder to a project where the folder but not the project exists
+        """
+        self.assertRaises(AssertionError, lambda: add_folder_to_project(self.rid, 999))
+
+    def test_nonexisting_rid_existing_pid(self):
+        """
+        Test adding a folder to a project where the project but not the folder exists
+        """
+        self.assertRaises(AssertionError, lambda: add_folder_to_project(999, self.pid))
+
+    def test_nonexisting_rid_nonexisting_pid(self):
+        """
+        Test adding a folder to a project where neither the folder nor the project exists
+        """
+        self.assertRaises(AssertionError, lambda: add_folder_to_project(999, 999))
+
     def test_sub_folder(self):
         """
         Test that adding a folder that is a subfolder to an already added folder doesn't work.
@@ -195,10 +223,6 @@ class AddFolderToProjectTest(BaseTestCases.ProjectTest):
         add_folder_to_project(self.rid, self.pid)
         self.assertEqual(len(get_folders_in_project(pid=self.pid)), 1)
 
-    # TODO add tests for existing rid, nonexistent pid
-    # TODO add tests for nonexistent rid, existent pid
-    # TODO add tests for nonexistent rid, nonexistent pid
-
 
 class DeleteFolderFromProjectTest(BaseTestCases.ProjectTest):
     def setUp(self) -> None:
@@ -213,14 +237,28 @@ class DeleteFolderFromProjectTest(BaseTestCases.ProjectTest):
         delete_folder_from_project(fid=self.rid, pid=self.pid)
         self.assertEqual(len(get_folders_in_project(pid=self.pid)), 0)
 
+    def test_existing_rid_nonexisting_pid(self):
+        """
+        Test deleting a folder from a project where the folder but not the project exists
+        """
+        self.assertRaises(AssertionError, lambda: delete_folder_from_project(fid=self.rid, pid=999))
+
+    def test_nonexisting_rid_existing_pid(self):
+        """
+        Test deleting a folder to a project where the project but not the folder exists
+        """
+        self.assertRaises(AssertionError, lambda: delete_folder_from_project(fid=999, pid=self.pid))
+
+    def test_nonexisting_rid_nonexisting_pid(self):
+        """
+        Test deleting a folder from a project where neither the folder nor the project exists
+        """
+        self.assertRaises(AssertionError, lambda: delete_folder_from_project(fid=999, pid=999))
+
     def test_folder_not_in_project(self):
         fid = create_root_folder(path="/home/user2/", name="test_folder")
         delete_folder_from_project(fid=fid, pid=self.pid)
         self.assertEqual(len(get_folders_in_project(pid=self.pid)), 1)
-
-    # TODO add test for existing rid, nonexistent pid
-    # TODO add test for nonexistent rid, existent pid
-    # TODO add test for nonexistent rid, nonexistent pid
 
 
 class GetFoldersInProjectTest(BaseTestCases.ProjectTest):
@@ -240,10 +278,25 @@ class GetFoldersInProjectTest(BaseTestCases.ProjectTest):
         """
         self.assertEqual(len(get_folders_in_project(self.pid)), 1)
 
-    # TODO: add test for a project with several folders
-    # TODO: add test for a nonexistent project
-    # TODO: add test for a project without folders
+    def test_valid_pid_multiple_folders(self):
+        """
+        Tests that a valid pid to a project with multiple folders returns the folder
+        """
+        self.fid = create_subfolder(self.rid, "subfolder")
+        self.assertEqual(len(get_folders_in_project(self.pid)), 1)
 
+    def test_invalid_pid(self):
+        """
+        Tests that an invalid pid returns None
+        """
+        self.assertRaises(AssertionError, lambda: get_folders_in_project(999))
+
+    def test_empty_project(self):
+        """
+        Tests that an empty project returns
+        """
+        self.pid2 = create_project(name="test project2")
+        self.assertEqual(len(get_folders_in_project(self.pid2)), 0)
 
 class GetAllFiltersFromProjectTest(BaseTestCases.ProjectTest):
     def setUp(self) -> None:
@@ -257,9 +310,14 @@ class GetAllFiltersFromProjectTest(BaseTestCases.ProjectTest):
         """
         Test getting all filters from a project where there exist filters.
         """
-        assert len(get_all_filters_from_project(pid=self.pid)) == 1
+        self.assertEqual(len(get_all_filters_from_project(pid=self.pid)),1)
 
-    # TODO add test for project without any filters
+    def test_nonexisting_filter(self):
+        """
+        Tests getting all filters from a project where there doesn't exist filters.
+        """
+        self.pid2 = create_project("test project2")
+        self.assertEqual(len(get_all_filters_from_project(pid=self.pid2)),0)
 
 
 class CreateRootFolderTest(BaseTestCases.FolderTest):
@@ -320,7 +378,11 @@ class CreateSubFolderTest(BaseTestCases.FolderTest):
         self.sid = create_subfolder(parent_fid=self.rid, name=self.s_name)
         self.assertEqual(Folder.objects.filter(parent=self.rid, name=self.s_name).count(), 1)
 
-    # TODO: Test a parent_fid that dont exist
+    def test_nonexistent_parent(self):
+        """
+        Test that creating a subfolder with an invalid parent folder asserts None.
+        """
+        self.assertRaises(AssertionError, lambda: create_subfolder(999, "test subfolder fail"))
 
 
 class GetFolderByIdTest(BaseTestCases.FolderTest):
@@ -412,10 +474,15 @@ class GetSubFoldersTest(BaseTestCases.FolderTest):
 
     def test_existing_fid(self):
         """
-        Test getting sub folders in an existing folder
+        Test getting subfolders in an existing folder
         """
         self.assertEqual(len(get_subfolders(fid=self.rid)), 1)
-    # TODO: Add test for non existent fid
+
+    def test_nonexistent_fid(self):
+        """
+        Test getting subfolders for an nonexistent folder
+        """
+        self.assertRaises(AssertionError, lambda: get_subfolders(999))
 
 
 class GetSubFoldersRecursiveTest(BaseTestCases.FolderTest):
@@ -429,10 +496,15 @@ class GetSubFoldersRecursiveTest(BaseTestCases.FolderTest):
 
     def test_existing_fid(self):
         """
-        Test getting sub folders in an existing folder
+        Test getting subfolders in an existing folder
         """
         self.assertEqual(len(get_subfolders_recursive(fid=self.rid)), 2)
-    # TODO: Add test for non existent fid
+
+    def test_nonexistent_fid(self):
+        """
+        Test getting subfolders for an nonexistent folder
+        """
+        self.assertRaises(AssertionError, lambda: get_subfolders_recursive(999))
 
 
 class DeleteFolderTest(BaseTestCases.FolderTest):
@@ -508,7 +580,23 @@ class CreateClipTest(BaseTestCases.ClipTest):
                     longitude=self.lon, width=256, height=240, frame_rate=42.0)
         self.assertEqual(len(Camera.objects.all()), 1)
 
+    def test_bad_format(self):
+        """
+        Test that clips with a format longer than 5 characters are not allowed
+        """
+        self.assertRaises(ValidationError, lambda: create_clip(fid=self.fid, name="another_test_clip",
+                    video_format="tvfabc", start_time=self.st - timezone.timedelta(hours=1), end_time=self.st,
+                    latitude=self.lat, longitude=self.lon, width=256, height=240, frame_rate=42.0))
+
+    def test_bad_folder(self):
+        """
+        Test that clips without a folder asserts None
+        """
+        self.assertRaises(AssertionError, lambda: create_clip(fid=999, name="another_test_clip", video_format="tvf",
+                    start_time=self.st - timezone.timedelta(hours=1), end_time=self.st, latitude=self.lat,
+                    longitude=self.lon, width=256, height=240, frame_rate=42.0))
     # TODO: Add tests for bad parameters
+    # Added two tests, unsure if more bad parameters needs testing
 
 
 class GetClipByIdTest(BaseTestCases.ClipTest):
@@ -576,7 +664,16 @@ class GetAllClipsFromFolderTest(BaseTestCases.ClipTest):
                     longitude=Decimal(value="0.1337"), width=256, height=240, frame_rate=42.0)
         self.assertEqual(len(get_all_clips_from_folder(fid=self.fid)), 1)
 
-    # TODO: add test for nonexistent fid
+    def test_nonexistent_fid(self):
+        """
+        Test getting all clips in nonexistent folder.
+        """
+        sid = create_subfolder(parent_fid=self.fid, name="test_subfolder")
+        create_clip(fid=sid, name="new_test_clip", video_format="tvf",
+                    start_time=timezone.now() - timezone.timedelta(hours=1),
+                    end_time=timezone.now(), latitude=Decimal(value="42.0099"),
+                    longitude=Decimal(value="0.1337"), width=256, height=240, frame_rate=42.0)
+        self.assertRaises(AssertionError, lambda: get_all_clips_from_folder(fid=999))
 
 
 class GetAllClipsFromFolderRecursiveTest(BaseTestCases.ClipTest):
@@ -598,7 +695,11 @@ class GetAllClipsFromFolderRecursiveTest(BaseTestCases.ClipTest):
         """
         self.assertEqual(len(get_all_clips_from_folder_recursive(fid=self.fid)), 2)
 
-    # TODO: add test for nonexistent fid
+    def test_nonexistent_fid(self):
+        """
+        Test getting all clips in nonexistent folder.
+        """
+        self.assertRaises(AssertionError, lambda: get_all_clips_from_folder_recursive(999))
 
 
 class GetCameraByIDTest(BaseTestCases.ClipTest):
@@ -611,7 +712,12 @@ class GetCameraByIDTest(BaseTestCases.ClipTest):
         self.assertEqual(cm.end_time, self.et)
         self.assertEqual(get_camera_by_id(cm.id), cm)
 
-    # TODO add test for nonexisting cmid
+    def test_nonexistent_cmid(self):
+        """
+        Test getting a camera with an nonexistent cmid
+        """
+        cm = get_camera_by_location(self.lat, self.lon)
+        self.assertIsNone(get_camera_by_id(999))
 
 
 class GetCameraByLocationTest(BaseTestCases.ClipTest):
@@ -623,7 +729,11 @@ class GetCameraByLocationTest(BaseTestCases.ClipTest):
         self.assertEqual(self.st, cm.start_time)
         self.assertEqual(self.et, cm.end_time)
 
-    # TODO add test for  nonexisting location
+    def test_nonexistent_location(self):
+        """
+        Test getting a camera with an incorrect location
+        """
+        self.assertIsNone(get_camera_by_location(99.9, 99.9))
 
 
 class DeleteCameraTest(BaseTestCases.ClipTest):
@@ -668,7 +778,12 @@ class GetFilterByIdTest(BaseTestCases.FilterTest):
         """
         f = get_filter_by_id(fid=self.fid)
         self.assertEqual(f.id, self.fid)
-    # TODO: Test nonexistent fid
+
+    def test_nonexistent_fid(self):
+        """
+        Test getting a nonexistent filter by id.
+        """
+        self.assertIsNone(get_filter_by_id(fid=999))
 
 
 class DeleteFilterTest(BaseTestCases.FilterTest):
@@ -787,7 +902,12 @@ class GetObjectDetectionByIDTest(BaseTestCases.ObjectDetectionTest):
         self.assertEqual(od.sample_rate, 0.5)
         self.assertEqual(od.start_time, self.st)
         self.assertEqual(od.end_time, self.et)
-    # TODO: Test Bad odid
+
+    def test_nonexistent_odid(self):
+        """
+        Test getting an object detection by id.
+        """
+        self.assertIsNone(get_object_detection_by_id(odid=999))
 
 
 class DeleteObjectDetectionTest(BaseTestCases.ObjectDetectionTest):
@@ -807,8 +927,13 @@ class DeleteObjectDetectionTest(BaseTestCases.ObjectDetectionTest):
 
 
 class AddObjectsToDetectionTest(BaseTestCases.ObjectDetectionTest):
-    def test_(self):
-        pass  # TODO: Implement this
+    def test_existing_odid(self):
+        add_objects_to_detection(odid=self.odid, objects=[("test_object2", self.st + timezone.timedelta(minutes=10))])
+        self.assertEqual(len(get_objects_in_detection(odid=self.odid)), 2)
+
+    def test_nonexistent_odid(self):
+        self.assertRaises(AssertionError, lambda:
+        add_objects_to_detection(odid=999, objects=[("test_object2", self.st + timezone.timedelta(minutes=10))]))
 
 
 class GetObjectsInDetectionTest(BaseTestCases.ObjectDetectionTest):

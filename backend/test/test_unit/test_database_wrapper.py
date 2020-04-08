@@ -59,7 +59,7 @@ class BaseTestCases:
             self.cid = create_clip(fid=self.rid, name="test_clip", video_format="tvf",
                                    start_time=timezone.now() - timezone.timedelta(hours=1),
                                    end_time=timezone.now(), latitude=self.lat,
-                                   longitude=self.lon, width=256, height=240)
+                                   longitude=self.lon, width=256, height=240, frame_rate=42.0)
             self.pid = create_project(name="test_project")
             self.fid = create_filter(pid=self.pid)
 

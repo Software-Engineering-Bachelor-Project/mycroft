@@ -131,7 +131,7 @@ def delete_folder_from_project(fid: int, pid: int) -> None:
 
 def get_folders_in_project(pid: int) -> List[Folder]:
     """
-    Gets all root folders in the project.
+    Gets the root folder in the project.
 
     :param pid: The projects id.
     :return: A list of the projects root folder.

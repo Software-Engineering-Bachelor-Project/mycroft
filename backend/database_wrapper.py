@@ -456,6 +456,19 @@ def get_objects_in_camera(cmid: int, start_time: timezone.datetime = None, end_t
     return res
 
 
+def get_all_cameras_in_project(pid: int) -> List[Clip]:
+    """
+    Gets all cameras in a project.
+
+    :param pid: The id of the project
+    :return: A list of all cameras in the project.
+    """
+    res = set()
+    for clip in get_all_clips_in_project(pid=pid):
+        res.add(clip.camera)
+    return list(res)
+
+
 # --- Filter ---
 
 def create_filter(pid: int) -> int:

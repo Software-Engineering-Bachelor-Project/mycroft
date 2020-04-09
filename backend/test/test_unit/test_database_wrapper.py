@@ -930,7 +930,7 @@ class GetAllClipsInProject(BaseTestCases.ClipTest):
         """
         self.assertEqual(get_all_clips_in_project(self.pid)[0].id, self.cid)
 
-    def complex_folder_structure(self):
+    def test_complex_folder_structure(self):
         """
         Tests getting all clips when clips are at different levels of folders
         """
@@ -972,3 +972,31 @@ class GetAllMatchingClipsInFilter(BaseTestCases.FilterTest):
                       end_time=timezone.now() - timezone.timedelta(hours=2))
         clips = get_all_clips_matching_filter(self.filter)
         self.assertEqual(clips, [])
+
+class GetAllCamerasInProject(BaseTestCases.ClipTest):
+
+    def setUp(self) -> None:
+        super().setUp()
+        self.pid = create_project(name="test_project")
+        add_folder_to_project(self.fid, self.pid)
+
+    def test_one_clip(self):
+        """
+        Test getting all cameras when only one exists in a direct root folder to the project
+        """
+        self.assertEqual(get_all_cameras_in_project(self.pid)[0].id, self.cid)
+
+    def test_complex_folder_structure(self):
+        """
+        Tests getting all cameras when clips are at different levels of folders
+        """
+        fid2 = create_subfolder(self.fid, "test2")
+        create_clip(fid=fid2, name="test_clip2", video_format="tvf", start_time=self.st,
+                    end_time=self.et, latitude=self.lat, longitude=self.lon, width=256, height=240,
+                    frame_rate=42.0)
+        create_clip(fid=fid2, name="test_clip3", video_format="tvf", start_time=self.st,
+                    end_time=self.et, latitude=self.lon, longitude=self.lat, width=256, height=240,
+                    frame_rate=42.0)
+
+        add_folder_to_project(self.fid, self.pid)
+        self.assertEqual(len(get_all_cameras_in_project(self.pid)), 2)

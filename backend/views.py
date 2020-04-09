@@ -93,12 +93,12 @@ def video_get_info(request):
 
 
 @api_view(['POST'])
-def video_get_stream(request):
+def video_get_cameras(request):
     """
     Delegates a 'clip stream' request to the Video Manager.
     :return: A response from the Video Manager.
     """
-    data = video_manager.get_clip_stream(request.data)
+    data = video_manager.get_cameras(request.data)
     return Response(data[1], data[0])
 
 

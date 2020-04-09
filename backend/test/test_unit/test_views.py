@@ -157,7 +157,7 @@ class VideoGetInfoTest(TestCase):
         mock_mod.get_clip_info.assert_called_with(QueryDict('test=data'))
 
 
-class VideoGetStreamTest(TestCase):
+class VideoGetCamerasTest(TestCase):
 
     @mock.patch('backend.views.video_manager')
     def test_propagation(self, mock_mod):
@@ -166,14 +166,14 @@ class VideoGetStreamTest(TestCase):
         :return: None
         '''
         # Set up mock
-        mock_mod.get_clip_stream.return_value = (200, {})
+        mock_mod.get_cameras.return_value = (200, {})
 
         # Test function
         req = APIRequestFactory().post('', {'test': 'data'})
-        response = views.video_get_stream(req)
+        response = views.video_get_cameras(req)
         
         # Did we propagate properly?
-        mock_mod.get_clip_stream.assert_called_with(QueryDict('test=data'))
+        mock_mod.get_cameras.assert_called_with(QueryDict('test=data'))
 
 
 class FileGetFoldersTest(TestCase):

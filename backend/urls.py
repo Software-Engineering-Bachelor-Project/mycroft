@@ -20,7 +20,7 @@ urlpatterns = [
     path('export/clips', views.export_clips, name='export clips'),
 
     path('video/get_info', views.video_get_info, name='video info'),
-    path('video/get_stream', views.video_get_stream, name='video stream'),
+    path('video/get_cameras', views.video_get_cameras, name='video get cameras'),
 
     path('file/get_folders', views.file_get_folders, name='file get folders'),
     path('file/add_folder', views.file_add_folder, name='file add folder'),

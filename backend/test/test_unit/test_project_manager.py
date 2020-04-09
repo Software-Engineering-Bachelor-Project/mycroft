@@ -31,7 +31,7 @@ class NewProjectTest(TestCase):
         mock_create_project.return_value = 42
         code, res = new_project(data={PROJECT_NAME: 'test_project'})
         mock_create_project.assert_called_once_with(name='test_project')
-        mock_create_filter.assert_called_once_with(pid=42, name="TODO REMOVE NAME")
+        mock_create_filter.assert_called_once_with(pid=42)
         self.assertEqual(code, 200)
         self.assertEqual(res, {PROJECT_ID: 42})
 

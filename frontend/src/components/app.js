@@ -6,9 +6,10 @@ import store from '../state';
 // Import Core Components
 import Player from './player';
 import Map from './map';
-import Menu from "./menu";
-import Viewport from "./viewport";
-import Browser from "./browser";
+import Menu from './menu';
+import Viewport from './viewport';
+import Timeline from './timeline';
+import Browser from './browser'
 
 /*
  * This is the main component of Mycroft.
@@ -25,6 +26,7 @@ class App extends Component {
 				<Menu />
 				<Viewport />
 				<Browser/> 
+				<Timeline />
 			</div>
 		);
     }

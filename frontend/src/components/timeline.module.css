@@ -1,0 +1,56 @@
+.main {
+    left: 10px;
+    right: 5vw;
+    height: 300px;
+    position: absolute;
+    bottom: 10px;
+    background-color: rgb(209, 0, 0);
+    padding: 0;
+    border: 1px solid;
+}
+
+.topbar {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    height: 16.5%;
+    border-bottom: 1px solid;
+    background-color: lightsteelblue;
+}
+
+.dropdown {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    width: 200px;
+}
+
+.sliderbox {
+    position: absolute;
+    bottom: 0;
+    height: 83.5%;
+    width: 100%;
+    /*border: 2px solid;*/
+    overflow: auto;
+    background-color: rgb(106, 158, 255);
+}
+
+.slider {
+    position: relative;
+    height: 100%;
+    /*border: 1px solid;*/
+    background-color: rgb(106, 158, 255);
+}
+
+.line {
+    position: absolute;
+    width: 1px;
+    height: 100%;
+    background-color: black;
+}
+
+.date {
+    position: sticky;
+    left: 3px;
+}

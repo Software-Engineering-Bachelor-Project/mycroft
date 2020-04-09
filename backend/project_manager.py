@@ -63,5 +63,9 @@ def rename_project(data: dict) -> (int, dict):
     except KeyError:
         return 400, {}  # Bad request
 
-    db_rename_project(pid=pid, new_name=name)
+    try:
+        db_rename_project(pid=pid, new_name=name)
+    except AssertionError:
+        return 204, {}  # No content
+
     return 200, {}

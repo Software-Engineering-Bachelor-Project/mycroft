@@ -26,7 +26,7 @@ def get_folders(data: dict) -> (int, dict):
     """
     try:
         pid = data[PROJECT_ID]
-    except KeyError or AssertionError:
+    except KeyError:
         return 400, {}  # Bad request
 
     try:
@@ -51,7 +51,7 @@ def add_folder(data: dict) -> (int, dict):
     try:
         pid = data[PROJECT_ID]
         file_path = data[FILE_PATH]
-    except KeyError or ValueError or AssertionError:
+    except KeyError:
         return 400, {}  # Bad request
 
     try:

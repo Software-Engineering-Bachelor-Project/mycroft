@@ -492,9 +492,7 @@ def get_filter_by_id(fid: int) -> Optional[Filter]:
     :return: A filter or None. 
     """
     try:
-        t = Filter.objects.all()
-        f = Filter.objects.get(id=fid)
-        return f
+        return Filter.objects.get(id=fid)
     except Filter.DoesNotExist:
         return None
 

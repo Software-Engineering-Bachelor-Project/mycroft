@@ -30,7 +30,7 @@ def new_project(data: dict) -> (int, dict):
         return 400, {}  # Bad request
 
     pid = create_project(name=name)
-    create_filter(pid=pid, name="TODO REMOVE NAME")  # TODO: Remove when filter model has been updated.
+    create_filter(pid=pid)
     return 200, {PROJECT_ID: pid}
 
 

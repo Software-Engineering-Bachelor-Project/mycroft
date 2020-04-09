@@ -53266,6 +53266,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _map__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./map */ "./src/components/map.js");
 /* harmony import */ var _menu__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./menu */ "./src/components/menu.js");
 /* harmony import */ var _viewport__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./viewport */ "./src/components/viewport.js");
+/* harmony import */ var _browser__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./browser */ "./src/components/browser.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -53293,6 +53294,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
+
 /*
  * This is the main component of Mycroft.
  */
@@ -53314,7 +53316,7 @@ function (_Component) {
     key: "render",
     value: function render() {
       return (// TODO: implement product
-        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_map__WEBPACK_IMPORTED_MODULE_5__["default"], null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_player__WEBPACK_IMPORTED_MODULE_4__["default"], null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_menu__WEBPACK_IMPORTED_MODULE_6__["default"], null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_viewport__WEBPACK_IMPORTED_MODULE_7__["default"], null))
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_map__WEBPACK_IMPORTED_MODULE_5__["default"], null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_player__WEBPACK_IMPORTED_MODULE_4__["default"], null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_menu__WEBPACK_IMPORTED_MODULE_6__["default"], null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_viewport__WEBPACK_IMPORTED_MODULE_7__["default"], null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_browser__WEBPACK_IMPORTED_MODULE_8__["default"], null))
       );
     }
   }]);
@@ -53330,6 +53332,76 @@ var container = document.getElementById('app'); // Note that the App is wrapped 
 Object(react_dom__WEBPACK_IMPORTED_MODULE_1__["render"])(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_redux__WEBPACK_IMPORTED_MODULE_2__["Provider"], {
   store: _state__WEBPACK_IMPORTED_MODULE_3__["default"]
 }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(App, null)), container);
+
+/***/ }),
+
+/***/ "./src/components/browser.js":
+/*!***********************************!*\
+  !*** ./src/components/browser.js ***!
+  \***********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+
+
+/* -- Browser -- */
+
+var Browser =
+/*#__PURE__*/
+function (_Component) {
+  _inherits(Browser, _Component);
+
+  function Browser() {
+    _classCallCheck(this, Browser);
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(Browser).apply(this, arguments));
+  }
+
+  _createClass(Browser, [{
+    key: "render",
+    value: function render() {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "Browser");
+    }
+  }]);
+
+  return Browser;
+}(react__WEBPACK_IMPORTED_MODULE_0__["Component"]); // Map Redux states to React props
+
+
+var mapStateToProps = function mapStateToProps(state) {
+  return {};
+}; // Forward Redux's dispatch function to React props
+
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+  return {};
+}; // Connect Redux with React
+
+
+/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["connect"])(mapStateToProps, mapDispatchToProps)(Browser));
 
 /***/ }),
 
@@ -53904,6 +53976,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _stateMenu__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./stateMenu */ "./src/stateMenu.js");
 /* harmony import */ var _stateViewport__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./stateViewport */ "./src/stateViewport.js");
 /* harmony import */ var _stateTimeline__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./stateTimeline */ "./src/stateTimeline.js");
+/* harmony import */ var _stateBrowser__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./stateBrowser */ "./src/stateBrowser.js");
+
 
 
 
@@ -53926,11 +54000,57 @@ var rootReducer = Object(redux__WEBPACK_IMPORTED_MODULE_0__["combineReducers"])(
   map: _stateMap__WEBPACK_IMPORTED_MODULE_3__["default"],
   menu: _stateMenu__WEBPACK_IMPORTED_MODULE_4__["default"],
   viewport: _stateViewport__WEBPACK_IMPORTED_MODULE_5__["default"],
-  timeline: _stateTimeline__WEBPACK_IMPORTED_MODULE_6__["default"]
+  timeline: _stateTimeline__WEBPACK_IMPORTED_MODULE_6__["default"],
+  browser: _stateBrowser__WEBPACK_IMPORTED_MODULE_7__["default"]
 }); // Main state-container of Mycroft
 
 var store = Object(redux__WEBPACK_IMPORTED_MODULE_0__["createStore"])(rootReducer);
 /* harmony default export */ __webpack_exports__["default"] = (store);
+
+/***/ }),
+
+/***/ "./src/stateBrowser.js":
+/*!*****************************!*\
+  !*** ./src/stateBrowser.js ***!
+  \*****************************/
+/*! exports provided: dummy, default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "dummy", function() { return dummy; });
+/* harmony import */ var _state__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./state */ "./src/state.js");
+
+/* -- ACTIONS -- */
+
+var DUMMY = "DUMMY";
+/* -- INITIAL STATE -- */
+
+var initialState = {} //TODO::add states
+
+/* -- ACTION CREATORS -- */
+;
+function dummy() {
+  return {
+    type: DUMMY
+  };
+}
+/* -- REDUX REDUCER -- */
+
+var browserReducer = function browserReducer() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
+  var action = arguments.length > 1 ? arguments[1] : undefined;
+
+  switch (action.type) {
+    case DUMMY:
+      return state;
+
+    default:
+      return state;
+  }
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (browserReducer);
 
 /***/ }),
 

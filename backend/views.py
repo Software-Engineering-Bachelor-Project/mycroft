@@ -13,12 +13,21 @@ import backend.object_detector as object_detector
 # each view follow the naming convention:  module name_action
 
 @api_view(['POST'])
-def filter(request):
+def filter_get_matching_clips(request):
     """
-    Delegates a 'filter' request to the Filter Module.
+    Delegates a 'get matching clips' request to the Filter Module.
     :return: A response from the Filter Module.
     """
-    data = filter_module.filter_clips(request.data)
+    data = filter_module.get_clips_matching_filter(request.data)
+    return Response(data[1], data[0])
+
+@api_view(['POST'])
+def filter_modify(request):
+    """
+    Delegates a 'modify' request to the Filter Module.
+    :return: A response from the Filter Module.
+    """
+    data = filter_module.modify_filter(request.data)
     return Response(data[1], data[0])
 
 

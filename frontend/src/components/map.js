@@ -14,7 +14,7 @@ import iconEmptySelectedUrl from '../images/marker-icon-empty-selected.png';
 import shadowUrl from '../images/marker-shadow.png';
 
 // Import relevant types
-import { Camera } from '../types';
+import { Camera, Clip } from '../types';
 
 // Import actions
 import { addCamera, removeCamera } from '../stateMap';
@@ -83,7 +83,7 @@ class Map extends Component {
                 
                 {Object.entries(this.props.cameras).map(([id, cam]) => (
                     <Marker key={id} position={cam.pos} icon={
-                        cam.empty ?
+                        cam.isEmpty() ?
                             (cam.selected ? this.iconES : this.iconE) :
                             (cam.selected ? this.iconS : this.icon)
                     }>
@@ -105,7 +105,9 @@ class Map extends Component {
                     Object.entries(this.props.cameras).length,
                     this.ct.value,
                     [parseFloat(this.cx.value), parseFloat(this.cy.value)],
-                    this.cCheckE.checked, this.cCheckS.checked)
+                    this.cCheckE.checked ? {} :
+                    {1: new Clip(1, 'test', '/folder/', 'wav', '0', '0')},
+                    this.cCheckS.checked)
                                 }>add</button>
                 <label>Empty: </label>
                 <input type='checkbox' ref={(c) => this.cCheckE = c} value='Empty' />

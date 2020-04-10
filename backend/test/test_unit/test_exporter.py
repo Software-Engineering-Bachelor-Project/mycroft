@@ -9,9 +9,10 @@ from backend.exporter import *
 
 class ExportFilterTest(TestCase):
 
+    @patch('backend.exporter.os_aware')
     @patch('backend.exporter.get_all_clips_matching_filter')
     @patch('backend.exporter.get_filter_by_id')
-    def test_basic(self, mock_get_filter_by_id, mock_get_all_clips_matching_filter):
+    def test_basic(self, mock_get_filter_by_id, mock_get_all_clips_matching_filter, mock_os_aware):
         """
         Makes a simple call.
         """
@@ -23,8 +24,9 @@ class ExportFilterTest(TestCase):
         code, res = export_filter(data={FILTER_ID: 42})
         mock_get_filter_by_id.assert_called_once_with(fid=42)
         mock_get_all_clips_matching_filter.assert_called_once_with(fid=42)
+        mock_os_aware.assert_called_once_with(
+            {'start_time': '2020-01-17 00:00:00+01:00', 'end_time': '2020-01-18 00:00:00+01:00', 'clips': []})
         self.assertEqual(code, 200)
-        self.assertEqual(res, {'start_time': '2020-01-17 00:00:00+01:00', 'end_time': '2020-01-18 00:00:00+01:00', 'clips': []})
 
     def test_missing_parameter(self):
         """
@@ -33,6 +35,7 @@ class ExportFilterTest(TestCase):
         code, res = export_filter(data={FOLDER_ID: 42})
         self.assertEqual(code, 400)
         self.assertEqual(res, {})
+
 
 class ExportClipsTest(TestCase):
 

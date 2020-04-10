@@ -1,5 +1,5 @@
 from .database_wrapper import *
-from .communication_parameters import *
+from .communication_utils import *
 
 # This file represents the backend Exporter.
 
@@ -23,7 +23,7 @@ def export_filter(data: dict) -> (int, dict):
     res = {'start_time': str(f.start_time), 'end_time': str(f.end_time),
            'clips': [str(clip) for clip in get_all_clips_matching_filter(fid=fid)]}
 
-    return 200, res
+    return 200, os_aware(res)
 
 
 def export_clips(data: dict) -> (int, dict):

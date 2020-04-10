@@ -35,8 +35,7 @@ class ModifyFilterTest(TestCase):
         """
         Tests calling the function without all parameters
         """
-        data = {FILTER_ID: "TEST_fid",
-                START_TIME: "TEST_st",
+        data = {START_TIME: "TEST_st",
                 END_TIME: "TEST_et",
                 ADD_CLASSES: "TEST_AC"
                 }
@@ -79,7 +78,7 @@ class GetClipsMatchingFilter(TestCase):
 
     def test_missing_parameter(self):
         """
-        Tests calling the function without all parameters
+        Tests calling the function without all parameters.
         """
         data = {FILTER_ID: "TEST_fid"
                 }
@@ -101,6 +100,6 @@ class GetClipsBelongingToCamerasTest(TestCase):
 
     def test_simple_call(self):
         """
-        Tests calling the function with simple parameters
+        Tests calling the function with simple parameters.
         """
         self.assertEqual(get_clips_belonging_to_cameras([], []), [])

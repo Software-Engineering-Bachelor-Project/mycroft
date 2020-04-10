@@ -4,29 +4,32 @@ from typing import List
 import backend.database_wrapper as dbw
 from backend.communication_utils import *
 from backend.models import Clip
+from .serialization import *
 
 
 def modify_filter(data: dict) -> (int, dict):
     """
-    modifies a given filter based on the given parameters
+    Modifies a given filter based on the given parameters
 
     :param data: A dictionary that need to have the keys:
         filter_id, start_time, end_time, add_classes, remove_classes, min_width, min_height, min_frame_rate
-    :return: Status code, empty dict
+    :return: Status code, empty dict.
     """
-    # retrieving parameters and verifying that they exist
-    # TODO: Updata parameters/add parsing from javascript to python if needed
+    # retrieving necessary parameters.
+    # TODO: Update parameters/add parsing from javascript to python datetime object.
     try:
         filter_id = data[FILTER_ID]
-        start_time = data[START_TIME]
-        end_time = data[END_TIME]
-        add_classes = data[ADD_CLASSES]
-        remove_classes = data[REMOVE_CLASSES]
-        min_width = data[MIN_WIDTH]
-        min_height = data[MIN_HEIGHT]
-        min_frame_rate = data[MIN_FRAMERATE]
     except KeyError:
-        return 400, {}  # Missing Parameter(s)
+        return 400, {}  # Missing parameter(s)
+
+    # Retrieve voluntary parameters, they will be None of the parameter don´t, exist.
+    start_time = data.get(START_TIME)
+    end_time = data.get(END_TIME)
+    add_classes = data.get(ADD_CLASSES)
+    remove_classes = data.get(REMOVE_CLASSES)
+    min_width = data.get(MIN_WIDTH)
+    min_height = data.get(MIN_HEIGHT)
+    min_frame_rate = data.get(MIN_FRAMERATE)
 
     # Modify the given filter
     try:
@@ -41,17 +44,17 @@ def modify_filter(data: dict) -> (int, dict):
 
 def get_clips_matching_filter(data: dict) -> (int, dict):
     """
-    Returns all clips and their corresponding cameras given a list of camera ids and a filter id
+    Returns all clips and their corresponding cameras given a list of camera ids and a filter id.
 
-    :param data: A dictionary that need to have the keys: "camera_ids" and "filter_id"
-    :return: Status code, clip ids and camera ids in JSON
+    :param data: A dictionary that need to have the keys: "camera_ids" and "filter_id".
+    :return: Status code, clip id:s and camera id:s in JSON.
     """
     # retrieving parameters and verifying that they exist
     try:
         camera_ids = data[CAMERA_IDS]
         filter_id = data[FILTER_ID]
     except KeyError:
-        return 400, {}  # bad request, missing parameters
+        return 400, {}  # Bad request, missing parameters
 
     # Retrieve clips
     try:
@@ -61,7 +64,7 @@ def get_clips_matching_filter(data: dict) -> (int, dict):
     except AssertionError:
         return 204, {}  # No content
 
-    # filter based on cameras
+    # Filter based on cameras
     res_clips = get_clips_belonging_to_cameras(matching_clips, camera_ids)
 
     # Remove excluded clips
@@ -78,14 +81,15 @@ def get_clips_matching_filter(data: dict) -> (int, dict):
         CLIP_IDS: [str(clip_id) for clip_id in res_clip_ids],
         CAMERA_IDS: [str(cameras_id) for cameras_id in res_camera_ids]
     }
-    return 200, res
+    return 200, os_aware(res)
 
 
 def get_clips_belonging_to_cameras(clips: List[Clip], cameras: List[int]) -> List[Clip]:
     """
-    Get all clips that belongs to one of the given cameras
-    :param: clips that should be checked if they belong to the camera
-    :param: cameras that the clips is checked against
-    :return: List of Clips that belong to the camera
+    Get all clips that belongs to one of the given cameras.
+
+    :param: clips: Clips that should be checked if they belong to the camera.
+    :param: cameras: Cameras that the clips is checked against.
+    :return: List of Clips that belong to the camera.
     """
     return [c for c in clips if c.camera_id in cameras]

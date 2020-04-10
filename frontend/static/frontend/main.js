@@ -59260,7 +59260,7 @@ function (_Component) {
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_leaflet__WEBPACK_IMPORTED_MODULE_2__["Marker"], {
           key: id,
           position: cam.pos,
-          icon: cam.empty ? cam.selected ? _this2.iconES : _this2.iconE : cam.selected ? _this2.iconS : _this2.icon
+          icon: cam.isEmpty() ? cam.selected ? _this2.iconES : _this2.iconE : cam.selected ? _this2.iconS : _this2.icon
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_leaflet__WEBPACK_IMPORTED_MODULE_2__["Popup"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, cam.name, " (id: ", id, ")"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "Position: [", cam.pos[0], ", ", cam.pos[1], "]")));
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         style: {
@@ -59289,7 +59289,9 @@ function (_Component) {
         defaultValue: "15.621"
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
         onClick: function onClick() {
-          return _this2.props.addCamera(Object.entries(_this2.props.cameras).length, _this2.ct.value, [parseFloat(_this2.cx.value), parseFloat(_this2.cy.value)], _this2.cCheckE.checked, _this2.cCheckS.checked);
+          return _this2.props.addCamera(Object.entries(_this2.props.cameras).length, _this2.ct.value, [parseFloat(_this2.cx.value), parseFloat(_this2.cy.value)], _this2.cCheckE.checked ? {} : {
+            1: new _types__WEBPACK_IMPORTED_MODULE_10__["Clip"](1, 'test', '/folder/', 'wav', '0', '0')
+          }, _this2.cCheckS.checked);
         }
       }, "add"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Empty: "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
         type: "checkbox",
@@ -60157,29 +60159,105 @@ var viewportReducer = function viewportReducer() {
 /*!**********************!*\
   !*** ./src/types.js ***!
   \**********************/
-/*! exports provided: Camera */
+/*! exports provided: Camera, Clip */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Camera", function() { return Camera; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Clip", function() { return Clip; });
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 /* -- This files contains non-React classes -- */
 
-/* CAMERA CLASS */
-var Camera = function Camera(id, name, pos) {
-  var empty = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
-  var selected = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
+/**
+ * This class represents a Camera.
+ */
+var Camera =
+/*#__PURE__*/
+function () {
+  /**
+   * @param {int} id The unique identifier of this camera. Corresponds to the backend database.
+   * @param {string} name The name of this camera.
+   * @param {[number, number]} pos The decimal longitude and latitude of this camera.
+   * @param {dict[int: Clip]} clips A dictionary containing this camera's clips, mapped by their own IDs.
+   * @param {boolean} selected Whether this camera is selected or not.
+   */
+  function Camera(id, name, pos) {
+    var clips = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
+    var selected = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
 
-  _classCallCheck(this, Camera);
+    _classCallCheck(this, Camera);
 
-  this.id = id;
-  this.name = name;
-  this.pos = pos;
-  this.empty = empty;
-  this.selected = selected;
-};
+    this.id = id;
+    this.name = name;
+    this.pos = pos;
+    this.clips = clips;
+    this.selected = selected;
+  }
+  /**
+   * 
+   * Returns whether or not this camera contains any clips.
+   * 
+   * @return {boolean} True if this camera does not contain any clips.
+   */
+
+
+  _createClass(Camera, [{
+    key: "isEmpty",
+    value: function isEmpty() {
+      return Object.keys(this.clips).length == 0;
+    }
+  }]);
+
+  return Camera;
+}();
+/**
+ * This class represents a Clip.
+ */
+
+var Clip =
+/*#__PURE__*/
+function () {
+  /**
+   * @param {int} id The unique identifier of this clip. Corresponds to the backend database.
+   * @param {string} name The file name of this clip, without file extension.
+   * @param {string} folder The path of the folder containing this clip.
+   * @param {string} format The file format of this clip, 'wav' etc.
+   * @param {??????} startTime The point in time when the clip starts.
+   * @param {??????} endTime The point in time when the clip ends.
+   */
+  function Clip(id, name, folder, format, startTime, endTime) {
+    _classCallCheck(this, Clip);
+
+    this.id = id;
+    this.name = name;
+    this.folder = folder;
+    this.format = format;
+    this.startTime = startTime;
+    this.endTime = endTime;
+  }
+  /**
+   * 
+   * Calculates the complete file path, including containing folder and file extension.
+   * 
+   * @return {string} The full file path of this clip.
+   */
+
+
+  _createClass(Clip, [{
+    key: "getPath",
+    value: function getPath() {
+      return this.folder + this.name + '.' + this.format;
+    }
+  }]);
+
+  return Clip;
+}();
 
 /***/ }),
 

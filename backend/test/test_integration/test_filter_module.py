@@ -23,7 +23,7 @@ class ModifyFilterTest(TestCase):
         data = {FILTER_ID: self.fid,
                 START_TIME: timezone.datetime(2020, 1, 18, tzinfo=pytz.timezone(settings.TIME_ZONE)),
                 END_TIME: timezone.datetime(2020, 1, 18, tzinfo=pytz.timezone(settings.TIME_ZONE)),
-                ADD_CLASSES: ["apa"],
+                ADD_CLASSES: ["monkey"],
                 REMOVE_CLASSES: [],
                 MIN_WIDTH: 200,
                 MIN_HEIGHT: 100,
@@ -36,7 +36,7 @@ class ModifyFilterTest(TestCase):
         filter = dbw.get_filter_by_id(self.fid)
         self.assertEqual(filter.start_time, timezone.datetime(2020, 1, 18, tzinfo=pytz.timezone(settings.TIME_ZONE)))
         self.assertEqual(filter.end_time, timezone.datetime(2020, 1, 18, tzinfo=pytz.timezone(settings.TIME_ZONE)))
-        self.assertEqual(filter.classes.first().object_class, "apa")
+        self.assertEqual(filter.classes.first().object_class, "monkey")
         self.assertEqual(filter.min_width, 200)
         self.assertEqual(filter.min_height, 100)
         self.assertEqual(filter.min_frame_rate, 10)
@@ -46,13 +46,13 @@ class ModifyFilterTest(TestCase):
 
     def test_bad_filter_id(self):
         """
-        Test that an nonexistent fid causes the right response to be sent
+        Test that an nonexistent fid causes the right response to be sent.
         """
 
         data = {FILTER_ID: 10,
                 START_TIME: timezone.datetime(2020, 1, 18, tzinfo=pytz.timezone(settings.TIME_ZONE)),
                 END_TIME: timezone.datetime(2020, 1, 18, tzinfo=pytz.timezone(settings.TIME_ZONE)),
-                ADD_CLASSES: ["apa"],
+                ADD_CLASSES: ["monkey"],
                 REMOVE_CLASSES: [],
                 MIN_WIDTH: 200,
                 MIN_HEIGHT: 100,
@@ -97,7 +97,7 @@ class GetClipsMatchingFilter(TestCase):
 
     def test_time_filter(self):
         """
-        Test filtering by time
+        Test filtering by time.
         """
         data = {FILTER_ID: 1,
                 CAMERA_IDS: [1]

@@ -14,11 +14,10 @@ CLIP_NAME = 'clip_name'
 # --- OS related ---
 FILE_PATH = 'file_path'
 
-# --- objects ---
+# --- Objects ---
 PROJECTS = 'projects'
 FOLDERS = 'folders'
 CAMERAS = 'cameras'
-
 
 # --- Lists of ID:s ---
 CAMERA_IDS = 'camera_ids'
@@ -27,7 +26,6 @@ CLIP_IDS = 'clip_ids'
 # --- Lists of text ---
 ADD_CLASSES = "add_classes"
 REMOVE_CLASSES = "remove_classes"
-
 
 # --- Quality related ---
 MIN_WIDTH = "min_width"

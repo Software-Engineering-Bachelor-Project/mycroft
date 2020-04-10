@@ -10,6 +10,7 @@ import backend.video_manager as video_manager
 import backend.file_manager as file_manager
 import backend.object_detector as object_detector
 
+
 # each view follow the naming convention:  module name_action
 
 @api_view(['POST'])
@@ -20,6 +21,7 @@ def filter_get_matching_clips(request):
     """
     data = filter_module.get_clips_matching_filter(request.data)
     return Response(data[1], data[0])
+
 
 @api_view(['POST'])
 def filter_modify(request):
@@ -120,6 +122,7 @@ def file_get_folders(request):
     data = file_manager.get_folders(request.data)
     return Response(data[1], data[0])
 
+
 @api_view(['POST'])
 def file_add_folder(request):
     """
@@ -138,4 +141,3 @@ def detect_objects(request):
     """
     data = object_detector.detect_objects(request.data)
     return Response(data[1], data[0])
-

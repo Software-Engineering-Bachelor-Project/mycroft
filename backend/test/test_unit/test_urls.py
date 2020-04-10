@@ -2,16 +2,26 @@ from django.test import TestCase
 from django.urls import reverse, resolve
 from backend.views import *
 
+
 class UrlsTest(TestCase):
 
-    def test_filter(self):
+    def test_filter_get_matching_clips(self):
         '''
         Test that the url for the filter module is correctly mapped to the view
         :return: None
         '''
-        url = reverse('backend:filter')
+        url = reverse('backend:filter get matching')
         resolver = resolve(url)
-        self.assertEqual(resolver.func, filter)
+        self.assertEqual(resolver.func, filter_get_matching_clips)
+
+    def test_filter_modify(self):
+        '''
+        Test that the url for the filter module is correctly mapped to the view
+        :return: None
+        '''
+        url = reverse('backend:filter modify')
+        resolver = resolve(url)
+        self.assertEqual(resolver.func, filter_modify)
 
     def test_project_get_all(self):
         '''

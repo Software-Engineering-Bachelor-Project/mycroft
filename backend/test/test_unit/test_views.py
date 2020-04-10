@@ -5,23 +5,42 @@ import unittest.mock as mock
 
 import backend.views as views
 
-class FilterTest(TestCase):
+class FilterModifyTest(TestCase):
 
     @mock.patch('backend.views.filter_module')
     def test_propagation(self, mock_mod):
         '''
-        Tests propagation of the 'filter clips' request.
+        Tests propagation of the 'filter modify' request.
         :return: None
         '''
         # Set up mock
-        mock_mod.filter_clips.return_value = (200, {})
+        mock_mod.modify_filter.return_value = (200, {})
 
         # Test function
         req = APIRequestFactory().post('', {'test': 'data'})
-        response = views.filter(req)
+        response = views.filter_modify(req)
         
         # Did we propagate properly?
-        mock_mod.filter_clips.assert_called_with(QueryDict('test=data'))
+        mock_mod.modify_filter.assert_called_with(QueryDict('test=data'))
+
+
+class FilterGetMatchingClipsTest(TestCase):
+
+    @mock.patch('backend.views.filter_module')
+    def test_propagation(self, mock_mod):
+        '''
+        Tests propagation of the 'filter get matching clips' request.
+        :return: None
+        '''
+        # Set up mock
+        mock_mod.get_clips_matching_filter.return_value = (200, {})
+
+        # Test function
+        req = APIRequestFactory().post('', {'test': 'data'})
+        response = views.filter_get_matching_clips(req)
+
+        # Did we propagate properly?
+        mock_mod.get_clips_matching_filter.assert_called_with(QueryDict('test=data'))
 
 
 class ProjectGetAllTest(TestCase):

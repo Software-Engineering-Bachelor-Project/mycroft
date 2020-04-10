@@ -9,7 +9,8 @@ not affect the tests if the name parameter is unchanged
 
 app_name = 'backend'
 urlpatterns = [
-    path('filter', views.filter, name='filter'),
+    path('filter/get_matching_clips', views.filter_get_matching_clips, name='filter get matching'),
+    path('filter/modify', views.filter_modify, name='filter modify'),
 
     path('project/get_all', views.project_get_all, name='project get all'),
     path('project/new', views.project_new, name='project new'),

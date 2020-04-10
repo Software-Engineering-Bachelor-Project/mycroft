@@ -370,6 +370,7 @@ def get_all_clips_matching_filter(fid: int) -> List[Clip]:
 
     filter = get_filter_by_id(fid)
     assert filter is not None
+
     clips = get_all_clips_in_project(filter.project.id)
     res = []
 
@@ -580,7 +581,7 @@ def remove_excluded_clip_from_filter(fid: int, cid: int) -> None:
     f.excluded_clips.remove(clip)
 
 
-def get_all_included_clips_in_filter(fid: int) -> List[Camera]:
+def get_all_included_clips_in_filter(fid: int) -> List[Clip]:
     """
     Gets all included clips in filter.
 
@@ -592,7 +593,7 @@ def get_all_included_clips_in_filter(fid: int) -> List[Camera]:
     return f.included_clips.all()[::1]
 
 
-def get_all_excluded_clips_in_filter(fid: int) -> List[Camera]:
+def get_all_excluded_clips_in_filter(fid: int) -> List[Clip]:
     """
     Gets all excluded clips in filter.
 

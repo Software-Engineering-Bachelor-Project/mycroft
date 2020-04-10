@@ -29,7 +29,7 @@ class GetFoldersTest(TestCase):
         mock_get_folders_in_project.assert_called_once_with(pid=1)
         mock_get_subfolders_recursive.assert_called_once_with(fid=self.rf.id)
         self.assertEqual(code, 200)
-        self.assertEqual(len(res), 2)
+        self.assertEqual(len(res[FOLDERS]), 2)
 
     @patch('backend.file_manager.get_subfolders_recursive')
     @patch('backend.file_manager.get_folders_in_project')
@@ -43,7 +43,7 @@ class GetFoldersTest(TestCase):
         mock_get_folders_in_project.assert_called_once_with(pid=1)
         mock_get_subfolders_recursive.assert_called_once_with(fid=self.rf.id)
         self.assertEqual(code, 200)
-        self.assertEqual(len(res), 2)
+        self.assertEqual(len(res[FOLDERS]), 2)
 
     def test_missing_parameter(self):
         """

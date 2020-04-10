@@ -2,7 +2,7 @@ from .database_wrapper import rename_project as db_rename_project
 from .database_wrapper import delete_project as db_delete_project
 from .database_wrapper import *
 from .serialization import *
-from .communication_parameters import *
+from .communication_utils import *
 
 # This file represents the backend Project Manager.
 
@@ -14,7 +14,7 @@ def get_projects(data: dict = {}) -> (int, dict):
     :param data: No input.
     :return: Status code, all projects in database in JSON.
     """
-    return 200, serialize(get_all_projects())
+    return 200, os_aware({PROJECTS: serialize(get_all_projects())})
 
 
 def new_project(data: dict) -> (int, dict):
@@ -31,7 +31,7 @@ def new_project(data: dict) -> (int, dict):
 
     pid = create_project(name=name)
     create_filter(pid=pid)
-    return 200, {PROJECT_ID: pid}
+    return 200, os_aware({PROJECT_ID: pid})
 
 
 def delete_project(data: dict) -> (int, dict):

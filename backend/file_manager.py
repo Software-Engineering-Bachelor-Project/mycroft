@@ -1,10 +1,10 @@
-import os, re, logging
+import re, logging
 import pytz
 from django.conf import settings
 from moviepy.video.io.VideoFileClip import VideoFileClip
 
 from .database_wrapper import *
-from .communication_parameters import *
+from .communication_utils import *
 from .serialization import *
 
 # This file represents the backend File Manager.
@@ -17,7 +17,7 @@ VIDEO_FORMATS = ["mkv", "flv", "vob", "ogv", "ogg",
                  "flv", "f4v", "f4p", "f4a", "f4b", "webm"]
 
 
-def get_folders(data: dict) -> (int, dict):
+def get_folders(data: dict) -> dict:
     """
     Get all folders in a project.
 
@@ -38,7 +38,7 @@ def get_folders(data: dict) -> (int, dict):
     for f in root_folders:
         folders += get_subfolders_recursive(fid=f.id)
 
-    return 200, serialize(folders)
+    return 200, os_aware({FOLDERS: serialize(folders)})
 
 
 def add_folder(data: dict) -> (int, dict):
@@ -66,7 +66,7 @@ def add_folder(data: dict) -> (int, dict):
     except AssertionError:
         return 204, {}  # No content
 
-    return 200, {FOLDER_ID: fid}
+    return 200, os_aware({FOLDER_ID: fid})
 
 
 def build_file_structure(file_path: str) -> None:

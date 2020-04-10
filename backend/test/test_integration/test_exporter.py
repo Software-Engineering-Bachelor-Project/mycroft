@@ -1,6 +1,7 @@
 import pytz
 from django.conf import settings
 from django.test import TestCase
+from unittest.mock import patch
 
 # Import module
 from backend.exporter import *
@@ -27,7 +28,8 @@ class ExportFilterTest(TestCase):
         self.fid = create_filter(pid=self.pid)
         add_folder_to_project(self.fid, self.pid)
 
-    def test_basic(self):
+    @patch('backend.exporter.os_aware', side_effect=lambda x: x)
+    def test_basic(self, mock_os_aware):
         modify_filter(fid=self.fid, start_time=self.st, end_time=self.et, add_classes=['bike', 'car'])
         code, res = export_filter(data={FILTER_ID: self.fid})
         self.assertEqual(code, 200)

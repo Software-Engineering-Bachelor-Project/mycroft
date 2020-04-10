@@ -24,7 +24,7 @@ class GetFoldersTest(TestCase):
         """
         code, res = get_folders(data={PROJECT_ID: self.pid})
         self.assertEqual(code, 200)
-        self.assertEqual(len(res), 4)
+        self.assertEqual(len(res[FOLDERS]), 4)
 
     def test_redundant_parameter(self):
         """
@@ -32,7 +32,7 @@ class GetFoldersTest(TestCase):
         """
         code, res = get_folders(data={PROJECT_ID: self.pid, FOLDER_ID: 42})
         self.assertEqual(code, 200)
-        self.assertEqual(len(res), 4)
+        self.assertEqual(len(res[FOLDERS]), 4)
 
 
 class AddFoldersTest(TestCase):

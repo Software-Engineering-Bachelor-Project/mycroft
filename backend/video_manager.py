@@ -1,5 +1,5 @@
 from .database_wrapper import *
-from .communication_parameters import *
+from .communication_utils import *
 from .serialization import *
 
 # This file represents the backend Video Manager.
@@ -21,7 +21,9 @@ def get_clip_info(data: dict) -> (int, dict):
     if clip is None:
         return 204, {}  # No content
 
-    return 200, serialize(clip)
+    json_clip = {**serialize(clip), 'file_path': str(clip)}
+
+    return 200, os_aware(json_clip)
 
 
 def get_cameras(data: dict) -> (int, dict):
@@ -41,4 +43,4 @@ def get_cameras(data: dict) -> (int, dict):
     except AssertionError:
         return 204, {}  # No content
 
-    return 200, serialize(cameras)
+    return 200, os_aware({CAMERAS: serialize(cameras)})

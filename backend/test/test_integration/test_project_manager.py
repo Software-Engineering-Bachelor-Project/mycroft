@@ -15,7 +15,7 @@ class GetProjectsTest(TestCase):
         create_project('project3')
         code, res = get_projects()
         self.assertEqual(200, code)
-        self.assertEqual(len(res), 3)
+        self.assertEqual(len(res[PROJECTS]), 3)
 
     def test_no_projects(self):
         """
@@ -23,7 +23,7 @@ class GetProjectsTest(TestCase):
         """
         code, res = get_projects()
         self.assertEqual(code, 200)
-        self.assertEqual(res, [])
+        self.assertEqual(res, {PROJECTS: []})
 
 
 class NewProjectTest(TestCase):

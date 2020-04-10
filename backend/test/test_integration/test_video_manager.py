@@ -1,6 +1,7 @@
 import pytz
 from django.conf import settings
 from django.test import TestCase
+from unittest.mock import patch
 
 # Import module
 from backend.video_manager import *
@@ -16,7 +17,8 @@ class GetClipInfoTest(TestCase):
                                end_time=timezone.datetime(2020, 1, 18, tzinfo=pytz.timezone(settings.TIME_ZONE)),
                                width=256, height=240, frame_rate=42)
 
-    def test_basic(self):
+    @patch('backend.video_manager.os_aware', side_effect=lambda x: x)
+    def test_basic(self, mock_os_aware):
         """
         Makes a simple call.
         """
@@ -25,7 +27,8 @@ class GetClipInfoTest(TestCase):
         self.assertEqual(res, {'id': 1, 'name': 'test_clip', 'video_format': 'tvf',
                                'start_time': '2020-01-17T00:00:00+01:00',
                                'end_time': '2020-01-18T00:00:00+01:00', 'width': 256, 'height': 240,
-                               'frame_rate': 42.0, 'folder': 1, 'camera': 1})
+                               'frame_rate': 42.0, 'folder': 1, 'camera': 1,
+                               'file_path': 'home/user/test_folder/test_clip.tvf'})
 
 
 class GetCamerasTest(TestCase):
@@ -58,11 +61,7 @@ class GetCamerasTest(TestCase):
         """
         code, res = get_cameras(data={PROJECT_ID: self.pid})
         self.assertEqual(code, 200)
-        self.assertEqual(res, [OrderedDict([('id', 1), ('latitude', '13.37000000'), ('longitude', '0.42000000'),
-                                            ('start_time', '2020-01-17T00:00:00+01:00'),
-                                            ('end_time', '2020-01-18T00:00:00+01:00')]), OrderedDict(
-            [('id', 2), ('latitude', '0.42000000'), ('longitude', '13.37000000'),
-             ('start_time', '2020-01-17T00:00:00+01:00'), ('end_time', '2020-01-18T00:00:00+01:00')])])
+        self.assertEqual(len(res[CAMERAS]), 2)
 
     def test_non_existing_project(self):
         """

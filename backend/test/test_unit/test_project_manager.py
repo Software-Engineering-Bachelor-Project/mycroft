@@ -7,17 +7,20 @@ from backend.project_manager import *
 
 class GetProjectsTest(TestCase):
 
+    @patch('backend.project_manager.os_aware')
     @patch('backend.project_manager.serialize')
     @patch('backend.project_manager.get_all_projects')
-    def test_basic(self, mock_get_all_projects, mock_serialize):
+    def test_basic(self, mock_get_all_projects, mock_serialize, mock_os_aware):
         """
         Makes a simple call.
         """
         mock_get_all_projects.return_value = 'return from get all projects'
+        mock_serialize.return_value = 'return from serialize'
         code, res = get_projects({})
         self.assertEqual(code, 200)
         mock_get_all_projects.assert_called_once()
         mock_serialize.assert_called_once_with('return from get all projects')
+        mock_os_aware.assert_called_once_with({PROJECTS: 'return from serialize'})
 
 
 class NewProjectTest(TestCase):

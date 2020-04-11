@@ -167,3 +167,6 @@ dmypy.json
 
 # PyCharm
 .idea/
+
+# YOLOv3 weights. To large for GitHub.
+backend/utils/yolov3.weights

@@ -1,7 +1,7 @@
 import re, logging
 import pytz
 from django.conf import settings
-from moviepy.video.io.VideoFileClip import VideoFileClip
+import cv2
 
 from .database_wrapper import *
 from .communication_utils import *
@@ -17,7 +17,7 @@ VIDEO_FORMATS = ["mkv", "flv", "vob", "ogv", "ogg",
                  "flv", "f4v", "f4p", "f4a", "f4b", "webm"]
 
 
-def get_folders(data: dict) -> dict:
+def get_folders(data: dict) -> (int, dict):
     """
     Get all folders in a project.
 
@@ -196,11 +196,16 @@ def get_clip_details(file_path: str) -> (int, float, int, int):
     :return: Duration in seconds, frame rate in FPS and width and height in pixels.
              This is given in the form of a tuple (duration, frame rate, width, height).
     """
-    try:
-        vfc = VideoFileClip(file_path)
-        return int(vfc.duration), vfc.fps, vfc.w, vfc.h
-    except OSError:
+    # Check if clip exists
+    if not os.path.isfile(path=file_path):
         raise FileNotFoundError
+
+    cap = cv2.VideoCapture(file_path)
+    fps = cap.get(cv2.CAP_PROP_FPS)
+    frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+    width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+    height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+    return int(frames/fps), fps, width, height
 
 
 def split_file_path(file_path: str) -> (str, str):

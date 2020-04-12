@@ -451,9 +451,12 @@ def get_objects_in_camera(cmid: int, start_time: timezone.datetime = None, end_t
         start_time = cm.start_time
     if end_time is None:
         end_time = cm.end_time
-    ods = cm.objectdetection_set.filter(Q(start_time__gte=start_time, end_time__lte=end_time) |
-                                        Q(start_time__lte=start_time, end_time__gte=start_time) |
-                                        Q(start_time__lte=end_time, end_time__gte=end_time))
+
+    ods = []
+    for c in cm.clip_set.all():
+        ods += c.objectdetection_set.filter(Q(start_time__gte=start_time, end_time__lte=end_time) |
+                                            Q(start_time__lte=start_time, end_time__gte=start_time) |
+                                            Q(start_time__lte=end_time, end_time__gte=end_time))
     res = []
     for od in ods:
         res += get_objects_in_detection(odid=od.id, start_time=start_time, end_time=end_time,
@@ -663,12 +666,12 @@ def get_all_classes_in_filter(fid: int) -> List[ObjectClass]:
 
 # --- Object Detection ---
 
-def create_object_detection(cmid: int, sample_rate: float, start_time: timezone.datetime, end_time: timezone.datetime,
+def create_object_detection(cid: int, sample_rate: float, start_time: timezone.datetime, end_time: timezone.datetime,
                             objects=None) -> int:
     """
     Creates an object detection.
 
-    :param cmid: The id of the camera.
+    :param cid: The id of the clip.
     :param sample_rate: The sample rate of the object detection.
     :param start_time: Start time of object detection.
     :param end_time: End time of object detection.
@@ -677,9 +680,9 @@ def create_object_detection(cmid: int, sample_rate: float, start_time: timezone.
     """
     if objects is None:
         objects = []
-    cm = get_camera_by_id(cmid=cmid)
-    assert cm is not None
-    od = ObjectDetection.objects.get_or_create(camera=cm, sample_rate=sample_rate, start_time=start_time,
+    c = get_clip_by_id(cid=cid)
+    assert c is not None
+    od = ObjectDetection.objects.get_or_create(clip=c, sample_rate=sample_rate, start_time=start_time,
                                                end_time=end_time)[0]
     add_objects_to_detection(odid=od.id, objects=objects)
     return od.id

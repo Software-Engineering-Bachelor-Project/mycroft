@@ -218,10 +218,10 @@ class ObjectDetection(models.Model):
     Sample rate is given in seconds.
 
     NOTE:
-        Uses cascade for camera so the entity will be deleted if the camera is deleted.
+        Uses cascade for clip so the entity will be deleted if the clip is deleted.
         Sample rate equal to 0.0 means run object detection on all frames.
     """
-    camera = models.ForeignKey(Camera, on_delete=models.CASCADE)
+    clip = models.ForeignKey(Clip, on_delete=models.CASCADE)
     sample_rate = models.FloatField('sample rate (s)', validators=[MinValueValidator(0.0)])
     start_time = models.DateTimeField('start time')
     end_time = models.DateTimeField('end time')
@@ -233,9 +233,9 @@ class ObjectDetection(models.Model):
     def clean(self):
         if self.start_time > self.end_time:
             raise ValidationError("Start time must be before end time.")
-        if self.camera.start_time > self.start_time or self.camera.end_time < self.start_time:
+        if self.clip.start_time > self.start_time or self.clip.end_time < self.start_time:
             raise ValidationError("Start time must be inside the camera's active interval.")
-        if self.camera.start_time > self.end_time or self.camera.end_time < self.end_time:
+        if self.clip.start_time > self.end_time or self.clip.end_time < self.end_time:
             raise ValidationError("End time must be inside the camera's active interval.")
 
     def save(self, *args, **kwargs):

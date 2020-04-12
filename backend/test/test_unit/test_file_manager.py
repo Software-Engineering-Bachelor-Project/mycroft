@@ -252,18 +252,33 @@ class ParseMetadataTest(TestCase):
         self.assertRaises(ValueError, parse_metadata, file_path='home/user/test_folder/test_clip.avi')
 
 
+def cap_get(x):
+    """
+    Function used to mimic the behaviour of VideoCapture.get.
+    :param x: Given argument.
+    """
+    if x == cv2.CAP_PROP_FPS:
+        return 42
+    elif x == cv2.CAP_PROP_FRAME_COUNT:
+        return 1337.0
+    elif x == cv2.CAP_PROP_FRAME_WIDTH:
+        return 256
+    elif x == cv2.CAP_PROP_FRAME_HEIGHT:
+        return 240
+
+
 class GetClipDetailsTest(TestCase):
 
-    @patch('backend.file_manager.VideoFileClip')
-    def test_valid_clip(self, mock):
+    @patch('backend.file_manager.os.path.isfile')
+    @patch('backend.file_manager.cv2.VideoCapture')
+    def test_valid_clip(self, mock_cap, mock_isfile):
         """
         Test getting details of a clip. Should round down for duration.
         """
-        type(mock.return_value).duration = 3.14
-        type(mock.return_value).fps = 42
-        type(mock.return_value).w = 256
-        type(mock.return_value).h = 240
-        self.assertEqual(get_clip_details('home/user/test_folder/test_clip.avi'), (3, 42, 256, 240))
+        mock_isfile.return_value = True
+        mock_cap.return_value.get.side_effect = cap_get
+        self.assertEqual(get_clip_details('home/user/test_folder/test_clip.avi'), (31, 42, 256, 240))
+        mock_cap.assert_called_once_with('home/user/test_folder/test_clip.avi')
 
     def test_non_existing_clip(self):
         """

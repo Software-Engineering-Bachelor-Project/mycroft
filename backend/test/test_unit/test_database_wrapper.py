@@ -79,7 +79,7 @@ class BaseTestCases:
             self.cmid = get_camera_by_location(latitude=Decimal(value="13.37"), longitude=Decimal(value="0.42")).id
             self.st = timezone.now() - timezone.timedelta(hours=0.5)
             self.et = timezone.now() - timezone.timedelta(hours=0.25)
-            self.odid = create_object_detection(cmid=self.cmid, sample_rate=0.5, start_time=self.st, end_time=self.et,
+            self.odid = create_object_detection(cid=self.cid, sample_rate=0.5, start_time=self.st, end_time=self.et,
                                                 objects=[("test_object", self.st + timezone.timedelta(minutes=5))])
 
 
@@ -857,7 +857,7 @@ class GetObjectsInCameraTest(BaseTestCases.ObjectDetectionTest):
         """
         Test getting objects in a camera by filtering on classes and time intervals.
         """
-        odid = create_object_detection(cmid=self.cmid, sample_rate=0.5, start_time=self.et,
+        odid = create_object_detection(cid=self.cid, sample_rate=0.5, start_time=self.et,
                                        end_time=self.et + timezone.timedelta(minutes=10),
                                        objects=[("test_object", self.et + timezone.timedelta(minutes=5))])
         add_objects_to_detection(odid=odid,
@@ -885,10 +885,10 @@ class CreateObjectDetectionTest(BaseTestCases.ObjectDetectionTest):
         Test creating bad object detections.
         """
         # Create object detection with time interval outside of the camera's time interval.
-        self.assertRaises(ValidationError, create_object_detection, cmid=self.cmid, sample_rate=0.5,
+        self.assertRaises(ValidationError, create_object_detection, cid=self.cid, sample_rate=0.5,
                           start_time=self.st - timezone.timedelta(hours=2), end_time=self.et)
         # Create an object detection with a detected object outside of the object detection's time interval.
-        self.assertRaises(ValidationError, create_object_detection, cmid=self.cmid, sample_rate=0.5, start_time=self.st,
+        self.assertRaises(ValidationError, create_object_detection, cid=self.cid, sample_rate=0.5, start_time=self.st,
                           end_time=self.et, objects=[("valid_test_object", self.st - timezone.timedelta(minutes=5))])
 
 

@@ -27,14 +27,27 @@ def modify_filter(data: dict) -> (int, dict):
     end_time = data.get(END_TIME)
     add_classes = data.get(ADD_CLASSES)
     remove_classes = data.get(REMOVE_CLASSES)
-    min_width = data.get(MIN_WIDTH)
-    min_height = data.get(MIN_HEIGHT)
+    remove_blacklisted_resolutions = data.get(REMOVE_BLACKLISTED_RESOLUTIONS)
+    add_blacklisted_resolutions = data.get(ADD_BLACKLISTED_RESOLUTIONS)
     min_frame_rate = data.get(MIN_FRAMERATE)
+    add_excluded_clips = data.get(ADD_EXCLUDED_CLIP_IDS)
+    remove_excluded_clips = data.get(REMOVE_EXCLUDED_CLIP_IDS)
+    add_included_clips = data.get(ADD_INCLUDED_CLIP_IDS)
+    remove_included_clips = data.get(REMOVE_INCLUDED_CLIP_IDS)
 
     # Modify the given filter
     try:
-        dbw.modify_filter(fid=filter_id, start_time=start_time, end_time=end_time, add_classes=add_classes,
-                          remove_classes=remove_classes, min_width=min_width, min_height=min_height,
+        dbw.modify_filter(fid=filter_id,
+                          start_time=start_time,
+                          end_time=end_time,
+                          add_classes=add_classes,
+                          remove_classes=remove_classes,
+                          add_blacklisted_resolutions=add_blacklisted_resolutions,
+                          remove_blacklisted_resolutions=remove_blacklisted_resolutions,
+                          add_excluded_clips=add_excluded_clips,
+                          remove_excluded_clips=remove_excluded_clips,
+                          add_included_clips=add_included_clips,
+                          remove_included_clips=remove_included_clips,
                           min_frame_rate=min_frame_rate)
     except AssertionError:
         return 204, {}

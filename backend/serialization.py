@@ -4,8 +4,9 @@ from typing import Type, Union, List
 
 from .model_serializers import *
 
-BACKEND_MODEL = Union[List[Union[Project, Folder, Filter, Camera, ObjectDetection, Object, ObjectClass, Clip]],
-                      Project, Folder, Filter, Camera, ObjectDetection, Object, ObjectClass, Clip]
+BACKEND_MODEL = Union[
+    List[Union[Project, Folder, Filter, Camera, ObjectDetection, Object, ObjectClass, Clip, Resolution]],
+    Project, Folder, Filter, Camera, ObjectDetection, Object, ObjectClass, Clip, Resolution]
 
 
 def serialize(data: BACKEND_MODEL) -> Union[OrderedDict, List[OrderedDict]]:

@@ -3,7 +3,7 @@ from django.utils import timezone
 from decimal import Decimal
 from django.db.models import Q
 
-from .models import Project, Folder, Filter, Camera, ObjectDetection, Object, ObjectClass, Clip
+from .models import Project, Folder, Filter, Camera, ObjectDetection, Object, ObjectClass, Clip, Resolution
 
 """
 This is the wrapper to the database.
@@ -286,8 +286,9 @@ def create_clip(fid: int, name: str, video_format: str, start_time: timezone.dat
     f = get_folder_by_id(fid=fid)
     assert f is not None
     camera = Camera.objects.get_or_create(latitude=latitude, longitude=longitude)[0]
+    resolution = Resolution.objects.get_or_create(height=height, width=width)[0]
     clip = Clip.objects.get_or_create(folder=f, name=name, video_format=video_format, start_time=start_time,
-                                      end_time=end_time, camera=camera, width=width, height=height,
+                                      end_time=end_time, camera=camera, resolution=resolution,
                                       frame_rate=frame_rate)[0]
     return clip.id
 
@@ -464,7 +465,7 @@ def get_objects_in_camera(cmid: int, start_time: timezone.datetime = None, end_t
     return res
 
 
-def get_all_cameras_in_project(pid: int) -> List[Clip]:
+def get_all_cameras_in_project(pid: int) -> List[Camera]:
     """
     Gets all cameras in a project.
 
@@ -609,44 +610,83 @@ def get_all_excluded_clips_in_filter(fid: int) -> List[Clip]:
 
 
 def modify_filter(fid: int, start_time: timezone.datetime = None, end_time: timezone.datetime = None,
-                  add_classes: List[str] = None, remove_classes: List[str] = None, min_width: int = None,
-                  min_height: int = None, min_frame_rate: int = None) -> None:
+                  add_classes: List[str] = None, remove_classes: List[str] = None,
+                  add_blacklisted_resolutions: List[Tuple[int, int]] = None,
+                  remove_blacklisted_resolutions: List[Tuple[int, int]] = None,
+                  add_excluded_clips: List[int] = None,
+                  remove_excluded_clips: List[int] = None,
+                  add_included_clips: List[int] = None,
+                  remove_included_clips: List[int] = None,
+                  min_frame_rate: int = None) -> None:
     """
     Changes the given values in the specified filter.
-    
+
     NOTE:
         Not all parameters have to be given. The function only modifies the the specified parameters.
 
-    :param fid: The filter's id.
 
+    :param fid: The filter's id.
     :param start_time: New start time for filter.
     :param end_time: New end time for filter.
     :param add_classes: Object classes to be added to filter.
     :param remove_classes: Object classes to be removed from filter.
-    :param min_width: Minimum pixels wide.
-    :param min_height: Minimum pixels high.
+    :param add_blacklisted_resolutions: List of resolutions that should be added to blacklist
+    :param remove_blacklisted_resolutions: List of resolutions that should be removed from blacklist
+    :param remove_included_clips: clips that should be removed from included clips
+    :param add_included_clips: clips that should be added to included clips
+    :param remove_excluded_clips: clips that should be removed from excluded clips
+    :param add_excluded_clips: clips that should be added to excluded clips
     :param min_frame_rate: Minimum frames per second.
     """
     f = get_filter_by_id(fid=fid)
+
     assert f is not None
+
     if start_time is not None:
         f.start_time = start_time
+
+    if start_time is not None:
+        f.start_time = start_time
+
     if end_time is not None:
         f.end_time = end_time
+
     if add_classes is not None:
         for oc in add_classes:
             obj_cls = ObjectClass.objects.get_or_create(object_class=oc)[0]
             f.classes.add(obj_cls)
+
     if remove_classes is not None:
         for oc in remove_classes:
             obj_cls = ObjectClass.objects.get_or_create(object_class=oc)[0]
             f.classes.remove(obj_cls)
-    if start_time is not None:
-        f.start_time = start_time
-    if min_width is not None:
-        f.min_width = min_width
-    if min_height is not None:
-        f.min_height = min_height
+
+    if add_blacklisted_resolutions is not None:
+        for res_tuple in add_blacklisted_resolutions:
+            res = Resolution.objects.get(height=res_tuple[0], width=res_tuple[1])
+            f.blacklisted_resolutions.add(res)
+
+    if remove_blacklisted_resolutions is not None:
+        for res_tuple in remove_blacklisted_resolutions:
+            res = Resolution.objects.get_or_create(height=res_tuple[0], width=res_tuple[1])
+            f.blacklisted_resolutions.remove(res)
+
+    if add_excluded_clips is not None:
+        for clip in add_excluded_clips:
+            add_excluded_clip_to_filter(fid, clip)
+
+    if add_included_clips is not None:
+        for clip in add_included_clips:
+            add_included_clip_to_filter(fid, clip)
+
+    if remove_included_clips is not None:
+        for clip in remove_included_clips:
+            remove_included_clip_from_filter(fid, clip)
+
+    if remove_excluded_clips is not None:
+        for clip in remove_excluded_clips:
+            remove_excluded_clip_from_filter(fid, clip)
+
     if min_frame_rate is not None:
         f.min_frame_rate = min_frame_rate
     f.save()
@@ -728,7 +768,8 @@ def add_objects_to_detection(odid: int, objects: List[Tuple[str, timezone.dateti
         Object.objects.create(object_detection=od, object_class=object_class, time=time)
 
 
-def get_objects_in_detection(odid: int, start_time: timezone.datetime = None, end_time: timezone.datetime = None,
+def get_objects_in_detection(odid: int, start_time: timezone.datetime = None,
+                             end_time: timezone.datetime = None,
                              object_classes: List[str] = None) -> List[Object]:
     """
     Returns all objects from object detection meeting the specified requirements.

@@ -23,6 +23,18 @@ CAMERAS = 'cameras'
 CAMERA_IDS = 'camera_ids'
 CLIP_IDS = 'clip_ids'
 
+REMOVE_INCLUDED_CLIP_IDS = "remove_included_clips "
+ADD_INCLUDED_CLIP_IDS = "add_included_clips "
+
+REMOVE_EXCLUDED_CLIP_IDS = "remove_excluded_clips"
+ADD_EXCLUDED_CLIP_IDS = "add_excluded_clips"
+
+
+# --- Lists of values ---
+REMOVE_BLACKLISTED_RESOLUTIONS = "remove_blacklisted_resolutions"
+ADD_BLACKLISTED_RESOLUTIONS = "add_blacklisted_resolutions"
+
+
 # --- Lists of text ---
 ADD_CLASSES = "add_classes"
 REMOVE_CLASSES = "remove_classes"

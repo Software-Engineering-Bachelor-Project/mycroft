@@ -139,10 +139,10 @@ class GetAllProjectsTest(BaseTestCases.ProjectTest):
         create_project(name="first test project")
         create_project(name="second test project")
         create_project(name="third test project")
-        self.assertEqual(len(get_all_projects()),3)
+        self.assertEqual(len(get_all_projects()), 3)
 
     def test_empty(self):
-        self.assertEqual(len(get_all_projects()),0)
+        self.assertEqual(len(get_all_projects()), 0)
 
 
 class DeleteProjectTest(BaseTestCases.ProjectTest):
@@ -298,6 +298,7 @@ class GetFoldersInProjectTest(BaseTestCases.ProjectTest):
         self.pid2 = create_project(name="test project2")
         self.assertEqual(len(get_folders_in_project(self.pid2)), 0)
 
+
 class GetAllFiltersFromProjectTest(BaseTestCases.ProjectTest):
     def setUp(self) -> None:
         """
@@ -310,14 +311,14 @@ class GetAllFiltersFromProjectTest(BaseTestCases.ProjectTest):
         """
         Test getting all filters from a project where there exist filters.
         """
-        self.assertEqual(len(get_all_filters_from_project(pid=self.pid)),1)
+        self.assertEqual(len(get_all_filters_from_project(pid=self.pid)), 1)
 
     def test_nonexisting_filter(self):
         """
         Tests getting all filters from a project where there doesn't exist filters.
         """
         self.pid2 = create_project("test project2")
-        self.assertEqual(len(get_all_filters_from_project(pid=self.pid2)),0)
+        self.assertEqual(len(get_all_filters_from_project(pid=self.pid2)), 0)
 
 
 class CreateRootFolderTest(BaseTestCases.FolderTest):
@@ -585,16 +586,21 @@ class CreateClipTest(BaseTestCases.ClipTest):
         Test that clips with a format longer than 5 characters are not allowed
         """
         self.assertRaises(ValidationError, lambda: create_clip(fid=self.fid, name="another_test_clip",
-                    video_format="tvfabc", start_time=self.st - timezone.timedelta(hours=1), end_time=self.st,
-                    latitude=self.lat, longitude=self.lon, width=256, height=240, frame_rate=42.0))
+                                                               video_format="tvfabc",
+                                                               start_time=self.st - timezone.timedelta(hours=1),
+                                                               end_time=self.st,
+                                                               latitude=self.lat, longitude=self.lon, width=256,
+                                                               height=240, frame_rate=42.0))
 
     def test_bad_folder(self):
         """
         Test that clips without a folder asserts None
         """
         self.assertRaises(AssertionError, lambda: create_clip(fid=999, name="another_test_clip", video_format="tvf",
-                    start_time=self.st - timezone.timedelta(hours=1), end_time=self.st, latitude=self.lat,
-                    longitude=self.lon, width=256, height=240, frame_rate=42.0))
+                                                              start_time=self.st - timezone.timedelta(hours=1),
+                                                              end_time=self.st, latitude=self.lat,
+                                                              longitude=self.lon, width=256, height=240,
+                                                              frame_rate=42.0))
     # TODO: Add tests for bad parameters
     # Added two tests, unsure if more bad parameters needs testing
 
@@ -838,11 +844,11 @@ class ModifyFilterTest(BaseTestCases.FilterTest):
         self.assertEqual(len(get_all_classes_in_filter(fid=self.fid)), 1)
 
     def test_modify_quality(self):
-        modify_filter(fid=self.fid, min_height=10, min_width=12, min_frame_rate=90)
+        modify_filter(fid=self.fid, add_blacklisted_resolutions=[(240, 256)], min_frame_rate=90)
         filter = get_filter_by_id(self.fid)
         self.assertEqual(filter.min_frame_rate, 90)
-        self.assertEqual(filter.min_height, 10)
-        self.assertEqual(filter.min_width, 12)
+        self.assertEqual(filter.blacklisted_resolutions.first().width, 256)
+        self.assertEqual(filter.blacklisted_resolutions.first().height, 240)
 
     def test_bad_time(self):
         """
@@ -1097,6 +1103,7 @@ class GetAllMatchingClipsInFilter(BaseTestCases.FilterTest):
                       end_time=timezone.now() - timezone.timedelta(hours=2))
         clips = get_all_clips_matching_filter(self.filter)
         self.assertEqual(clips, [])
+
 
 class GetAllCamerasInProject(BaseTestCases.ClipTest):
 

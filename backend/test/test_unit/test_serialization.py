@@ -19,11 +19,15 @@ class SerializeTest(TestCase):
                                         end_time=timezone.datetime(2020, 5, 18,
                                                                    tzinfo=pytz.timezone(settings.TIME_ZONE)),
                                         latitude=Decimal('0.0'), longitude=Decimal('0.0'))
-        self.cl = Clip.objects.create(name='test_clip', folder=self.rf, video_format='tvf', camera=self.cm,
+        self.resolution = Resolution.objects.create(height=10, width=10)
+
+        self.cl = Clip.objects.create(folder=self.rf, name='test_clip', video_format='tvf',
                                       start_time=timezone.datetime(2020, 5, 17,
                                                                    tzinfo=pytz.timezone(settings.TIME_ZONE)),
-                                      end_time=timezone.datetime(2020, 5, 18, tzinfo=pytz.timezone(settings.TIME_ZONE)),
-                                      width=256, height=240, frame_rate=42)
+                                      end_time=timezone.datetime(2020, 5, 18,
+                                                                 tzinfo=pytz.timezone(settings.TIME_ZONE)),
+                                      camera=self.cm, resolution=self.resolution,
+                                      frame_rate=42)
         self.folders = [self.rf, self.sf]
         self.objects = [self.sf, self.cm, self.cl]
 
@@ -40,7 +44,7 @@ class SerializeTest(TestCase):
                                                    'end_time': '2020-05-18T00:00:00+01:00'})
         self.assertEqual(serialize(data=self.cl), {'id': 1, 'name': 'test_clip', 'video_format': 'tvf',
                                                    'start_time': '2020-05-17T00:00:00+01:00',
-                                                   'end_time': '2020-05-18T00:00:00+01:00', 'width': 256, 'height': 240,
+                                                   'end_time': '2020-05-18T00:00:00+01:00', 'resolution': 1,
                                                    'frame_rate': 42.0, 'folder': 1, 'camera': 1})
 
     def test_serialize_collection(self):
@@ -79,6 +83,7 @@ class GetSerializerTest(TestCase):
                                      ObjectDetection: ObjectDetectionSerializer,
                                      Object: ObjectSerializer,
                                      Clip: ClipSerializer,
+                                     Resolution: ResolutionSerializer
                                      }
 
     def test_all_types(self):

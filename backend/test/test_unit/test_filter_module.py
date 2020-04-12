@@ -22,14 +22,18 @@ class ModifyFilterTest(TestCase):
                 REMOVE_CLASSES: "TEST_RC",
                 MIN_WIDTH: "TEST_mw",
                 MIN_HEIGHT: "TEST_mh",
-                MIN_FRAMERATE: "TEST_mfr"
+                MIN_FRAMERATE: "TEST_mfr",
                 }
         res = modify_filter(data)
         mock_dbw_modify_filter.assert_called_once_with(fid=data[FILTER_ID], start_time=data[START_TIME],
                                                        end_time=data[END_TIME], add_classes=data[ADD_CLASSES],
-                                                       remove_classes=data[REMOVE_CLASSES], min_width=data[MIN_WIDTH],
-                                                       min_height=data[MIN_HEIGHT],
-                                                       min_frame_rate=data[MIN_FRAMERATE])
+                                                       remove_classes=data[REMOVE_CLASSES],
+                                                       min_frame_rate=data[MIN_FRAMERATE],
+                                                       add_blacklisted_resolutions=None,
+                                                       remove_blacklisted_resolutions=None, add_excluded_clips=None,
+                                                       remove_excluded_clips=None, add_included_clips=None,
+                                                       remove_included_clips=None,
+                                                       )
 
     def test_missing_parameter(self):
         """

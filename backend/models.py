@@ -7,6 +7,17 @@ from decimal import Decimal
 INT_MAX_VALUE = 2147483647
 
 
+class Resolution(models.Model):
+    """
+    The Resolution of a clip
+    """
+    width = models.PositiveIntegerField()
+    height = models.PositiveIntegerField()
+
+    def __str__(self):
+        return self.id
+
+
 class Folder(models.Model):
     """
     A folder in the user's file system.
@@ -131,8 +142,7 @@ class Clip(models.Model):
     camera = models.ForeignKey(Camera, on_delete=models.PROTECT)
     start_time = models.DateTimeField('start time')
     end_time = models.DateTimeField('end time')
-    width = models.IntegerField()
-    height = models.IntegerField()
+    resolution = models.ForeignKey(Resolution, on_delete=models.PROTECT)
     frame_rate = models.FloatField()
 
     class Meta:
@@ -170,12 +180,16 @@ class Clip(models.Model):
         :return: Whether the clip matches the given filter
         """
 
-        # Test if the clip is within time boundaries
+        # Check if the clip within time boundaries
         if (filter.start_time is not None) and (filter.end_time is not None) and \
                 not overlap(self.start_time, self.end_time, filter.start_time, filter.end_time):
             return False
+
+        # Check if the clip has the desired resolution
+        if self.resolution in filter.blacklisted_resolutions.all():
+            return False
+
         # TODO: add support for classes
-        # TODO: add support for quality
         return True
 
 
@@ -195,9 +209,8 @@ class Filter(models.Model):
     start_time = models.DateTimeField('start time', null=True, blank=True)
     end_time = models.DateTimeField('end time', null=True, blank=True)
     classes = models.ManyToManyField(ObjectClass)
-    min_width = models.PositiveIntegerField("Minimum width", null=True, blank=True)
-    min_height = models.PositiveIntegerField("Minimum Height", null=True, blank=True)
     min_frame_rate = models.PositiveIntegerField("Minimum frame Rate", null=True, blank=True)
+    blacklisted_resolutions = models.ManyToManyField(Resolution)
 
     def __str__(self):
         return self.id

@@ -26,7 +26,7 @@ class GetClipInfoTest(TestCase):
         self.assertEqual(code, 200)
         self.assertEqual(res, {'id': 1, 'name': 'test_clip', 'video_format': 'tvf',
                                'start_time': '2020-01-17T00:00:00+01:00',
-                               'end_time': '2020-01-18T00:00:00+01:00', 'width': 256, 'height': 240,
+                               'end_time': '2020-01-18T00:00:00+01:00', 'resolution': 1,
                                'frame_rate': 42.0, 'folder': 1, 'camera': 1,
                                'file_path': 'home/user/test_folder/test_clip.tvf'})
 

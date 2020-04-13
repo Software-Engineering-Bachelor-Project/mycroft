@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import ClipBrowser from './clipBrowser'
+
+import ClipBrowser from './clipBrowser';
+import FileBrowser from './fileBrowser';
 
 /* -- Browser -- */
 class Browser extends Component {
@@ -10,10 +12,11 @@ class Browser extends Component {
 
     render() {
         return (
-            <div>
-                <p>Browser</p>
-                <ClipBrowser/>
-            </div>
+            <React.Fragment>
+              <p>Browser</p>
+              <ClipBrowser />
+              <FileBrowser />
+            </React.Fragment>
         );
     }
 }

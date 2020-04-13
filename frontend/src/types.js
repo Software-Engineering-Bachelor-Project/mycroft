@@ -37,7 +37,7 @@ export class Clip {
     /**
      * @param {int} id The unique identifier of this clip. Corresponds to the backend database.
      * @param {string} name The file name of this clip, without file extension.
-     * @param {string} folder The path of the folder containing this clip.
+     * @param {Folder} folder The path of the folder containing this clip.
      * @param {string} format The file format of this clip, 'wav' etc.
      * @param {??????} startTime The point in time when the clip starts.
      * @param {??????} endTime The point in time when the clip ends.
@@ -58,6 +58,40 @@ export class Clip {
      * @return {string} The full file path of this clip.
      */
     getPath() {
-        return this.folder + this.name + '.' + this.format;
+        return this.folder.getPath() + this.name + '.' + this.format;
+    }
+}
+
+
+/**
+ * This class represents a Folder.
+ */
+export class Folder {
+    /**
+     * @param {int} id The unique identifier of this folder. Corresponds to the backend database.
+     * @param {string} name The name of this folder.
+     * @param {Folder} parent The folder containing this folder. Should be undefined if root.
+     * @param {dict[int: Folder]} folders A dictionary containing subfolders, mapped by their own IDs.
+     * @param {dict[int: Clip]} clips A dictionary containing this folder's clips, mapped by their own IDs.
+     */
+    constructor(id, name, parent=undefined, folders = {}, clips = {}) {
+        this.id = id;
+        this.name = name;
+        this.parent = parent;
+        this.folders = folders;
+        this.clips = clips;
+    }
+
+    /**
+     * 
+     * Calculates the full path of this folder recursively.
+     * 
+     * @return {string} the full path of this folder.
+     */
+    getPath() {
+        if (this.parent == undefined)
+            return this.name + '/';
+        else
+            return this.parent.getPath() + this.name + '/';
     }
 }

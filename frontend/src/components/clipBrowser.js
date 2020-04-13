@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styles from './browser.module.css';
 
-
 // React Bootstrap
 import ListGroup from 'react-bootstrap/ListGroup';
 

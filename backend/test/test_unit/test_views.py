@@ -250,3 +250,41 @@ class DetectObjectsTest(TestCase):
         
         # Did we propagate properly?
         mock_mod.detect_objects.assert_called_with(QueryDict('test=data'))
+
+
+class GetProgressTest(TestCase):
+
+    @mock.patch('backend.views.object_detector')
+    def test_propagation(self, mock_mod):
+        '''
+        Tests propagation of the 'get progress' request.
+        :return: None
+        '''
+        # Set up mock
+        mock_mod.get_progress.return_value = (200, {})
+
+        # Test function
+        req = APIRequestFactory().post('', {'test': 'data'})
+        response = views.get_progress(req)
+
+        # Did we propagate properly?
+        mock_mod.get_progress.assert_called_with(QueryDict('test=data'))
+
+
+class DeleteProgressTest(TestCase):
+
+    @mock.patch('backend.views.object_detector')
+    def test_propagation(self, mock_mod):
+        '''
+        Tests propagation of the 'delete progress' request.
+        :return: None
+        '''
+        # Set up mock
+        mock_mod.delete_progress.return_value = (200, {})
+
+        # Test function
+        req = APIRequestFactory().post('', {'test': 'data'})
+        response = views.delete_progress(req)
+
+        # Did we propagate properly?
+        mock_mod.delete_progress.assert_called_with(QueryDict('test=data'))

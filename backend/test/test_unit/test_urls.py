@@ -132,3 +132,23 @@ class UrlsTest(TestCase):
         url = reverse('backend:detect objects')
         resolver = resolve(url)
         self.assertEqual(resolver.func, detect_objects)
+
+    def test_get_progress(self):
+        '''
+        Test that the url for the get_progress module is correctly mapped to the view
+        :return: None
+        '''
+
+        url = reverse('backend:get progress')
+        resolver = resolve(url)
+        self.assertEqual(resolver.func, get_progress)
+
+    def test_delete_progress(self):
+        '''
+        Test that the url for the delete_progress module is correctly mapped to the view
+        :return: None
+        '''
+
+        url = reverse('backend:delete progress')
+        resolver = resolve(url)
+        self.assertEqual(resolver.func, delete_progress)

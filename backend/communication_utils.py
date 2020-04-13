@@ -6,6 +6,7 @@ FOLDER_ID = 'folder_id'
 CAMERA_ID = 'camera_id'
 CLIP_ID = 'clip_id'
 FILTER_ID = 'filter_id'
+PROGRESS_ID = 'progress_id'
 
 # --- Text ---
 PROJECT_NAME = 'project_name'
@@ -29,11 +30,9 @@ ADD_INCLUDED_CLIP_IDS = "add_included_clips "
 REMOVE_EXCLUDED_CLIP_IDS = "remove_excluded_clips"
 ADD_EXCLUDED_CLIP_IDS = "add_excluded_clips"
 
-
 # --- Lists of values ---
 REMOVE_BLACKLISTED_RESOLUTIONS = "remove_blacklisted_resolutions"
 ADD_BLACKLISTED_RESOLUTIONS = "add_blacklisted_resolutions"
-
 
 # --- Lists of text ---
 ADD_CLASSES = "add_classes"
@@ -48,6 +47,9 @@ MIN_FRAMERATE = " min_framerate"
 START_TIME = "start_time"
 END_TIME = "end_time"
 
+# --- Progress related ---
+TOTAL = 'total'
+CURRENT = 'current'
 
 # --- Functions ---
 

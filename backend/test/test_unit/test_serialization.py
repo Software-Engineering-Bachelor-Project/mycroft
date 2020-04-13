@@ -45,7 +45,8 @@ class SerializeTest(TestCase):
         self.assertEqual(serialize(data=self.cl), {'id': 1, 'name': 'test_clip', 'video_format': 'tvf',
                                                    'start_time': '2020-05-17T00:00:00+01:00',
                                                    'end_time': '2020-05-18T00:00:00+01:00', 'resolution': 1,
-                                                   'frame_rate': 42.0, 'folder': 1, 'camera': 1})
+                                                   'frame_rate': 42.0, 'folder': 1, 'camera': 1, 'duplicates': [],
+                                                   'overlap': []})
 
     def test_serialize_collection(self):
         """

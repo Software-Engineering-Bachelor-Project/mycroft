@@ -283,6 +283,7 @@ def create_clip(fid: int, name: str, video_format: str, start_time: timezone.dat
     :param frame_rate: The frame rate of the clip in FPS.
     :return: The created clip's id.
     """
+
     f = get_folder_by_id(fid=fid)
     assert f is not None
     camera = Camera.objects.get_or_create(latitude=latitude, longitude=longitude)[0]
@@ -290,6 +291,16 @@ def create_clip(fid: int, name: str, video_format: str, start_time: timezone.dat
     clip = Clip.objects.get_or_create(folder=f, name=name, video_format=video_format, start_time=start_time,
                                       end_time=end_time, camera=camera, resolution=resolution,
                                       frame_rate=frame_rate)[0]
+
+    # check for duplicates and overlapping clips
+    for c in camera.clip_set.all():
+        if clip != c:
+            if clip.start_time == c.start_time and clip.end_time == c.end_time:
+                clip.duplicates.add(c)
+            elif clip.start_time <= c.start_time < clip.end_time or \
+                    clip.start_time < c.end_time <= clip.end_time or \
+                    clip.start_time > c.start_time and clip.end_time < c.end_time:
+                clip.overlap.add(c)
     return clip.id
 
 

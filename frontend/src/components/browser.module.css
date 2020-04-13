@@ -1,4 +1,11 @@
-.browserClip{
+.browserClip {
     width: 15vw !important;
     height: 80vh !important;
-  }
+    overflow-y: scroll;
+}
+
+.browserFile {
+    width: 15vw !important;
+    height: 80vh !important;
+    overflow-y: scroll;
+}

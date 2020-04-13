@@ -1,7 +1,7 @@
 from rest_framework import serializers
 import sys, inspect
 
-from .models import Project, Folder, Filter, Camera, ObjectDetection, Object, ObjectClass, Clip, Resolution
+from .models import Project, Folder, Filter, Camera, ObjectDetection, Object, ObjectClass, Clip, Resolution, Progress
 
 
 class FolderSerializer(serializers.ModelSerializer):
@@ -72,6 +72,14 @@ class ClipSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Clip
+        fields = '__all__'
+
+
+class ProgressSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField()
+
+    class Meta:
+        model = Progress
         fields = '__all__'
 
 

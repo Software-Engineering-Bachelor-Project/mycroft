@@ -298,6 +298,22 @@ def overlap(s1: timezone.datetime, e1: timezone.datetime, s2: timezone.datetime,
         return False
 
 
+class Progress(models.Model):
+    """
+    Keeps track of progress for a service.
+    """
+    total = models.PositiveIntegerField('Total')
+    current = models.PositiveIntegerField('Total', default=0)
+
+    def clean(self):
+        if self.current > self.total:
+            raise ValidationError("Current can't be larger than total.")
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        return super(Progress, self).save(*args, **kwargs)
+
+
 def distance(lon1: Decimal, lat1: Decimal, lon2: Decimal, lat2: Decimal):
     """
     get the distance between point 1 and 2

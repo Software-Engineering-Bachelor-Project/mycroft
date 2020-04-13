@@ -1,14 +1,76 @@
 import cv2
 import numpy as np
-import os
+import threading
 
-from typing import List, Tuple
+from .communication_utils import *
+from .database_wrapper import delete_progress as dbw_delete_progress
+from .database_wrapper import *
+from .serialization import *
 
 
 # This file represents the backend Object Detector.
 
 def detect_objects(data: dict) -> (int, dict):
-    # TODO: Implement
+    """
+    Run object detection on given clips inside given interval.
+    If no time interval is
+
+    :param data: Clip id:s and optional start and end time.
+    :return: Process id.
+    """
+    try:
+        clip_ids = data[CLIP_IDS]
+    except KeyError:
+        return 400, {}  # Bad request
+
+    # Get time interval. Will be None if parameter is not provided.
+    start_time = data.get(START_TIME)  # TODO: cast to datetime object
+    end_time = data.get(END_TIME)  # TODO: cast to datetime object
+
+    # Create a Progress object to keep track of object detection
+    pid = 1337  # TODO: create...
+
+    # Start a new thread for an object detector.
+    od = ObjectDetector()
+    od_thread = threading.Thread(target=od.run_object_detection, args=(clip_ids, pid, start_time, end_time))
+    od_thread.start()
+
+    return 200, {PROGRESS_ID: pid}
+
+
+def get_progress(data: dict) -> (int, dict):
+    """
+    Get progress of object detection.
+
+    :param data: Progress id.
+    :return: Progress (float).
+    """
+    try:
+        pid = data[PROGRESS_ID]
+    except KeyError:
+        return 400, {}  # Bad request
+
+    p = get_progress_by_id(pid=pid)
+    if p is None:
+        return 204, {}  # No content
+
+    return 200, {TOTAL: p.total, CURRENT: p.current}
+
+
+def delete_progress(data: dict) -> (int, dict):
+    """
+    Deletes a progress object.
+
+    :param data: Progress id.
+    :return: Status code, empty.
+    """
+    try:
+        pid = data[PROGRESS_ID]
+    except KeyError:
+        return 400, {}  # Bad request
+
+    dbw_delete_progress(pid=pid)
+
     return 200, {}
 
 
@@ -36,6 +98,28 @@ class ObjectDetector:
         self.debug = debug  # debug
         if debug:
             self.colors = np.random.uniform(0, 255, size=(len(self.classes), 3))  # debug
+
+    def run_object_detection(self, cids: List[int], pid: int, start_time: timezone.datetime,
+                             end_time: timezone.datetime) -> None:
+        """
+        Runs object detection on the given list of clips and saves result to the database.
+
+        :param cids: List of clip id:s.
+        :param pid: Progress id.
+        :param start_time: Start time of object detection.
+        :param end_time: End time of object detection.
+        """
+        # TODO: set progress to len of cids.
+
+        # Get all clips
+        clips = [get_clip_by_id(cid=cid) for cid in cids]
+
+        for clip in clips:
+            file_path = replace_sep(str(clip))
+            start = 0
+            end = None
+            self.detect(clip=file_path, start=start, end=end)
+            # TODO: Update progress.
 
     def detect(self, clip: str, rate: int = 1, start: int = 0, end: int = None, thresh: float = 0.5) -> \
             List[Tuple[str, int]]:

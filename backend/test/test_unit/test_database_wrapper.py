@@ -609,8 +609,88 @@ class CreateClipTest(BaseTestCases.ClipTest):
                                                               end_time=self.st, latitude=self.lat,
                                                               longitude=self.lon, width=256, height=240,
                                                               frame_rate=42.0))
-    # TODO: Add tests for bad parameters
-    # Added two tests, unsure if more bad parameters needs testing
+
+    def test_duplicate(self):
+        """
+        Test if there is duplicated clips.
+        """
+        cid2 = create_clip(fid=self.fid, name="another_test_clip", video_format="tvf", start_time=self.st,
+                           end_time=self.et, latitude=self.lat, longitude=self.lon, width=256, height=240,
+                           frame_rate=42.0)
+        clip = get_clip_by_id(cid=self.cid)
+        clip2 = get_clip_by_id(cid=cid2)
+
+        self.assertTrue(clip2 in clip.duplicates.all())
+        self.assertEqual(clip.duplicates.count(), 1)
+
+        self.assertFalse(clip2 in clip.overlap.all())
+        self.assertEqual(clip.overlap.count(), 0)
+
+    def test_start_time_outside(self):
+        """
+        Test if there is no duplicated clips and is overlapping.
+        """
+        cid2 = create_clip(fid=self.fid, name="another_test_clip", video_format="tvf",
+                           start_time=self.st - timezone.timedelta(hours=1), end_time=self.et,
+                           latitude=self.lat, longitude=self.lon, width=256, height=240, frame_rate=42.0)
+        clip2 = get_clip_by_id(cid=cid2)
+        clip = get_clip_by_id(cid=self.cid)
+
+        self.assertFalse(clip2 in clip.duplicates.all())
+        self.assertEqual(clip.duplicates.count(), 0)
+
+        self.assertTrue(clip2 in clip.overlap.all())
+        self.assertEqual(clip.overlap.count(), 1)
+
+    def test_overlap_end_time_inside(self):
+        """
+        Test if there is overlapping clips.
+        """
+        cid2 = create_clip(fid=self.fid, name="another_test_clip", video_format="tvf",
+                           start_time=self.st, end_time=self.et + timezone.timedelta(hours=1),
+                           latitude=self.lat, longitude=self.lon, width=256, height=240, frame_rate=42.0)
+        clip2 = get_clip_by_id(cid=cid2)
+        clip = get_clip_by_id(cid=self.cid)
+
+        self.assertTrue(clip2 in clip.overlap.all())
+        self.assertEqual(clip.overlap.count(), 1)
+
+        self.assertFalse(clip2 in clip.duplicates.all())
+        self.assertEqual(clip.duplicates.count(), 0)
+
+    def test_overlap_start_time_end_time_inside(self):
+        """
+        Test if there is overlapping clips.
+        """
+        cid2 = create_clip(fid=self.fid, name="another_test_clip", video_format="tvf",
+                           start_time=self.st + timezone.timedelta(minutes=1),
+                           end_time=self.et - timezone.timedelta(minutes=1), latitude=self.lat,
+                           longitude=self.lon, width=256, height=240, frame_rate=42.0)
+        clip2 = get_clip_by_id(cid=cid2)
+        clip = get_clip_by_id(cid=self.cid)
+
+        self.assertTrue(clip2 in clip.overlap.all())
+        self.assertEqual(clip.overlap.count(), 1)
+
+        self.assertFalse(clip2 in clip.duplicates.all())
+        self.assertEqual(clip.duplicates.count(), 0)
+
+    def test_overlap_start_time_end_time_outside(self):
+        """
+        Test if there is overlapping clips.
+        """
+        cid2 = create_clip(fid=self.fid, name="another_test_clip", video_format="tvf",
+                           start_time=self.st - timezone.timedelta(minutes=1),
+                           end_time=self.et + timezone.timedelta(minutes=1), latitude=self.lat,
+                           longitude=self.lon, width=256, height=240, frame_rate=42.0)
+        clip2 = get_clip_by_id(cid=cid2)
+        clip = get_clip_by_id(cid=self.cid)
+
+        self.assertTrue(clip2 in clip.overlap.all())
+        self.assertEqual(clip.overlap.count(), 1)
+
+        self.assertFalse(clip2 in clip.duplicates.all())
+        self.assertEqual(clip.duplicates.count(), 0)
 
 
 class GetClipByIdTest(BaseTestCases.ClipTest):

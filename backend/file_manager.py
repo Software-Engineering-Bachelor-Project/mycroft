@@ -2,6 +2,7 @@ import re, logging
 import pytz
 from django.conf import settings
 import cv2
+from typing import List
 
 from .database_wrapper import *
 from .communication_utils import *

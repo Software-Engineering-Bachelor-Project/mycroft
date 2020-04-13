@@ -144,6 +144,8 @@ class Clip(models.Model):
     end_time = models.DateTimeField('end time')
     resolution = models.ForeignKey(Resolution, on_delete=models.PROTECT)
     frame_rate = models.FloatField()
+    duplicates = models.ManyToManyField('self', related_name="duplicates")
+    overlap = models.ManyToManyField('self', related_name="overlap")
 
     class Meta:
         constraints = [

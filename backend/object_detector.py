@@ -13,7 +13,7 @@ from .serialization import *
 def detect_objects(data: dict) -> (int, dict):
     """
     Run object detection on given clips inside given interval.
-    If no time interval is
+    If no time interval is provided ful clips will be analyzed.
 
     :param data: Clip id:s and optional start and end time.
     :return: Process id.

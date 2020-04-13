@@ -141,3 +141,23 @@ def detect_objects(request):
     """
     data = object_detector.detect_objects(request.data)
     return Response(data[1], data[0])
+
+
+@api_view(['POST'])
+def get_progress(request):
+    """
+    Delegates a 'get progress' request to the Object Detector.
+    :return: A response from the Object Detector.
+    """
+    data = object_detector.get_progress(request.data)
+    return Response(data[1], data[0])
+
+
+@api_view(['POST'])
+def delete_progress(request):
+    """
+    Delegates a 'get progress' request to the Object Detector.
+    :return: A response from the Object Detector.
+    """
+    data = object_detector.delete_progress(request.data)
+    return Response(data[1], data[0])

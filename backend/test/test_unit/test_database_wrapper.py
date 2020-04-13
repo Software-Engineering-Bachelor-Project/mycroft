@@ -1,3 +1,4 @@
+from django.db import IntegrityError
 from django.db.models import ProtectedError
 from django.test import TestCase
 from backend.database_wrapper import *
@@ -81,6 +82,13 @@ class BaseTestCases:
             self.et = timezone.now() - timezone.timedelta(hours=0.25)
             self.odid = create_object_detection(cid=self.cid, sample_rate=0.5, start_time=self.st, end_time=self.et,
                                                 objects=[("test_object", self.st + timezone.timedelta(minutes=5))])
+
+    class ProgressTest(TestCase):
+        def setUp(self) -> None:
+            """
+            Create a progress object.
+            """
+            self.pid = create_progress(total=1337)
 
 
 class CreateProjectTest(BaseTestCases.ProjectTest):
@@ -1132,3 +1140,82 @@ class GetAllCamerasInProject(BaseTestCases.ClipTest):
 
         add_folder_to_project(self.fid, self.pid)
         self.assertEqual(len(get_all_cameras_in_project(self.pid)), 2)
+
+
+class CreateProgressTest(BaseTestCases.ProgressTest):
+    def test_create_process(self):
+        """
+        Test that a process has been created.
+        """
+        self.assertIsNotNone(self.pid)
+
+
+class GetProgressByIdTest(BaseTestCases.ProgressTest):
+    def test_existing_id(self):
+        """
+        Test getting with an existing project by id.
+        """
+        p = get_progress_by_id(pid=self.pid)
+        self.assertEqual(p.total, 1337)
+        self.assertEqual(p.current, 0)
+        self.assertEqual(p.id, self.pid)
+
+    def test_nonexistent_id(self):
+        """
+        Test that an an nonexistent pid results in None being returned
+        """
+        p = get_progress_by_id(2)
+        self.assertIsNone(p)
+
+
+class UpdateProgressTest(BaseTestCases.ProgressTest):
+    def test_no_specified_increment(self):
+        """
+        Test update progress without a specified increment.
+        """
+        update_progress(pid=self.pid)
+        p = get_progress_by_id(pid=self.pid)
+        self.assertEqual(p.current, 1)
+
+    def test_add_and_subtract(self):
+        """
+        Test update progress with a specified increment.
+        """
+        # Add
+        update_progress(pid=self.pid, increment=42)
+        p = get_progress_by_id(pid=self.pid)
+        self.assertEqual(p.current, 42)
+
+        # Subtract
+        update_progress(pid=self.pid, increment=-21)
+        p = get_progress_by_id(pid=self.pid)
+        self.assertEqual(p.current, 21)
+
+    def test_current_larger_than_total(self):
+        """
+        Update progress so current is larger than total.
+        """
+        self.assertRaises(ValidationError, update_progress, pid=self.pid, increment=1338)
+
+    def test_negative_current(self):
+        """
+        Update progress so current is below zero.
+        """
+        self.assertRaises(IntegrityError, update_progress, pid=self.pid, increment=-1)
+
+
+class DeleteProgressTest(BaseTestCases.ProgressTest):
+    def test_existing_pid(self):
+        """
+        Test that a progress is deleted.
+        """
+        delete_progress(pid=self.pid)
+        self.assertIsNone(get_progress_by_id(pid=self.pid))
+        self.assertEqual(Progress.objects.count(), 0)
+
+    def test_non_existing_progress(self):
+        """
+        Test that no progress is deleted when a non existing progress id is given.
+        """
+        delete_progress(pid=1337)
+        self.assertEqual(Progress.objects.count(), 1)

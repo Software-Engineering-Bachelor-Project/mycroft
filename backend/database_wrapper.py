@@ -3,7 +3,7 @@ from django.utils import timezone
 from decimal import Decimal
 from django.db.models import Q
 
-from .models import Project, Folder, Filter, Camera, ObjectDetection, Object, ObjectClass, Clip, Resolution
+from .models import Project, Folder, Filter, Camera, ObjectDetection, Object, ObjectClass, Clip, Resolution, Progress
 
 """
 This is the wrapper to the database.
@@ -791,3 +791,56 @@ def get_objects_in_detection(odid: int, start_time: timezone.datetime = None,
     else:
         return od.object_set.filter(time__gte=start_time, time__lte=end_time,
                                     object_class__object_class__in=object_classes)[::1]
+
+
+# --- Progress ---
+
+def create_progress(total: int, current: int = 0) -> int:
+    """
+    Creates a progress object.
+
+    :param total: Total.
+    :param current: Current.
+    :return: The progress' id.
+    """
+    p = Progress.objects.create(total=total, current=current)
+    return p.id
+
+
+def get_progress_by_id(pid: int) -> Optional[Progress]:
+    """
+    Gets a progress by id.
+
+    :param pid: The id of the progress.
+    :return: The specified progress.
+    """
+    try:
+        return Progress.objects.get(id=pid)
+    except Progress.DoesNotExist:
+        return None
+
+
+def update_progress(pid: int, increment: int = 1) -> None:
+    """
+    Updates a progress object.
+
+    :param pid: The id of the progress.
+    :param increment: The value to add to current.
+    """
+    p = get_progress_by_id(pid=pid)
+    assert p is not None
+    p.current += increment
+    p.save()
+
+
+def delete_progress(pid: int) -> None:
+    """
+    Deletes the specified progress.
+
+    :param pid: The id of the progress.
+    """
+    try:
+        Progress.objects.get(id=pid).delete()
+    except Progress.DoesNotExist:
+        pass
+

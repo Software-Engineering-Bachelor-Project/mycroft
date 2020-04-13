@@ -83,7 +83,8 @@ class GetSerializerTest(TestCase):
                                      ObjectDetection: ObjectDetectionSerializer,
                                      Object: ObjectSerializer,
                                      Clip: ClipSerializer,
-                                     Resolution: ResolutionSerializer
+                                     Resolution: ResolutionSerializer,
+                                     Progress: ProgressSerializer,
                                      }
 
     def test_all_types(self):

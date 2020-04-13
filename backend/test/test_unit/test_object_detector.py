@@ -14,7 +14,51 @@ class DetectObjectsTest(TestCase):
         :return: None
         """
         res = detect_objects({})
-        self.assertEqual(res[0], 200)
+        #self.assertEqual(res[0], 200)
+
+
+class GetProgressTest(TestCase):
+
+    @patch('backend.object_detector.get_progress_by_id')
+    def test_basic(self, mock_get_progress_by_id):
+        """
+        Test simple call.
+        """
+        mock_get_progress_by_id.return_value.total = 1337
+        mock_get_progress_by_id.return_value.current = 3
+        code, res = get_progress(data={PROGRESS_ID: 42})
+        mock_get_progress_by_id.assert_called_once_with(pid=42)
+        self.assertEqual(code, 200)
+        self.assertEqual(res, {TOTAL: 1337, CURRENT: 3})
+
+    def test_missing_parameter(self):
+        """
+        Test with a missing parameter.
+        """
+        code, res = get_progress(data={PROJECT_ID: 42})
+        self.assertEqual(code, 400)
+        self.assertEqual(res, {})
+
+
+class DeleteProgressTest(TestCase):
+
+    @patch('backend.object_detector.dbw_delete_progress')
+    def test_basic(self, mock_dbw_delete_progress):
+        """
+        Test simple call.
+        """
+        code, res = delete_progress(data={PROGRESS_ID: 42})
+        mock_dbw_delete_progress.assert_called_once_with(pid=42)
+        self.assertEqual(code, 200)
+        self.assertEqual(res, {})
+
+    def test_missing_parameter(self):
+        """
+        Test with a missing parameter.
+        """
+        code, res = delete_progress(data={PROJECT_ID: 42})
+        self.assertEqual(code, 400)
+        self.assertEqual(res, {})
 
 
 class ObjectDetectorTest(TestCase):
@@ -43,5 +87,3 @@ class ObjectDetectorTest(TestCase):
         """
         od = ObjectDetector()
         self.assertRaises(FileNotFoundError, od.detect, clip='home/user/test_folder/test_clip')
-
-

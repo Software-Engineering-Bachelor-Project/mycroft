@@ -65,17 +65,15 @@ class GetFoldersTest(TestCase):
 class AddFoldersTest(TestCase):
 
     @patch('backend.file_manager.add_folder_to_project')
-    @patch('backend.file_manager.create_root_folder')
-    @patch('backend.file_manager.split_file_path')
-    def test_simple_call(self, mock_split_file_path, mock_create_root_folder, mock_add_folder_to_project):
+    @patch('backend.file_manager.build_file_structure')
+    def test_simple_call(self, mock_build_file_structure, mock_add_folder_to_project):
         """
         Test adding a folder to a project.
         """
-        mock_split_file_path.return_value = 'home/user/', 'test_folder'
-        mock_create_root_folder.return_value = 42
+        mock_build_file_structure.return_value = 42
         mock_add_folder_to_project.return_value = 1337
         code, res = add_folder({PROJECT_ID: 1, FILE_PATH: 'home/user/test_folder'})
-        mock_split_file_path.assert_called_once_with(file_path='home/user/test_folder')
+        mock_build_file_structure.assert_called_once_with(file_path='home/user/test_folder')
         mock_add_folder_to_project.assert_called_once_with(fid=42, pid=1)
         self.assertEqual(code, 200)
         self.assertEqual(res, {FOLDER_ID: 42})
@@ -96,16 +94,6 @@ class AddFoldersTest(TestCase):
         self.assertEqual(code, 400)
         self.assertEqual(res, {})
 
-    @patch('backend.file_manager.split_file_path')
-    def test_non_existing_project(self, mock_split_file_path):
-        """
-        Test with a project id that doesn't exist.
-        """
-        mock_split_file_path.return_value = 'home/user/', 'test_folder'
-        code, res = add_folder(data={PROJECT_ID: 42, FILE_PATH: 'home/user/test_folder'})
-        self.assertEqual(code, 204)
-        self.assertEqual(res, {})
-
 
 class BuildFileStructureTest(TestCase):
 
@@ -120,10 +108,11 @@ class BuildFileStructureTest(TestCase):
         mock_traverse_subfolders.return_value = None
         mock_create_root_folder.return_value = 1337
 
-        build_file_structure('home/user/test_folder')
+        res = build_file_structure('home/user/test_folder')
         mock_split_file_path.assert_called_once_with(file_path='home/user/test_folder')
         mock_create_root_folder.assert_called_once_with(path='home/user/', name='test_folder')
         mock_traverse_subfolders.assert_called_once_with(path='home/user/test_folder', parent_id=1337)
+        self.assertEqual(res, 1337)
 
 
 class TraverseSubfoldersTest(TestCase):

@@ -2,7 +2,6 @@ import re, logging
 import pytz
 from django.conf import settings
 import cv2
-from typing import List
 
 from .database_wrapper import *
 from .communication_utils import *
@@ -56,11 +55,9 @@ def add_folder(data: dict) -> (int, dict):
         return 400, {}  # Bad request
 
     try:
-        path, name = split_file_path(file_path=file_path)
-    except ValueError:
+        fid = build_file_structure(file_path=file_path)
+    except ValueError or FileNotFoundError:
         return 400, {}  # Bad request
-
-    fid = create_root_folder(path=path, name=name)
 
     try:
         add_folder_to_project(fid=fid, pid=pid)
@@ -70,11 +67,12 @@ def add_folder(data: dict) -> (int, dict):
     return 200, os_aware({FOLDER_ID: fid})
 
 
-def build_file_structure(file_path: str) -> None:
+def build_file_structure(file_path: str) -> int:
     """
     Traverses the user's file system from the given folder downwards while adding all folder and clips to the database.
 
     :param file_path: Absolute path to folder in file system.
+    :return: Folder id of root folder.
     """
     # Divide folder path in name and path.
     path, name = split_file_path(file_path=file_path)
@@ -84,6 +82,8 @@ def build_file_structure(file_path: str) -> None:
 
     # Traverse all subfolders and add the to the database.
     traverse_subfolders(path=file_path, parent_id=parent_id)
+
+    return parent_id
 
 
 def traverse_subfolders(path: str, parent_id: int) -> None:
@@ -104,8 +104,10 @@ def traverse_subfolders(path: str, parent_id: int) -> None:
                 try:
                     create_clip(**get_clip_info(file_path=file_path, folder_id=parent_id, name=name,
                                                 video_format=suffix))
-                except ValueError:
+                except FileNotFoundError:
                     logging.info(msg="No metadata found for: " + file_path)
+                except ValueError:
+                    logging.info(msg="Metadata has wrong format for: " + file_path)
 
 
 def analyze_file(file: str) -> (bool, str, str):

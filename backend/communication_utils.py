@@ -1,6 +1,10 @@
 import os
+from typing import Optional
+from django.utils import timezone
 
 # --- ID:s ---
+from django.utils.dateparse import parse_datetime
+
 PROJECT_ID = 'project_id'
 FOLDER_ID = 'folder_id'
 CAMERA_ID = 'camera_id'
@@ -51,6 +55,10 @@ END_TIME = "end_time"
 TOTAL = 'total'
 CURRENT = 'current'
 
+# --- Object detection related ---
+RATE = 'rate'
+
+
 # --- Functions ---
 
 def os_aware(data: dict) -> dict:
@@ -85,3 +93,16 @@ def replace_sep(val):
     if isinstance(val, str):
         val = val.replace(opp_sep, os.path.sep)
     return val
+
+
+def date_str_to_datetime(date_str: Optional[str]) -> timezone.datetime:
+    """
+    Converts a date string to a datetime object.
+
+    :param date_str: Date string (iso8601)
+    :return: A datetime object.
+    """
+    if date_str is None:
+        return None
+
+    return parse_datetime(date_str)

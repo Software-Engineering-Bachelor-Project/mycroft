@@ -718,7 +718,7 @@ def get_all_classes_in_filter(fid: int) -> List[ObjectClass]:
 # --- Object Detection ---
 
 def create_object_detection(cid: int, sample_rate: float, start_time: timezone.datetime, end_time: timezone.datetime,
-                            objects=None) -> int:
+                            objects: List[Tuple[str, timezone.datetime]] = None) -> int:
     """
     Creates an object detection.
 

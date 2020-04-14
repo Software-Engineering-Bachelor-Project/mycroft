@@ -13,26 +13,27 @@ from .serialization import *
 def detect_objects(data: dict) -> (int, dict):
     """
     Run object detection on given clips inside given interval.
-    If no time interval is provided ful clips will be analyzed.
+    If no time interval is provided full clips will be analyzed.
 
     :param data: Clip id:s and optional start and end time.
     :return: Process id.
     """
     try:
         clip_ids = data[CLIP_IDS]
+        rate = data[RATE]
     except KeyError:
         return 400, {}  # Bad request
 
     # Get time interval. Will be None if parameter is not provided.
-    start_time = data.get(START_TIME)  # TODO: cast to datetime object
-    end_time = data.get(END_TIME)  # TODO: cast to datetime object
+    start_time = date_str_to_datetime(date_str=data.get(START_TIME))
+    end_time = date_str_to_datetime(date_str=data.get(END_TIME))
 
-    # Create a Progress object to keep track of object detection
-    pid = 1337  # TODO: create...
+    # Create a progress object to keep track of object detection.
+    pid = create_progress(total=len(clip_ids))
 
     # Start a new thread for an object detector.
     od = ObjectDetector()
-    od_thread = threading.Thread(target=od.run_object_detection, args=(clip_ids, pid, start_time, end_time))
+    od_thread = threading.Thread(target=od.run_object_detection, args=(clip_ids, pid, rate, start_time, end_time))
     od_thread.start()
 
     return 200, {PROGRESS_ID: pid}
@@ -99,27 +100,54 @@ class ObjectDetector:
         if debug:
             self.colors = np.random.uniform(0, 255, size=(len(self.classes), 3))  # debug
 
-    def run_object_detection(self, cids: List[int], pid: int, start_time: timezone.datetime,
-                             end_time: timezone.datetime) -> None:
+    def run_object_detection(self, cids: List[int], pid: int, rate: int, start_time: Optional[timezone.datetime],
+                             end_time: Optional[timezone.datetime]) -> None:
         """
         Runs object detection on the given list of clips and saves result to the database.
 
         :param cids: List of clip id:s.
         :param pid: Progress id.
+        :param rate: Seconds between each analyzed frame.
         :param start_time: Start time of object detection.
         :param end_time: End time of object detection.
         """
-        # TODO: set progress to len of cids.
-
         # Get all clips
         clips = [get_clip_by_id(cid=cid) for cid in cids]
 
         for clip in clips:
+            # Get path to clip
             file_path = replace_sep(str(clip))
-            start = 0
-            end = None
-            self.detect(clip=file_path, start=start, end=end)
-            # TODO: Update progress.
+
+            # Calculate start and end based on given start and end time
+            if start_time is None:
+                start_sec = 0
+                detection_start_time = clip.start_time
+            else:
+                start_sec = max(int((start_time - clip.start_time).total_seconds()), 0)
+                detection_start_time = max(start_time, clip.start_time)
+
+            if end_time is None:
+                end_sec = None
+                detection_end_time = clip.end_time
+            else:
+                if end_time > clip.end_time:
+                    end_sec = max(int((clip.end_time - clip.start_time).total_seconds()), start_sec)
+                    detection_end_time = clip.end_time
+                else:
+                    end_sec = max(int((end_time - clip.start_time).total_seconds()), start_sec)
+                    detection_end_time = end_time
+
+            if end_sec is None or start_sec < end_sec:
+                # Run object detection on clip
+                res = self.detect(clip=file_path, rate=rate, start=start_sec, end=end_sec)
+
+                # Add result to database
+                objects = [(obj_cls, detection_start_time + timezone.timedelta(seconds=time)) for obj_cls, time in res]
+                create_object_detection(cid=clip.id, sample_rate=rate, start_time=detection_start_time,
+                                        end_time=detection_end_time, objects=objects)
+
+            # Update progress since detection of one clip is finished
+            update_progress(pid=pid)
 
     def detect(self, clip: str, rate: int = 1, start: int = 0, end: int = None, thresh: float = 0.5) -> \
             List[Tuple[str, int]]:
@@ -127,7 +155,7 @@ class ObjectDetector:
         Detects objects in a clip.
 
         :param clip: Absolute path to clip.
-        :param rate: Rate for frames to be analyzed in seconds.
+        :param rate: Seconds between each analyzed frame.
         :param start: Which second in clip to start object detection.
         :param end: Which second in clip to end object detection.
         :param thresh: YOLO confidence threshold.
@@ -155,7 +183,8 @@ class ObjectDetector:
         # Analyze clip frame by frame
         for i in range(end):
             success, frame = video.read()
-            assert success  # Something is wrong if this fails.
+            if not success:
+                break  # Video is over.
 
             # Skip clips according to start and rate.
             if i >= start and i % rate == start % rate:

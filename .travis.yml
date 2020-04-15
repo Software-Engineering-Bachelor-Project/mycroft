@@ -10,7 +10,7 @@ matrix:
         - python manage.py test
     - language: node_js
       node_js:
-        - "node"
+        - 12.16.1
 
       before_script:
         - cd frontend

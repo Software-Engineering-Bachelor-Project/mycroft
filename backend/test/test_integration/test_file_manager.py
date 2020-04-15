@@ -43,24 +43,14 @@ class AddFoldersTest(TestCase):
         Setup a test project.
         """
         self.pid = create_project('test_project')
+        self.fid = create_root_folder(path='home/user/', name='test_folder')
 
-    @patch('os.path')
-    def test_simple_call(self, mock_os_path):
+    def test_simple_call(self):
         """
         Test adding a folder to a project.
         """
-        mock_os_path.sep = '/'
-        mock_os_path.join.return_value = 'home/user/'
-        code, res = add_folder({PROJECT_ID: self.pid, FILE_PATH: 'home/user/test_folder'})
+        code, res = add_folder({PROJECT_ID: self.pid, FOLDER_ID: self.fid})
         self.assertEqual(code, 200)
-        self.assertEqual(res, {FOLDER_ID: self.pid})
-
-    def test_missing_parameter(self):
-        """
-        Test with a missing parameter.
-        """
-        code, res = add_folder({FILE_PATH: 'home/user/test_folder'})
-        self.assertEqual(code, 400)
         self.assertEqual(res, {})
 
     def test_bad_file_path(self):
@@ -71,14 +61,20 @@ class AddFoldersTest(TestCase):
         self.assertEqual(code, 400)
         self.assertEqual(res, {})
 
-    @patch('os.path')
-    def test_non_existing_project(self, mock_os_path):
+    def test_non_existing_project(self):
         """
         Test with a project id that doesn't exist.
         """
-        mock_os_path.sep = '/'
-        mock_os_path.join.return_value = 'home/user/'
-        code, res = add_folder(data={PROJECT_ID: 42, FILE_PATH: 'home/user/test_folder'})
+        code, res = add_folder(data={PROJECT_ID: 42, FOLDER_ID: self.fid})
+        self.assertEqual(code, 204)
+        self.assertEqual(res, {})
+
+    def test_non_existing_folder(self):
+        """
+        Test with a folder id that doesn't exist.
+        """
+        pid = create_project(name='test_project')
+        code, res = add_folder(data={PROJECT_ID: self.pid, FOLDER_ID: 42})
         self.assertEqual(code, 204)
         self.assertEqual(res, {})
 

@@ -9,3 +9,11 @@
     height: 80vh !important;
     overflow-y: scroll;
 }
+
+.browserTab {
+    width: 15vW !important
+}
+
+.browserItem {
+    width: 7.5vW !important
+}

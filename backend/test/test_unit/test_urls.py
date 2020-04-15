@@ -103,6 +103,16 @@ class UrlsTest(TestCase):
         resolver = resolve(url)
         self.assertEqual(resolver.func, video_get_cameras)
 
+    def test_file_get_source_folders(self):
+        '''
+        Test that the url for the file_get_source_folders module is correctly mapped to the view
+        :return: None
+        '''
+
+        url = reverse('backend:file get source folders')
+        resolver = resolve(url)
+        self.assertEqual(resolver.func, file_get_source_folders)
+
     def test_file_get_folders(self):
         '''
         Test that the url for the file_get_folders module is correctly mapped to the view

@@ -442,7 +442,7 @@ class GetFolderByPathTest(BaseTestCases.FolderTest):
         self.assertIsNone(get_folder_by_path(path="/home/not_a_user/", name="not_a_test_folder"))
 
 
-class FolderByParentTest(BaseTestCases.FolderTest):
+class GetFolderByParentTest(BaseTestCases.FolderTest):
     def existing_parent_existing_name(self):
         """
         Test getting a folder by its parent and name.
@@ -470,6 +470,28 @@ class FolderByParentTest(BaseTestCases.FolderTest):
         Test for a parent that dont match a folder and a name that dont match
         """
         self.assertIsNone(get_folder_by_parent(parent_fid=2, name="not_a_test_folder"))
+
+
+class GetAllFolders(BaseTestCases.FolderTest):
+
+    def test_folders_in(self):
+        """
+        Test with two folders.
+        """
+        folders = get_all_folders()
+        self.assertEqual(len(folders), 2)
+        root = get_folder_by_id(fid=self.rid)
+        sub = get_folder_by_id(fid=self.sid)
+        self.assertTrue(root in folders)
+        self.assertTrue(sub in folders)
+
+    def test_two_roots(self):
+        """
+        Test with two root folders.
+        """
+        rid2 = create_root_folder(path=self.r_path, name=self.r_name + '2')
+        create_subfolder(parent_fid=rid2, name=self.s_name + '2')
+        self.assertEqual(len(get_all_folders()), 4)
 
 
 class GetSubFoldersTest(BaseTestCases.FolderTest):

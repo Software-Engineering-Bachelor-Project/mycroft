@@ -1,14 +1,14 @@
 import store from './state';
 
 /* -- ACTIONS -- */
-const ZOOM = "ZOOM";
-const LOG_SCALING = "LOG_SCALING";
-const SET_START_TIME = "SET_START_TIME";
-const SET_END_TIME = "SET_END_TIME";
-const SET_TIME_LIMITS = "SET_TIME_LIMITS";
+export const ZOOM = "ZOOM";
+export const LOG_SCALING = "LOG_SCALING";
+export const SET_START_TIME = "SET_START_TIME";
+export const SET_END_TIME = "SET_END_TIME";
+export const SET_TIME_LIMITS = "SET_TIME_LIMITS";
 
 /* -- INITIAL STATE -- */
-const initialState = {
+export const initialState = {
     scale: 12,
     startTime: undefined,
     endTime: undefined,
@@ -65,7 +65,7 @@ const timelineReducer = (state = initialState, action) => {
         case ZOOM:
             return {
                 ...state,
-                scale: action.hrs
+                scale: Math.min(action.hrs, state.timeSpan/(60*60*1000))
             }
         default:
             return state;

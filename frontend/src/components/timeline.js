@@ -7,27 +7,32 @@ import { logScaling, zoom } from '../stateTimeline';
 
 import styles from './timeline.module.css';
 
+
+/**
+* This function returns a list of line placements in percents.
+* Example: ["20%", "40%", "60%", "80%"]
+* 
+* @return {Array} List of line placements.
+*/
+export function getLinePlacements(timeSpan) {
+    var hrs = timeSpan/(60*60*1000);
+    var step = 100/hrs;
+    if (hrs<=1) {
+        return [];
+    }
+    var list_ = new Array();
+    for (var j=1; j<hrs; j++) {
+        list_.push(step*j + "%");
+    }   
+    return list_;
+};
+
+
 /**
  * This class respresents the timeline react-component.
  */
 class Timeline extends Component {
 
-    /**
-    * This function returns a list of line placements in percents.
-    * Example: ["20%", "40%", "60%", "80%"]
-    * 
-    * @return {Array} List of line placements.
-    */
-    getLinePlacements() {
-        var hrs = this.props.timeSpan/(60*60*1000);
-        var step = 100/hrs;
-        var list_ = new Array(hrs-1);
-        for (var j=1; j<hrs; j++) {
-            list_.push(step*j + "%");
-        }
-        return list_;
-    }
-    
     render() {
         return (
             <div className={styles.main}>
@@ -35,7 +40,7 @@ class Timeline extends Component {
                     <DropdownButton
                     className={styles.dropdown}
                     title={this.props.scale + " Hours"}>
-                        {[12, 24, 36].map((hrs) => {
+                        {[12, 24, 36, 48].map((hrs) => {
                             return (
                                 <Dropdown.Item onClick={(a) => this.props.zoom(hrs)}
                                 key={hrs}>
@@ -47,7 +52,7 @@ class Timeline extends Component {
                 </div>
                 <div className={styles.sliderbox}>
                     <div className={styles.slider} style={{width: ((this.props.timeSpan/(60*60*1000))/this.props.scale)*100 + "%"}}>
-                        {this.getLinePlacements().map((i) => {
+                        {getLinePlacements(this.props.timeSpan).map((i) => {
                             return (
                                 <div style={{left: i}} className={styles.line} key={i}> </div>
                             );

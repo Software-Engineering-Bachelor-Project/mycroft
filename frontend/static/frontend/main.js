@@ -64763,11 +64763,12 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 /*!************************************!*\
   !*** ./src/components/timeline.js ***!
   \************************************/
-/*! exports provided: default */
+/*! exports provided: getLinePlacements, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getLinePlacements", function() { return getLinePlacements; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
@@ -64801,6 +64802,30 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 /**
+* This function returns a list of line placements in percents.
+* Example: ["20%", "40%", "60%", "80%"]
+* 
+* @return {Array} List of line placements.
+*/
+
+function getLinePlacements(timeSpan) {
+  var hrs = timeSpan / (60 * 60 * 1000);
+  var step = 100 / hrs;
+
+  if (hrs <= 1) {
+    return [];
+  }
+
+  var list_ = new Array();
+
+  for (var j = 1; j < hrs; j++) {
+    list_.push(step * j + "%");
+  }
+
+  return list_;
+}
+;
+/**
  * This class respresents the timeline react-component.
  */
 
@@ -64816,26 +64841,6 @@ function (_Component) {
   }
 
   _createClass(Timeline, [{
-    key: "getLinePlacements",
-
-    /**
-    * This function returns a list of line placements in percents.
-    * Example: ["20%", "40%", "60%", "80%"]
-    * 
-    * @return {Array} List of line placements.
-    */
-    value: function getLinePlacements() {
-      var hrs = this.props.timeSpan / (60 * 60 * 1000);
-      var step = 100 / hrs;
-      var list_ = new Array(hrs - 1);
-
-      for (var j = 1; j < hrs; j++) {
-        list_.push(step * j + "%");
-      }
-
-      return list_;
-    }
-  }, {
     key: "render",
     value: function render() {
       var _this = this;
@@ -64847,7 +64852,7 @@ function (_Component) {
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_DropdownButton__WEBPACK_IMPORTED_MODULE_3__["default"], {
         className: _timeline_module_css__WEBPACK_IMPORTED_MODULE_5___default.a.dropdown,
         title: this.props.scale + " Hours"
-      }, [12, 24, 36].map(function (hrs) {
+      }, [12, 24, 36, 48].map(function (hrs) {
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Dropdown__WEBPACK_IMPORTED_MODULE_2__["default"].Item, {
           onClick: function onClick(a) {
             return _this.props.zoom(hrs);
@@ -64861,7 +64866,7 @@ function (_Component) {
         style: {
           width: this.props.timeSpan / (60 * 60 * 1000) / this.props.scale * 100 + "%"
         }
-      }, this.getLinePlacements().map(function (i) {
+      }, getLinePlacements(this.props.timeSpan).map(function (i) {
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           style: {
             left: i
@@ -65940,11 +65945,17 @@ var playerReducer = function playerReducer() {
 /*!******************************!*\
   !*** ./src/stateTimeline.js ***!
   \******************************/
-/*! exports provided: logScaling, zoom, setStartTime, setEndTime, setTimeLimits, default */
+/*! exports provided: ZOOM, LOG_SCALING, SET_START_TIME, SET_END_TIME, SET_TIME_LIMITS, initialState, logScaling, zoom, setStartTime, setEndTime, setTimeLimits, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ZOOM", function() { return ZOOM; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOG_SCALING", function() { return LOG_SCALING; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_START_TIME", function() { return SET_START_TIME; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_END_TIME", function() { return SET_END_TIME; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_TIME_LIMITS", function() { return SET_TIME_LIMITS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "initialState", function() { return initialState; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "logScaling", function() { return logScaling; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "zoom", function() { return zoom; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setStartTime", function() { return setStartTime; });
@@ -66025,7 +66036,7 @@ var timelineReducer = function timelineReducer() {
 
     case ZOOM:
       return _objectSpread({}, state, {
-        scale: action.hrs
+        scale: Math.min(action.hrs, state.timeSpan / (60 * 60 * 1000))
       });
 
     default:

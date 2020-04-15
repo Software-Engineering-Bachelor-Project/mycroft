@@ -2,7 +2,6 @@ import re, logging
 import pytz
 from django.conf import settings
 import cv2
-from typing import List
 
 from .database_wrapper import *
 from .communication_utils import *
@@ -18,9 +17,20 @@ VIDEO_FORMATS = ["mkv", "flv", "vob", "ogv", "ogg",
                  "flv", "f4v", "f4p", "f4a", "f4b", "webm"]
 
 
+def get_source_folders(data: dict) -> (int, dict):
+    """
+    Gets all folders in the database.
+
+    :param data: Empty.
+    :return: Status code, all folders in tha database.
+    """
+    folders = get_all_folders()
+    return 200, os_aware({FOLDERS: serialize(folders)})
+
+
 def get_folders(data: dict) -> (int, dict):
     """
-    Get all folders in a project.
+    Gets all folders in a project.
 
     :param data: Project id.
     :return: Status code, all folders in project in JSON.
@@ -35,7 +45,7 @@ def get_folders(data: dict) -> (int, dict):
     except AssertionError:
         return 204, {}  # No content
 
-    folders = root_folders[::1]
+    folders = root_folders[::1]  # copy
     for f in root_folders:
         folders += get_subfolders_recursive(fid=f.id)
 

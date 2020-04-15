@@ -114,6 +114,16 @@ def video_get_cameras(request):
 
 
 @api_view(['POST'])
+def file_get_source_folders(request):
+    """
+    Delegates a 'get source folders' request to the File Manager.
+    :return: A response from the File Manager.
+    """
+    data = file_manager.get_source_folders(request.data)
+    return Response(data[1], data[0])
+
+
+@api_view(['POST'])
 def file_get_folders(request):
     """
     Delegates a 'get folders' request to the File Manager.

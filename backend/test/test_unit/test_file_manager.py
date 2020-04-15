@@ -65,45 +65,22 @@ class GetFoldersTest(TestCase):
 class AddFoldersTest(TestCase):
 
     @patch('backend.file_manager.add_folder_to_project')
-    @patch('backend.file_manager.create_root_folder')
-    @patch('backend.file_manager.split_file_path')
-    def test_simple_call(self, mock_split_file_path, mock_create_root_folder, mock_add_folder_to_project):
+    def test_simple_call(self, mock_add_folder_to_project):
         """
         Test adding a folder to a project.
         """
-        mock_split_file_path.return_value = 'home/user/', 'test_folder'
-        mock_create_root_folder.return_value = 42
-        mock_add_folder_to_project.return_value = 1337
-        code, res = add_folder({PROJECT_ID: 1, FILE_PATH: 'home/user/test_folder'})
-        mock_split_file_path.assert_called_once_with(file_path='home/user/test_folder')
-        mock_add_folder_to_project.assert_called_once_with(fid=42, pid=1)
+        #mock_add_folder_to_project.return_value = 1337
+        code, res = add_folder({PROJECT_ID: 42, FOLDER_ID: 1337})
+        mock_add_folder_to_project.assert_called_once_with(fid=1337, pid=42)
         self.assertEqual(code, 200)
-        self.assertEqual(res, {FOLDER_ID: 42})
+        self.assertEqual(res, {})
 
     def test_missing_parameter(self):
         """
         Test with a missing parameter.
         """
-        code, res = add_folder({FILE_PATH: 'home/user/test_folder'})
+        code, res = add_folder({FOLDER_ID: 1337})
         self.assertEqual(code, 400)
-        self.assertEqual(res, {})
-
-    def test_bad_file_path(self):
-        """
-        Test with a bad file path.
-        """
-        code, res = add_folder({FILE_PATH: 'test_folder'})
-        self.assertEqual(code, 400)
-        self.assertEqual(res, {})
-
-    @patch('backend.file_manager.split_file_path')
-    def test_non_existing_project(self, mock_split_file_path):
-        """
-        Test with a project id that doesn't exist.
-        """
-        mock_split_file_path.return_value = 'home/user/', 'test_folder'
-        code, res = add_folder(data={PROJECT_ID: 42, FILE_PATH: 'home/user/test_folder'})
-        self.assertEqual(code, 204)
         self.assertEqual(res, {})
 
 

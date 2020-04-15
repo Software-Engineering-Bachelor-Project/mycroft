@@ -51,23 +51,16 @@ def add_folder(data: dict) -> (int, dict):
     """
     try:
         pid = data[PROJECT_ID]
-        file_path = data[FILE_PATH]
+        fid = data[FOLDER_ID]
     except KeyError:
         return 400, {}  # Bad request
-
-    try:
-        path, name = split_file_path(file_path=file_path)
-    except ValueError:
-        return 400, {}  # Bad request
-
-    fid = create_root_folder(path=path, name=name)
 
     try:
         add_folder_to_project(fid=fid, pid=pid)
     except AssertionError:
         return 204, {}  # No content
 
-    return 200, os_aware({FOLDER_ID: fid})
+    return 200, {}
 
 
 def build_file_structure(file_path: str) -> None:

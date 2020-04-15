@@ -5,6 +5,26 @@ from unittest.mock import patch
 from backend.file_manager import *
 
 
+class GetSourceFolders(TestCase):
+
+    def setUp(self) -> None:
+        """
+        Set up a complex file structure.
+        """
+        self.rid = create_root_folder(path='home/user/', name='test_folder')
+        self.sid1 = create_subfolder(parent_fid=self.rid, name='test_subfolder')
+        self.sid2 = create_subfolder(parent_fid=self.rid, name='another_test_subfolder')
+        self.sid3 = create_subfolder(parent_fid=self.sid1, name='third_test_subfolder')
+
+    def test_basic_call(self):
+        """
+        Test simple call.
+        """
+        code, res = get_source_folders(data={})
+        self.assertEqual(code, 200)
+        self.assertEqual(len(res[FOLDERS]), 4)
+
+
 class GetFoldersTest(TestCase):
 
     def setUp(self) -> None:
@@ -36,7 +56,6 @@ class GetFoldersTest(TestCase):
 
 
 class AddFoldersTest(TestCase):
-    # Need to mock OS dependent function calls.
 
     def setUp(self) -> None:
         """

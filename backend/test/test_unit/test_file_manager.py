@@ -8,6 +8,20 @@ METADATA_EXAMPLE = "59°23'19.2\"N 17°55'35.4\"E   (59.388668, 17.926501)\n2018
                                 "(2018-09-06 15:45:59)"
 
 
+class GetSourceFolders(TestCase):
+
+    @patch('backend.file_manager.get_all_folders')
+    def test_basic_call(self, mock_get_all_projects):
+        """
+        Test simple call.
+        """
+        mock_get_all_projects.return_value = []
+        code, res = get_source_folders(data={})
+        mock_get_all_projects.assert_called_once()
+        self.assertEqual(code, 200)
+        self.assertEqual(res, {FOLDERS: []})
+
+
 class GetFoldersTest(TestCase):
 
     def setUp(self) -> None:
@@ -69,7 +83,6 @@ class AddFoldersTest(TestCase):
         """
         Test adding a folder to a project.
         """
-        #mock_add_folder_to_project.return_value = 1337
         code, res = add_folder({PROJECT_ID: 42, FOLDER_ID: 1337})
         mock_add_folder_to_project.assert_called_once_with(fid=1337, pid=42)
         self.assertEqual(code, 200)

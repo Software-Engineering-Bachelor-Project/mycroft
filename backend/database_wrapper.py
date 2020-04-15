@@ -222,6 +222,15 @@ def get_folder_by_parent(parent_fid: int, name: str) -> Optional[Folder]:
             return None
 
 
+def get_all_folders() -> List[Folder]:
+    """
+    Gets all folders.
+
+    :return: A list of all folders.
+    """
+    return Folder.objects.all()[::1]
+
+
 def get_subfolders(fid: int) -> List[Folder]:
     """
     Gets all folders in inside given folder.

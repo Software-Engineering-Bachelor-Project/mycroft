@@ -13,7 +13,7 @@ class ClipBrowser extends Component {
 
     render() {
         return (
-                <ListGroup className={styles.browserClip}> 
+                <ListGroup variant = "flush" className={styles.browserClip}> 
                     {Object.values(this.props.cameras).map((camera) => (
                         <ListGroup.Item key={camera.id}>
                             <p>{camera.name}</p>

@@ -63198,80 +63198,496 @@ var browserReducer = function browserReducer() {
 /*!***********************************!*\
   !*** ./src/stateCommunication.js ***!
   \***********************************/
-/*! exports provided: filterVideos, default */
+/*! exports provided: reqGetClipsMatchingFilter, reqModifyFilter, reqGetProjects, reqNewProject, reqDeleteProject, reqRenameProject, reqExportFilter, reqExportClips, reqGetClipInfo, reqGetCameras, reqGetFolders, reqGetSourceFolders, reqAddFolders, reqDetectObjects, reqGetODProgress, reqDeleteODProgress, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "filterVideos", function() { return filterVideos; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "reqGetClipsMatchingFilter", function() { return reqGetClipsMatchingFilter; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "reqModifyFilter", function() { return reqModifyFilter; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "reqGetProjects", function() { return reqGetProjects; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "reqNewProject", function() { return reqNewProject; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "reqDeleteProject", function() { return reqDeleteProject; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "reqRenameProject", function() { return reqRenameProject; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "reqExportFilter", function() { return reqExportFilter; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "reqExportClips", function() { return reqExportClips; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "reqGetClipInfo", function() { return reqGetClipInfo; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "reqGetCameras", function() { return reqGetCameras; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "reqGetFolders", function() { return reqGetFolders; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "reqGetSourceFolders", function() { return reqGetSourceFolders; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "reqAddFolders", function() { return reqAddFolders; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "reqDetectObjects", function() { return reqDetectObjects; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "reqGetODProgress", function() { return reqGetODProgress; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "reqDeleteODProgress", function() { return reqDeleteODProgress; });
 /* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.js");
 
 /* 
  * This file defines the state, reducers, and actions
  * used for communication between client and server.
- * This includes session IDs, project info, videos etc.
  */
 
 /* -- ACTIONS -- */
 // For server requests such as POST, create
 // two actions prefixed with REQ and RCV since
 // the response must be handled separately.
+// Filter Module requests
 
-var FILTER_VIDEOS = "FILTER_VIDEOS";
-var SAVE_PROJECT = "SAVE_PROJECT";
-var OPEN_PROJECT = "OPEN_PROJECT";
-var GET_PROJECTS = "GET_PROJECTS";
-var EXPORT_FILTER = "EXPORT_FILTER";
-var EXPORT_VIDEOS = "EXPORT_VIDEOS";
-var GET_VIDEO_INFO = "GET_VIDEO_INFO";
-var GET_VIDEO_STREAM = "GET_VIDEO_STREAM";
-var SYNC_STATE = "SYNC_STATE";
+var REQ_GET_CLIPS_MATCHING_FILTER = 'REQ_GET_CLIPS_MATCHING_FILTER';
+var RCV_GET_CLIPS_MATCHING_FILTER = 'RCV_GET_CLIPS_MATCHING_FILTER';
+var REQ_MODIFY_FILTER = 'REQ_MODIFY_FILTER';
+var RCV_MODIFY_FILTER = 'RCV_MODIFY_FILTER'; // Project Manager requests
+
+var REQ_GET_PROJECTS = 'REQ_GET_PROJECTS';
+var RCV_GET_PROJECTS = 'RCV_GET_PROJECTS';
+var REQ_NEW_PROJECT = 'REQ_NEW_PROJECT';
+var RCV_NEW_PROJECT = 'RCV_NEW_PROJECT';
+var REQ_DELETE_PROJECT = 'REQ_DELETE_PROJECT';
+var RCV_DELETE_PROJECT = 'RCV_DELETE_PROJECT';
+var REQ_RENAME_PROJECT = 'REQ_RENAME_PROJECT';
+var RCV_RENAME_PROJECT = 'RCV_RENAME_PROJECT'; // Exporter requests
+
+var REQ_EXPORT_FILTER = 'REQ_EXPORT_FILTER';
+var RCV_EXPORT_FILTER = 'RCV_EXPORT_FILTER';
+var REQ_EXPORT_CLIPS = 'REQ_EXPORT_CLIPS';
+var RCV_EXPORT_CLIPS = 'RCV_EXPORT_CLIPS'; // Video Manager requests
+
+var REQ_GET_CLIP_INFO = 'REQ_GET_CLIP_INFO';
+var RCV_GET_CLIP_INFO = 'RCV_GET_CLIP_INFO';
+var REQ_GET_CAMERAS = 'REQ_GET_CAMERAS';
+var RCV_GET_CAMERAS = 'RCV_GET_CAMERAS'; // File Manager requests
+
+var REQ_GET_FOLDERS = 'REQ_GET_FOLDERS';
+var RCV_GET_FOLDERS = 'RCV_GET_FOLDERS';
+var REQ_GET_SOURCE_FOLDERS = 'REQ_GET_SOURCE_FOLDERS';
+var RCV_GET_SOURCE_FOLDERS = 'RCV_GET_SOURCE_FOLDERS';
+var REQ_ADD_FOLDER = 'REQ_ADD_FOLDER';
+var RCV_ADD_FOLDER = 'RCV_ADD_FOLDER'; // Object Detector requests
+
+var REQ_DETECT_OBJECTS = 'REQ_DETECT_OBJECTS';
+var RCV_DETECT_OBJECTS = 'RCV_DETECT_OBJECTS';
+var REQ_GET_OD_PROGRESS = 'REQ_GET_OD_PROGRESS';
+var RCV_GET_OD_PROGRESS = 'RCV_GET_OD_PROGRESS';
+var REQ_DELETE_OD_PROGRESS = 'REQ_DELETE_OD_PROGRESS';
+var RCV_DELETE_OD_PROGRESS = 'RCV_DELETE_OD_PROGRESS';
 /* -- INITIAL STATE -- */
 
 var initialState = {
-  projectName: "",
+  projectName: '',
   projectLoaded: false
 };
 /* -- ACTION CREATORS -- */
-// ...
+// Filter Module requests
 
-function filterVideos() {
+/**
+ * TODO: Add doc-comment
+ */
+
+function reqGetClipsMatchingFilter() {
   return {
-    type: FILTER_VIDEOS
+    type: REQ_GET_CLIPS_MATCHING_FILTER
+  };
+}
+/**
+ * TODO: Add doc-comment
+ */
+
+function rcvGetClipsMatchingFilter() {
+  return {
+    type: RCV_GET_CLIPS_MATCHING_FILTER
+  };
+}
+/**
+ * TODO: Add doc-comment
+ */
+
+
+function reqModifyFilter() {
+  return {
+    type: REQ_MODIFY_FILTER
+  };
+}
+/**
+ * TODO: Add doc-comment
+ */
+
+function rcvModifyFilter() {
+  return {
+    type: RCV_MODIFY_FILTER
+  };
+} // Project Manager requests
+
+/**
+ * TODO: Add doc-comment
+ */
+
+
+function reqGetProjects() {
+  return {
+    type: REQ_GET_PROJECTS
+  };
+}
+/**
+ * TODO: Add doc-comment
+ */
+
+function rcvGetProjects() {
+  return {
+    type: RCV_GET_PROJECTS
+  };
+}
+/**
+ * TODO: Add doc-comment
+ */
+
+
+function reqNewProject() {
+  return {
+    type: REQ_NEW_PROJECT
+  };
+}
+/**
+ * TODO: Add doc-comment
+ */
+
+function rcvNewProject() {
+  return {
+    type: RCV_NEW_PROJECT
+  };
+}
+/**
+ * TODO: Add doc-comment
+ */
+
+
+function reqDeleteProject() {
+  return {
+    type: REQ_DELETE_PROJECT
+  };
+}
+/**
+ * TODO: Add doc-comment
+ */
+
+function rcvDeleteProject() {
+  return {
+    type: RCV_DELETE_PROJECT
+  };
+}
+/**
+ * TODO: Add doc-comment
+ */
+
+
+function reqRenameProject() {
+  return {
+    type: REQ_RENAME_PROJECT
+  };
+}
+/**
+ * TODO: Add doc-comment
+ */
+
+function rcvRenameProject() {
+  return {
+    type: RCV_RENAME_PROJECT
+  };
+} // Exporter requests
+
+/**
+ * TODO: Add doc-comment
+ */
+
+
+function reqExportFilter() {
+  return {
+    type: REQ_EXPORT_FILTER
+  };
+}
+/**
+ * TODO: Add doc-comment
+ */
+
+function rcvExportFilter() {
+  return {
+    type: RCV_EXPORT_FILTER
+  };
+}
+/**
+ * TODO: Add doc-comment
+ */
+
+
+function reqExportClips() {
+  return {
+    type: REQ_EXPORT_CLIPS
+  };
+}
+/**
+ * TODO: Add doc-comment
+ */
+
+function rcvExportClips() {
+  return {
+    type: RCV_EXPORT_CLIPS
+  };
+} // Video Manager requests
+
+/**
+ * TODO: Add doc-comment
+ */
+
+
+function reqGetClipInfo() {
+  return {
+    type: REQ_GET_CLIP_INFO
+  };
+}
+/**
+ * TODO: Add doc-comment
+ */
+
+function rcvGetClipInfo() {
+  return {
+    type: RCV_GET_CLIP_INFO
+  };
+}
+/**
+ * TODO: Add doc-comment
+ */
+
+
+function reqGetCameras() {
+  return {
+    type: REQ_GET_CAMERAS
+  };
+}
+/**
+ * TODO: Add doc-comment
+ */
+
+function rcvGetCameras() {
+  return {
+    type: RCV_GET_CAMERAS
+  };
+} // File Manager requests
+
+/**
+ * TODO: Add doc-comment
+ */
+
+
+function reqGetFolders() {
+  return {
+    type: REQ_GET_FOLDERS
+  };
+}
+/**
+ * TODO: Add doc-comment
+ */
+
+function rcvGetFolders() {
+  return {
+    type: RCV_GET_FOLDERS
+  };
+}
+/**
+ * TODO: Add doc-comment
+ */
+
+
+function reqGetSourceFolders() {
+  return {
+    type: REQ_GET_SOURCE_FOLDERS
+  };
+}
+/**
+ * TODO: Add doc-comment
+ */
+
+function rcvGetSourceFolders() {
+  return {
+    type: RCV_GET_SOURCE_FOLDERS
+  };
+}
+/**
+ * TODO: Add doc-comment
+ */
+
+
+function reqAddFolders() {
+  return {
+    type: REQ_ADD_FOLDERS
+  };
+}
+/**
+ * TODO: Add doc-comment
+ */
+
+function rcvAddFolders() {
+  return {
+    type: RCV_ADD_FOLDERS
+  };
+} // Object Detector requests
+
+/**
+ * TODO: Add doc-comment
+ */
+
+
+function reqDetectObjects() {
+  return {
+    type: REQ_DETECT_OBJECTS
+  };
+}
+/**
+ * TODO: Add doc-comment
+ */
+
+function rcvDetectObjects() {
+  return {
+    type: RCV_DETECT_OBJECTS
+  };
+}
+/**
+ * TODO: Add doc-comment
+ */
+
+
+function reqGetODProgress() {
+  return {
+    type: REQ_GET_OD_PROGRESS
+  };
+}
+/**
+ * TODO: Add doc-comment
+ */
+
+function rcvGetODProgress() {
+  return {
+    type: RCV_GET_OD_PROGRESS
+  };
+}
+/**
+ * TODO: Add doc-comment
+ */
+
+
+function reqDeleteODProgress() {
+  return {
+    type: REQ_DELETE_OD_PROGRESS
+  };
+}
+/**
+ * TODO: Add doc-comment
+ */
+
+function rcvDeleteODProgress() {
+  return {
+    type: RCV_DELETE_OD_PROGRESS
   };
 }
 /* -- REDUX REDUCER -- */
+
 
 var communicationReducer = function communicationReducer() {
   var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
   var action = arguments.length > 1 ? arguments[1] : undefined;
 
   switch (action.type) {
-    case FILTER_VIDEOS:
+    case REQ_GET_CLIPS_MATCHING_FILTER:
       return state;
 
-    case SAVE_PROJECT:
+    case RCV_GET_CLIPS_MATCHING_FILTER:
       return state;
 
-    case OPEN_PROJECT:
+    case REQ_MODIFY_FILTER:
       return state;
 
-    case GET_PROJECTS:
+    case RCV_MODIFY_FILTER:
       return state;
 
-    case EXPORT_FILTER:
+    case REQ_GET_PROJECTS:
       return state;
 
-    case EXPORT_VIDEOS:
+    case RCV_GET_PROJECTS:
       return state;
 
-    case GET_VIDEO_INFO:
+    case REQ_NEW_PROJECT:
       return state;
 
-    case GET_VIDEO_STREAM:
+    case RCV_NEW_PROJECT:
       return state;
 
-    case SYNC_STATE:
+    case REQ_DELETE_PROJECT:
+      return state;
+
+    case RCV_DELETE_PROJECT:
+      return state;
+
+    case REQ_RENAME_PROJECT:
+      return state;
+
+    case RCV_RENAME_PROJECT:
+      return state;
+
+    case REQ_EXPORT_FILTER:
+      return state;
+
+    case RCV_EXPORT_FILTER:
+      return state;
+
+    case REQ_EXPORT_CLIPS:
+      return state;
+
+    case RCV_EXPORT_CLIPS:
+      return state;
+
+    case REQ_GET_CLIP_INFO:
+      return state;
+
+    case RCV_GET_CLIP_INFO:
+      return state;
+
+    case REQ_GET_CAMERAS:
+      return state;
+
+    case RCV_GET_CAMERAS:
+      return state;
+
+    case REQ_GET_FOLDERS:
+      return state;
+
+    case RCV_GET_FOLDERS:
+      return state;
+
+    case REQ_GET_SOURCE_FOLDERS:
+      return state;
+
+    case RCV_GET_SOURCE_FOLDERS:
+      return state;
+
+    case REQ_ADD_FOLDER:
+      return state;
+
+    case RCV_ADD_FOLDER:
+      return state;
+
+    case REQ_DETECT_OBJECTS:
+      return state;
+
+    case RCV_DETECT_OBJECTS:
+      return state;
+
+    case REQ_GET_OD_PROGRESS:
+      return state;
+
+    case RCV_GET_OD_PROGRESS:
+      return state;
+
+    case REQ_DELETE_OD_PROGRESS:
+      return state;
+
+    case RCV_DELETE_OD_PROGRESS:
       return state;
 
     default:

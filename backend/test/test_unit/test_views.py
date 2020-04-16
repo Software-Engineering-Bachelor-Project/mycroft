@@ -5,6 +5,7 @@ import unittest.mock as mock
 
 import backend.views as views
 
+
 class FilterModifyTest(TestCase):
 
     @mock.patch('backend.views.filter_module')
@@ -174,6 +175,25 @@ class VideoGetInfoTest(TestCase):
         
         # Did we propagate properly?
         mock_mod.get_clip_info.assert_called_with(QueryDict('test=data'))
+
+
+class VideoGetSequentialTest(TestCase):
+
+    @mock.patch('backend.views.video_manager')
+    def test_propagation(self, mock_mod):
+        '''
+        Tests propagation of the 'get sequential clip' request.
+        :return: None
+        '''
+        # Set up mock
+        mock_mod.get_sequential_clip.return_value = (200, {})
+
+        # Test function
+        req = APIRequestFactory().post('', {'test': 'data'})
+        response = views.video_get_sequential(req)
+
+        # Did we propagate properly?
+        mock_mod.get_sequential_clip.assert_called_with(QueryDict('test=data'))
 
 
 class VideoGetCamerasTest(TestCase):

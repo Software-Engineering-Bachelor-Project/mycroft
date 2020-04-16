@@ -21,6 +21,7 @@ urlpatterns = [
     path('export/clips', views.export_clips, name='export clips'),
 
     path('video/get_info', views.video_get_info, name='video info'),
+    path('video/get_sequential', views.video_get_sequential, name='video sequential'),
     path('video/get_cameras', views.video_get_cameras, name='video get cameras'),
 
     path('file/get_source_folders', views.file_get_source_folders, name='file get source folders'),

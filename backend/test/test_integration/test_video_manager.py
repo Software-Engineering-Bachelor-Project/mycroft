@@ -32,6 +32,68 @@ class GetClipInfoTest(TestCase):
                                'overlap': []})
 
 
+class GetSequentialClipTest(TestCase):
+
+    def setUp(self) -> None:
+        self.fid = create_root_folder(path='home/user/', name='test_folder')
+        self.cid = create_clip(name='test_clip', fid=self.fid, video_format='tvf', latitude=Decimal('0.0'),
+                               longitude=Decimal('0.0'),
+                               start_time=timezone.now() - timezone.timedelta(hours=1),
+                               end_time=timezone.now(),
+                               width=256, height=240, frame_rate=42)
+        self.clip = get_clip_by_id(cid=self.cid)
+
+    @patch('backend.video_manager.os_aware', side_effect=lambda x: x)
+    def test_basic(self, mock_os_aware):
+        """
+        Makes a simple call.
+        """
+        code, res = get_sequential_clip(data={CLIP_ID: self.cid})
+        self.assertEqual(code, 200)
+        self.assertEqual(res, {CLIP_ID: None})
+
+    def test_sequential_clip(self):
+        """
+        Tests a sequential clip.
+        """
+        cid2 = create_clip(name='test_clip2', fid=self.fid, video_format='tvf', latitude=Decimal('0.0'),
+                           longitude=Decimal('0.0'), start_time=self.clip.end_time,
+                           end_time=timezone.now() + timezone.timedelta(hours=1),
+                           width=256, height=240, frame_rate=42)
+        code, res = get_sequential_clip(data={CLIP_ID: self.cid})
+
+        self.assertEqual(code, 200)
+        self.assertEqual(res, {CLIP_ID: cid2})
+
+    def test_almost_sequential_clip(self):
+        """
+        Tests a clip that has a start time 5 seconds after the first clip.
+        """
+        cid2 = create_clip(name='test_clip2', fid=self.fid, video_format='tvf', latitude=Decimal('0.0'),
+                           longitude=Decimal('0.0'),
+                           start_time=self.clip.end_time + timezone.timedelta(seconds=5),
+                           end_time=timezone.now() + timezone.timedelta(hours=1),
+                           width=256, height=240, frame_rate=42)
+        code, res = get_sequential_clip(data={CLIP_ID: self.cid})
+
+        self.assertEqual(code, 200)
+        self.assertEqual(res, {CLIP_ID: cid2})
+
+    def test_not_sequential_clip(self):
+        """
+        Tests a clip that is not sequential.
+        """
+        create_clip(name='test_clip2', fid=self.fid, video_format='tvf', latitude=Decimal('0.0'),
+                    longitude=Decimal('0.0'),
+                    start_time=self.clip.end_time + timezone.timedelta(seconds=6),
+                    end_time=timezone.now() + timezone.timedelta(hours=1),
+                    width=256, height=240, frame_rate=42)
+        code, res = get_sequential_clip(data={CLIP_ID: self.cid})
+
+        self.assertEqual(code, 200)
+        self.assertEqual(res, {CLIP_ID: None})
+
+
 class GetCamerasTest(TestCase):
 
     def setUp(self) -> None:

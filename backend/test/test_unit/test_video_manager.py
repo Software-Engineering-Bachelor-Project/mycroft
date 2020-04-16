@@ -28,6 +28,27 @@ class GetClipInfoTest(TestCase):
         self.assertEqual(res, {})
 
 
+class GetSequentialClipTest(TestCase):
+
+    @patch('backend.video_manager.get_clip_by_id')
+    def test_basic(self, mock_get_clip_by_id):
+        """
+        Makes a simple call.
+        """
+        mock_get_clip_by_id.return_value.camera.clip_set.all.return_value = []
+        code, res = get_sequential_clip(data={CLIP_ID: 42})
+        self.assertEqual(code, 200)
+        self.assertEqual(res, {CLIP_ID: None})
+
+    def test_missing_parameter(self):
+        """
+        Test with a missing parameter.
+        """
+        code, res = get_sequential_clip(data={FOLDER_ID: 42})
+        self.assertEqual(code, 400)
+        self.assertEqual(res, {})
+
+
 class GetCamerasTest(TestCase):
 
     @patch('backend.video_manager.os_aware')

@@ -104,6 +104,16 @@ def video_get_info(request):
 
 
 @api_view(['POST'])
+def video_get_sequential(request):
+    """
+    Delegates a 'sequential clip' request to the Video Manager.
+    :return: A response from the Video Manager.
+    """
+    data = video_manager.get_sequential_clip(request.data)
+    return Response(data[1], data[0])
+
+
+@api_view(['POST'])
 def video_get_cameras(request):
     """
     Delegates a 'clip stream' request to the Video Manager.

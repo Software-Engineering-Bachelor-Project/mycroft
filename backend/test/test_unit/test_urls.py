@@ -93,6 +93,16 @@ class UrlsTest(TestCase):
         resolver = resolve(url)
         self.assertEqual(resolver.func, video_get_info)
 
+    def test_video_get_sequential(self):
+        '''
+        Test that the url for the video_get_sequential module is correctly mapped to the view
+        :return: None
+        '''
+
+        url = reverse('backend:video sequential')
+        resolver = resolve(url)
+        self.assertEqual(resolver.func, video_get_sequential)
+
     def test_video_get_cameras(self):
         '''
         Test that the url for the video_get_stream module is correctly mapped to the view

@@ -714,6 +714,18 @@ class CreateClipTest(BaseTestCases.ClipTest):
         self.assertFalse(clip2 in clip.duplicates.all())
         self.assertEqual(clip.duplicates.count(), 0)
 
+    def test_sequential(self):
+        cid2 = create_clip(fid=self.fid, name="another_test_clip", video_format="tvf",
+                           start_time=self.et,
+                           end_time=self.et + timezone.timedelta(minutes=1), latitude=self.lat,
+                           longitude=self.lon, width=256, height=240, frame_rate=42.0)
+        clip2 = get_clip_by_id(cid=cid2)
+        clip = get_clip_by_id(cid=self.cid)
+        self.assertFalse(clip2 in clip.overlap.all())
+        self.assertEqual(clip.overlap.count(), 0)
+        self.assertFalse(clip2 in clip.duplicates.all())
+        self.assertEqual(clip.duplicates.count(), 0)
+
 
 class GetClipByIdTest(BaseTestCases.ClipTest):
     def test_existing_cid(self):

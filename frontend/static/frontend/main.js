@@ -63885,6 +63885,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _viewport__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./viewport */ "./src/components/viewport.js");
 /* harmony import */ var _timeline__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./timeline */ "./src/components/timeline.js");
 /* harmony import */ var _browser__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./browser */ "./src/components/browser.js");
+/* harmony import */ var _evoker__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./evoker */ "./src/components/evoker.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -63913,6 +63914,8 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
+ // TODO: Remove
+
 
 /*
  * This is the main component of Mycroft.
@@ -63935,7 +63938,7 @@ function (_Component) {
     key: "render",
     value: function render() {
       return (// TODO: implement product
-        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_map__WEBPACK_IMPORTED_MODULE_5__["default"], null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_player__WEBPACK_IMPORTED_MODULE_4__["default"], null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_menu__WEBPACK_IMPORTED_MODULE_6__["default"], null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_viewport__WEBPACK_IMPORTED_MODULE_7__["default"], null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_browser__WEBPACK_IMPORTED_MODULE_9__["default"], null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_timeline__WEBPACK_IMPORTED_MODULE_8__["default"], null))
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_map__WEBPACK_IMPORTED_MODULE_5__["default"], null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_player__WEBPACK_IMPORTED_MODULE_4__["default"], null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_menu__WEBPACK_IMPORTED_MODULE_6__["default"], null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_viewport__WEBPACK_IMPORTED_MODULE_7__["default"], null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_browser__WEBPACK_IMPORTED_MODULE_9__["default"], null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_timeline__WEBPACK_IMPORTED_MODULE_8__["default"], null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_evoker__WEBPACK_IMPORTED_MODULE_10__["default"], null))
       );
     }
   }]);
@@ -64190,6 +64193,140 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 
 
 /* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["connect"])(mapStateToProps, mapDispatchToProps)(ClipBrowser));
+
+/***/ }),
+
+/***/ "./src/components/evoker.js":
+/*!**********************************!*\
+  !*** ./src/components/evoker.js ***!
+  \**********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var react_bootstrap_Dropdown__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-bootstrap/Dropdown */ "./node_modules/react-bootstrap/esm/Dropdown.js");
+/* harmony import */ var react_bootstrap_DropdownButton__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-bootstrap/DropdownButton */ "./node_modules/react-bootstrap/esm/DropdownButton.js");
+/* harmony import */ var _stateCommunication__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../stateCommunication */ "./src/stateCommunication.js");
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+
+
+
+ // Actions
+
+
+/* -- Evoker -- */
+
+var Evoker =
+/*#__PURE__*/
+function (_Component) {
+  _inherits(Evoker, _Component);
+
+  function Evoker() {
+    _classCallCheck(this, Evoker);
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(Evoker).apply(this, arguments));
+  }
+
+  _createClass(Evoker, [{
+    key: "render",
+    value: function render() {
+      var _this = this;
+
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        style: {
+          backgroundColor: 'red',
+          width: '20em',
+          height: '20em',
+          position: 'absolute',
+          top: '0',
+          right: '0'
+        }
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_DropdownButton__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        alignRight: true,
+        title: "Evoke...",
+        id: "dropdown-menu-align-right"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Dropdown__WEBPACK_IMPORTED_MODULE_2__["default"].Item, {
+        onClick: function onClick() {
+          return _this.props.getProjects();
+        }
+      }, " getProjects "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Dropdown__WEBPACK_IMPORTED_MODULE_2__["default"].Item, {
+        onClick: function onClick() {
+          var name = window.prompt('Name: ');
+
+          _this.props.newProject(name);
+        }
+      }, " newProject "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Dropdown__WEBPACK_IMPORTED_MODULE_2__["default"].Item, {
+        onClick: function onClick() {
+          var id = parseInt(window.prompt('ID: '));
+          return _this.props.deleteProject(id);
+        }
+      }, " deleteProject "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Dropdown__WEBPACK_IMPORTED_MODULE_2__["default"].Item, {
+        onClick: function onClick() {
+          var id = parseInt(window.prompt('ID: '));
+          var name = window.prompt('New name: ');
+          return _this.props.renameProject(id, name);
+        }
+      }, " renameProject ")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        onClick: function onClick() {
+          return _this.props.logState();
+        }
+      }, " Log State "));
+    }
+  }]);
+
+  return Evoker;
+}(react__WEBPACK_IMPORTED_MODULE_0__["Component"]); // Map Redux states to React props
+
+
+var menuStateToProps = function menuStateToProps(state) {
+  return {
+    logState: function logState() {
+      return console.log(state);
+    }
+  };
+}; // Forward Redux's dispatch function to React props
+
+
+var menuDispatchToProps = function menuDispatchToProps(dispatch) {
+  return {
+    getProjects: function getProjects() {
+      return dispatch(Object(_stateCommunication__WEBPACK_IMPORTED_MODULE_4__["getProjects"])());
+    },
+    newProject: function newProject(n) {
+      return dispatch(Object(_stateCommunication__WEBPACK_IMPORTED_MODULE_4__["newProject"])(n));
+    },
+    deleteProject: function deleteProject(i) {
+      return dispatch(Object(_stateCommunication__WEBPACK_IMPORTED_MODULE_4__["deleteProject"])(i));
+    },
+    renameProject: function renameProject(i, n) {
+      return dispatch(Object(_stateCommunication__WEBPACK_IMPORTED_MODULE_4__["renameProject"])(i, n));
+    }
+  };
+}; // Connect Redux with React
+
+
+/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["connect"])(menuStateToProps, menuDispatchToProps)(Evoker));
 
 /***/ }),
 
@@ -65259,11 +65396,33 @@ var browserReducer = function browserReducer() {
 /*!***********************************!*\
   !*** ./src/stateCommunication.js ***!
   \***********************************/
-/*! exports provided: getClipsMatchingFilter, modifyFilter, getProjects, newProject, deleteProject, renameProject, exportFilter, exportClips, getClipInfo, getCameras, getFolders, getSourceFolders, addFolders, detectObjects, getODProgress, deleteODProgress, requestResponse, default */
+/*! exports provided: GET_CLIPS_MATCHING_FILTER, MODIFY_FILTER, GET_PROJECTS, NEW_PROJECT, DELETE_PROJECT, RENAME_PROJECT, URL_GET_PROJECTS, URL_NEW_PROJECT, URL_DELETE_PROJECT, URL_RENAME_PROJECT, EXPORT_FILTER, EXPORT_CLIPS, GET_CLIP_INFO, GET_CAMERAS, GET_FOLDERS, GET_SOURCE_FOLDERS, ADD_FOLDER, DETECT_OBJECTS, GET_OD_PROGRESS, DELETE_OD_PROGRESS, REQUEST_RESPONSE, initialState, getClipsMatchingFilter, modifyFilter, getProjects, newProject, deleteProject, renameProject, exportFilter, exportClips, getClipInfo, getCameras, getFolders, getSourceFolders, addFolders, detectObjects, getODProgress, deleteODProgress, requestResponse, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GET_CLIPS_MATCHING_FILTER", function() { return GET_CLIPS_MATCHING_FILTER; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MODIFY_FILTER", function() { return MODIFY_FILTER; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GET_PROJECTS", function() { return GET_PROJECTS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NEW_PROJECT", function() { return NEW_PROJECT; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DELETE_PROJECT", function() { return DELETE_PROJECT; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RENAME_PROJECT", function() { return RENAME_PROJECT; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "URL_GET_PROJECTS", function() { return URL_GET_PROJECTS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "URL_NEW_PROJECT", function() { return URL_NEW_PROJECT; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "URL_DELETE_PROJECT", function() { return URL_DELETE_PROJECT; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "URL_RENAME_PROJECT", function() { return URL_RENAME_PROJECT; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EXPORT_FILTER", function() { return EXPORT_FILTER; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EXPORT_CLIPS", function() { return EXPORT_CLIPS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GET_CLIP_INFO", function() { return GET_CLIP_INFO; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GET_CAMERAS", function() { return GET_CAMERAS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GET_FOLDERS", function() { return GET_FOLDERS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GET_SOURCE_FOLDERS", function() { return GET_SOURCE_FOLDERS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ADD_FOLDER", function() { return ADD_FOLDER; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DETECT_OBJECTS", function() { return DETECT_OBJECTS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GET_OD_PROGRESS", function() { return GET_OD_PROGRESS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DELETE_OD_PROGRESS", function() { return DELETE_OD_PROGRESS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "REQUEST_RESPONSE", function() { return REQUEST_RESPONSE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "initialState", function() { return initialState; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getClipsMatchingFilter", function() { return getClipsMatchingFilter; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "modifyFilter", function() { return modifyFilter; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getProjects", function() { return getProjects; });
@@ -65281,7 +65440,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getODProgress", function() { return getODProgress; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "deleteODProgress", function() { return deleteODProgress; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "requestResponse", function() { return requestResponse; });
-/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util */ "./src/util.js");
+/* harmony import */ var _state__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./state */ "./src/state.js");
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./util */ "./src/util.js");
+/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./types */ "./src/types.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+ // Types
+
 
 /* 
  * This file defines the state, reducers, and actions
@@ -65297,7 +65467,11 @@ var MODIFY_FILTER = 'MODIFY_FILTER'; // Project Manager requests
 var GET_PROJECTS = 'GET_PROJECTS';
 var NEW_PROJECT = 'NEW_PROJECT';
 var DELETE_PROJECT = 'DELETE_PROJECT';
-var RENAME_PROJECT = 'RENAME_PROJECT'; // Exporter requests
+var RENAME_PROJECT = 'RENAME_PROJECT';
+var URL_GET_PROJECTS = '/project/get_all';
+var URL_NEW_PROJECT = '/project/new';
+var URL_DELETE_PROJECT = '/project/delete';
+var URL_RENAME_PROJECT = '/project/rename'; // Exporter requests
 
 var EXPORT_FILTER = 'EXPORT_FILTER';
 var EXPORT_CLIPS = 'EXPORT_CLIPS'; // Video Manager requests
@@ -65317,8 +65491,8 @@ var REQUEST_RESPONSE = 'REQUEST_RESPONSE';
 /* -- INITIAL STATE -- */
 
 var initialState = {
-  projectName: '',
-  projectLoaded: false
+  projectID: -1,
+  projects: {}
 };
 /* -- ACTION CREATORS -- */
 // Filter Module requests
@@ -65343,7 +65517,8 @@ function modifyFilter() {
 } // Project Manager requests
 
 /**
- * TODO: Add doc-comment
+ * This action is used to request a list
+ * of available projects from the server.
  */
 
 function getProjects() {
@@ -65352,30 +65527,44 @@ function getProjects() {
   };
 }
 /**
- * TODO: Add doc-comment
+ * This action is used to request a new
+ * project to be created on the server.
+ *
+ * @param {string} name The name of the new project.
  */
 
-function newProject() {
+function newProject(name) {
   return {
-    type: NEW_PROJECT
+    type: NEW_PROJECT,
+    name: name
   };
 }
 /**
- * TODO: Add doc-comment
+ * This actions is used to request deletion
+ * of a project on the server.
+ * 
+ * @param {int} id The unique identifier of the project to delete.
  */
 
-function deleteProject() {
+function deleteProject(id) {
   return {
-    type: DELETE_PROJECT
+    type: DELETE_PROJECT,
+    id: id
   };
 }
 /**
- * TODO: Add doc-comment
+ * This action is used to request name
+ * change of a project on the server.
+ * 
+ * @param {int} id The unique identifier of the project whose name should be changed.
+ * @param {string} name The new name of the project.
  */
 
-function renameProject() {
+function renameProject(id, name) {
   return {
-    type: RENAME_PROJECT
+    type: RENAME_PROJECT,
+    id: id,
+    name: name
   };
 } // Exporter requests
 
@@ -65490,13 +65679,23 @@ function requestResponse(reqType, status, data) {
     data: data
   };
 }
-/* -- REDUX REDUCER -- */
+/**
+ * 
+ * If a response was received, it will be handled by this function.
+ * 
+ * @param {Object} state The current Redux state.
+ * @param {string} reqType The request type that resulted in this response.
+ * @param {int} status The HTTP status code of the request.
+ * @param {JSON} data The JSON data returned by the request. May be undefined if the request failed.
+ * 
+ * @return {Object} The new Redux state.
+ */
 
-var communicationReducer = function communicationReducer() {
-  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
-  var action = arguments.length > 1 ? arguments[1] : undefined;
+function handleResponse(state, reqType, status, data) {
+  // Used for error handling
+  var e = '';
 
-  switch (action.type) {
+  switch (reqType) {
     case GET_CLIPS_MATCHING_FILTER:
       return state;
 
@@ -65504,16 +65703,95 @@ var communicationReducer = function communicationReducer() {
       return state;
 
     case GET_PROJECTS:
-      return state;
+      switch (status) {
+        case 200:
+          var newList = {}; // Create project representations
+
+          var _iteratorNormalCompletion = true;
+          var _didIteratorError = false;
+          var _iteratorError = undefined;
+
+          try {
+            for (var _iterator = data.projects[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+              var p = _step.value;
+              // Add projects
+              newList[p.id] = new _types__WEBPACK_IMPORTED_MODULE_2__["Project"](p.id, p.name, p.created, p.last_updated, p.folders);
+            }
+          } catch (err) {
+            _didIteratorError = true;
+            _iteratorError = err;
+          } finally {
+            try {
+              if (!_iteratorNormalCompletion && _iterator["return"] != null) {
+                _iterator["return"]();
+              }
+            } finally {
+              if (_didIteratorError) {
+                throw _iteratorError;
+              }
+            }
+          }
+
+          return _objectSpread({}, state, {
+            projects: _objectSpread({}, newList)
+          });
+
+        default:
+          e = 'unknown reason';
+      }
+
+      break;
 
     case NEW_PROJECT:
-      return state;
+      switch (status) {
+        case 200:
+          return _objectSpread({}, state, {
+            projectID: data.project_id
+          });
+
+        case 400:
+          e = '\'project_name\' parameter was missing from request';
+          break;
+
+        default:
+          e = 'unknown reason';
+      }
+
+      break;
 
     case DELETE_PROJECT:
-      return state;
+      switch (status) {
+        case 200:
+          return state;
+
+        case 400:
+          e = '\'project_id\' parameter was missing from request';
+          break;
+
+        default:
+          e = 'unknown reason';
+      }
+
+      break;
 
     case RENAME_PROJECT:
-      return state;
+      switch (status) {
+        case 200:
+          return state;
+
+        case 204:
+          e = 'no project with specified ID';
+          break;
+
+        case 400:
+          e = '\'project_id\' or \'project_name\' parameter was missing from request';
+          break;
+
+        default:
+          e = 'unknown reason';
+      }
+
+      break;
 
     case EXPORT_FILTER:
       return state;
@@ -65545,61 +65823,109 @@ var communicationReducer = function communicationReducer() {
     case DELETE_OD_PROGRESS:
       return state;
 
-    case REQUEST_RESPONSE:
-      /* REQUEST RESPONSE HANDLING */
-      switch (action.reqType) {
-        case GET_CLIPS_MATCHING_FILTER:
-          return state;
-
-        case MODIFY_FILTER:
-          return state;
-
-        case GET_PROJECTS:
-          return state;
-
-        case NEW_PROJECT:
-          return state;
-
-        case DELETE_PROJECT:
-          return state;
-
-        case RENAME_PROJECT:
-          return state;
-
-        case EXPORT_FILTER:
-          return state;
-
-        case EXPORT_CLIPS:
-          return state;
-
-        case GET_CLIP_INFO:
-          return state;
-
-        case GET_CAMERAS:
-          return state;
-
-        case GET_FOLDERS:
-          return state;
-
-        case GET_SOURCE_FOLDERS:
-          return state;
-
-        case ADD_FOLDER:
-          return state;
-
-        case DETECT_OBJECTS:
-          return state;
-
-        case GET_OD_PROGRESS:
-          return state;
-
-        case DELETE_OD_PROGRESS:
-          return state;
-      }
-
     default:
       return state;
   }
+
+  if (200 < status && status < 300) console.log('Request remark: ' + e);else if (status != 200) console.error('Request \'' + reqType + '\' failed: ' + e);
+  return state;
+}
+/* -- REDUX REDUCER -- */
+
+
+var communicationReducer = function communicationReducer() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
+  var action = arguments.length > 1 ? arguments[1] : undefined;
+  // Handle response if applicable
+  if (action.type == REQUEST_RESPONSE) return handleResponse(state, action.reqType, action.status, action.data);
+  var url = '';
+  var body = {};
+
+  switch (action.type) {
+    case GET_CLIPS_MATCHING_FILTER:
+      body = {};
+      break;
+
+    case MODIFY_FILTER:
+      body = {};
+      break;
+
+    case GET_PROJECTS:
+      url = URL_GET_PROJECTS;
+      body = {};
+      break;
+
+    case NEW_PROJECT:
+      url = URL_NEW_PROJECT;
+      body = {
+        project_name: action.name
+      };
+      break;
+
+    case DELETE_PROJECT:
+      url = URL_DELETE_PROJECT;
+      body = {
+        project_id: action.id
+      };
+      break;
+
+    case RENAME_PROJECT:
+      url = URL_RENAME_PROJECT;
+      body = {
+        project_id: action.id,
+        project_name: action.name
+      };
+      break;
+
+    case EXPORT_FILTER:
+      body = {};
+      break;
+
+    case EXPORT_CLIPS:
+      body = {};
+      break;
+
+    case GET_CLIP_INFO:
+      body = {};
+      break;
+
+    case GET_CAMERAS:
+      body = {};
+      break;
+
+    case GET_FOLDERS:
+      body = {};
+      break;
+
+    case GET_SOURCE_FOLDERS:
+      body = {};
+      break;
+
+    case ADD_FOLDER:
+      body = {};
+      break;
+
+    case DETECT_OBJECTS:
+      body = {};
+      break;
+
+    case GET_OD_PROGRESS:
+      body = {};
+      break;
+
+    case DELETE_OD_PROGRESS:
+      body = {};
+      break;
+
+    default:
+      return state;
+  } // Make request
+
+
+  Object(_util__WEBPACK_IMPORTED_MODULE_1__["makePOST"])(url, body, function (status, data) {
+    _state__WEBPACK_IMPORTED_MODULE_0__["default"].dispatch(requestResponse(action.type, status, data));
+  });
+  return state;
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (communicationReducer);
@@ -65934,11 +66260,12 @@ var viewportReducer = function viewportReducer() {
 /*!**********************!*\
   !*** ./src/types.js ***!
   \**********************/
-/*! exports provided: Camera, Clip, Folder */
+/*! exports provided: Project, Camera, Clip, Folder */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Project", function() { return Project; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Camera", function() { return Camera; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Clip", function() { return Clip; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Folder", function() { return Folder; });
@@ -65951,8 +66278,48 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 /* -- This files contains non-React classes -- */
 
 /**
+ * This class represents a Project.
+ */
+var Project =
+/*#__PURE__*/
+function () {
+  /**
+   * @param {int} id The unique identifier of this project. Corresponds to the backend database.
+   * @param {string} name The name of this project.
+   * @param {Date} created A Date object representing when this project was created.
+   * @param {Date} lastUpdated A Date object representing when this project was last updated.
+   * @param {dict[int: Folder]} folders The source folders of this project, mapped in a dictionary by their own IDs.
+   */
+  function Project(id, name, created, lastUpdated, folders) {
+    _classCallCheck(this, Project);
+
+    this.id = id;
+    this.name = name;
+    this.created = created;
+    this.lastUpdated = lastUpdated;
+    this.folders = folders;
+  }
+  /**
+   * 
+   * Returns whether or not this camera contains any clips.
+   * 
+   * @return {boolean} True if this camera does not contain any clips.
+   */
+
+
+  _createClass(Project, [{
+    key: "isEmpty",
+    value: function isEmpty() {
+      return Object.keys(this.clips).length == 0;
+    }
+  }]);
+
+  return Project;
+}();
+/**
  * This class represents a Camera.
  */
+
 var Camera =
 /*#__PURE__*/
 function () {
@@ -66099,12 +66466,14 @@ __webpack_require__.r(__webpack_exports__);
 /**
  * 
  * This function is used to make POST-requests.
+ * When the request is done, an action will be dispatched.
+ * An extra parameter 'status' will be added onto the action.
  * 
  * @param {string} url The sub-URL to send the request to. Will be appended onto the host URL.
  * @param {JSON} opts The JSON data to send through the request.
- * @param {fucntion} onResponse The function to be called upon request response. Expects two parameters: (status: int, data: JSON). If the request fails, 'data' will be undefined.
+ * @param {fucntion} onResponse The function to be called upon request response. Expects two parameters: (status: int, data: JSON). If the request failed, 'data' will be undefined.
  * 
- */
+*/
 function makePOST(url) {
   var opts = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
   var onResponse = arguments.length > 2 ? arguments[2] : undefined;
@@ -66120,9 +66489,9 @@ function makePOST(url) {
     if (r.ok) {
       console.log('POST SUCCESS: \'' + url + '\' | ' + r.status + ' - ' + r.statusText); // Call success function
 
-      r.json().then(function (data) {
+      if (r.status == 200) r.json().then(function (data) {
         return onResponse(r.status, data);
-      });
+      });else onResponse(r.status, undefined);
     } else {
       console.error('POST FAILURE: \'' + url + '\' | ' + r.status + ' - ' + r.statusText);
       onResponse(r.status, undefined);

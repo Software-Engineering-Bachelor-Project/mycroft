@@ -11,6 +11,9 @@ import Viewport from './viewport';
 import Timeline from './timeline';
 import Browser from './browser'
 
+// TODO: Remove
+import Evoker from './evoker';
+
 /*
  * This is the main component of Mycroft.
  */
@@ -27,6 +30,7 @@ class App extends Component {
 				<Viewport />
 				<Browser/> 
 				<Timeline />
+                <Evoker />
 			</div>
 		);
     }

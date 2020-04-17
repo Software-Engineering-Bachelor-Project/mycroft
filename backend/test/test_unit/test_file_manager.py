@@ -5,7 +5,7 @@ from django.test import TestCase
 from backend.file_manager import *
 
 METADATA_EXAMPLE = "59°23'19.2\"N 17°55'35.4\"E   (59.388668, 17.926501)\n2018-09-06 15:45:59.603     " \
-                                "(2018-09-06 15:45:59)"
+                   "(2018-09-06 15:45:59)"
 
 
 class GetSourceFolders(TestCase):

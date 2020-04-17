@@ -35,7 +35,8 @@ class DetectObjectsTest(TestCase):
         """
         mock_create_progress.return_value = 1337
         code, res = detect_objects(
-            {CLIP_IDS: [42, 6, 11], RATE: 1, START_TIME: '2020-05-17T00:00:00+01:00', END_TIME: '2020-05-18T00:00:00+01:00'})
+            {CLIP_IDS: [42, 6, 11], RATE: 1, START_TIME: '2020-05-17T00:00:00+01:00',
+             END_TIME: '2020-05-18T00:00:00+01:00'})
         mock_create_progress.assert_called_once_with(total=3)
         st = timezone.datetime(2020, 5, 17, tzinfo=pytz.timezone(settings.TIME_ZONE))
         et = timezone.datetime(2020, 5, 18, tzinfo=pytz.timezone(settings.TIME_ZONE))

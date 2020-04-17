@@ -88,6 +88,7 @@ class GetSerializerTest(TestCase):
                                      Clip: ClipSerializer,
                                      Resolution: ResolutionSerializer,
                                      Progress: ProgressSerializer,
+                                     Area: AreaSerializer
                                      }
 
     def test_all_types(self):

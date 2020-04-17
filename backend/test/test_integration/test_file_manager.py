@@ -96,4 +96,3 @@ class AddFoldersTest(TestCase):
         code, res = add_folder(data={PROJECT_ID: self.pid, FOLDER_ID: 42})
         self.assertEqual(code, 204)
         self.assertEqual(res, {})
-

@@ -7,63 +7,36 @@ import { makePOST } from './util';
 
 /* -- ACTIONS -- */
 
-// For server requests such as POST, create
-// two actions prefixed with REQ and RCV since
-// the response must be handled separately.
-
 // Filter Module requests
-const REQ_GET_CLIPS_MATCHING_FILTER = 'REQ_GET_CLIPS_MATCHING_FILTER';
-const RCV_GET_CLIPS_MATCHING_FILTER = 'RCV_GET_CLIPS_MATCHING_FILTER';
-
-const REQ_MODIFY_FILTER             = 'REQ_MODIFY_FILTER';
-const RCV_MODIFY_FILTER             = 'RCV_MODIFY_FILTER';
+const GET_CLIPS_MATCHING_FILTER = 'GET_CLIPS_MATCHING_FILTER';
+const MODIFY_FILTER             = 'MODIFY_FILTER';
 
 // Project Manager requests
-const REQ_GET_PROJECTS              = 'REQ_GET_PROJECTS';
-const RCV_GET_PROJECTS              = 'RCV_GET_PROJECTS';
-
-const REQ_NEW_PROJECT               = 'REQ_NEW_PROJECT';
-const RCV_NEW_PROJECT               = 'RCV_NEW_PROJECT';
-
-const REQ_DELETE_PROJECT            = 'REQ_DELETE_PROJECT';
-const RCV_DELETE_PROJECT            = 'RCV_DELETE_PROJECT';
-
-const REQ_RENAME_PROJECT            = 'REQ_RENAME_PROJECT';
-const RCV_RENAME_PROJECT            = 'RCV_RENAME_PROJECT';
+const GET_PROJECTS              = 'GET_PROJECTS';
+const NEW_PROJECT               = 'NEW_PROJECT';
+const DELETE_PROJECT            = 'DELETE_PROJECT';
+const RENAME_PROJECT            = 'RENAME_PROJECT';
 
 // Exporter requests
-const REQ_EXPORT_FILTER             = 'REQ_EXPORT_FILTER';
-const RCV_EXPORT_FILTER             = 'RCV_EXPORT_FILTER';
-
-const REQ_EXPORT_CLIPS              = 'REQ_EXPORT_CLIPS';
-const RCV_EXPORT_CLIPS              = 'RCV_EXPORT_CLIPS';
+const EXPORT_FILTER             = 'EXPORT_FILTER';
+const EXPORT_CLIPS              = 'EXPORT_CLIPS';
 
 // Video Manager requests
-const REQ_GET_CLIP_INFO             = 'REQ_GET_CLIP_INFO';
-const RCV_GET_CLIP_INFO             = 'RCV_GET_CLIP_INFO';
-
-const REQ_GET_CAMERAS               = 'REQ_GET_CAMERAS';
-const RCV_GET_CAMERAS               = 'RCV_GET_CAMERAS';
+const GET_CLIP_INFO             = 'GET_CLIP_INFO';
+const GET_CAMERAS               = 'GET_CAMERAS';
 
 // File Manager requests
-const REQ_GET_FOLDERS               = 'REQ_GET_FOLDERS';
-const RCV_GET_FOLDERS               = 'RCV_GET_FOLDERS';
-
-const REQ_GET_SOURCE_FOLDERS        = 'REQ_GET_SOURCE_FOLDERS';
-const RCV_GET_SOURCE_FOLDERS        = 'RCV_GET_SOURCE_FOLDERS';
-
-const REQ_ADD_FOLDER                = 'REQ_ADD_FOLDER';
-const RCV_ADD_FOLDER                = 'RCV_ADD_FOLDER';
+const GET_FOLDERS               = 'GET_FOLDERS';
+const GET_SOURCE_FOLDERS        = 'GET_SOURCE_FOLDERS';
+const ADD_FOLDER                = 'ADD_FOLDER';
 
 // Object Detector requests
-const REQ_DETECT_OBJECTS            = 'REQ_DETECT_OBJECTS';
-const RCV_DETECT_OBJECTS            = 'RCV_DETECT_OBJECTS';
+const DETECT_OBJECTS            = 'DETECT_OBJECTS';
+const GET_OD_PROGRESS           = 'GET_OD_PROGRESS';
+const DELETE_OD_PROGRESS        = 'DELETE_OD_PROGRESS';
 
-const REQ_GET_OD_PROGRESS            = 'REQ_GET_OD_PROGRESS';
-const RCV_GET_OD_PROGRESS            = 'RCV_GET_OD_PROGRESS';
-
-const REQ_DELETE_OD_PROGRESS        = 'REQ_DELETE_OD_PROGRESS';
-const RCV_DELETE_OD_PROGRESS        = 'RCV_DELETE_OD_PROGRESS';
+// Response
+const REQUEST_RESPONSE          = 'REQUEST_RESPONSE';
 
 /* -- INITIAL STATE -- */
 const initialState = {
@@ -77,18 +50,9 @@ const initialState = {
 /**
  * TODO: Add doc-comment
  */
-export function reqGetClipsMatchingFilter() {
+export function getClipsMatchingFilter() {
     return {
-        type: REQ_GET_CLIPS_MATCHING_FILTER
-    };
-}
-
-/**
- * TODO: Add doc-comment
- */
-function rcvGetClipsMatchingFilter() {
-    return {
-        type: RCV_GET_CLIPS_MATCHING_FILTER
+        type: GET_CLIPS_MATCHING_FILTER
     };
 }
 
@@ -96,37 +60,20 @@ function rcvGetClipsMatchingFilter() {
 /**
  * TODO: Add doc-comment
  */
-export function reqModifyFilter() {
+export function modifyFilter() {
     return {
-        type: REQ_MODIFY_FILTER
+        type: MODIFY_FILTER
     };
 }
 
-/**
- * TODO: Add doc-comment
- */
-function rcvModifyFilter() {
-    return {
-        type: RCV_MODIFY_FILTER
-    };
-}
 
 // Project Manager requests
 /**
  * TODO: Add doc-comment
  */
-export function reqGetProjects() {
+export function getProjects() {
     return {
-        type: REQ_GET_PROJECTS
-    };
-}
-
-/**
- * TODO: Add doc-comment
- */
-function rcvGetProjects() {
-    return {
-        type: RCV_GET_PROJECTS
+        type: GET_PROJECTS
     };
 }
 
@@ -134,18 +81,9 @@ function rcvGetProjects() {
 /**
  * TODO: Add doc-comment
  */
-export function reqNewProject() {
+export function newProject() {
     return {
-        type: REQ_NEW_PROJECT
-    };
-}
-
-/**
- * TODO: Add doc-comment
- */
-function rcvNewProject() {
-    return {
-        type: RCV_NEW_PROJECT
+        type: NEW_PROJECT
     };
 }
 
@@ -153,18 +91,9 @@ function rcvNewProject() {
 /**
  * TODO: Add doc-comment
  */
-export function reqDeleteProject() {
+export function deleteProject() {
     return {
-        type: REQ_DELETE_PROJECT
-    };
-}
-
-/**
- * TODO: Add doc-comment
- */
-function rcvDeleteProject() {
-    return {
-        type: RCV_DELETE_PROJECT
+        type: DELETE_PROJECT
     };
 }
 
@@ -172,37 +101,20 @@ function rcvDeleteProject() {
 /**
  * TODO: Add doc-comment
  */
-export function reqRenameProject() {
+export function renameProject() {
     return {
-        type: REQ_RENAME_PROJECT
+        type: RENAME_PROJECT
     };
 }
 
-/**
- * TODO: Add doc-comment
- */
-function rcvRenameProject() {
-    return {
-        type: RCV_RENAME_PROJECT
-    };
-}
 
 // Exporter requests
 /**
  * TODO: Add doc-comment
  */
-export function reqExportFilter() {
+export function exportFilter() {
     return {
-        type: REQ_EXPORT_FILTER
-    };
-}
-
-/**
- * TODO: Add doc-comment
- */
-function rcvExportFilter() {
-    return {
-        type: RCV_EXPORT_FILTER
+        type: EXPORT_FILTER
     };
 }
 
@@ -210,37 +122,20 @@ function rcvExportFilter() {
 /**
  * TODO: Add doc-comment
  */
-export function reqExportClips() {
+export function exportClips() {
     return {
-        type: REQ_EXPORT_CLIPS
+        type: EXPORT_CLIPS
     };
 }
 
-/**
- * TODO: Add doc-comment
- */
-function rcvExportClips() {
-    return {
-        type: RCV_EXPORT_CLIPS
-    };
-}
 
 // Video Manager requests
 /**
  * TODO: Add doc-comment
  */
-export function reqGetClipInfo() {
+export function getClipInfo() {
     return {
-        type: REQ_GET_CLIP_INFO
-    };
-}
-
-/**
- * TODO: Add doc-comment
- */
-function rcvGetClipInfo() {
-    return {
-        type: RCV_GET_CLIP_INFO
+        type: GET_CLIP_INFO
     };
 }
 
@@ -248,37 +143,20 @@ function rcvGetClipInfo() {
 /**
  * TODO: Add doc-comment
  */
-export function reqGetCameras() {
+export function getCameras() {
     return {
-        type: REQ_GET_CAMERAS
+        type: GET_CAMERAS
     };
 }
 
-/**
- * TODO: Add doc-comment
- */
-function rcvGetCameras() {
-    return {
-        type: RCV_GET_CAMERAS
-    };
-}
 
 // File Manager requests
 /**
  * TODO: Add doc-comment
  */
-export function reqGetFolders() {
+export function getFolders() {
     return {
-        type: REQ_GET_FOLDERS
-    };
-}
-
-/**
- * TODO: Add doc-comment
- */
-function rcvGetFolders() {
-    return {
-        type: RCV_GET_FOLDERS
+        type: GET_FOLDERS
     };
 }
 
@@ -286,18 +164,9 @@ function rcvGetFolders() {
 /**
  * TODO: Add doc-comment
  */
-export function reqGetSourceFolders() {
+export function getSourceFolders() {
     return {
-        type: REQ_GET_SOURCE_FOLDERS
-    };
-}
-
-/**
- * TODO: Add doc-comment
- */
-function rcvGetSourceFolders() {
-    return {
-        type: RCV_GET_SOURCE_FOLDERS
+        type: GET_SOURCE_FOLDERS
     };
 }
 
@@ -305,37 +174,20 @@ function rcvGetSourceFolders() {
 /**
  * TODO: Add doc-comment
  */
-export function reqAddFolders() {
+export function addFolders() {
     return {
-        type: REQ_ADD_FOLDERS
+        type: ADD_FOLDERS
     };
 }
 
-/**
- * TODO: Add doc-comment
- */
-function rcvAddFolders() {
-    return {
-        type: RCV_ADD_FOLDERS
-    };
-}
 
 // Object Detector requests
 /**
  * TODO: Add doc-comment
  */
-export function reqDetectObjects() {
+export function detectObjects() {
     return {
-        type: REQ_DETECT_OBJECTS
-    };
-}
-
-/**
- * TODO: Add doc-comment
- */
-function rcvDetectObjects() {
-    return {
-        type: RCV_DETECT_OBJECTS
+        type: DETECT_OBJECTS
     };
 }
 
@@ -343,18 +195,9 @@ function rcvDetectObjects() {
 /**
  * TODO: Add doc-comment
  */
-export function reqGetODProgress() {
+export function getODProgress() {
     return {
-        type: REQ_GET_OD_PROGRESS
-    };
-}
-
-/**
- * TODO: Add doc-comment
- */
-function rcvGetODProgress() {
-    return {
-        type: RCV_GET_OD_PROGRESS
+        type: GET_OD_PROGRESS
     };
 }
 
@@ -362,104 +205,135 @@ function rcvGetODProgress() {
 /**
  * TODO: Add doc-comment
  */
-export function reqDeleteODProgress() {
+export function deleteODProgress() {
     return {
-        type: REQ_DELETE_OD_PROGRESS
+        type: DELETE_OD_PROGRESS
     };
 }
 
 /**
- * TODO: Add doc-comment
+ * 
+ * This action should be evoked whenever a request
+ * response has been received.
+ * 
+ * @param {string} reqType The type of request that was completed. Should be one of the action constants ('GET_PROJECTS' etc.).
+ * @param {int} status The HTTP status code of the response.
+ * @param {JSON} data The JSON data returned from the server. May be undefined, if the request somehow failed.
  */
-function rcvDeleteODProgress() {
+export function requestResponse(reqType, status, data) {
     return {
-        type: RCV_DELETE_OD_PROGRESS
+        type: REQUEST_RESPONSE,
+        reqType: reqType,
+        status: status,
+        data: data
     };
 }
+
 
 /* -- REDUX REDUCER -- */
 const communicationReducer = (state = initialState, action) => {
 
     switch (action.type) {
-    case REQ_GET_CLIPS_MATCHING_FILTER:
+    case GET_CLIPS_MATCHING_FILTER:
         return state;
-    case RCV_GET_CLIPS_MATCHING_FILTER:
-        return state;
-
-    case REQ_MODIFY_FILTER:
-        return state;
-    case RCV_MODIFY_FILTER:
+    
+    case MODIFY_FILTER:
         return state;
         
-    case REQ_GET_PROJECTS:
-        return state;
-    case RCV_GET_PROJECTS:
+    case GET_PROJECTS:
         return state;
 
-    case REQ_NEW_PROJECT:
-        return state;
-    case RCV_NEW_PROJECT:
+    case NEW_PROJECT:
         return state;
 
-    case REQ_DELETE_PROJECT:
-        return state;
-    case RCV_DELETE_PROJECT:
+    case DELETE_PROJECT:
         return state;
 
-    case REQ_RENAME_PROJECT:
-        return state;
-    case RCV_RENAME_PROJECT:
+    case RENAME_PROJECT:
         return state;
         
-    case REQ_EXPORT_FILTER:
-        return state;
-    case RCV_EXPORT_FILTER:
+    case EXPORT_FILTER:
         return state;
 
-    case REQ_EXPORT_CLIPS:
-        return state;
-    case RCV_EXPORT_CLIPS:
+    case EXPORT_CLIPS:
         return state;
         
-    case REQ_GET_CLIP_INFO:
-        return state;
-    case RCV_GET_CLIP_INFO:
+    case GET_CLIP_INFO:
         return state;
 
-    case REQ_GET_CAMERAS:
-        return state;
-    case RCV_GET_CAMERAS:
+    case GET_CAMERAS:
         return state;
         
-    case REQ_GET_FOLDERS:
-        return state;
-    case RCV_GET_FOLDERS:
+    case GET_FOLDERS:
         return state;
 
-    case REQ_GET_SOURCE_FOLDERS:
-        return state;
-    case RCV_GET_SOURCE_FOLDERS:
+    case GET_SOURCE_FOLDERS:
         return state;
 
-    case REQ_ADD_FOLDER:
-        return state;
-    case RCV_ADD_FOLDER:
+    case ADD_FOLDER:
         return state;
         
-    case REQ_DETECT_OBJECTS:
-        return state;
-    case RCV_DETECT_OBJECTS:
+    case DETECT_OBJECTS:
         return state;
 
-    case REQ_GET_OD_PROGRESS:
-        return state;
-    case RCV_GET_OD_PROGRESS:
+    case GET_OD_PROGRESS:
         return state;
 
-    case REQ_DELETE_OD_PROGRESS:
+    case DELETE_OD_PROGRESS:
         return state;
-    case RCV_DELETE_OD_PROGRESS:
-        return state;
+        
+    case REQUEST_RESPONSE:
+
+        /* REQUEST RESPONSE HANDLING */
+        switch(action.reqType) {
+        case GET_CLIPS_MATCHING_FILTER:
+            return state;
+            
+        case MODIFY_FILTER:
+            return state;
+            
+        case GET_PROJECTS:
+            return state;
+
+        case NEW_PROJECT:
+            return state;
+
+        case DELETE_PROJECT:
+            return state;
+
+        case RENAME_PROJECT:
+            return state;
+            
+        case EXPORT_FILTER:
+            return state;
+
+        case EXPORT_CLIPS:
+            return state;
+            
+        case GET_CLIP_INFO:
+            return state;
+
+        case GET_CAMERAS:
+            return state;
+            
+        case GET_FOLDERS:
+            return state;
+
+        case GET_SOURCE_FOLDERS:
+            return state;
+
+        case ADD_FOLDER:
+            return state;
+            
+        case DETECT_OBJECTS:
+            return state;
+
+        case GET_OD_PROGRESS:
+            return state;
+
+        case DELETE_OD_PROGRESS:
+            return state;
+        }
     
     default:
         return state;

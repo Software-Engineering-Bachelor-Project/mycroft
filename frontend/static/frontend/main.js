@@ -3325,7 +3325,7 @@ module.exports = exports;
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
-exports.push([module.i, "._1Nw-nfkiBz8MqHYPUCtnBZ {\r\n    left: 10px;\r\n    right: 5vw;\r\n    height: 300px;\r\n    position: absolute;\r\n    bottom: 10px;\r\n    background-color: rgb(209, 0, 0);\r\n    padding: 0;\r\n    border: 1px solid;\r\n}\r\n\r\n.mZdPyFtPVgzTk75W4SzTm {\r\n    position: absolute;\r\n    width: 100%;\r\n    top: 0;\r\n    left: 0;\r\n    height: 16.5%;\r\n    border-bottom: 1px solid;\r\n    background-color: lightsteelblue;\r\n}\r\n\r\n.koHZyci4kAmL3P-kvB_tX {\r\n    position: absolute;\r\n    top: 5px;\r\n    left: 5px;\r\n    width: 200px;\r\n}\r\n\r\n._3XExrBxght-p4AZ-WZRIRi {\r\n    position: absolute;\r\n    bottom: 0;\r\n    height: 83.5%;\r\n    width: 100%;\r\n    /*border: 2px solid;*/\r\n    overflow: auto;\r\n    background-color: rgb(106, 158, 255);\r\n}\r\n\r\n._1Qba7gLjTSC6Ud7Xlrdbs9 {\r\n    position: relative;\r\n    height: 100%;\r\n    /*border: 1px solid;*/\r\n    background-color: rgb(106, 158, 255);\r\n}\r\n\r\n._1fHpOa4iCeP4D3apAn_Qfj {\r\n    position: absolute;\r\n    width: 1px;\r\n    height: 100%;\r\n    background-color: black;\r\n}\r\n\r\n.X3Y7zgxEszNyzkUpH1WzN {\r\n    position: sticky;\r\n    left: 3px;\r\n}", ""]);
+exports.push([module.i, "._1Nw-nfkiBz8MqHYPUCtnBZ {\r\n    position: absolute;\r\n    background-color: rgb(209, 0, 0);\r\n    padding: 0;\r\n    border: 1px solid;\r\n    width: 100em;\r\n    height: 20em;\r\n}\r\n\r\n.mZdPyFtPVgzTk75W4SzTm {\r\n    position: relative;\r\n    width: 100%;\r\n    top: 0;\r\n    left: 0;\r\n    height: 16.5%;\r\n    border-bottom: 1px solid;\r\n    background-color: lightsteelblue;\r\n}\r\n\r\n.koHZyci4kAmL3P-kvB_tX {\r\n    position: relative;\r\n    top: 5px;\r\n    left: 5px;\r\n    width: 200px;\r\n}\r\n\r\n._3XExrBxght-p4AZ-WZRIRi {\r\n    position: relative;\r\n    bottom: 0;\r\n    height: 83.5%;\r\n    width: 100%;\r\n    /*border: 2px solid;*/\r\n    overflow: auto;\r\n    background-color: rgb(106, 158, 255);\r\n}\r\n\r\n._1Qba7gLjTSC6Ud7Xlrdbs9 {\r\n    position: relative;\r\n    height: 100%;\r\n    /*border: 1px solid;*/\r\n    background-color: rgb(106, 158, 255);\r\n}\r\n\r\n._1fHpOa4iCeP4D3apAn_Qfj {\r\n    position: absolute;\r\n    top: 0;\r\n    width: 1px;\r\n    height: 100%;\r\n    background-color: black;\r\n}\r\n\r\n.X3Y7zgxEszNyzkUpH1WzN {\r\n    position: sticky;\r\n    left: 3px;\r\n}", ""]);
 // Exports
 exports.locals = {
 	"main": "_1Nw-nfkiBz8MqHYPUCtnBZ",
@@ -64802,11 +64802,12 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 /**
-* This function returns a list of line placements in percents.
-* Example: ["20%", "40%", "60%", "80%"]
-* 
-* @return {Array} List of line placements.
-*/
+ * This function returns a list of line placements in percents.
+ * Example: ["20%", "40%", "60%", "80%"]
+ * 
+ * @param {int} timeSpan This is the state parameter timeSpan. (Located in stateTimeline.js)
+ * @return {Array} List of line placements.
+ */
 
 function getLinePlacements(timeSpan) {
   var hrs = timeSpan / (60 * 60 * 1000);
@@ -64824,7 +64825,9 @@ function getLinePlacements(timeSpan) {
 
   return list_;
 }
-;
+; // Scaling options for the dropdown menu
+
+var SCALE_LIST = [12, 24, 36, 48];
 /**
  * This class respresents the timeline react-component.
  */
@@ -64852,7 +64855,7 @@ function (_Component) {
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_DropdownButton__WEBPACK_IMPORTED_MODULE_3__["default"], {
         className: _timeline_module_css__WEBPACK_IMPORTED_MODULE_5___default.a.dropdown,
         title: this.props.scale + " Hours"
-      }, [12, 24, 36, 48].map(function (hrs) {
+      }, SCALE_LIST.map(function (hrs) {
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Dropdown__WEBPACK_IMPORTED_MODULE_2__["default"].Item, {
           onClick: function onClick(a) {
             return _this.props.zoom(hrs);
@@ -64892,9 +64895,6 @@ var mapStateToProps = function mapStateToProps(state) {
 
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return {
-    funcDummy: function funcDummy() {
-      return dispatch(Object(_stateTimeline__WEBPACK_IMPORTED_MODULE_4__["logScaling"])());
-    },
     zoom: function zoom(hrs) {
       return dispatch(Object(_stateTimeline__WEBPACK_IMPORTED_MODULE_4__["zoom"])(hrs));
     }
@@ -65945,18 +65945,16 @@ var playerReducer = function playerReducer() {
 /*!******************************!*\
   !*** ./src/stateTimeline.js ***!
   \******************************/
-/*! exports provided: ZOOM, LOG_SCALING, SET_START_TIME, SET_END_TIME, SET_TIME_LIMITS, initialState, logScaling, zoom, setStartTime, setEndTime, setTimeLimits, default */
+/*! exports provided: ZOOM, SET_START_TIME, SET_END_TIME, SET_TIME_LIMITS, initialState, zoom, setStartTime, setEndTime, setTimeLimits, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ZOOM", function() { return ZOOM; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOG_SCALING", function() { return LOG_SCALING; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_START_TIME", function() { return SET_START_TIME; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_END_TIME", function() { return SET_END_TIME; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_TIME_LIMITS", function() { return SET_TIME_LIMITS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "initialState", function() { return initialState; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "logScaling", function() { return logScaling; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "zoom", function() { return zoom; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setStartTime", function() { return setStartTime; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setEndTime", function() { return setEndTime; });
@@ -65972,7 +65970,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 /* -- ACTIONS -- */
 
 var ZOOM = "ZOOM";
-var LOG_SCALING = "LOG_SCALING";
 var SET_START_TIME = "SET_START_TIME";
 var SET_END_TIME = "SET_END_TIME";
 var SET_TIME_LIMITS = "SET_TIME_LIMITS";
@@ -65982,16 +65979,12 @@ var initialState = {
   scale: 12,
   startTime: undefined,
   endTime: undefined,
-  timeSpan: 36 * 60 * 60 * 1000 //12hrs in ms
+  timeSpan: 36 * 60 * 60 * 1000 //36hrs in ms
 
 };
 /* -- ACTION CREATORS -- */
+// This function changes the scale-state.
 
-function logScaling() {
-  return {
-    type: LOG_SCALING
-  };
-}
 function zoom(hrs) {
   return {
     type: ZOOM,
@@ -66024,10 +66017,6 @@ var timelineReducer = function timelineReducer() {
   var action = arguments.length > 1 ? arguments[1] : undefined;
 
   switch (action.type) {
-    case LOG_SCALING:
-      console.log('scaling is: ', state.scaling);
-      return state;
-
     case SET_START_TIME:
       return _objectSpread({}, state, {
         startTime: action.date,
@@ -66036,6 +66025,8 @@ var timelineReducer = function timelineReducer() {
 
     case ZOOM:
       return _objectSpread({}, state, {
+        // Compares with timeSpan; if action.hrs is bigger than timeSpan, 
+        // then timeSpan is the max value for scale. 
         scale: Math.min(action.hrs, state.timeSpan / (60 * 60 * 1000))
       });
 

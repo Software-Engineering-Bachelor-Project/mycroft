@@ -1,4 +1,8 @@
+import store from './state';
 import { makePOST } from './util';
+
+// Types
+import { Project } from './types';
 
 /* 
  * This file defines the state, reducers, and actions
@@ -8,40 +12,45 @@ import { makePOST } from './util';
 /* -- ACTIONS -- */
 
 // Filter Module requests
-const GET_CLIPS_MATCHING_FILTER = 'GET_CLIPS_MATCHING_FILTER';
-const MODIFY_FILTER             = 'MODIFY_FILTER';
+export const GET_CLIPS_MATCHING_FILTER = 'GET_CLIPS_MATCHING_FILTER';
+export const MODIFY_FILTER             = 'MODIFY_FILTER';
 
 // Project Manager requests
-const GET_PROJECTS              = 'GET_PROJECTS';
-const NEW_PROJECT               = 'NEW_PROJECT';
-const DELETE_PROJECT            = 'DELETE_PROJECT';
-const RENAME_PROJECT            = 'RENAME_PROJECT';
+export const GET_PROJECTS              = 'GET_PROJECTS';
+export const NEW_PROJECT               = 'NEW_PROJECT';
+export const DELETE_PROJECT            = 'DELETE_PROJECT';
+export const RENAME_PROJECT            = 'RENAME_PROJECT';
+
+export const URL_GET_PROJECTS              = '/project/get_all';
+export const URL_NEW_PROJECT               = '/project/new';
+export const URL_DELETE_PROJECT            = '/project/delete';
+export const URL_RENAME_PROJECT            = '/project/rename';
 
 // Exporter requests
-const EXPORT_FILTER             = 'EXPORT_FILTER';
-const EXPORT_CLIPS              = 'EXPORT_CLIPS';
+export const EXPORT_FILTER             = 'EXPORT_FILTER';
+export const EXPORT_CLIPS              = 'EXPORT_CLIPS';
 
 // Video Manager requests
-const GET_CLIP_INFO             = 'GET_CLIP_INFO';
-const GET_CAMERAS               = 'GET_CAMERAS';
+export const GET_CLIP_INFO             = 'GET_CLIP_INFO';
+export const GET_CAMERAS               = 'GET_CAMERAS';
 
 // File Manager requests
-const GET_FOLDERS               = 'GET_FOLDERS';
-const GET_SOURCE_FOLDERS        = 'GET_SOURCE_FOLDERS';
-const ADD_FOLDER                = 'ADD_FOLDER';
+export const GET_FOLDERS               = 'GET_FOLDERS';
+export const GET_SOURCE_FOLDERS        = 'GET_SOURCE_FOLDERS';
+export const ADD_FOLDER                = 'ADD_FOLDER';
 
 // Object Detector requests
-const DETECT_OBJECTS            = 'DETECT_OBJECTS';
-const GET_OD_PROGRESS           = 'GET_OD_PROGRESS';
-const DELETE_OD_PROGRESS        = 'DELETE_OD_PROGRESS';
+export const DETECT_OBJECTS            = 'DETECT_OBJECTS';
+export const GET_OD_PROGRESS           = 'GET_OD_PROGRESS';
+export const DELETE_OD_PROGRESS        = 'DELETE_OD_PROGRESS';
 
 // Response
-const REQUEST_RESPONSE          = 'REQUEST_RESPONSE';
+export const REQUEST_RESPONSE          = 'REQUEST_RESPONSE';
 
 /* -- INITIAL STATE -- */
-const initialState = {
-    projectName: '',
-    projectLoaded: false
+export const initialState = {
+    projectID: -1,
+    projects: {}
 };
 
 /* -- ACTION CREATORS -- */
@@ -69,7 +78,8 @@ export function modifyFilter() {
 
 // Project Manager requests
 /**
- * TODO: Add doc-comment
+ * This action is used to request a list
+ * of available projects from the server.
  */
 export function getProjects() {
     return {
@@ -79,31 +89,45 @@ export function getProjects() {
 
 
 /**
- * TODO: Add doc-comment
+ * This action is used to request a new
+ * project to be created on the server.
+ *
+ * @param {string} name The name of the new project.
  */
-export function newProject() {
+export function newProject(name) {
     return {
-        type: NEW_PROJECT
+        type: NEW_PROJECT,
+        name: name
     };
 }
 
 
 /**
- * TODO: Add doc-comment
+ * This actions is used to request deletion
+ * of a project on the server.
+ * 
+ * @param {int} id The unique identifier of the project to delete.
  */
-export function deleteProject() {
+export function deleteProject(id) {
     return {
-        type: DELETE_PROJECT
+        type: DELETE_PROJECT,
+        id: id
     };
 }
 
 
 /**
- * TODO: Add doc-comment
+ * This action is used to request name
+ * change of a project on the server.
+ * 
+ * @param {int} id The unique identifier of the project whose name should be changed.
+ * @param {string} name The new name of the project.
  */
-export function renameProject() {
+export function renameProject(id, name) {
     return {
-        type: RENAME_PROJECT
+        type: RENAME_PROJECT,
+        id: id,
+        name: name
     };
 }
 
@@ -229,28 +253,96 @@ export function requestResponse(reqType, status, data) {
     };
 }
 
+/**
+ * 
+ * If a response was received, it will be handled by this function.
+ * 
+ * @param {Object} state The current Redux state.
+ * @param {string} reqType The request type that resulted in this response.
+ * @param {int} status The HTTP status code of the request.
+ * @param {JSON} data The JSON data returned by the request. May be undefined if the request failed.
+ * 
+ * @return {Object} The new Redux state.
+ */
+function handleResponse(state, reqType, status, data) {
 
-/* -- REDUX REDUCER -- */
-const communicationReducer = (state = initialState, action) => {
-
-    switch (action.type) {
+    // Used for error handling
+    var e = '';
+    
+    switch(reqType) {
     case GET_CLIPS_MATCHING_FILTER:
         return state;
-    
+        
     case MODIFY_FILTER:
         return state;
         
     case GET_PROJECTS:
-        return state;
+        switch(status) {
+        case 200:
+            var newList = {};
+            
+            // Create project representations
+            for (var p of data.projects) {
+                // Add projects
+                newList[p.id] = new Project(p.id, p.name, p.created,
+                                            p.last_updated, p.folders);
+            }
+            
+            return {
+                ...state,
+                projects: { ...newList }
+            };
+        default:
+            e = 'unknown reason';
+        }
+
+        break;
 
     case NEW_PROJECT:
-        return state;
+        
+        switch(status) {
+        case 200:
+            return {
+                ...state,
+                projectID: data.project_id
+            };
+        case 400:
+            e = '\'project_name\' parameter was missing from request';
+            break;
+        default:
+            e = 'unknown reason';
+        }
+
+        break;
 
     case DELETE_PROJECT:
-        return state;
+        switch(status) {
+        case 200:
+            return state;
+        case 400:
+            e = '\'project_id\' parameter was missing from request';
+            break;
+        default:
+            e = 'unknown reason';
+        }
+
+        break;
 
     case RENAME_PROJECT:
-        return state;
+        switch(status) {
+        case 200:
+            return state;
+        case 204:
+            e = 'no project with specified ID';
+            break;
+        case 400:
+            e = '\'project_id\' or \'project_name\' parameter was missing from request';
+            break;
+        default:
+            e = 'unknown reason';
+        }
+
+        break;
         
     case EXPORT_FILTER:
         return state;
@@ -281,63 +373,114 @@ const communicationReducer = (state = initialState, action) => {
 
     case DELETE_OD_PROGRESS:
         return state;
-        
-    case REQUEST_RESPONSE:
-
-        /* REQUEST RESPONSE HANDLING */
-        switch(action.reqType) {
-        case GET_CLIPS_MATCHING_FILTER:
-            return state;
-            
-        case MODIFY_FILTER:
-            return state;
-            
-        case GET_PROJECTS:
-            return state;
-
-        case NEW_PROJECT:
-            return state;
-
-        case DELETE_PROJECT:
-            return state;
-
-        case RENAME_PROJECT:
-            return state;
-            
-        case EXPORT_FILTER:
-            return state;
-
-        case EXPORT_CLIPS:
-            return state;
-            
-        case GET_CLIP_INFO:
-            return state;
-
-        case GET_CAMERAS:
-            return state;
-            
-        case GET_FOLDERS:
-            return state;
-
-        case GET_SOURCE_FOLDERS:
-            return state;
-
-        case ADD_FOLDER:
-            return state;
-            
-        case DETECT_OBJECTS:
-            return state;
-
-        case GET_OD_PROGRESS:
-            return state;
-
-        case DELETE_OD_PROGRESS:
-            return state;
-        }
-    
     default:
         return state;
     }
+
+    if (200 < status && status < 300)
+        console.log('Request remark: ' + e);
+    else if (status != 200)
+        console.error('Request \'' + reqType + '\' failed: ' + e);
+    return state;
+}
+
+/* -- REDUX REDUCER -- */
+const communicationReducer = (state = initialState, action) => {
+
+    // Handle response if applicable
+    if (action.type == REQUEST_RESPONSE)
+        return handleResponse(state, action.reqType,
+                              action.status, action.data);
+
+    var url = '';
+    var body = {};
+    
+    switch (action.type) {
+    case GET_CLIPS_MATCHING_FILTER:
+        body = {};
+        break;
+    
+    case MODIFY_FILTER:
+        body = {};
+        break;
+        
+    case GET_PROJECTS:
+        url = URL_GET_PROJECTS;
+        body = {};
+        break;
+
+    case NEW_PROJECT:
+        url = URL_NEW_PROJECT;
+        body = {
+            project_name: action.name
+        };
+        break;
+
+    case DELETE_PROJECT:
+        url = URL_DELETE_PROJECT;
+        body = {
+            project_id: action.id
+        };
+        break;
+
+    case RENAME_PROJECT:
+        url = URL_RENAME_PROJECT;
+        body = {
+            project_id: action.id,
+            project_name: action.name
+        };
+        break;
+        
+    case EXPORT_FILTER:
+        body = {};
+        break;
+
+    case EXPORT_CLIPS:
+        body = {};
+        break;
+        
+    case GET_CLIP_INFO:
+        body = {};
+        break;
+
+    case GET_CAMERAS:
+        body = {};
+        break;
+        
+    case GET_FOLDERS:
+        body = {};
+        break;
+
+    case GET_SOURCE_FOLDERS:
+        body = {};
+        break;
+
+    case ADD_FOLDER:
+        body = {};
+        break;
+        
+    case DETECT_OBJECTS:
+        body = {};
+        break;
+
+    case GET_OD_PROGRESS:
+        body = {};
+        break;
+
+    case DELETE_OD_PROGRESS:
+        body = {};
+        break;
+        
+    default:
+        return state;
+    }
+
+    // Make request
+    makePOST(url, body, (status, data) => {
+        store.dispatch(requestResponse(action.type, status, data));  
+    });
+
+    return state;
 };
 
 export default communicationReducer;

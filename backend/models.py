@@ -3,6 +3,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.core.exceptions import ValidationError
 from django.utils import timezone
 from decimal import Decimal
+from django.utils.timezone import utc
 
 INT_MAX_VALUE = 2147483647
 
@@ -74,6 +75,36 @@ class Project(models.Model):
     def save(self, *args, **kwargs):
         self.full_clean()
         return super(Project, self).save(*args, **kwargs)
+
+
+class Area(models.Model):
+    """
+    An circular area
+    """
+    longitude = models.DecimalField(max_digits=10, decimal_places=7)
+    latitude = models.DecimalField(max_digits=10, decimal_places=7)
+    radius = models.DecimalField(max_digits=10, decimal_places=7)
+
+    def is_within(self, longitude: Decimal, latitude: Decimal) -> bool:
+        """
+        Checks if the given longitude and latitude is within the area
+        :param longitude:
+        :param latitude:
+        :return: Whether the given coordinates is within the area
+        """
+        return self.radius <= distance(self.longitude, self.latitude, longitude, latitude)
+
+    def clean(self):
+        if not (Decimal(value="-180.0") <= self.longitude <= Decimal(value="180.0")):
+            raise ValidationError("Longitude must be between -180 and 180")
+        if not (Decimal(value="-90.0") <= self.latitude <= Decimal(value="90.0")):
+            raise ValidationError("Latitude must be between -90 and 90")
+        if not Decimal(value="0.0") <= self.radius:
+            raise ValidationError("Radius can not be negative")
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        return super(Area, self).save(*args, **kwargs)
 
 
 class Camera(models.Model):
@@ -172,28 +203,6 @@ class Clip(models.Model):
         self.camera.save()
         super().save(*args, **kwargs)
 
-    def clip_match_filter(self, filter) -> bool:
-        """
-        Does the clip match the given filter
-        Note: requires that the clip is part of the same project as the filter.
-        Note: Filter can not be typed since filter has not defined yet
-
-        :param filter: The filter that the clip is matched against
-        :return: Whether the clip matches the given filter
-        """
-
-        # Check if the clip within time boundaries
-        if (filter.start_time is not None) and (filter.end_time is not None) and \
-                not overlap(self.start_time, self.end_time, filter.start_time, filter.end_time):
-            return False
-
-        # Check if the clip has the desired resolution
-        if self.resolution in filter.blacklisted_resolutions.all():
-            return False
-
-        # TODO: add support for classes
-        return True
-
 
 class Filter(models.Model):
     """
@@ -208,11 +217,48 @@ class Filter(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     included_clips = models.ManyToManyField(Clip, related_name="included_in_filter")
     excluded_clips = models.ManyToManyField(Clip, related_name="excluded_in_filter")
-    start_time = models.DateTimeField('start time', null=True, blank=True)
-    end_time = models.DateTimeField('end time', null=True, blank=True)
-    classes = models.ManyToManyField(ObjectClass)
-    min_frame_rate = models.PositiveIntegerField("Minimum frame Rate", null=True, blank=True)
-    blacklisted_resolutions = models.ManyToManyField(Resolution)
+    start_time = models.DateTimeField('start time', default=timezone.datetime.min.replace(tzinfo=utc))
+    end_time = models.DateTimeField('end time', default=timezone.datetime.max.replace(tzinfo=utc))
+    classes = models.ManyToManyField(ObjectClass, default=None)
+    min_frame_rate = models.PositiveIntegerField("Minimum frame Rate", default=0)
+    whitelisted_resolutions = models.ManyToManyField(Resolution)
+    areas = models.ManyToManyField(Area, default=None)
+
+    def clip_match_filter(self, clip: Clip) -> bool:
+        """
+        Does the clip match the filter
+        Note: requires that the clip is part of the same project as the filter.
+
+        :param clip:
+        :return: Whether the clip matches the given filter
+        """
+
+        # check if the clip should always be excluded
+        if clip in self.excluded_clips.all():
+            return False
+
+        # check if the clip should always be included
+        if clip in self.included_clips.all():
+            return True
+
+        # Check if the clip within time boundaries
+        if (self.start_time is not None) and (self.end_time is not None) and \
+                not overlap(clip.start_time, clip.end_time, self.start_time, self.end_time):
+            return False
+
+        # Check if the clip has the desired resolution
+        if self.whitelisted_resolutions.all()[::1] != [] and not [resolution for resolution in
+                                                                  self.whitelisted_resolutions.all() if
+                                                                  clip.resolution.height == resolution.height and clip.resolution.width == resolution.width]:
+            return False
+
+        # Check if clip is in the right location
+        if self.areas.all()[::1] != [] and not [area for area in self.areas.all() if
+                                                area.is_within(clip.camera.longitude, clip.camera.latitude)]:
+            return False
+
+        # TODO: add support for classes
+        return True
 
     def __str__(self):
         return self.id
@@ -316,7 +362,7 @@ class Progress(models.Model):
         return super(Progress, self).save(*args, **kwargs)
 
 
-def distance(lon1: Decimal, lat1: Decimal, lon2: Decimal, lat2: Decimal):
+def distance(lon1: Decimal, lat1: Decimal, lon2: Decimal, lat2: Decimal) -> Decimal:
     """
     get the distance between point 1 and 2
     :param lon1: Longitude of point 1

@@ -953,24 +953,26 @@ class ModifyFilterTest(BaseTestCases.FilterTest):
         """
         Test modifying Adding and removing objects in filter.
         """
-        modify_filter(fid=self.fid, add_classes=["test_object", "another_test_object"])
+        modify_filter(fid=self.fid, classes=["test_object", "another_test_object"])
         self.assertEqual(len(get_all_classes_in_filter(fid=self.fid)), 2)
 
-        modify_filter(fid=self.fid, add_classes=["test_object"])
-        self.assertEqual(len(get_all_classes_in_filter(fid=self.fid)), 2)
-
-        modify_filter(fid=self.fid, remove_classes=["test_object"])
+        modify_filter(fid=self.fid, classes=["test_object"])
         self.assertEqual(len(get_all_classes_in_filter(fid=self.fid)), 1)
 
-        modify_filter(fid=self.fid, add_classes=["test_object"], remove_classes=["test_object"])
+        modify_filter(fid=self.fid, classes=["test_object", "test_object"])
         self.assertEqual(len(get_all_classes_in_filter(fid=self.fid)), 1)
 
     def test_modify_quality(self):
-        modify_filter(fid=self.fid, add_blacklisted_resolutions=[(240, 256)], min_frame_rate=90)
+        modify_filter(fid=self.fid, whitelisted_resolutions=[{"height": 240, "width": 256}], min_frame_rate=90)
         filter = get_filter_by_id(self.fid)
         self.assertEqual(filter.min_frame_rate, 90)
-        self.assertEqual(filter.blacklisted_resolutions.first().width, 256)
-        self.assertEqual(filter.blacklisted_resolutions.first().height, 240)
+        self.assertEqual(filter.whitelisted_resolutions.first().width, 256)
+        self.assertEqual(filter.whitelisted_resolutions.first().height, 240)
+
+    def test_modify_areas(self):
+        area = create_area(Decimal(value="10.0"), Decimal(value="10.0"), Decimal(value="10.0"))
+        modify_filter(fid=self.fid, areas=[area])
+        self.assertEqual(area, get_areas_in_filter(self.fid)[0].id)
 
     def test_bad_time(self):
         """
@@ -1099,7 +1101,7 @@ class AddIncludedClipToFilterTest(BaseTestCases.FilterTest):
         Test adding a including clip to a filter.
         """
         add_included_clip_to_filter(fid=self.fid, cid=self.cid)
-        self.assertEqual(len(get_all_included_clips_in_filter(fid=self.fid)), 1)
+        self.assertEqual(len(get_filter_by_id(self.fid).included_clips.all()), 1)
 
     def test_nonexistent_fid(self):
         """
@@ -1113,7 +1115,7 @@ class AddIncludedClipToFilterTest(BaseTestCases.FilterTest):
         """
         add_included_clip_to_filter(fid=self.fid, cid=self.cid)
         add_included_clip_to_filter(fid=self.fid, cid=self.cid)
-        self.assertEqual(len(get_all_included_clips_in_filter(fid=self.fid)), 1)
+        self.assertEqual(len(get_filter_by_id(self.fid).included_clips.all()), 1)
 
 
 class AddExcludedClipsToFilterTest(BaseTestCases.FilterTest):
@@ -1122,7 +1124,7 @@ class AddExcludedClipsToFilterTest(BaseTestCases.FilterTest):
         Test adding a excluded clip to a filter.
         """
         add_excluded_clip_to_filter(fid=self.fid, cid=self.cid)
-        self.assertEqual(len(get_all_excluded_clips_in_filter(fid=self.fid)), 1)
+        self.assertEqual(len(get_filter_by_id(self.fid).excluded_clips.all()), 1)
 
     def test_nonexistent_fid(self):
         """
@@ -1136,39 +1138,7 @@ class AddExcludedClipsToFilterTest(BaseTestCases.FilterTest):
         """
         add_excluded_clip_to_filter(fid=self.fid, cid=self.cid)
         add_excluded_clip_to_filter(fid=self.fid, cid=self.cid)
-        self.assertEqual(len(get_all_excluded_clips_in_filter(fid=self.fid)), 1)
-
-
-class RemoveIncludedClipsFromFilterTest(BaseTestCases.FilterTest):
-    def test_existing_camera(self):
-        """
-        Test Removing a clip from a filters included cameras.
-        """
-        add_included_clip_to_filter(fid=self.fid, cid=self.cid)
-        remove_included_clip_from_filter(fid=self.fid, cid=self.cid)
-        self.assertEqual(len(get_all_included_clips_in_filter(fid=self.fid)), 0)
-
-    def test_nonexistent_fid(self):
-        """
-        Test removing a included clip from a filter that does not exist.
-        """
-        self.assertRaises(AssertionError, remove_included_clip_from_filter, fid=2, cid=self.cid)
-
-
-class RemoveExcludedClipsFromFilterTest(BaseTestCases.FilterTest):
-    def test_existing_camera(self):
-        """
-        Test Removing a clip from a filters excluded cameras.
-        """
-        add_excluded_clip_to_filter(fid=self.fid, cid=self.cid)
-        remove_excluded_clip_from_filter(fid=self.fid, cid=self.cid)
-        self.assertEqual(len(get_all_excluded_clips_in_filter(fid=self.fid)), 0)
-
-    def test_nonexistent_fid(self):
-        """
-        Test removing a excluded clip from a filter that does not exist.
-        """
-        self.assertRaises(AssertionError, remove_included_clip_from_filter, fid=2, cid=self.cid)
+        self.assertEqual(len(get_filter_by_id(self.fid).excluded_clips.all()), 1)
 
 
 class GetAllClipsInProject(BaseTestCases.ClipTest):
@@ -1333,3 +1303,146 @@ class DeleteProgressTest(BaseTestCases.ProgressTest):
         """
         delete_progress(pid=1337)
         self.assertEqual(Progress.objects.count(), 1)
+
+
+class GetAllResolutionsInProject(TestCase):
+    def setUp(self) -> None:
+        """
+        Create a folder and several clips
+        """
+        self.rid = create_root_folder(path="/home/user/", name="test_folder")
+        self.cid = create_clip(fid=self.rid, name="test_clip1", video_format="tvf",
+                               start_time=timezone.now() - timezone.timedelta(hours=1),
+                               end_time=timezone.now(), latitude=Decimal(value="13.37"),
+                               longitude=Decimal(value="0.42"), width=256, height=240, frame_rate=42.0)
+        self.cid = create_clip(fid=self.rid, name="test_clip2", video_format="tvf",
+                               start_time=timezone.now() - timezone.timedelta(hours=1),
+                               end_time=timezone.now(), latitude=Decimal(value="13.37"),
+                               longitude=Decimal(value="0.42"), width=10, height=20, frame_rate=42.0)
+
+        self.pid = create_project(name="test_project")
+        add_folder_to_project(self.rid, self.pid)
+
+    def test_simple_call(self):
+        """
+        Test a simple call when there exist 2 resolutions
+        """
+        self.assertEqual(len(get_all_resolutions_in_project(self.pid)), 2)
+
+    def test_no_resolutions(self):
+        pid = create_project(name="test_project2")
+        self.assertEqual(get_all_resolutions_in_project(pid), [])
+
+    def test_bad_pid(self):
+        self.assertRaises(AssertionError, get_all_resolutions_in_project, pid=3)
+
+
+class GetResolutionByValue(TestCase):
+    def setUp(self) -> None:
+        """
+        Create a folder and several clips
+        """
+        self.rid = create_root_folder(path="/home/user/", name="test_folder")
+        self.w1 = 256
+        self.h1 = 240
+        self.cid = create_clip(fid=self.rid, name="test_clip1", video_format="tvf",
+                               start_time=timezone.now() - timezone.timedelta(hours=1),
+                               end_time=timezone.now(), latitude=Decimal(value="13.37"),
+                               longitude=Decimal(value="0.42"), width=self.w1, height=self.h1, frame_rate=42.0)
+        self.pid = create_project(name="test_project")
+        add_folder_to_project(self.rid, self.pid)
+
+    def test_simple_call(self):
+        """
+        Test a simple with valid params
+        """
+        rs = get_resolution_by_values(height=self.h1, width=self.w1)
+        self.assertEqual(rs.width, self.w1)
+        self.assertEqual(rs.height, self.h1)
+
+    def test_nonexistent(self):
+        """
+        Test getting a resolution that does not exist
+        """
+        rs = get_resolution_by_values(height=self.h1 + 1, width=self.w1 + 1)
+        self.assertIsNone(rs)
+
+    def test_duplicate(self):
+        """
+        Test getting a res that has been created twice
+        """
+        self.cid2 = create_clip(fid=self.rid, name="test_clip12", video_format="tvf",
+                                start_time=timezone.now() - timezone.timedelta(hours=1),
+                                end_time=timezone.now(), latitude=Decimal(value="13.37"),
+                                longitude=Decimal(value="0.42"), width=self.w1, height=self.h1, frame_rate=42.0)
+        rs = get_resolution_by_values(height=self.h1, width=self.w1)
+        self.assertEqual(rs.width, self.w1)
+        self.assertEqual(rs.height, self.h1)
+
+
+class GetAreasInFilter(TestCase):
+    def setUp(self) -> None:
+        """
+        Create project and filter
+        """
+        self.pid = create_project(name="test_project")
+        self.fid = create_filter(pid=self.pid)
+
+    def test_none(self):
+        """
+        Test getting areas when no exists
+        """
+        res = get_areas_in_filter(self.fid)
+        self.assertEqual(res, [])
+
+    def test_bad_fid(self):
+        """
+        Test getting areas from a nonexistent fid
+        """
+        self.assertRaises(AssertionError, get_areas_in_filter, fid=2)
+
+    def test_one_area(self):
+        """
+        Test getting areas when one exists
+        """
+        a1 = create_area(Decimal(value="1.1"), Decimal(value="1.2"), Decimal(value="1.3"))
+        modify_filter(self.fid, areas=[a1])
+        res = get_areas_in_filter(self.fid)
+        self.assertEqual(len(res), 1)
+
+    def test_multiple_areas(self):
+        """
+        Test getting areas when multiple exists
+        """
+        a1 = create_area(Decimal(value="1.1"), Decimal(value="1.2"), Decimal(value="1.3"))
+        a2 = create_area(Decimal(value="1.12"), Decimal(value="1.22"), Decimal(value="1.32"))
+        modify_filter(self.fid, areas=[a1, a2])
+        res = get_areas_in_filter(self.fid)
+        self.assertEqual(len(res), 2)
+
+
+class CreateArea(TestCase):
+
+    def test_simple_call(self):
+        """
+        Test a simple with valid params
+        """
+        aid = create_area(Decimal(value="1.1"), Decimal(value="1.2"), Decimal(value="1.3"))
+        area = Area.objects.get(id=aid)
+        self.assertEqual(area.radius, Decimal(value="1.3"))
+        self.assertEqual(area.latitude, Decimal(value="1.1"))
+        self.assertEqual(area.longitude, Decimal(value="1.2"))
+
+    def test_bad_latitude(self):
+        """
+        Test with invalid latitude
+        """
+        self.assertRaises(ValidationError, create_area, latitude=Decimal(value="91"), longitude=Decimal(value="1.2"),
+                          radius=Decimal(value="1.3"))
+
+    def test_bad_longitude(self):
+        """
+        Test with invalid longitude
+        """
+        self.assertRaises(ValidationError, create_area, latitude=Decimal(value="1"), longitude=Decimal(value="181"),
+                          radius=Decimal(value="1.3"))

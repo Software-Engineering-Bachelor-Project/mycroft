@@ -3,7 +3,8 @@ import sys
 
 from rest_framework import serializers
 
-from .models import Project, Folder, Filter, Camera, ObjectDetection, Object, ObjectClass, Clip, Resolution, Progress
+from .models import Project, Folder, Filter, Camera, ObjectDetection, Object, ObjectClass, Clip, Resolution, Progress, \
+    Area
 
 
 class FolderSerializer(serializers.ModelSerializer):
@@ -85,6 +86,14 @@ class ProgressSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Progress
+        fields = '__all__'
+
+
+class AreaSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField()
+
+    class Meta:
+        model = Area
         fields = '__all__'
 
 

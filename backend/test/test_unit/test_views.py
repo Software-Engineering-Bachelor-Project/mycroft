@@ -6,6 +6,44 @@ import unittest.mock as mock
 import backend.views as views
 
 
+class FilterGetAreas(TestCase):
+
+    @mock.patch('backend.views.filter_module')
+    def test_propagation(self, mock_mod):
+        '''
+        Tests propagation of the 'filter get areas' request.
+        :return: None
+        '''
+        # Set up mock
+        mock_mod.get_areas_in_filter.return_value = (200, {})
+
+        # Test function
+        req = APIRequestFactory().post('', {'test': 'data'})
+        response = views.filter_get_areas(req)
+
+        # Did we propagate properly?
+        mock_mod.get_areas_in_filter.assert_called_with(QueryDict('test=data'))
+
+
+class FilterCreateArea(TestCase):
+
+    @mock.patch('backend.views.filter_module')
+    def test_propagation(self, mock_mod):
+        '''
+        Tests propagation of the 'filter create area' request.
+        :return: None
+        '''
+        # Set up mock
+        mock_mod.create_area.return_value = (200, {})
+
+        # Test function
+        req = APIRequestFactory().post('', {'test': 'data'})
+        response = views.filter_create_area(req)
+
+        # Did we propagate properly?
+        mock_mod.create_area.assert_called_with(QueryDict('test=data'))
+
+
 class FilterModifyTest(TestCase):
 
     @mock.patch('backend.views.filter_module')
@@ -20,7 +58,7 @@ class FilterModifyTest(TestCase):
         # Test function
         req = APIRequestFactory().post('', {'test': 'data'})
         response = views.filter_modify(req)
-        
+
         # Did we propagate properly?
         mock_mod.modify_filter.assert_called_with(QueryDict('test=data'))
 
@@ -58,7 +96,7 @@ class ProjectGetAllTest(TestCase):
         # Test function
         req = APIRequestFactory().post('', {'test': 'data'})
         response = views.project_get_all(req)
-        
+
         # Did we propagate properly?
         mock_mod.get_projects.assert_called_with(QueryDict('test=data'))
 
@@ -77,7 +115,7 @@ class ProjectNewTest(TestCase):
         # Test function
         req = APIRequestFactory().post('', {'test': 'data'})
         response = views.project_new(req)
-        
+
         # Did we propagate properly?
         mock_mod.new_project.assert_called_with(QueryDict('test=data'))
 
@@ -96,7 +134,7 @@ class ProjectDeleteTest(TestCase):
         # Test function
         req = APIRequestFactory().post('', {'test': 'data'})
         response = views.project_delete(req)
-        
+
         # Did we propagate properly?
         mock_mod.delete_project.assert_called_with(QueryDict('test=data'))
 
@@ -134,7 +172,7 @@ class ExportFilterTest(TestCase):
         # Test function
         req = APIRequestFactory().post('', {'test': 'data'})
         response = views.export_filter(req)
-        
+
         # Did we propagate properly?
         mock_mod.export_filter.assert_called_with(QueryDict('test=data'))
 
@@ -153,7 +191,7 @@ class ExportClipsTest(TestCase):
         # Test function
         req = APIRequestFactory().post('', {'test': 'data'})
         response = views.export_clips(req)
-        
+
         # Did we propagate properly?
         mock_mod.export_clips.assert_called_with(QueryDict('test=data'))
 
@@ -172,7 +210,7 @@ class VideoGetInfoTest(TestCase):
         # Test function
         req = APIRequestFactory().post('', {'test': 'data'})
         response = views.video_get_info(req)
-        
+
         # Did we propagate properly?
         mock_mod.get_clip_info.assert_called_with(QueryDict('test=data'))
 
@@ -210,7 +248,7 @@ class VideoGetCamerasTest(TestCase):
         # Test function
         req = APIRequestFactory().post('', {'test': 'data'})
         response = views.video_get_cameras(req)
-        
+
         # Did we propagate properly?
         mock_mod.get_cameras.assert_called_with(QueryDict('test=data'))
 
@@ -248,7 +286,7 @@ class FileGetFoldersTest(TestCase):
         # Test function
         req = APIRequestFactory().post('', {'test': 'data'})
         response = views.file_get_folders(req)
-        
+
         # Did we propagate properly?
         mock_mod.get_folders.assert_called_with(QueryDict('test=data'))
 
@@ -267,7 +305,7 @@ class FileAddFoldersTest(TestCase):
         # Test function
         req = APIRequestFactory().post('', {'test': 'data'})
         response = views.file_add_folder(req)
-        
+
         # Did we propagate properly?
         mock_mod.add_folder.assert_called_with(QueryDict('test=data'))
 
@@ -286,7 +324,7 @@ class DetectObjectsTest(TestCase):
         # Test function
         req = APIRequestFactory().post('', {'test': 'data'})
         response = views.detect_objects(req)
-        
+
         # Did we propagate properly?
         mock_mod.detect_objects.assert_called_with(QueryDict('test=data'))
 

@@ -101,7 +101,7 @@ class RunObjectDetectionTest(TestCase):
         self.od = ObjectDetector()
         self.pid = create_progress(total=len(self.cids))
 
-    @patch('backend.object_detector.replace_sep', side_effect= lambda x: x)
+    @patch('backend.object_detector.replace_sep', side_effect=lambda x: x)
     @patch('backend.object_detector.ObjectDetector.detect')
     def test_basic(self, mock_detect, mock_replace_sep):
         """

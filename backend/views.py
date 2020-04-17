@@ -13,6 +13,27 @@ import backend.object_detector as object_detector
 
 # each view follow the naming convention:  module name_action
 
+
+@api_view(['POST'])
+def filter_create_area(request):
+    """
+    Delegates a 'filter_create_areas' request to the Filter Module.
+    :return: A response from the Filter Module.
+    """
+    data = filter_module.create_area(request.data)
+    return Response(data[1], data[0])
+
+
+@api_view(['POST'])
+def filter_get_areas(request):
+    """
+    Delegates a 'filter_get_areas' request to the Filter Module.
+    :return: A response from the Filter Module.
+    """
+    data = filter_module.get_areas_in_filter(request.data)
+    return Response(data[1], data[0])
+
+
 @api_view(['POST'])
 def filter_get_matching_clips(request):
     """

@@ -11,6 +11,7 @@ CAMERA_ID = 'camera_id'
 CLIP_ID = 'clip_id'
 FILTER_ID = 'filter_id'
 PROGRESS_ID = 'progress_id'
+AREA_ID = "area_id"
 
 # --- Text ---
 PROJECT_NAME = 'project_name'
@@ -23,24 +24,35 @@ FILE_PATH = 'file_path'
 PROJECTS = 'projects'
 FOLDERS = 'folders'
 CAMERAS = 'cameras'
+AREAS = "areas"
 
 # --- Lists of ID:s ---
 CAMERA_IDS = 'camera_ids'
 CLIP_IDS = 'clip_ids'
+AREA_IDS = 'area_ids'
 
 REMOVE_INCLUDED_CLIP_IDS = "remove_included_clips "
-ADD_INCLUDED_CLIP_IDS = "add_included_clips "
+ADD_INCLUDED_CLIP_IDS = "add_included_clips"
+INCLUDED_CLIP_IDS = "included_clips"
 
 REMOVE_EXCLUDED_CLIP_IDS = "remove_excluded_clips"
 ADD_EXCLUDED_CLIP_IDS = "add_excluded_clips"
+EXCLUDED_CLIP_IDS = "excluded_clips"
 
 # --- Lists of values ---
-REMOVE_BLACKLISTED_RESOLUTIONS = "remove_blacklisted_resolutions"
-ADD_BLACKLISTED_RESOLUTIONS = "add_blacklisted_resolutions"
+WHITELISTED_RESOLUTIONS = "whitelisted_resolutions"
+LONGITUDE = "longitude"
+LATITUDE = "latitude"
+RADIUS = "radius"
+
+# --- Resolution related---
+HEIGHT = "height"
+WIDTH = "width"
 
 # --- Lists of text ---
 ADD_CLASSES = "add_classes"
 REMOVE_CLASSES = "remove_classes"
+CLASSES = "classes"
 
 # --- Quality related ---
 MIN_WIDTH = "min_width"

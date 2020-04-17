@@ -209,7 +209,7 @@ def get_clip_details(file_path: str) -> (int, float, int, int):
     frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
     width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-    return int(frames/fps), fps, width, height
+    return int(frames / fps), fps, width, height
 
 
 def split_file_path(file_path: str) -> (str, str):

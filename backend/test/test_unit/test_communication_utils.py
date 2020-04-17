@@ -8,8 +8,15 @@ from backend.communication_utils import *
 class OSAware(TestCase):
 
     def setUp(self) -> None:
-        self.data_linux = {'id': 42, 'file_path': '/home/user/test', 'folder': {'path': '/home/user/test_folder'}, 'clips': ['/home/user/test_folder/test_clip1.tvf', '/home/user/test_folder/test_clip2.tvf'], 'folders':[{'file_path': '/home/user/test/1'}, {'file_path': '/home/user/test/2'}]}
-        self.data_windows = {'id': 42, 'file_path': '\\home\\user\\test', 'folder': {'path': '\\home\\user\\test_folder'}, 'clips': ['\\home\\user\\test_folder\\test_clip1.tvf', '\\home\\user\\test_folder\\test_clip2.tvf'], 'folders':[{'file_path': '\\home\\user\\test\\1'}, {'file_path': '\\home\\user\\test\\2'}]}
+        self.data_linux = {'id': 42, 'file_path': '/home/user/test', 'folder': {'path': '/home/user/test_folder'},
+                           'clips': ['/home/user/test_folder/test_clip1.tvf', '/home/user/test_folder/test_clip2.tvf'],
+                           'folders': [{'file_path': '/home/user/test/1'}, {'file_path': '/home/user/test/2'}]}
+        self.data_windows = {'id': 42, 'file_path': '\\home\\user\\test',
+                             'folder': {'path': '\\home\\user\\test_folder'},
+                             'clips': ['\\home\\user\\test_folder\\test_clip1.tvf',
+                                       '\\home\\user\\test_folder\\test_clip2.tvf'],
+                             'folders': [{'file_path': '\\home\\user\\test\\1'},
+                                         {'file_path': '\\home\\user\\test\\2'}]}
 
     @patch('backend.communication_utils.os')
     def test_linux(self, mock_os):

@@ -1,9 +1,10 @@
-from typing import List, Optional, Tuple
+from typing import List, Optional, Tuple, Dict
 from django.utils import timezone
 from decimal import Decimal
 from django.db.models import Q
 
-from .models import Project, Folder, Filter, Camera, ObjectDetection, Object, ObjectClass, Clip, Resolution, Progress
+from .models import Project, Folder, Filter, Camera, ObjectDetection, Object, ObjectClass, Clip, Resolution, Progress, \
+    Area
 
 """
 This is the wrapper to the database.
@@ -296,7 +297,7 @@ def create_clip(fid: int, name: str, video_format: str, start_time: timezone.dat
     f = get_folder_by_id(fid=fid)
     assert f is not None
     camera = Camera.objects.get_or_create(latitude=latitude, longitude=longitude)[0]
-    resolution = Resolution.objects.get_or_create(height=height, width=width)[0]
+    resolution = Resolution.objects.get_or_create(width=width, height=height)[0]
     clip = Clip.objects.get_or_create(folder=f, name=name, video_format=video_format, start_time=start_time,
                                       end_time=end_time, camera=camera, resolution=resolution,
                                       frame_rate=frame_rate)[0]
@@ -396,7 +397,7 @@ def get_all_clips_matching_filter(fid: int) -> List[Clip]:
     res = []
 
     for clip in clips:
-        if clip.clip_match_filter(filter):
+        if filter.clip_match_filter(clip):
             res.append(clip)
     return res
 
@@ -502,7 +503,7 @@ def get_all_cameras_in_project(pid: int) -> List[Camera]:
 
 def create_filter(pid: int) -> int:
     """
-    Creates a new filter with the given name and adds it to the project.
+    Creates a new filter and adds it to the project.
 
     :param pid: The project's id.
     :return: The id of the filter.
@@ -563,20 +564,6 @@ def add_included_clip_to_filter(fid: int, cid: int) -> None:
     f.included_clips.add(clip)
 
 
-def remove_included_clip_from_filter(fid: int, cid: int) -> None:
-    """
-    Removes a included clip from a filter.
-
-    :param fid: The filter's id.
-    :param cid: The camera's id.
-    """
-    f = get_filter_by_id(fid=fid)
-    assert f is not None
-    clip = get_clip_by_id(cid)
-    assert clip is not None
-    f.included_clips.remove(clip)
-
-
 def add_excluded_clip_to_filter(fid: int, cid: int) -> None:
     """
     Adds a excluded clip to a filter.
@@ -591,79 +578,31 @@ def add_excluded_clip_to_filter(fid: int, cid: int) -> None:
     f.excluded_clips.add(clip)
 
 
-def remove_excluded_clip_from_filter(fid: int, cid: int) -> None:
-    """
-    Removes a excluded clip from a filter.
-
-    :param fid: The filter's id.
-    :param cid: The camera's id.
-    """
-    f = get_filter_by_id(fid=fid)
-    assert f is not None
-    clip = get_clip_by_id(cid)
-    assert clip is not None
-    f.excluded_clips.remove(clip)
-
-
-def get_all_included_clips_in_filter(fid: int) -> List[Clip]:
-    """
-    Gets all included clips in filter.
-
-    :param fid: The id of the filter.
-    :return: A list of clipss.
-    """
-    f = get_filter_by_id(fid=fid)
-    assert f is not None
-    return f.included_clips.all()[::1]
-
-
-def get_all_excluded_clips_in_filter(fid: int) -> List[Clip]:
-    """
-    Gets all excluded clips in filter.
-
-    :param fid: The id of the filter.
-    :return: A list of cameras.
-    """
-    f = get_filter_by_id(fid=fid)
-    assert f is not None
-    return f.excluded_clips.all()[::1]
-
-
 def modify_filter(fid: int, start_time: timezone.datetime = None, end_time: timezone.datetime = None,
-                  add_classes: List[str] = None, remove_classes: List[str] = None,
-                  add_blacklisted_resolutions: List[Tuple[int, int]] = None,
-                  remove_blacklisted_resolutions: List[Tuple[int, int]] = None,
-                  add_excluded_clips: List[int] = None,
-                  remove_excluded_clips: List[int] = None,
-                  add_included_clips: List[int] = None,
-                  remove_included_clips: List[int] = None,
-                  min_frame_rate: int = None) -> None:
+                  classes: List[str] = None,
+                  whitelisted_resolutions: List[Dict[str, int]] = None,
+                  excluded_clips: List[int] = None,
+                  included_clips: List[int] = None,
+                  min_frame_rate: int = None,
+                  areas: List[int] = None) -> None:
     """
     Changes the given values in the specified filter.
 
     NOTE:
-        Not all parameters have to be given. The function only modifies the the specified parameters.
+        Not all parameters have to be given. The function only modifies the the specified parameters
 
-
+    :param included_clips: The clips that should always be included from the filter
+    :param excluded_clips: The clips that always should be excluded from the filter
+    :param whitelisted_resolutions: id of Resolutions that should be included in the filter
+    :param classes: The classes the filter should filter for
+    :param areas: A list of ids of areas that should be included in the filter
     :param fid: The filter's id.
     :param start_time: New start time for filter.
     :param end_time: New end time for filter.
-    :param add_classes: Object classes to be added to filter.
-    :param remove_classes: Object classes to be removed from filter.
-    :param add_blacklisted_resolutions: List of resolutions that should be added to blacklist
-    :param remove_blacklisted_resolutions: List of resolutions that should be removed from blacklist
-    :param remove_included_clips: clips that should be removed from included clips
-    :param add_included_clips: clips that should be added to included clips
-    :param remove_excluded_clips: clips that should be removed from excluded clips
-    :param add_excluded_clips: clips that should be added to excluded clips
     :param min_frame_rate: Minimum frames per second.
     """
     f = get_filter_by_id(fid=fid)
-
     assert f is not None
-
-    if start_time is not None:
-        f.start_time = start_time
 
     if start_time is not None:
         f.start_time = start_time
@@ -671,45 +610,40 @@ def modify_filter(fid: int, start_time: timezone.datetime = None, end_time: time
     if end_time is not None:
         f.end_time = end_time
 
-    if add_classes is not None:
-        for oc in add_classes:
+    if classes is not None:
+        f.classes.clear()
+        for oc in classes:
             obj_cls = ObjectClass.objects.get_or_create(object_class=oc)[0]
             f.classes.add(obj_cls)
 
-    if remove_classes is not None:
-        for oc in remove_classes:
-            obj_cls = ObjectClass.objects.get_or_create(object_class=oc)[0]
-            f.classes.remove(obj_cls)
+    if whitelisted_resolutions is not None:
+        f.whitelisted_resolutions.clear()
+        for res_values in whitelisted_resolutions:
+            res = get_resolution_by_values(res_values["height"], res_values["width"])
+            assert res is not None
+            f.whitelisted_resolutions.add(res)
 
-    if add_blacklisted_resolutions is not None:
-        for res_tuple in add_blacklisted_resolutions:
-            res = Resolution.objects.get(height=res_tuple[0], width=res_tuple[1])
-            f.blacklisted_resolutions.add(res)
-
-    if remove_blacklisted_resolutions is not None:
-        for res_tuple in remove_blacklisted_resolutions:
-            res = Resolution.objects.get_or_create(height=res_tuple[0], width=res_tuple[1])
-            f.blacklisted_resolutions.remove(res)
-
-    if add_excluded_clips is not None:
-        for clip in add_excluded_clips:
+    if excluded_clips is not None:
+        f.excluded_clips.clear()
+        for clip in excluded_clips:
             add_excluded_clip_to_filter(fid, clip)
 
-    if add_included_clips is not None:
-        for clip in add_included_clips:
+    if included_clips is not None:
+        f.included_clips.clear()
+        for clip in included_clips:
             add_included_clip_to_filter(fid, clip)
-
-    if remove_included_clips is not None:
-        for clip in remove_included_clips:
-            remove_included_clip_from_filter(fid, clip)
-
-    if remove_excluded_clips is not None:
-        for clip in remove_excluded_clips:
-            remove_excluded_clip_from_filter(fid, clip)
 
     if min_frame_rate is not None:
         f.min_frame_rate = min_frame_rate
+
+    if areas is not None:
+        set_areas_in_filter(areas, f)
+
     f.save()
+
+
+def set_areas_in_filter(areas: List[int], filter: Filter):
+    filter.areas.set(areas)
 
 
 def get_all_classes_in_filter(fid: int) -> List[ObjectClass]:
@@ -864,3 +798,51 @@ def delete_progress(pid: int) -> None:
     except Progress.DoesNotExist:
         pass
 
+
+# --- Resolution ---
+
+def get_all_resolutions_in_project(pid: int) -> List[Resolution]:
+    """
+    :param pid: The projects id
+    :return: A list of all resolutions that exist in the project
+    """
+    clips = get_all_clips_in_project(pid)
+    res = set()
+    for clip in clips:
+        res.add(clip.resolution)
+    return list(res)
+
+
+def get_resolution_by_values(height: int, width: int) -> Optional[Resolution]:
+    """
+    :param height:
+    :param width:
+    :return: The corresponding Resolution
+    """
+    try:
+        return Resolution.objects.filter(height=height, width=width).get()
+    except Resolution.DoesNotExist:
+        return None
+
+
+# --- Areas ---
+
+def get_areas_in_filter(fid: int) -> List[Area]:
+    """
+    :param fid: the filter
+    :return: List of areas that is in the filter
+    """
+    f = get_filter_by_id(fid)
+    assert f is not None
+
+    return f.areas.all()[::1]
+
+
+def create_area(latitude: Decimal, longitude: Decimal, radius: Decimal) -> int:
+    """
+    :param latitude: longitude of area
+    :param longitude: latitude of area
+    :param radius: radius of area
+    :return: the id of the created area
+    """
+    return Area.objects.get_or_create(latitude=latitude, longitude=longitude, radius=radius)[0].id

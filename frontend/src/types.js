@@ -1,6 +1,36 @@
 /* -- This files contains non-React classes -- */
 
 /**
+ * This class represents a Project.
+ */
+export class Project {
+    /**
+     * @param {int} id The unique identifier of this project. Corresponds to the backend database.
+     * @param {string} name The name of this project.
+     * @param {Date} created A Date object representing when this project was created.
+     * @param {Date} lastUpdated A Date object representing when this project was last updated.
+     * @param {dict[int: Folder]} folders The source folders of this project, mapped in a dictionary by their own IDs.
+     */
+    constructor(id, name, created, lastUpdated, folders) {
+        this.id = id;
+        this.name = name;
+        this.created = created;
+        this.lastUpdated = lastUpdated;
+        this.folders = folders;
+    }
+
+    /**
+     * 
+     * Returns whether or not this camera contains any clips.
+     * 
+     * @return {boolean} True if this camera does not contain any clips.
+     */
+    isEmpty() {
+        return Object.keys(this.clips).length == 0;
+    }
+}
+
+/**
  * This class represents a Camera.
  */
 export class Camera {

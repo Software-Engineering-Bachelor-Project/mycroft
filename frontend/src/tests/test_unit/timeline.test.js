@@ -5,12 +5,14 @@ import reducer, { initialState } from '../../state/stateTimeline';
 
 // Import actions
 import { ZOOM, zoom } from '../../state/stateTimeline';
-//import { SET_START_TIME, setStartTime } from '../../stateTimeline';
-//import { SET_END_TIME, setEndTime } from '../../stateTimeline';
-//import { SET_TIME_LIMITS, setTimeLimits } from '../../stateTimeline';
+import { SET_START_TIME, setStartTime } from '../../state/stateTimeline';
+import { SET_END_TIME, setEndTime } from '../../state/stateTimeline';
+import { SET_TIME_LIMITS, setTimeLimits } from '../../state/stateTimeline';
+import { checkTimeSpan } from '../../state/stateTimeline';
 
 import {getLinePlacements} from '../../components/timeline/timeline';
 
+console.error = jest.fn();
 
 describe('Timeline reducer', () => {
     
@@ -37,7 +39,7 @@ describe('Timeline reducer', () => {
             hrs: 24
         });
 
-        // 
+        // Change scale on timeline #1
         expect(reducer({...initialState}, {
             type: ZOOM,
             hrs: 24
@@ -69,7 +71,185 @@ describe('Timeline reducer', () => {
             ...initialState,
             scale: Math.min(0.0001, timeSpanInHours)
         });
+    });
 
+
+    it('should handle SET_START_TIME', () => {
+        // Setup variables
+        var date1 = new Date(2020, 3, 5, 12, 0, 0);
+        var date2 = new Date(2020, 4, 12, 16, 0, 0);
+        var date3 = new Date(2020, 4, 12, 18, 0, 0);
+        var date4 = new Date(2020, 7, 20, 18, 0, 0);
+        var expectedTimeSpan = date3.getTime() - date1.getTime();
+        var nextState = {
+            ...initialState,
+            startTime: date1,
+            endTime: date3,
+            timeSpan: expectedTimeSpan
+        };
+
+        // Action constant
+        expect(SET_START_TIME).toEqual("SET_START_TIME");
+        
+        // Action creator
+        expect(setStartTime(date1)).toEqual({
+            type: SET_START_TIME,
+            date: date1
+        });
+
+        // Set startTime before endTime
+        expect(reducer({...nextState}, {
+            type: SET_START_TIME,
+            date: date2
+        })).toEqual({
+            ...nextState,
+            startTime: date2,
+            timeSpan: nextState.endTime.getTime() - date2.getTime()
+        });
+
+        // Set startTime on endTime
+        expect(reducer(nextState, {
+            type: SET_START_TIME,
+            date: date3
+        })).toEqual({
+            ...nextState,
+            startTime: date3,
+            timeSpan: nextState.endTime.getTime() - date3.getTime()
+        });
+
+        // Set startTime after endTime
+        expect(reducer(nextState, {
+            type: SET_START_TIME,
+            date: date4
+        })).toEqual({
+            ...nextState,
+            startTime: date4,
+            timeSpan: nextState.endTime.getTime() - date4.getTime()
+        });
+
+    });
+
+
+    it('should handle SET_END_TIME', () => {
+        // Setup variables
+        var date1 = new Date(2020, 3, 5, 12, 0, 0);
+        var date2 = new Date(2020, 4, 12, 16, 0, 0);
+        var date3 = new Date(2020, 4, 12, 18, 0, 0);
+        var date4 = new Date(2020, 7, 20, 18, 0, 0);
+        var expectedTimeSpan = date3.getTime() - date2.getTime();
+        var nextState = {
+            ...initialState,
+            startTime: date2,
+            endTime: date3,
+            timeSpan: expectedTimeSpan
+        };
+
+        // Action constant
+        expect(SET_END_TIME).toEqual("SET_END_TIME");
+        
+        // Action creator
+        expect(setEndTime(date3)).toEqual({
+            type: SET_END_TIME,
+            date: date3
+        });
+
+         // Set endTime after startTime
+        expect(reducer({...nextState}, {
+            type: SET_END_TIME,
+            date: date4
+        })).toEqual({
+            ...nextState,
+            endTime: date4,
+            timeSpan: date4.getTime() - nextState.startTime.getTime()
+        });
+
+        // Set endTime on startTime
+        expect(reducer(nextState, {
+            type: SET_END_TIME,
+            date: date2
+        })).toEqual({
+            ...nextState,
+            endTime: date2,
+            timeSpan: date2.getTime() - nextState.startTime.getTime()
+        });
+
+        // Set endTime before startTime
+        expect(reducer(nextState, {
+            type: SET_END_TIME,
+            date: date1
+        })).toEqual({
+            ...nextState,
+            endTime: date1,
+            timeSpan: date1.getTime() - nextState.startTime.getTime()
+        });
+
+    });
+
+
+    it('should handle SET_TMIE_LIMITS', () => {
+        // Setup variables
+        var date1 = new Date(2020, 3, 5, 12, 0, 0);
+        var date2 = new Date(2020, 4, 12, 16, 0, 0);
+        var date3 = new Date(2020, 4, 12, 18, 0, 0);
+        var date4 = new Date(2020, 7, 20, 18, 0, 0);
+        var expectedTimeSpan = date3.getTime() - date2.getTime();
+        var nextState = {
+            ...initialState,
+            startTime: date2,
+            endTime: date3,
+            timeSpan: expectedTimeSpan
+        };
+
+        // Action constant
+        expect(SET_TIME_LIMITS).toEqual("SET_TIME_LIMITS");
+        
+        // Action creator
+        expect(setTimeLimits(date2, date3)).toEqual({
+            type: SET_TIME_LIMITS,
+            start: date2,
+            end: date3
+        });
+
+         // Set startTime before endTime
+        expect(reducer({...nextState}, {
+            type: SET_TIME_LIMITS,
+            start: date1,
+            end: date2
+        })).toEqual({
+            ...nextState,
+            startTime: date1,
+            endTime: date2,
+            timeSpan: date2.getTime() - date1.getTime()
+        });
+
+        // Set startTime equal to endTime
+        expect(reducer(nextState, {
+            type: SET_TIME_LIMITS,
+            start: date2,
+            end: date2
+        })).toEqual({
+            ...nextState,
+            startTime: date2,
+            endTime: date2,
+            timeSpan: date2.getTime() - date2.getTime()
+        });
+
+        // Set startTime after endTime
+        expect(reducer(nextState, {
+            type: SET_TIME_LIMITS,
+            start: date4,
+            end: date1
+        })).toEqual({
+            ...nextState,
+            startTime: date4,
+            endTime: date1,
+            timeSpan: date1.getTime() - date4.getTime()
+        });
+
+    });
+
+    it('expect 6 console errors', () => {
+        expect(console.error).toHaveBeenCalledTimes(6);
     });
 
 });

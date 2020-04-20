@@ -6,12 +6,16 @@ export const SET_START_TIME = "SET_START_TIME";
 export const SET_END_TIME = "SET_END_TIME";
 export const SET_TIME_LIMITS = "SET_TIME_LIMITS";
 
+/* -- TEMPORARY CONSTANTS -- */
+const exStartTime = new Date(2020, 3, 12, 12, 25, 13); // the month is 0-indexed. Month 3 = April.
+const exEndTime = new Date(2020, 3, 19, 16, 37, 2);
+
 /* -- INITIAL STATE -- */
 export const initialState = {
     scale: 12,
-    startTime: undefined,
-    endTime: undefined,
-    timeSpan: 36*60*60*1000 //36hrs in ms
+    startTime: exStartTime,
+    endTime: exEndTime,
+    timeSpan: 36 * 60 * 60 * 1000 //timeSpan in ms
 };
 
 /* -- ACTION CREATORS -- */
@@ -46,14 +50,40 @@ export function setTimeLimits(startDate, endDate) {
     };
 }
 
+// Checks if startDate is before endDate, and if so throws an error
+export function checkTimeSpan(startDate, endDate) {
+    try {
+        if(startDate.getTime() >= endDate.getTime()) throw new RangeError('StartDate before endDate');
+    }
+    catch(e) {
+        console.error(e.name, ': ', e.message);
+    }
+}
+
 /* -- REDUX REDUCER -- */
 const timelineReducer = (state = initialState, action) => {
     switch(action.type) {
         case SET_START_TIME:
+            checkTimeSpan(action.date, state.endTime)
             return {
                 ...state,
                 startTime: action.date,
                 timeSpan: state.endTime.getTime() - action.date.getTime()
+            };
+        case SET_END_TIME:
+            checkTimeSpan(state.startTime, action.date)
+            return {
+                ...state,
+                endTime: action.date,
+                timeSpan: action.date.getTime() - state.startTime.getTime()
+            };
+        case SET_TIME_LIMITS:
+            checkTimeSpan(action.start, action.end)
+            return {
+                ...state,
+                startTime: action.start,
+                endTime: action.end,
+                timeSpan: action.end.getTime() - action.start.getTime()
             };
         case ZOOM:
             return {

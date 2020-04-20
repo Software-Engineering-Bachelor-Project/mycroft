@@ -31,13 +31,9 @@ CAMERA_IDS = 'camera_ids'
 CLIP_IDS = 'clip_ids'
 AREA_IDS = 'area_ids'
 
-REMOVE_INCLUDED_CLIP_IDS = "remove_included_clips "
-ADD_INCLUDED_CLIP_IDS = "add_included_clips"
-INCLUDED_CLIP_IDS = "included_clips"
+INCLUDED_CLIP_IDS = "included_clip_ids"
 
-REMOVE_EXCLUDED_CLIP_IDS = "remove_excluded_clips"
-ADD_EXCLUDED_CLIP_IDS = "add_excluded_clips"
-EXCLUDED_CLIP_IDS = "excluded_clips"
+EXCLUDED_CLIP_IDS = "excluded_clip_ids"
 
 # --- Lists of values ---
 WHITELISTED_RESOLUTIONS = "whitelisted_resolutions"

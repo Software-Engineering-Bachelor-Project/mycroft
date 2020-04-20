@@ -4,12 +4,12 @@ import { Provider } from 'react-redux';
 import store from '../state';
 
 // Import Core Components
-import Player from './player';
-import Map from './map';
-import Menu from './menu';
-import Viewport from './viewport';
-import Timeline from './timeline';
-import Browser from './browser'
+import Player from './player/player';
+import Map from './map/map';
+import Menu from './menu/menu';
+import Viewport from './viewport/viewport';
+import Timeline from './timeline/timeline';
+import Browser from './browser/browser';
 
 // TODO: Remove
 import Evoker from './evoker';

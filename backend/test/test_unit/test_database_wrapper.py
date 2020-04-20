@@ -981,6 +981,15 @@ class ModifyFilterTest(BaseTestCases.FilterTest):
         self.assertRaises(ValidationError, modify_filter, fid=self.fid, start_time=self.st,
                           end_time=self.st - timezone.timedelta(microseconds=1))
 
+    def test_project_last_modified(self):
+        """
+        Test that the last_updated field in a project is updated when a filter is modified
+        """
+        old = get_project_by_id(self.pid).last_updated
+        modify_filter(fid=self.fid)
+        new = get_project_by_id(self.pid).last_updated
+        self.assertNotEqual(old, new)
+
 
 class GetObjectsInCameraTest(BaseTestCases.ObjectDetectionTest):
     def test_get_objects_in_camera(self):

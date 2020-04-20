@@ -8,6 +8,7 @@ import Player from './player/player';
 import Map from './map/map';
 import Menu from './menu/menu';
 import Viewport from './viewport/viewport';
+import MiniViewport from './viewport/miniViewport';
 import Timeline from './timeline/timeline';
 import Browser from './browser/browser';
 
@@ -24,13 +25,14 @@ class App extends Component {
 		return (
 			// TODO: implement product
 			<div>
-				<Map />
-				<Player />
-				<Menu />
-				<Viewport />
-				<Browser/> 
-				<Timeline />
-                <Evoker />
+			  <Map />
+			  <Player />
+			  <Menu />
+			  <Viewport />
+              <MiniViewport />
+			  <Browser/> 
+			  <Timeline />
+              <Evoker />
 			</div>
 		);
     }

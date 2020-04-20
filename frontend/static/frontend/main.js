@@ -63878,7 +63878,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
-/* harmony import */ var _state__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../state */ "./src/state.js");
+/* harmony import */ var _state_state__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../state/state */ "./src/state/state.js");
 /* harmony import */ var _player_player__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./player/player */ "./src/components/player/player.js");
 /* harmony import */ var _map_map__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./map/map */ "./src/components/map/map.js");
 /* harmony import */ var _menu_menu__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./menu/menu */ "./src/components/menu/menu.js");
@@ -63952,7 +63952,7 @@ function (_Component) {
 var container = document.getElementById('app'); // Note that the App is wrapped with react-redux's Provider
 
 Object(react_dom__WEBPACK_IMPORTED_MODULE_1__["render"])(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_redux__WEBPACK_IMPORTED_MODULE_2__["Provider"], {
-  store: _state__WEBPACK_IMPORTED_MODULE_3__["default"]
+  store: _state_state__WEBPACK_IMPORTED_MODULE_3__["default"]
 }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(App, null)), container);
 
 /***/ }),
@@ -64313,7 +64313,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 /* harmony import */ var react_bootstrap_Dropdown__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-bootstrap/Dropdown */ "./node_modules/react-bootstrap/esm/Dropdown.js");
 /* harmony import */ var react_bootstrap_DropdownButton__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-bootstrap/DropdownButton */ "./node_modules/react-bootstrap/esm/DropdownButton.js");
-/* harmony import */ var _stateCommunication__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../stateCommunication */ "./src/stateCommunication.js");
+/* harmony import */ var _state_stateCommunication__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../state/stateCommunication */ "./src/state/stateCommunication.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -64414,16 +64414,16 @@ var menuStateToProps = function menuStateToProps(state) {
 var menuDispatchToProps = function menuDispatchToProps(dispatch) {
   return {
     getProjects: function getProjects() {
-      return dispatch(Object(_stateCommunication__WEBPACK_IMPORTED_MODULE_4__["getProjects"])());
+      return dispatch(Object(_state_stateCommunication__WEBPACK_IMPORTED_MODULE_4__["getProjects"])());
     },
     newProject: function newProject(n) {
-      return dispatch(Object(_stateCommunication__WEBPACK_IMPORTED_MODULE_4__["newProject"])(n));
+      return dispatch(Object(_state_stateCommunication__WEBPACK_IMPORTED_MODULE_4__["newProject"])(n));
     },
     deleteProject: function deleteProject(i) {
-      return dispatch(Object(_stateCommunication__WEBPACK_IMPORTED_MODULE_4__["deleteProject"])(i));
+      return dispatch(Object(_state_stateCommunication__WEBPACK_IMPORTED_MODULE_4__["deleteProject"])(i));
     },
     renameProject: function renameProject(i, n) {
-      return dispatch(Object(_stateCommunication__WEBPACK_IMPORTED_MODULE_4__["renameProject"])(i, n));
+      return dispatch(Object(_state_stateCommunication__WEBPACK_IMPORTED_MODULE_4__["renameProject"])(i, n));
     }
   };
 }; // Connect Redux with React
@@ -64487,7 +64487,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _images_marker_icon_empty_selected_png__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../images/marker-icon-empty-selected.png */ "./src/images/marker-icon-empty-selected.png");
 /* harmony import */ var _images_marker_shadow_png__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../images/marker-shadow.png */ "./src/images/marker-shadow.png");
 /* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../types */ "./src/types.js");
-/* harmony import */ var _stateMap__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../stateMap */ "./src/stateMap.js");
+/* harmony import */ var _state_stateMap__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../state/stateMap */ "./src/state/stateMap.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
@@ -64685,10 +64685,10 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return {
     // TODO: these may not be required here in the future
     addCamera: function addCamera(i, n, p, e, s) {
-      return dispatch(Object(_stateMap__WEBPACK_IMPORTED_MODULE_11__["addCamera"])(new _types__WEBPACK_IMPORTED_MODULE_10__["Camera"](i, n, p, e, s)));
+      return dispatch(Object(_state_stateMap__WEBPACK_IMPORTED_MODULE_11__["addCamera"])(new _types__WEBPACK_IMPORTED_MODULE_10__["Camera"](i, n, p, e, s)));
     },
     removeCamera: function removeCamera(i) {
-      return dispatch(Object(_stateMap__WEBPACK_IMPORTED_MODULE_11__["removeCamera"])(i));
+      return dispatch(Object(_state_stateMap__WEBPACK_IMPORTED_MODULE_11__["removeCamera"])(i));
     }
   };
 }; // Connect Redux with React
@@ -64911,7 +64911,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 /* harmony import */ var react_bootstrap_Dropdown__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-bootstrap/Dropdown */ "./node_modules/react-bootstrap/esm/Dropdown.js");
 /* harmony import */ var react_bootstrap_DropdownButton__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-bootstrap/DropdownButton */ "./node_modules/react-bootstrap/esm/DropdownButton.js");
-/* harmony import */ var _stateTimeline__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../stateTimeline */ "./src/stateTimeline.js");
+/* harmony import */ var _state_stateTimeline__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../state/stateTimeline */ "./src/state/stateTimeline.js");
 /* harmony import */ var _timeline_module_css__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./timeline.module.css */ "./src/components/timeline/timeline.module.css");
 /* harmony import */ var _timeline_module_css__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_timeline_module_css__WEBPACK_IMPORTED_MODULE_5__);
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -65033,7 +65033,7 @@ var mapStateToProps = function mapStateToProps(state) {
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return {
     zoom: function zoom(hrs) {
-      return dispatch(Object(_stateTimeline__WEBPACK_IMPORTED_MODULE_4__["zoom"])(hrs));
+      return dispatch(Object(_state_stateTimeline__WEBPACK_IMPORTED_MODULE_4__["zoom"])(hrs));
     }
   };
 }; //Connect Redux with React
@@ -65226,23 +65226,23 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./src/state.js":
-/*!**********************!*\
-  !*** ./src/state.js ***!
-  \**********************/
+/***/ "./src/state/state.js":
+/*!****************************!*\
+  !*** ./src/state/state.js ***!
+  \****************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
-/* harmony import */ var _stateCommunication__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./stateCommunication */ "./src/stateCommunication.js");
-/* harmony import */ var _statePlayer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./statePlayer */ "./src/statePlayer.js");
-/* harmony import */ var _stateMap__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./stateMap */ "./src/stateMap.js");
-/* harmony import */ var _stateMenu__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./stateMenu */ "./src/stateMenu.js");
-/* harmony import */ var _stateViewport__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./stateViewport */ "./src/stateViewport.js");
-/* harmony import */ var _stateTimeline__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./stateTimeline */ "./src/stateTimeline.js");
-/* harmony import */ var _stateBrowser__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./stateBrowser */ "./src/stateBrowser.js");
+/* harmony import */ var _stateCommunication__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./stateCommunication */ "./src/state/stateCommunication.js");
+/* harmony import */ var _statePlayer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./statePlayer */ "./src/state/statePlayer.js");
+/* harmony import */ var _stateMap__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./stateMap */ "./src/state/stateMap.js");
+/* harmony import */ var _stateMenu__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./stateMenu */ "./src/state/stateMenu.js");
+/* harmony import */ var _stateViewport__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./stateViewport */ "./src/state/stateViewport.js");
+/* harmony import */ var _stateTimeline__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./stateTimeline */ "./src/state/stateTimeline.js");
+/* harmony import */ var _stateBrowser__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./stateBrowser */ "./src/state/stateBrowser.js");
 
 
 
@@ -65275,18 +65275,18 @@ var store = Object(redux__WEBPACK_IMPORTED_MODULE_0__["createStore"])(rootReduce
 
 /***/ }),
 
-/***/ "./src/stateBrowser.js":
-/*!*****************************!*\
-  !*** ./src/stateBrowser.js ***!
-  \*****************************/
+/***/ "./src/state/stateBrowser.js":
+/*!***********************************!*\
+  !*** ./src/state/stateBrowser.js ***!
+  \***********************************/
 /*! exports provided: dummy, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "dummy", function() { return dummy; });
-/* harmony import */ var _state__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./state */ "./src/state.js");
-/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./types */ "./src/types.js");
+/* harmony import */ var _state__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./state */ "./src/state/state.js");
+/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../types */ "./src/types.js");
 var _folders;
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
@@ -65392,10 +65392,10 @@ var browserReducer = function browserReducer() {
 
 /***/ }),
 
-/***/ "./src/stateCommunication.js":
-/*!***********************************!*\
-  !*** ./src/stateCommunication.js ***!
-  \***********************************/
+/***/ "./src/state/stateCommunication.js":
+/*!*****************************************!*\
+  !*** ./src/state/stateCommunication.js ***!
+  \*****************************************/
 /*! exports provided: GET_CLIPS_MATCHING_FILTER, MODIFY_FILTER, GET_PROJECTS, NEW_PROJECT, DELETE_PROJECT, RENAME_PROJECT, URL_GET_PROJECTS, URL_NEW_PROJECT, URL_DELETE_PROJECT, URL_RENAME_PROJECT, EXPORT_FILTER, EXPORT_CLIPS, GET_CLIP_INFO, GET_CAMERAS, GET_FOLDERS, GET_SOURCE_FOLDERS, ADD_FOLDER, DETECT_OBJECTS, GET_OD_PROGRESS, DELETE_OD_PROGRESS, REQUEST_RESPONSE, initialState, getClipsMatchingFilter, modifyFilter, getProjects, newProject, deleteProject, renameProject, exportFilter, exportClips, getClipInfo, getCameras, getFolders, getSourceFolders, addFolders, detectObjects, getODProgress, deleteODProgress, requestResponse, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -65440,9 +65440,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getODProgress", function() { return getODProgress; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "deleteODProgress", function() { return deleteODProgress; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "requestResponse", function() { return requestResponse; });
-/* harmony import */ var _state__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./state */ "./src/state.js");
-/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./util */ "./src/util.js");
-/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./types */ "./src/types.js");
+/* harmony import */ var _state__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./state */ "./src/state/state.js");
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../util */ "./src/util.js");
+/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../types */ "./src/types.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -65932,10 +65932,10 @@ var communicationReducer = function communicationReducer() {
 
 /***/ }),
 
-/***/ "./src/stateMap.js":
-/*!*************************!*\
-  !*** ./src/stateMap.js ***!
-  \*************************/
+/***/ "./src/state/stateMap.js":
+/*!*******************************!*\
+  !*** ./src/state/stateMap.js ***!
+  \*******************************/
 /*! exports provided: ADD_CAMERA, REMOVE_CAMERA, initialState, addCamera, removeCamera, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -65946,7 +65946,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "initialState", function() { return initialState; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addCamera", function() { return addCamera; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "removeCamera", function() { return removeCamera; });
-/* harmony import */ var _state__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./state */ "./src/state.js");
+/* harmony import */ var _state__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./state */ "./src/state/state.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -66022,17 +66022,17 @@ var mapReducer = function mapReducer() {
 
 /***/ }),
 
-/***/ "./src/stateMenu.js":
-/*!**************************!*\
-  !*** ./src/stateMenu.js ***!
-  \**************************/
+/***/ "./src/state/stateMenu.js":
+/*!********************************!*\
+  !*** ./src/state/stateMenu.js ***!
+  \********************************/
 /*! exports provided: dummy, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "dummy", function() { return dummy; });
-/* harmony import */ var _state__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./state */ "./src/state.js");
+/* harmony import */ var _state__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./state */ "./src/state/state.js");
 
 /* -- ACTIONS -- */
 
@@ -66067,17 +66067,17 @@ var menuReducer = function menuReducer() {
 
 /***/ }),
 
-/***/ "./src/statePlayer.js":
-/*!****************************!*\
-  !*** ./src/statePlayer.js ***!
-  \****************************/
+/***/ "./src/state/statePlayer.js":
+/*!**********************************!*\
+  !*** ./src/state/statePlayer.js ***!
+  \**********************************/
 /*! exports provided: playClip, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "playClip", function() { return playClip; });
-/* harmony import */ var _state__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./state */ "./src/state.js");
+/* harmony import */ var _state__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./state */ "./src/state/state.js");
 
 /* -- ACTIONS -- */
 
@@ -66113,10 +66113,10 @@ var playerReducer = function playerReducer() {
 
 /***/ }),
 
-/***/ "./src/stateTimeline.js":
-/*!******************************!*\
-  !*** ./src/stateTimeline.js ***!
-  \******************************/
+/***/ "./src/state/stateTimeline.js":
+/*!************************************!*\
+  !*** ./src/state/stateTimeline.js ***!
+  \************************************/
 /*! exports provided: ZOOM, SET_START_TIME, SET_END_TIME, SET_TIME_LIMITS, initialState, zoom, setStartTime, setEndTime, setTimeLimits, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -66131,7 +66131,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setStartTime", function() { return setStartTime; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setEndTime", function() { return setEndTime; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setTimeLimits", function() { return setTimeLimits; });
-/* harmony import */ var _state__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./state */ "./src/state.js");
+/* harmony import */ var _state__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./state */ "./src/state/state.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -66211,17 +66211,17 @@ var timelineReducer = function timelineReducer() {
 
 /***/ }),
 
-/***/ "./src/stateViewport.js":
-/*!******************************!*\
-  !*** ./src/stateViewport.js ***!
-  \******************************/
+/***/ "./src/state/stateViewport.js":
+/*!************************************!*\
+  !*** ./src/state/stateViewport.js ***!
+  \************************************/
 /*! exports provided: dummy, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "dummy", function() { return dummy; });
-/* harmony import */ var _state__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./state */ "./src/state.js");
+/* harmony import */ var _state__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./state */ "./src/state/state.js");
 
 /* -- ACTIONS -- */
 

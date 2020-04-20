@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
-import { zoom } from '../stateTimeline';
+import { zoom } from '../../stateTimeline';
 
 import styles from './timeline.module.css';
 

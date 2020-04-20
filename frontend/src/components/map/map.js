@@ -7,17 +7,17 @@ import './map.css';
 import L from 'leaflet';
 
 // Icon image imports
-import iconUrl from '../images/marker-icon.png';
-import iconSelectedUrl from '../images/marker-icon-selected.png';
-import iconEmptyUrl from '../images/marker-icon-empty.png';
-import iconEmptySelectedUrl from '../images/marker-icon-empty-selected.png';
-import shadowUrl from '../images/marker-shadow.png';
+import iconUrl from '../../images/marker-icon.png';
+import iconSelectedUrl from '../../images/marker-icon-selected.png';
+import iconEmptyUrl from '../../images/marker-icon-empty.png';
+import iconEmptySelectedUrl from '../../images/marker-icon-empty-selected.png';
+import shadowUrl from '../../images/marker-shadow.png';
 
 // Import relevant types
-import { Camera, Clip } from '../types';
+import { Camera, Clip } from '../../types';
 
 // Import actions
-import { addCamera, removeCamera } from '../stateMap';
+import { addCamera, removeCamera } from '../../stateMap';
 
 /* -- Map -- */
 class Map extends Component {

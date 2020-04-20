@@ -257,7 +257,15 @@ class Filter(models.Model):
                                                 area.is_within(clip.camera.longitude, clip.camera.latitude)]:
             return False
 
-        # TODO: add support for classes
+        # Check if clip contains the correct objects
+        if self.classes.all()[::1] !=[]:
+            classes=set()
+            for od in clip.objectdetection_set.all().filter(object__object_class__in=self.classes.all())[::1]:
+                for object in od.object_set.all()[::1]:
+                    classes.add(object.object_class.id)
+            if not all([id in list(classes) for id in [c.id for c in self.classes.all()][::1]]):
+                return False
+
         return True
 
     def __str__(self):

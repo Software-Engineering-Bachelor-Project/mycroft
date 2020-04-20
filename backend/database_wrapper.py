@@ -639,6 +639,8 @@ def modify_filter(fid: int, start_time: timezone.datetime = None, end_time: time
     if areas is not None:
         set_areas_in_filter(areas, f)
 
+    f.project.last_updated = timezone.datetime.now()
+    f.project.save()
     f.save()
 
 

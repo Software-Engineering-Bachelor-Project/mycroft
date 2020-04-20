@@ -30,7 +30,7 @@ class ExportFilterTest(TestCase):
 
     @patch('backend.exporter.os_aware', side_effect=lambda x: x)
     def test_basic(self, mock_os_aware):
-        modify_filter(fid=self.fid, start_time=self.st, end_time=self.et, classes=['bike', 'car'])
+        modify_filter(fid=self.fid, start_time=self.st, end_time=self.et)
         code, res = export_filter(data={FILTER_ID: self.fid})
         self.assertEqual(code, 200)
         self.assertEqual(res, {'start_time': '2020-01-16 23:00:00+00:00', 'end_time': '2020-01-17 23:00:00+00:00',

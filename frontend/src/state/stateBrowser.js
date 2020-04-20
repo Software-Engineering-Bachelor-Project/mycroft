@@ -1,6 +1,6 @@
 import store from './state';
 
-import { Camera, Clip, Folder } from './types';
+import { Camera, Clip, Folder } from '../types';
 
 /* -- ACTIONS -- */
 const DUMMY = "DUMMY";

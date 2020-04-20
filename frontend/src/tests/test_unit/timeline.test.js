@@ -9,7 +9,7 @@ import { ZOOM, zoom } from '../../stateTimeline';
 //import { SET_END_TIME, setEndTime } from '../../stateTimeline';
 //import { SET_TIME_LIMITS, setTimeLimits } from '../../stateTimeline';
 
-import {getLinePlacements} from '../../components/timeline';
+import {getLinePlacements} from '../../components/timeline/timeline';
 
 
 describe('Timeline reducer', () => {

@@ -1,8 +1,8 @@
 import store from './state';
-import { makePOST } from './util';
+import { makePOST } from '../util';
 
 // Types
-import { Project } from './types';
+import { Project } from '../types';
 
 /* 
  * This file defines the state, reducers, and actions

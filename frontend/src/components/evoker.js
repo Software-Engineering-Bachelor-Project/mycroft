@@ -4,7 +4,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 
 // Actions
-import { getProjects, newProject, deleteProject, renameProject } from '../stateCommunication';
+import { getProjects, newProject, deleteProject, renameProject } from '../state/stateCommunication';
 
 /* -- Evoker -- */
 class Evoker extends Component {

@@ -17,7 +17,7 @@ import shadowUrl from '../../images/marker-shadow.png';
 import { Camera, Clip } from '../../types';
 
 // Import actions
-import { addCamera, removeCamera } from '../../stateMap';
+import { addCamera, removeCamera } from '../../state/stateMap';
 
 /* -- Map -- */
 class Map extends Component {

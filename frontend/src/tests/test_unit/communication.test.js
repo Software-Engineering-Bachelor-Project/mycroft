@@ -4,14 +4,14 @@
 import { Project } from '../../types';
 
 // Reducer and initial state
-import reducer, { initialState } from '../../stateCommunication';
+import reducer, { initialState } from '../../state/stateCommunication';
 
 // Import actions
-import { REQUEST_RESPONSE, requestResponse } from '../../stateCommunication';
-import { GET_PROJECTS, getProjects } from '../../stateCommunication';
-import { NEW_PROJECT, newProject } from '../../stateCommunication';
-import { DELETE_PROJECT, deleteProject } from '../../stateCommunication';
-import { RENAME_PROJECT, renameProject } from '../../stateCommunication';
+import { REQUEST_RESPONSE, requestResponse } from '../../state/stateCommunication';
+import { GET_PROJECTS, getProjects } from '../../state/stateCommunication';
+import { NEW_PROJECT, newProject } from '../../state/stateCommunication';
+import { DELETE_PROJECT, deleteProject } from '../../state/stateCommunication';
+import { RENAME_PROJECT, renameProject } from '../../state/stateCommunication';
 
 describe('Communication reducer', () => {
     it('should return the initial state', () => {

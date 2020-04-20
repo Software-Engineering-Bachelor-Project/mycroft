@@ -16,11 +16,11 @@ import { Camera } from '../../types';
 });*/
 
 // Reducer and initial state
-import reducer, { initialState } from '../../stateMap';
+import reducer, { initialState } from '../../state/stateMap';
 
 // Import actions
-import { ADD_CAMERA, addCamera } from '../../stateMap';
-import { REMOVE_CAMERA, removeCamera } from '../../stateMap';
+import { ADD_CAMERA, addCamera } from '../../state/stateMap';
+import { REMOVE_CAMERA, removeCamera } from '../../state/stateMap';
 
 describe('Map reducer', () => {
     it('should return the initial state', () => {

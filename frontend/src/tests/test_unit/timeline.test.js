@@ -1,10 +1,10 @@
 /* -- THIS FILE TESTS THE TIMELINE COMPONENT -- */
 
 // Reducer and initial state
-import reducer, { initialState } from '../../stateTimeline';
+import reducer, { initialState } from '../../state/stateTimeline';
 
 // Import actions
-import { ZOOM, zoom } from '../../stateTimeline';
+import { ZOOM, zoom } from '../../state/stateTimeline';
 //import { SET_START_TIME, setStartTime } from '../../stateTimeline';
 //import { SET_END_TIME, setEndTime } from '../../stateTimeline';
 //import { SET_TIME_LIMITS, setTimeLimits } from '../../stateTimeline';

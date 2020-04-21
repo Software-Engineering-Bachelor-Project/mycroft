@@ -3325,7 +3325,7 @@ module.exports = exports;
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
-exports.push([module.i, "._n6QzUzxj6Uoy2ykga-l {\r\n    position: absolute;\r\n    background-color: rgb(209, 0, 0);\r\n    padding: 0;\r\n    border: 1px solid;\r\n    width: 100em;\r\n    height: 20em;\r\n}\r\n\r\n._10I1JMKob8pkE0RZRoi945 {\r\n    position: relative;\r\n    width: 100%;\r\n    top: 0;\r\n    left: 0;\r\n    height: 16.5%;\r\n    border-bottom: 1px solid;\r\n    background-color: lightsteelblue;\r\n}\r\n\r\n._2sgl82tdvau2BRFt_sXnfC {\r\n    position: relative;\r\n    top: 5px;\r\n    left: 5px;\r\n    width: 200px;\r\n}\r\n\r\n._2emjKLHpStN4w25i1lnOl_ {\r\n    position: relative;\r\n    bottom: 0;\r\n    height: 83.5%;\r\n    width: 100%;\r\n    /*border: 2px solid;*/\r\n    overflow: auto;\r\n    background-color: rgb(106, 158, 255);\r\n}\r\n\r\n.BuNLDP2lK6oI1EiPVdsm0 {\r\n    position: relative;\r\n    height: 100%;\r\n    /*border: 1px solid;*/\r\n    background-color: rgb(106, 158, 255);\r\n}\r\n\r\n._1ippwss_WbizVVAINImxVT {\r\n    position: absolute;\r\n    top: 0;\r\n    width: 1px;\r\n    height: 100%;\r\n    background-color: black;\r\n}\r\n\r\n._3eeRd4Yx_aO8xsThSS1uH6 {\r\n    position: sticky;\r\n    left: 3px;\r\n}", ""]);
+exports.push([module.i, "._n6QzUzxj6Uoy2ykga-l {\r\n    position: absolute;\r\n    background-color: rgb(209, 0, 0);\r\n    padding: 0;\r\n    border: 1px solid;\r\n    width: 100em;\r\n    height: 20em;\r\n}\r\n\r\n._10I1JMKob8pkE0RZRoi945 {\r\n    position: relative;\r\n    width: 100%;\r\n    top: 0;\r\n    left: 0;\r\n    height: 16.5%;\r\n    border-bottom: 1px solid;\r\n    background-color: lightsteelblue;\r\n}\r\n\r\n._2sgl82tdvau2BRFt_sXnfC {\r\n    position: relative;\r\n    top: 5px;\r\n    left: 5px;\r\n    width: 200px;\r\n}\r\n\r\n._2emjKLHpStN4w25i1lnOl_ {\r\n    position: relative;\r\n    bottom: 0;\r\n    height: 83.5%;\r\n    width: 100%;\r\n    /*border: 2px solid;*/\r\n    overflow: auto;\r\n    background-color: rgb(106, 158, 255);\r\n}\r\n\r\n.BuNLDP2lK6oI1EiPVdsm0 {\r\n    position: relative;\r\n    height: 100%;\r\n    /*border: 1px solid;*/\r\n    background-color: rgb(106, 158, 255);\r\n}\r\n\r\n._1ippwss_WbizVVAINImxVT {\r\n    position: absolute;\r\n    top: 0;\r\n    left: 0;\r\n    width: 1px;\r\n    height: 100%;\r\n    background-color: black;\r\n}\r\n\r\n._3eeRd4Yx_aO8xsThSS1uH6 {\r\n    position: sticky;\r\n    left: 0;\r\n    bottom: 0;\r\n    width: 50px;\r\n    background-color: transparent;\r\n}\r\n\r\n._18vtY8tfzgLtmr0Mv6et8U {\r\n    position: absolute;\r\n    left: 20%;\r\n    width: 50%;\r\n    height: 50%;\r\n    background-color: rgba(255, 0, 0, 0.267);\r\n}", ""]);
 // Exports
 exports.locals = {
 	"main": "_n6QzUzxj6Uoy2ykga-l",
@@ -3334,7 +3334,8 @@ exports.locals = {
 	"sliderbox": "_2emjKLHpStN4w25i1lnOl_",
 	"slider": "BuNLDP2lK6oI1EiPVdsm0",
 	"line": "_1ippwss_WbizVVAINImxVT",
-	"date": "_3eeRd4Yx_aO8xsThSS1uH6"
+	"date": "_3eeRd4Yx_aO8xsThSS1uH6",
+	"day": "_18vtY8tfzgLtmr0Mv6et8U"
 };
 module.exports = exports;
 
@@ -65008,14 +65009,28 @@ function (_Component) {
         style: {
           width: this.props.timeSpan / (60 * 60 * 1000) / this.props.scale * 100 + "%"
         }
-      }, getLinePlacements(this.props.timeSpan).map(function (i) {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: _timeline_module_css__WEBPACK_IMPORTED_MODULE_5___default.a.day
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: _timeline_module_css__WEBPACK_IMPORTED_MODULE_5___default.a.date
+      }, "Apr 17")), getLinePlacements(this.props.timeSpan).map(function (i) {
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           style: {
-            left: i
+            position: "absolute",
+            left: i,
+            top: "0",
+            height: "100%"
           },
-          className: _timeline_module_css__WEBPACK_IMPORTED_MODULE_5___default.a.line,
           key: i
-        }, " ");
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: _timeline_module_css__WEBPACK_IMPORTED_MODULE_5___default.a.line
+        }, " "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          style: {
+            position: "absolute",
+            left: "2px",
+            bottom: "2px"
+          }
+        }, "12"));
       }))));
     }
   }]);

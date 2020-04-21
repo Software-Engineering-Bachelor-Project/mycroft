@@ -72,28 +72,28 @@ class Timeline extends Component {
                             </div>
                         </div>
 
-                        {/* Creates a line for each timestamp */}
-                        {getLinePlacements(this.props.timeSpan).map((i) => {
+                        {/* Creates a line for each timestamp and draws out hours*/}
+                        {getLinePlacements(this.props.timeSpan).map((p, i) => {
                             return ( 
                                 <div
                                     style={{
                                         position: "absolute",
-                                        left: i,
+                                        left: p,
                                         top: "0",
                                         height: "100%"
                                     }} 
-                                    key={i}
+                                    key={p}
                                 >    
                                     
                                     <div className={styles.line} > </div>                                    
                                     <div 
                                         style={{
                                             position: "absolute",
-                                            left: "2px",
+                                            left: "5px",
                                             bottom: "2px"
                                         }}
                                     >
-                                        12
+                                        {(this.props.startTime.getHours() + i + 1) % 24}
                                     </div>
                                 </div> 
                             );
@@ -109,7 +109,8 @@ class Timeline extends Component {
 const mapStateToProps = state => {
     return {
         scale: state.timeline.scale,
-        timeSpan: state.timeline.timeSpan
+        timeSpan: state.timeline.timeSpan,
+        startTime: state.timeline.startTime
     };
 };
 

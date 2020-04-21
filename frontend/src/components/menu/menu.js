@@ -6,6 +6,9 @@ import styles from "./menu.module.css";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 
+import { toggleShowObjectDetection } from "../../state/stateMenu";
+import ObjectDetector from "./objectDetector";
+
 /* -- Menu -- */
 class Menu extends Component {
   switchProject() {
@@ -25,7 +28,7 @@ class Menu extends Component {
   }
 
   detectObjects() {
-    console.log("Object Detection was clicked.");
+    this.props.toggleShowObjectDetection();
   }
 
   render() {
@@ -57,22 +60,29 @@ class Menu extends Component {
             Object detection{" "}
           </Dropdown.Item>
         </DropdownButton>
+
+        <ObjectDetector
+          show={this.props.showObjectDetection}
+          toggleShow={this.props.toggleShowObjectDetection}
+        />
       </div>
     );
   }
 }
 
-// Menu Redux states to React props
-const menuStateToProps = (state) => {
+// Map Redux states to React props
+const mapStateToProps = (state) => {
   return {
-    //TODO::add states
+    showObjectDetection: state.menu.showObjectDetection,
   };
 };
 
 // Forward Redux's dispatch function to React props
-const menuDispatchToProps = (dispatch) => {
-  return {};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    toggleShowObjectDetection: () => dispatch(toggleShowObjectDetection()),
+  };
 };
 
 // Connect Redux with React
-export default connect(menuStateToProps, menuDispatchToProps)(Menu);
+export default connect(mapStateToProps, mapDispatchToProps)(Menu);

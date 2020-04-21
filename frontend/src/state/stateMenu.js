@@ -1,25 +1,32 @@
 import store from "./state";
 
 /* -- ACTIONS -- */
-const DUMMY = "DUMMY";
+export const TOGGLE_OBJECT_DETECTION = "TOGGLE_OBJECT_DETECTION";
 
 /* -- INITIAL STATE -- */
-const initialState = {
-  //TODO::add states
+export const initialState = {
+  showObjectDetection: false,
 };
 
 /* -- ACTION CREATORS -- */
-export function dummy() {
+
+/**
+ * Open/closes object detection pop up.
+ */
+export function toggleShowObjectDetection() {
   return {
-    type: DUMMY,
+    type: TOGGLE_OBJECT_DETECTION,
   };
 }
 
 /* -- REDUX REDUCER -- */
 const menuReducer = (state = initialState, action) => {
   switch (action.type) {
-    case DUMMY:
-      break;
+    case TOGGLE_OBJECT_DETECTION:
+      return {
+        ...state,
+        showObjectDetection: !state.showObjectDetection,
+      };
     default:
       return state;
   }

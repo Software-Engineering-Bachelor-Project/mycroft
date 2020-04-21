@@ -7,8 +7,8 @@ export const SET_END_TIME = "SET_END_TIME";
 export const SET_TIME_LIMITS = "SET_TIME_LIMITS";
 
 /* -- TEMPORARY CONSTANTS -- */
-const exStartTime = new Date(2020, 3, 12, 12, 25, 13); // the month is 0-indexed. Month 3 = April.
-const exEndTime = new Date(2020, 3, 19, 16, 37, 2);
+const exStartTime = new Date(2020, 3, 17, 12, 0, 0); // the month is 0-indexed. Month 3 = April.
+const exEndTime = new Date(2020, 3, 19, 0, 0, 0);
 
 /* -- INITIAL STATE -- */
 export const initialState = {

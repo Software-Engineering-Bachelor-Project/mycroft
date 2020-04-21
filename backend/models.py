@@ -258,11 +258,18 @@ class Filter(models.Model):
             return False
 
         # Check if clip contains the correct objects
-        if self.classes.all()[::1] !=[]:
-            classes=set()
+        if self.classes.all()[::1] != []:
+            classes = set()
+
+            # All object detections where at least one object was detected that is in the filter
             for od in clip.objectdetection_set.all().filter(object__object_class__in=self.classes.all())[::1]:
+
+                # For all detected objects, add them into the detected set if the detection is within the filters time
                 for object in od.object_set.all()[::1]:
-                    classes.add(object.object_class.id)
+                    if self.start_time <= object.time <= self.end_time:
+                        classes.add(object.object_class.id)
+
+            # Check if all the objects that is in the filter was found in the clip
             if not all([id in list(classes) for id in [c.id for c in self.classes.all()][::1]]):
                 return False
 

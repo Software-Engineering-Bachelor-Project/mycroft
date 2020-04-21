@@ -44,6 +44,7 @@
 .line {
     position: absolute;
     top: 0;
+    left: 0;
     width: 1px;
     height: 100%;
     background-color: black;
@@ -51,5 +52,16 @@
 
 .date {
     position: sticky;
-    left: 3px;
+    left: 0;
+    bottom: 0;
+    width: 50px;
+    background-color: transparent;
+}
+
+.day {
+    position: absolute;
+    left: 20%;
+    width: 50%;
+    height: 50%;
+    background-color: rgba(255, 0, 0, 0.267);
 }

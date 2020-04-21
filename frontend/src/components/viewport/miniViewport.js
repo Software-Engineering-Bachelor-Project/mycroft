@@ -1,12 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+// CSS
+import styles from './viewport.module.css';
+
+// Components
+import Player from '../player/player';
 
 /* -- Mini Viewport -- */
 class MiniViewport extends Component {
     render() {
         return (
-            <p>Mini Viewport</p>
+            <div className={styles.miniViewport}>
+              <Player />
+            </div>
         );
     }
 }

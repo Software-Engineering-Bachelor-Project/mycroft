@@ -1,19 +1,41 @@
-.browserClip {
+.main {
+    position: absolute;
+    top: 0;
+    right: 0;
     width: 15vw !important;
-    height: 80vh !important;
+    height: 70vh !important;
+}
+
+.browserCol {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.browserNav {
+    width: 7.5vw;
+}
+
+.browserTab {
+    flex-grow: 1;
+}
+
+.browserItem {
+    position: relative;
+    width: 15vw !important;
+    height: 100% !important;
+}
+
+.browserClip {
+    position: absolute;
+    width: 100% !important;
+    height: 100% !important;
     overflow-y: scroll;
 }
 
 .browserFile {
-    width: 15vw !important;
-    height: 80vh !important;
+    position: absolute;
+    width: 100% !important;
+    height: 100% !important;
     overflow-y: scroll;
-}
-
-.browserTab {
-    width: 15vW !important
-}
-
-.browserItem {
-    width: 7.5vW !important
 }

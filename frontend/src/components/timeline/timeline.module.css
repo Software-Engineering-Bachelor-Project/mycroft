@@ -1,10 +1,11 @@
 .main {
     position: absolute;
-    background-color: rgb(209, 0, 0);
     padding: 0;
     border: 1px solid;
-    width: 100em;
-    height: 20em;
+    width: 85vw;
+    height: 30vh;
+    bottom: 0;
+    left: 0;
 }
 
 .topbar {
@@ -12,7 +13,7 @@
     width: 100%;
     top: 0;
     left: 0;
-    height: 16.5%;
+    height: 20%;
     border-bottom: 1px solid;
     background-color: lightsteelblue;
 }
@@ -27,7 +28,7 @@
 .sliderbox {
     position: relative;
     bottom: 0;
-    height: 83.5%;
+    height: 80%;
     width: 100%;
     /*border: 2px solid;*/
     overflow: auto;

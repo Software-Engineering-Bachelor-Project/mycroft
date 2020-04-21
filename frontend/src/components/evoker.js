@@ -11,17 +11,15 @@ class Evoker extends Component {
     render() {
         return (
             <div style={{
-                backgroundColor: 'red',
-                width: '20em',
-                height: '20em',
                 position: 'absolute',
-                top: '0',
-                right: '0'
+                top: '5px',
+                left: '100px',
+                zIndex: 1
             }}>
 
               {/* Drop down menu containing all actions to evoke */}
               <DropdownButton alignRight
-                              title='Evoke...'
+                              title='Evoke'
                               id='dropdown-menu-align-right'
               >
                 

@@ -1,25 +1,32 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+// CSS
+import styles from './viewport.module.css';
+
+// Components
+import Map from '../map/map';
 
 /* -- Viewport -- */
 class Viewport extends Component {
     render() {
         return (
-            <p>Viewport object :)))</p>
+            <div className={styles.viewport}>
+              <Map />
+            </div>
         );
     }
 }
 
 // Map Redux states to React props
 const mapStateToProps = state => {
-    return {}
-}
+    return {};
+};
 
 // Forward Redux's dispatch function to React props
 const mapDispatchToProps = dispatch => {
-    return {}
-}
+    return {};
+};
 
 // Connect Redux with React
 export default connect(

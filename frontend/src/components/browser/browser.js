@@ -24,32 +24,32 @@ class Browser extends Component {
     
     render() {
         return (
-            <React.Fragment>
-                    <Tab.Container id="browser" defaultActiveKey="fileBrowser" className={styles.browserTab}>
-                        <Col>
-                            <Row className={styles.browserTab}>
-                                <Nav justify variant="pills" className={styles.browserTab}>
-                                    <Nav.Item className={styles.browserItem}>
-                                        <Nav.Link eventKey="fileBrowser">Tree</Nav.Link>
-                                    </Nav.Item>
-                                    <Nav.Item className={styles.browserItem}>
-                                        <Nav.Link eventKey="clipBrowser">List</Nav.Link>
-                                    </Nav.Item>
-                                </Nav>
-                            </Row>
-                            <Row className={styles.browserTab}>
-                                <Tab.Content>
-                                    <Tab.Pane eventKey="fileBrowser">
-                                        <FileBrowser />
-                                    </Tab.Pane>
-                                    <Tab.Pane eventKey="clipBrowser">
-                                        <ClipBrowser />
-                                    </Tab.Pane>
-                                </Tab.Content>
-                            </Row>
-                        </Col>
-                    </Tab.Container>
-            </React.Fragment>
+            <div className={styles.main}>
+              <Tab.Container id="browser" defaultActiveKey="clipBrowser">
+                <Col className={styles.browserCol}>
+                  <Row>
+                    <Nav justify variant="pills">
+                      <Nav.Item className={styles.browserNav}>
+                        <Nav.Link eventKey="clipBrowser">Klipp</Nav.Link>
+                      </Nav.Item>
+                      <Nav.Item className={styles.browserNav}>
+                        <Nav.Link eventKey="fileBrowser">Filer</Nav.Link>
+                      </Nav.Item>
+                    </Nav>
+                  </Row>
+                  <Row className={styles.browserTab}>
+                    <Tab.Content>
+                      <Tab.Pane eventKey="fileBrowser" className={styles.browserItem}>
+                        <FileBrowser />
+                      </Tab.Pane>
+                      <Tab.Pane eventKey="clipBrowser" className={styles.browserItem}>
+                        <ClipBrowser />
+                      </Tab.Pane>
+                    </Tab.Content>
+                  </Row>
+                </Col>
+              </Tab.Container>
+            </div>
         );
     }
 }

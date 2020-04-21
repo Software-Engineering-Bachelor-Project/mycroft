@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+
+import styles from './menu.module.css';
+
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
-
 
 /* -- Menu -- */
 class Menu extends Component {
@@ -28,16 +30,18 @@ class Menu extends Component {
 
     render() {
         return (
-            <DropdownButton alignRight
-                            title="Project"
-                            id="dropdown-menu-align-right"
-            >
-              <Dropdown.Item onClick={() => this.switchProject()}> Switch Project </Dropdown.Item>
-              <Dropdown.Item onClick={() => this.manageSources()}> Manage Sources </Dropdown.Item>
-              <Dropdown.Item onClick={() => this.exportJSON()}> Export JSON </Dropdown.Item>
-              <Dropdown.Item onClick={() => this.exportClips()}> Export Clips </Dropdown.Item>
-              <Dropdown.Item onClick={() => this.detectObjects()}> Object detection </Dropdown.Item>
-            </DropdownButton>
+            <div className={styles.menu}>
+              <DropdownButton alignRight
+                              title="Project"
+                              id="dropdown-menu-align-right"
+              >
+                <Dropdown.Item onClick={() => this.switchProject()}> Switch Project </Dropdown.Item>
+                <Dropdown.Item onClick={() => this.manageSources()}> Manage Sources </Dropdown.Item>
+                <Dropdown.Item onClick={() => this.exportJSON()}> Export JSON </Dropdown.Item>
+                <Dropdown.Item onClick={() => this.exportClips()}> Export Clips </Dropdown.Item>
+                <Dropdown.Item onClick={() => this.detectObjects()}> Object detection </Dropdown.Item>
+              </DropdownButton>
+            </div>
         );
     }
 }

@@ -13,19 +13,21 @@ class ClipBrowser extends Component {
 
     render() {
         return (
-                <ListGroup variant = "flush" className={styles.browserClip}> 
-                    {Object.values(this.props.cameras).map((camera) => (
-                        <ListGroup.Item key={camera.id}>
-                            <p>{camera.name}</p>
-                            {Object.values(camera.clips).map((clip) => (
-                                <ListGroup.Item key={clip.id}>
-                                    {clip.name}
-                                </ListGroup.Item>
-                            )
-                            )}
-                        </ListGroup.Item>
-                    ))}
-                </ListGroup>
+            <div className={styles.browserClip}>
+              <ListGroup variant="flush"> 
+                {Object.values(this.props.cameras).map((camera) => (
+                    <ListGroup.Item key={camera.id}>
+                      <p>{camera.name}</p>
+                      {Object.values(camera.clips).map((clip) => (
+                          <ListGroup.Item key={clip.id}>
+                            {clip.name}
+                          </ListGroup.Item>
+                      )
+                                                      )}
+                    </ListGroup.Item>
+                ))}
+              </ListGroup>
+            </div>
         );
     }
 }

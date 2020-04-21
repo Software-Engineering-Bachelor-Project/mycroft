@@ -6,6 +6,7 @@ import menuReducer from "./stateMenu";
 import viewportReducer from "./stateViewport";
 import timelineReducer from "./stateTimeline";
 import browserRecuder from "./stateBrowser";
+import objectDetectorReducer from "./stateObjectDetector";
 
 /*
  * This file contains the main state of Mycroft.
@@ -24,6 +25,7 @@ const rootReducer = combineReducers({
   viewport: viewportReducer,
   timeline: timelineReducer,
   browser: browserRecuder,
+  od: objectDetectorReducer,
 });
 
 // Main state-container of Mycroft

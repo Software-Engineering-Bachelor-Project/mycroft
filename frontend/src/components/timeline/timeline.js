@@ -66,10 +66,32 @@ class Timeline extends Component {
                         className={styles.slider} 
                         style={{width: ((this.props.timeSpan / (60 * 60 * 1000)) / this.props.scale) * 100 + "%"}}
                     >
+                        <div className={styles.day}>
+                            <div className={styles.date}>
+                                    Apr 17
+                            </div>
+                        </div>
 
                         {/* Creates a line for each timestamp */}
                         {getLinePlacements(this.props.timeSpan).map((i) => {
-                            return ( <div style={{left: i}} className={styles.line} key={i}> </div> );
+                            return ( 
+                                <div style={{
+                                        position: "absolute",
+                                        left: i,
+                                        top: "0",
+                                        height: "100%" 
+                                    }} key={i}>
+                                        
+                                        <div className={styles.line} > </div>
+                                        <div style={{
+                                            position: "absolute",
+                                            left: "2px",
+                                            bottom: "2px"
+                                            }}>
+                                                12
+                                        </div>
+                                </div> 
+                            );
                         })}
                     </div>
                 </div>

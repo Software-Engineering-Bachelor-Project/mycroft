@@ -81,12 +81,12 @@ class GetClipsMatchingFilter(TestCase):
         self.st2 = self.st1 + timezone.timedelta(hours=2)
         self.et2 = self.st2 + timezone.timedelta(hours=1)
 
-        self.cid1=dbw.create_clip(fid=self.rid, name="test_clip1", video_format="tvf",
-                        start_time=self.st1, end_time=self.et1, latitude=self.lat,
-                        longitude=self.lon + 1, width=200, height=300, frame_rate=42.0)
-        self.cid2=dbw.create_clip(fid=self.rid, name="test_clip2", video_format="tvf",
-                        start_time=self.st2, end_time=self.et2, latitude=self.lat,
-                        longitude=self.lon, width=400, height=500, frame_rate=42.0)
+        self.cid1 = dbw.create_clip(fid=self.rid, name="test_clip1", video_format="tvf",
+                                    start_time=self.st1, end_time=self.et1, latitude=self.lat,
+                                    longitude=self.lon + 1, width=200, height=300, frame_rate=42.0)
+        self.cid2 = dbw.create_clip(fid=self.rid, name="test_clip2", video_format="tvf",
+                                    start_time=self.st2, end_time=self.et2, latitude=self.lat,
+                                    longitude=self.lon, width=400, height=500, frame_rate=42.0)
         self.pid = dbw.create_project(name="test_project")
         self.fid = dbw.create_filter(pid=self.pid)
         dbw.add_folder_to_project(self.fid, self.pid)
@@ -141,7 +141,8 @@ class GetClipsMatchingFilter(TestCase):
         """
         data = {FILTER_ID: 1}
         dbw.modify_filter(fid=self.fid, classes=["car"])
-        dbw.create_object_detection(cid=self.cid1,sample_rate=1, start_time=self.st1, end_time=self.et1, objects=[("bike", self.st1), ("bike", self.st1)])
+        dbw.create_object_detection(cid=self.cid1, sample_rate=1, start_time=self.st1, end_time=self.et1,
+                                    objects=[("bike", self.st1), ("bike", self.st1)])
         res = get_clips_matching_filter(data)
         self.assertEqual(res, (200, {CLIP_IDS: [], CAMERA_IDS: []}))
 
@@ -151,8 +152,10 @@ class GetClipsMatchingFilter(TestCase):
         """
         data = {FILTER_ID: 1}
         dbw.modify_filter(fid=self.fid, classes=["car"])
-        dbw.create_object_detection(cid=self.cid1,sample_rate=1, start_time=self.st1, end_time=self.et1, objects=[("cat", self.st1), ("car", self.st1)])
-        dbw.create_object_detection(cid=self.cid2,sample_rate=1, start_time=self.st2, end_time=self.et2, objects=[("bike", self.st2), ("cat", self.st2)])
+        dbw.create_object_detection(cid=self.cid1, sample_rate=1, start_time=self.st1, end_time=self.et1,
+                                    objects=[("cat", self.st1), ("car", self.st1)])
+        dbw.create_object_detection(cid=self.cid2, sample_rate=1, start_time=self.st2, end_time=self.et2,
+                                    objects=[("bike", self.st2), ("cat", self.st2)])
         res = get_clips_matching_filter(data)
 
         self.assertEqual(res, (200, {CLIP_IDS: [self.cid1], CAMERA_IDS: [dbw.get_clip_by_id(self.cid1).camera.id]}))
@@ -163,10 +166,12 @@ class GetClipsMatchingFilter(TestCase):
         """
         data = {FILTER_ID: 1}
         dbw.modify_filter(fid=self.fid, classes=["cat"])
-        dbw.create_object_detection(cid=self.cid1,sample_rate=1, start_time=self.st1, end_time=self.et1, objects=[("cat", self.st1), ("car", self.st1)])
-        dbw.create_object_detection(cid=self.cid2,sample_rate=1, start_time=self.st2, end_time=self.et2, objects=[("bike", self.st2), ("cat", self.st2)])
+        dbw.create_object_detection(cid=self.cid1, sample_rate=1, start_time=self.st1, end_time=self.et1,
+                                    objects=[("cat", self.st1), ("car", self.st1)])
+        dbw.create_object_detection(cid=self.cid2, sample_rate=1, start_time=self.st2, end_time=self.et2,
+                                    objects=[("bike", self.st2), ("cat", self.st2)])
         res = get_clips_matching_filter(data)
-        self.assertEqual(res, (200, {CLIP_IDS: [1,2], CAMERA_IDS: [1,2]}))
+        self.assertEqual(res, (200, {CLIP_IDS: [1, 2], CAMERA_IDS: [1, 2]}))
 
     def test_class_filter_multiple_class(self):
         """
@@ -180,6 +185,28 @@ class GetClipsMatchingFilter(TestCase):
                                     objects=[("bike", self.st2), ("cat", self.st2)])
         res = get_clips_matching_filter(data)
         self.assertEqual(res, (200, {CLIP_IDS: [1], CAMERA_IDS: [1]}))
+
+    def test_class_filter_object_detection_outside_timespan(self):
+        """
+        Test that the filter only filters on object detections within the timespan
+        """
+
+        data = {FILTER_ID: 1}
+        cid1_copy = dbw.create_clip(fid=self.rid, name="test_clip1_copy", video_format="tvf",
+                                    start_time=self.st1, end_time=self.et1, latitude=self.lat,
+                                    longitude=self.lon + 1, width=200, height=300, frame_rate=42.0)
+
+        dbw.modify_filter(fid=self.fid, classes=["car"], start_time=self.st1 + timezone.timedelta(seconds=10))
+
+        dbw.create_object_detection(cid=self.cid1, sample_rate=1, start_time=self.st1, end_time=self.et1,
+                                    objects=[("car", self.st1 + timezone.timedelta(seconds=1))])
+
+        dbw.create_object_detection(cid=cid1_copy, sample_rate=1, start_time=self.st1, end_time=self.et1,
+                                    objects=[("car", self.st1 + timezone.timedelta(seconds=11))])
+
+        res = get_clips_matching_filter(data)
+
+        self.assertEqual(res, (200, {CLIP_IDS: [3], CAMERA_IDS: [1]}))
 
 
 class GetAreasInFilterTest(TestCase):

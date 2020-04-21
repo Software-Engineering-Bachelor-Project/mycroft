@@ -95,6 +95,7 @@ class Map extends Component {
                 ))}
                 
               </LMap>
+              {/*
               <div style={{backgroundColor: 'red', width: '40em'}}>
                 <p>Temporary Camera Manager (the containing div may be removed)</p>
                 <label>Name: </label><input type='text' ref={(c) => this.ct = c} defaultValue='Test Name' />
@@ -116,7 +117,8 @@ class Map extends Component {
                 <br/>
                 <input type='number' step='1' ref={(c) => this.cid = c} defaultValue='0' />
                 <button onClick={() => this.props.removeCamera(parseInt(this.cid.value))}>remove</button>
-              </div>
+                  </div>
+              */}
             </React.Fragment>
         );
     }

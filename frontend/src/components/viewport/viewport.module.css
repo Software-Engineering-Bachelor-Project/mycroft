@@ -1,0 +1,16 @@
+.viewport {
+    position: absolute;
+    width: 85vw;
+    height: 70vh;
+    top: 0;
+    left: 0;
+}
+
+.miniViewport {
+    background-color: lightsteelblue;
+    position: absolute;
+    width: 15vw;
+    height: 30vh;
+    bottom: 0;
+    right: 0;
+}

@@ -51,6 +51,10 @@ export const REQUEST_RESPONSE = "REQUEST_RESPONSE";
 export const initialState = {
   projectID: -1,
   projects: {},
+  od: {
+    progressId: -1,
+    currentProgress: 0,
+  },
 };
 
 /* -- ACTION CREATORS -- */

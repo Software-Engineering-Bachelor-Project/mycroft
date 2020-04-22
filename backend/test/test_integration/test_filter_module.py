@@ -70,7 +70,7 @@ class ModifyFilterTest(TestCase):
         self.assertEqual(res, (204, {}))
 
 
-class GetClipsMatchingFilter(TestCase):
+class GetClipsMatchingFilterTest(TestCase):
 
     def setUp(self) -> None:
         self.rid = dbw.create_root_folder(path="/home/user/", name="test_folder")
@@ -255,7 +255,7 @@ class GetAreasInFilterTest(TestCase):
         self.assertEqual(len(res[1]["areas"]), 2)
 
 
-class CreateArea(TestCase):
+class CreateAreaTest(TestCase):
 
     def test_simple_call(self) -> None:
         """
@@ -279,3 +279,52 @@ class CreateArea(TestCase):
 
         res = create_area(data)
         self.assertEqual(res, (400, {}))
+
+
+class GetFilterParametersTest(TestCase):
+    def setUp(self) -> None:
+        self.rid = dbw.create_root_folder(path="/home/user/", name="test_folder")
+        self.lat = Decimal(value="13.37")
+        self.lon = Decimal(value="0.42")
+        self.st1 = timezone.datetime(2020, 1, 17, tzinfo=pytz.timezone(settings.TIME_ZONE))
+        self.et1 = self.st1 + timezone.timedelta(hours=1)
+        self.st2 = self.st1 + timezone.timedelta(hours=2)
+        self.et2 = self.st2 + timezone.timedelta(hours=1)
+
+        self.cid1 = dbw.create_clip(fid=self.rid, name="test_clip1", video_format="tvf",
+                                    start_time=self.st1, end_time=self.et1, latitude=self.lat,
+                                    longitude=self.lon + 1, width=200, height=300, frame_rate=42.0)
+        self.cid2 = dbw.create_clip(fid=self.rid, name="test_clip2", video_format="tvf",
+                                    start_time=self.st2, end_time=self.et2, latitude=self.lat,
+                                    longitude=self.lon, width=400, height=500, frame_rate=42.0)
+        self.pid = dbw.create_project(name="test_project")
+        self.fid = dbw.create_filter(pid=self.pid)
+        dbw.add_folder_to_project(self.fid, self.pid)
+
+
+    def test_simple_call(self):
+        """
+        Test calling function with correct fid
+        """
+        data = {FILTER_ID: self.fid}
+
+        res = get_params(data)
+        self.assertEqual(res, (200, {'classes': ['car', 'person', 'bicycle'], 'resolutions': [OrderedDict([('id', 1), ('width', 200), ('height', 300)]), OrderedDict([('id', 2), ('width', 400), ('height', 500)])]}))
+
+    def test_missing_param(self):
+        """
+        Test calling function without necessary parameter
+        """
+        data = {}
+
+        res = get_params(data)
+        self.assertEqual(res, (400, {}))
+
+    def test_nonexistent_fid(self):
+        """
+        Test calling function with nonexistent fid
+        """
+        data = {FILTER_ID: self.fid+10}
+
+        res = get_params(data)
+        self.assertEqual(res, (204, {}))

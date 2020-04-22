@@ -3367,7 +3367,7 @@ module.exports = exports;
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
-exports.push([module.i, "._n6QzUzxj6Uoy2ykga-l {\r\n  position: absolute;\r\n  padding: 0;\r\n  border: 1px solid;\r\n  width: 85vw;\r\n  height: 30vh;\r\n  bottom: 0;\r\n  left: 0;\r\n}\r\n\r\n._10I1JMKob8pkE0RZRoi945 {\r\n  position: relative;\r\n  width: 100%;\r\n  top: 0;\r\n  left: 0;\r\n  height: 20%;\r\n  border-bottom: 1px solid;\r\n  background-color: lightsteelblue;\r\n}\r\n\r\n._2sgl82tdvau2BRFt_sXnfC {\r\n  position: relative;\r\n  top: 5px;\r\n  left: 5px;\r\n  width: 200px;\r\n}\r\n\r\n._2emjKLHpStN4w25i1lnOl_ {\r\n  position: relative;\r\n  bottom: 0;\r\n  height: 80%;\r\n  width: 100%;\r\n  /*border: 2px solid;*/\r\n  overflow: auto;\r\n  background-color: rgb(106, 158, 255);\r\n}\r\n\r\n.BuNLDP2lK6oI1EiPVdsm0 {\r\n    position: relative;\r\n    height: 100%;\r\n    /*border: 1px solid;*/\r\n    background-color: rgb(255, 255, 255);\r\n}\r\n\r\n._1ippwss_WbizVVAINImxVT {\r\n  position: absolute;\r\n  top: 0;\r\n  left: 0;\r\n  width: 1px;\r\n  height: 100%;\r\n  background-color: black;\r\n}\r\n\r\n._3eeRd4Yx_aO8xsThSS1uH6 {\r\n  position: sticky;\r\n  left: 0;\r\n  bottom: 0;\r\n  width: 50px;\r\n  background-color: transparent;\r\n}\r\n\r\n._18vtY8tfzgLtmr0Mv6et8U {\r\n    position: absolute;\r\n    left: 20%;\r\n    width: 50%;\r\n    height: 50%;\r\n    background-color: rgba(255, 0, 0, 0.267);\r\n    left: 3px;\r\n}\r\n\r\n._3qgovzM93bA3bkMrOCbUm- {\r\n    position: absolute;\r\n    background-color: rgba(57, 192, 255, 0.329);\r\n    border-radius: 10px;\r\n    border: 3px solid rgba(0, 107, 194, 0.87);\r\n    top: 2%;\r\n    height: 96%;\r\n}\r\n", ""]);
+exports.push([module.i, "._n6QzUzxj6Uoy2ykga-l {\r\n  position: absolute;\r\n  padding: 0;\r\n  border: 1px solid;\r\n  width: 85vw;\r\n  height: 30vh;\r\n  bottom: 0;\r\n  left: 0;\r\n}\r\n\r\n._10I1JMKob8pkE0RZRoi945 {\r\n  position: relative;\r\n  width: 100%;\r\n  top: 0;\r\n  left: 0;\r\n  height: 20%;\r\n  border-bottom: 1px solid;\r\n  background-color: lightsteelblue;\r\n}\r\n\r\n._2sgl82tdvau2BRFt_sXnfC {\r\n  position: relative;\r\n  top: 5px;\r\n  left: 5px;\r\n  width: 200px;\r\n}\r\n\r\n._2emjKLHpStN4w25i1lnOl_ {\r\n  position: relative;\r\n  bottom: 0;\r\n  height: 80%;\r\n  width: 100%;\r\n  /*border: 2px solid;*/\r\n  overflow: auto;\r\n  background-color: rgb(106, 158, 255);\r\n}\r\n\r\n.BuNLDP2lK6oI1EiPVdsm0 {\r\n  position: relative;\r\n  height: 100%;\r\n  /*border: 1px solid;*/\r\n  background-color: rgb(255, 255, 255);\r\n}\r\n\r\n._1ippwss_WbizVVAINImxVT {\r\n  position: absolute;\r\n  top: 0;\r\n  left: 0;\r\n  width: 1px;\r\n  height: 100%;\r\n  background-color: black;\r\n}\r\n\r\n._3eeRd4Yx_aO8xsThSS1uH6 {\r\n  position: sticky;\r\n  left: 0;\r\n  bottom: 0;\r\n  width: 50px;\r\n  background-color: transparent;\r\n}\r\n\r\n._18vtY8tfzgLtmr0Mv6et8U {\r\n  position: absolute;\r\n  left: 20%;\r\n  width: 50%;\r\n  height: 50%;\r\n  background-color: rgba(255, 0, 0, 0.267);\r\n  left: 3px;\r\n}\r\n\r\n._3qgovzM93bA3bkMrOCbUm- {\r\n  position: absolute;\r\n  background-color: rgba(57, 192, 255, 0.329);\r\n  border-radius: 10px;\r\n  border: 3px solid rgba(0, 107, 194, 0.87);\r\n  top: 2%;\r\n  height: 96%;\r\n}\r\n", ""]);
 // Exports
 exports.locals = {
 	"main": "_n6QzUzxj6Uoy2ykga-l",
@@ -64988,8 +64988,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
-/* harmony import */ var _timeline_module_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./timeline.module.css */ "./src/components/timeline/timeline.module.css");
-/* harmony import */ var _timeline_module_css__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_timeline_module_css__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _state_stateTimeline__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../../state/stateTimeline */ "./src/state/stateTimeline.js");
+/* harmony import */ var _timeline_module_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./timeline.module.css */ "./src/components/timeline/timeline.module.css");
+/* harmony import */ var _timeline_module_css__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_timeline_module_css__WEBPACK_IMPORTED_MODULE_3__);
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -65000,15 +65001,18 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 
+ //import functions
+
+ //import css
 
 
 /**
@@ -65020,10 +65024,14 @@ var Glassbox =
 function (_Component) {
   _inherits(Glassbox, _Component);
 
-  function Glassbox() {
+  function Glassbox(props) {
+    var _this;
+
     _classCallCheck(this, Glassbox);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(Glassbox).apply(this, arguments));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Glassbox).call(this, props));
+    _this.intervalChanged = _this.intervalChanged.bind(_assertThisInitialized(_this));
+    return _this;
   }
 
   _createClass(Glassbox, [{
@@ -65036,7 +65044,7 @@ function (_Component) {
     key: "render",
     value: function render() {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: _timeline_module_css__WEBPACK_IMPORTED_MODULE_2___default.a.glassbox,
+        className: _timeline_module_css__WEBPACK_IMPORTED_MODULE_3___default.a.glassbox,
         style: {
           width: this.props.gbTimeSpan / this.props.timeSpan * 100 + "%",
           left: (this.props.gbStartTime.getTime() - this.props.startTime.getTime()) / this.props.timeSpan * 100 + "%"
@@ -65064,19 +65072,9 @@ var mapStateToProps = function mapStateToProps(state) {
 
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return {
-    gbSetTimeLimits: function (_gbSetTimeLimits) {
-      function gbSetTimeLimits(_x, _x2) {
-        return _gbSetTimeLimits.apply(this, arguments);
-      }
-
-      gbSetTimeLimits.toString = function () {
-        return _gbSetTimeLimits.toString();
-      };
-
-      return gbSetTimeLimits;
-    }(function (startDate, endDate) {
-      return dispatch(gbSetTimeLimits(startDate, endDate));
-    })
+    gbSetTimeLimits: function gbSetTimeLimits(startDate, endDate) {
+      return dispatch(Object(_state_stateTimeline__WEBPACK_IMPORTED_MODULE_2__["gbSetTimeLimits"])(startDate, endDate));
+    }
   };
 }; //Connect Redux with React
 
@@ -65134,8 +65132,8 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 /**
  * This function returns a list of line placements in percents.
  * Example: ["20%", "40%", "60%", "80%"]
- * 
- * @param {int} startTime The start date of timeline
+ *
+ * @param {Date} startTime The start date of timeline
  * @param {int} timeSpan The time span from startTime to endTime.
  * @return {Array} List of line placements.
  */
@@ -65159,8 +65157,7 @@ function getLinePlacements(startTime, timeSpan) {
   }
 
   return list_;
-}
-; // Scaling options for the dropdown menu
+} // Scaling options for the dropdown menu
 
 var SCALE_LIST = [12, 24, 36, 48];
 /**
@@ -66489,30 +66486,35 @@ var SET_START_TIME = "SET_START_TIME";
 var SET_END_TIME = "SET_END_TIME";
 var SET_TIME_LIMITS = "SET_TIME_LIMITS";
 var GB_SET_TIME_LIMITS = "GB_SET_TIME_LIMITS";
-/* -- TEMPORARY CONSTANTS -- */
+/* -- TIMELINE DEFAULT CONSTANT -- */
 
-var exStartTime = new Date(2020, 3, 12, 12, 20, 13); // the month is 0-indexed. Month 3 = April.
+var defaultStartTime = new Date(2020, 3, 12, 12, 20, 13); // the month is 0-indexed. Month 3 = April.
 
-var exEndTime = new Date(2020, 3, 19, 16, 40, 2);
-var gbStartTime = new Date(2020, 3, 14, 12, 30, 0);
-var gbEndTime = new Date(2020, 3, 14, 15, 0, 0);
+var defaultEndTime = new Date(2020, 3, 19, 16, 40, 2);
+var gbDefaultStartTime = new Date(2020, 3, 14, 12, 30, 0);
+var gbDefaultEndTime = new Date(2020, 3, 14, 15, 0, 0);
 /* -- INITIAL STATE -- */
 
 var initialState = {
   scale: 12,
-  startTime: exStartTime,
-  endTime: exEndTime,
-  timeSpan: exEndTime.getTime() - exStartTime.getTime(),
+  startTime: defaultStartTime,
+  endTime: defaultEndTime,
+  timeSpan: defaultEndTime.getTime() - defaultStartTime.getTime(),
   //timeSpan in ms
   glassbox: {
-    startTime: gbStartTime,
-    endTime: gbEndTime,
-    timeSpan: gbEndTime.getTime() - gbStartTime.getTime() //timeSpan in ms
+    startTime: gbDefaultStartTime,
+    endTime: gbDefaultEndTime,
+    timeSpan: gbDefaultEndTime.getTime() - gbDefaultStartTime.getTime() //timeSpan in ms
 
   }
 };
 /* -- ACTION CREATORS -- */
-// This function changes the scale-state.
+
+/**
+ * This function changes the scale-state.
+ *
+ * @param {int} hrs sets new scale parameter
+ */
 
 function zoom(hrs) {
   return {
@@ -66520,18 +66522,40 @@ function zoom(hrs) {
     hrs: hrs
   };
 }
+/**
+ * Updates the startTime of timeline.
+ * Updates timeSpan accordingly.
+ *
+ * @param {Date} date becomes the new startTime
+ */
+
 function setStartTime(date) {
   return {
     type: SET_START_TIME,
     date: date
   };
 }
+/**
+ * Updates the endTime of timeline.
+ * Updates timeSpan accordingly.
+ *
+ * @param {Date} date becomes the new endTime
+ */
+
 function setEndTime(date) {
   return {
     type: SET_END_TIME,
     date: date
   };
 }
+/**
+ * Updates the startTime and endTime of timeline.
+ * Updates timeSpan accordingly.
+ *
+ * @param {Date} startDate
+ * @param {Date} endDate
+ */
+
 function setTimeLimits(startDate, endDate) {
   return {
     type: SET_TIME_LIMITS,
@@ -66539,35 +66563,74 @@ function setTimeLimits(startDate, endDate) {
     end: endDate
   };
 }
+/**
+ * Updates the startTime and endTime of glassbox.
+ * Updates timeSpan of glassbox accordingly.
+ * If only one input is given, the other will be set to the default time.
+ *
+ * Example: startDate is given but endDate is set to undefined,
+ * then endDate will be set to gbDefaultEndTime.
+ * Therefore its possible to only update either one (startTime or endTime).
+ *
+ * @param {Date} startDate becomes the new startTime of glassbox
+ * @param {Date} endDate becomes the new endTime of glassbox
+ */
+
 function gbSetTimeLimits(startDate, endDate) {
   return {
     type: GB_SET_TIME_LIMITS,
     start: startDate,
     end: endDate
   };
-} // Checks if startDate is after endDate, and if so throws an error
+}
+/**
+ * Checks if startDate is after endDate, and if so throws an error.
+ * This function is used when updating either startTime, endTime or both in timeline.
+ *
+ * @param {Date} startTime startTime of timeline
+ * @param {Date} endTime endTime of timeline
+ */
 
 function checkTimeSpan(startTime, endTime) {
   if (startTime.getTime() >= endTime.getTime()) {
-    console.error('RangeError: StartDate before endDate');
+    console.error("RangeError: endTime before startTime");
   }
-} // Checks input for GB_SET_TIME_LIMITS
-// If one input is undefiend, return the initialState input for that one
+}
+/**
+ * Checks input for GB_SET_TIME_LIMITS
+ * If one input is undefined, change it to the state-input for that one.
+ * Returns a list of "defined" Date-objects [start, end].
+ *
+ * Example: start is given but end is set to undefined,
+ * then end will be set to state.glassbox.endTime.
+ *
+ * @param {Date} start
+ * @param {Date} end
+ * @param {State object} state
+ */
 
 
 function handleGlassboxInput(start, end, state) {
   if (start == undefined && end) {
-    return [state.startTime, end];
+    return [state.glassbox.startTime, end];
   } else if (start == undefined && end == undefined) {
-    console.error('RangeError: StartDate, endDate undefined');
+    console.error("RangeError: StartDate, endDate undefined");
   } else if (start && end == undefined) {
-    return [start, state.endTime];
+    return [start, state.glassbox.endTime];
   } else {
     return [start, end];
   }
 
-  return [state.startTime, state.endTime];
-} // Checks if startTime, endTime of glassbox is contained in timeline
+  return [state.glassbox.startTime, state.glassbox.endTime];
+}
+/**
+ * Checks if startTime, endTime of glassbox is contained in timeline,
+ * otherwise log an error.
+ *
+ * @param {Date} start
+ * @param {Date} end
+ * @param {State object} state
+ */
 
 
 function checkGlassboxTimeSpan(start, end, state) {
@@ -66576,13 +66639,13 @@ function checkGlassboxTimeSpan(start, end, state) {
       if (start.getTime() < end.getTime()) {
         return; // this is the expected behaviour
       } else {
-        console.error('RangeError: Glassbox: startTime after endTime');
+        console.error("RangeError: Glassbox: startTime after endTime");
         return;
       }
     }
   }
 
-  console.error('RangeError: Glassbox: startTime, endTime of glassbox is not contained inside timeline');
+  console.error("RangeError: Glassbox: startTime, endTime of glassbox is not contained inside timeline");
   return;
 }
 /* -- REDUX REDUCER -- */
@@ -66617,25 +66680,27 @@ var timelineReducer = function timelineReducer() {
 
     case ZOOM:
       return _objectSpread({}, state, {
-        // Compares with timeSpan; if action.hrs is bigger than timeSpan, 
+        // Compares with timeSpan; if action.hrs is bigger than timeSpan,
         // then timeSpan is the max value for scale.
         scale: Math.min(action.hrs, state.timeSpan / (60 * 60 * 1000))
       });
 
     case GB_SET_TIME_LIMITS:
-      var start, end;
+      var startT, endT;
 
-      var _handleGlassboxInput = handleGlassboxInput(action.start, action.end);
+      var _handleGlassboxInput = handleGlassboxInput(action.start, action.end, state);
 
       var _handleGlassboxInput2 = _slicedToArray(_handleGlassboxInput, 2);
 
-      start = _handleGlassboxInput2[0];
-      end = _handleGlassboxInput2[1];
-      checkGlassboxTimeSpan(start, end, state);
-      return _objectSpread({}, state.glassbox, {
-        startTime: start,
-        endTime: end,
-        timeSpan: end.getTime() - start.getTime()
+      startT = _handleGlassboxInput2[0];
+      endT = _handleGlassboxInput2[1];
+      checkGlassboxTimeSpan(startT, endT, state);
+      return _objectSpread({}, state, {
+        glassbox: {
+          startTime: startT,
+          endTime: endT,
+          timeSpan: endT.getTime() - startT.getTime()
+        }
       });
 
     default:

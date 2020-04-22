@@ -123,3 +123,16 @@ class CreateArea(TestCase):
 
         res = create_area(data)
         mock_dbw.create_area.assert_called_once_with(**data)
+
+
+class GetFilterParametersTest(TestCase):
+
+    @patch('backend.filter_module.dbw')
+    def test_simple_call(self, mock_dbw):
+        """
+        Makes a simple call to the function, check that the correct function is called in the database_wrapper
+        """
+        data = {FILTER_ID: 1}
+
+        get_params(data)
+        mock_dbw.get_all_resolutions_in_project.assert_called_once_with(mock_dbw.get_filter_by_id().project.id)

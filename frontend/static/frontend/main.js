@@ -3367,7 +3367,7 @@ module.exports = exports;
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
-exports.push([module.i, "._n6QzUzxj6Uoy2ykga-l {\r\n  position: absolute;\r\n  padding: 0;\r\n  border: 1px solid;\r\n  width: 85vw;\r\n  height: 30vh;\r\n  bottom: 0;\r\n  left: 0;\r\n}\r\n\r\n._10I1JMKob8pkE0RZRoi945 {\r\n  position: relative;\r\n  width: 100%;\r\n  top: 0;\r\n  left: 0;\r\n  height: 20%;\r\n  border-bottom: 1px solid;\r\n  background-color: lightsteelblue;\r\n}\r\n\r\n._2sgl82tdvau2BRFt_sXnfC {\r\n  position: relative;\r\n  top: 5px;\r\n  left: 5px;\r\n  width: 200px;\r\n}\r\n\r\n._2emjKLHpStN4w25i1lnOl_ {\r\n  position: relative;\r\n  bottom: 0;\r\n  height: 80%;\r\n  width: 100%;\r\n  /*border: 2px solid;*/\r\n  overflow: auto;\r\n  background-color: rgb(106, 158, 255);\r\n}\r\n\r\n.BuNLDP2lK6oI1EiPVdsm0 {\r\n  position: relative;\r\n  height: 100%;\r\n  /*border: 1px solid;*/\r\n  background-color: rgb(106, 158, 255);\r\n}\r\n\r\n._1ippwss_WbizVVAINImxVT {\r\n  position: absolute;\r\n  top: 0;\r\n  left: 0;\r\n  width: 1px;\r\n  height: 100%;\r\n  background-color: black;\r\n}\r\n\r\n._3eeRd4Yx_aO8xsThSS1uH6 {\r\n  position: sticky;\r\n  left: 0;\r\n  bottom: 0;\r\n  width: 50px;\r\n  background-color: transparent;\r\n}\r\n\r\n._18vtY8tfzgLtmr0Mv6et8U {\r\n  position: absolute;\r\n  left: 20%;\r\n  width: 50%;\r\n  height: 50%;\r\n  background-color: rgba(255, 0, 0, 0.267);\r\n}\r\n", ""]);
+exports.push([module.i, "._n6QzUzxj6Uoy2ykga-l {\r\n  position: absolute;\r\n  padding: 0;\r\n  border: 1px solid;\r\n  width: 85vw;\r\n  height: 30vh;\r\n  bottom: 0;\r\n  left: 0;\r\n}\r\n\r\n._10I1JMKob8pkE0RZRoi945 {\r\n  position: relative;\r\n  width: 100%;\r\n  top: 0;\r\n  left: 0;\r\n  height: 20%;\r\n  border-bottom: 1px solid;\r\n  background-color: lightsteelblue;\r\n}\r\n\r\n._2sgl82tdvau2BRFt_sXnfC {\r\n  position: relative;\r\n  top: 5px;\r\n  left: 5px;\r\n  width: 200px;\r\n}\r\n\r\n._2emjKLHpStN4w25i1lnOl_ {\r\n  position: relative;\r\n  bottom: 0;\r\n  height: 80%;\r\n  width: 100%;\r\n  /*border: 2px solid;*/\r\n  overflow: auto;\r\n  background-color: rgb(106, 158, 255);\r\n}\r\n\r\n.BuNLDP2lK6oI1EiPVdsm0 {\r\n    position: relative;\r\n    height: 100%;\r\n    /*border: 1px solid;*/\r\n    background-color: rgb(255, 255, 255);\r\n}\r\n\r\n._1ippwss_WbizVVAINImxVT {\r\n  position: absolute;\r\n  top: 0;\r\n  left: 0;\r\n  width: 1px;\r\n  height: 100%;\r\n  background-color: black;\r\n}\r\n\r\n._3eeRd4Yx_aO8xsThSS1uH6 {\r\n  position: sticky;\r\n  left: 0;\r\n  bottom: 0;\r\n  width: 50px;\r\n  background-color: transparent;\r\n}\r\n\r\n._18vtY8tfzgLtmr0Mv6et8U {\r\n    position: absolute;\r\n    left: 20%;\r\n    width: 50%;\r\n    height: 50%;\r\n    background-color: rgba(255, 0, 0, 0.267);\r\n    left: 3px;\r\n}\r\n\r\n._3qgovzM93bA3bkMrOCbUm- {\r\n    position: absolute;\r\n    background-color: rgba(57, 192, 255, 0.329);\r\n    border-radius: 10px;\r\n    border: 3px solid rgba(0, 107, 194, 0.87);\r\n    top: 2%;\r\n    height: 96%;\r\n}\r\n", ""]);
 // Exports
 exports.locals = {
 	"main": "_n6QzUzxj6Uoy2ykga-l",
@@ -3377,7 +3377,8 @@ exports.locals = {
 	"slider": "BuNLDP2lK6oI1EiPVdsm0",
 	"line": "_1ippwss_WbizVVAINImxVT",
 	"date": "_3eeRd4Yx_aO8xsThSS1uH6",
-	"day": "_18vtY8tfzgLtmr0Mv6et8U"
+	"day": "_18vtY8tfzgLtmr0Mv6et8U",
+	"glassbox": "_3qgovzM93bA3bkMrOCbUm-"
 };
 module.exports = exports;
 
@@ -64975,6 +64976,115 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 
 /***/ }),
 
+/***/ "./src/components/timeline/glassbox.js":
+/*!*********************************************!*\
+  !*** ./src/components/timeline/glassbox.js ***!
+  \*********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var _timeline_module_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./timeline.module.css */ "./src/components/timeline/timeline.module.css");
+/* harmony import */ var _timeline_module_css__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_timeline_module_css__WEBPACK_IMPORTED_MODULE_2__);
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+
+
+
+/**
+ * This class respresents the glassbox component.
+ */
+
+var Glassbox =
+/*#__PURE__*/
+function (_Component) {
+  _inherits(Glassbox, _Component);
+
+  function Glassbox() {
+    _classCallCheck(this, Glassbox);
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(Glassbox).apply(this, arguments));
+  }
+
+  _createClass(Glassbox, [{
+    key: "intervalChanged",
+    value: function intervalChanged(start, end) {
+      //TODO: dispatch modifyFilter action using start and end time
+      this.props.gbSetTimeLimits(start, end);
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: _timeline_module_css__WEBPACK_IMPORTED_MODULE_2___default.a.glassbox,
+        style: {
+          width: this.props.gbTimeSpan / this.props.timeSpan * 100 + "%",
+          left: (this.props.gbStartTime.getTime() - this.props.startTime.getTime()) / this.props.timeSpan * 100 + "%"
+        }
+      });
+    }
+  }]);
+
+  return Glassbox;
+}(react__WEBPACK_IMPORTED_MODULE_0__["Component"]); //Map Redux states to React props
+
+
+var mapStateToProps = function mapStateToProps(state) {
+  return {
+    startTime: state.timeline.startTime,
+    endTime: state.timeline.endTime,
+    timeSpan: state.timeline.timeSpan,
+    //Glassbox
+    gbStartTime: state.timeline.glassbox.startTime,
+    gbEndTime: state.timeline.glassbox.endTime,
+    gbTimeSpan: state.timeline.glassbox.timeSpan
+  };
+}; //Forward Redux's dispatch function to React props
+
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+  return {
+    gbSetTimeLimits: function (_gbSetTimeLimits) {
+      function gbSetTimeLimits(_x, _x2) {
+        return _gbSetTimeLimits.apply(this, arguments);
+      }
+
+      gbSetTimeLimits.toString = function () {
+        return _gbSetTimeLimits.toString();
+      };
+
+      return gbSetTimeLimits;
+    }(function (startDate, endDate) {
+      return dispatch(gbSetTimeLimits(startDate, endDate));
+    })
+  };
+}; //Connect Redux with React
+
+
+/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["connect"])(mapStateToProps, mapDispatchToProps)(Glassbox));
+
+/***/ }),
+
 /***/ "./src/components/timeline/timeline.js":
 /*!*********************************************!*\
   !*** ./src/components/timeline/timeline.js ***!
@@ -64993,6 +65103,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _state_stateTimeline__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../state/stateTimeline */ "./src/state/stateTimeline.js");
 /* harmony import */ var _timeline_module_css__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./timeline.module.css */ "./src/components/timeline/timeline.module.css");
 /* harmony import */ var _timeline_module_css__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_timeline_module_css__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _glassbox__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./glassbox */ "./src/components/timeline/glassbox.js");
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -65017,30 +65130,37 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
+
 /**
  * This function returns a list of line placements in percents.
  * Example: ["20%", "40%", "60%", "80%"]
- *
- * @param {int} timeSpan This is the state parameter timeSpan. (Located in stateTimeline.js)
+ * 
+ * @param {int} startTime The start date of timeline
+ * @param {int} timeSpan The time span from startTime to endTime.
  * @return {Array} List of line placements.
  */
 
-function getLinePlacements(timeSpan) {
-  var hrs = timeSpan / (60 * 60 * 1000);
-  var step = 100 / hrs;
+function getLinePlacements(startTime, timeSpan) {
+  var totalHrs = timeSpan / (60 * 60 * 1000);
+  var step = 100 / totalHrs;
+  var mintuesOffset = startTime.getMinutes();
+  var secondOffset = startTime.getSeconds();
+  var hrsOffset = (mintuesOffset * 60 + secondOffset) / (60 * 60);
+  var percentOffset = hrsOffset / totalHrs * 100;
 
-  if (hrs <= 1) {
+  if (totalHrs <= 1) {
     return [];
   }
 
   var list_ = new Array();
 
-  for (var j = 1; j < hrs; j++) {
-    list_.push(step * j + "%");
+  for (var j = 1; j < totalHrs; j++) {
+    list_.push(step * j - percentOffset + "%");
   }
 
   return list_;
-} // Scaling options for the dropdown menu
+}
+; // Scaling options for the dropdown menu
 
 var SCALE_LIST = [12, 24, 36, 48];
 /**
@@ -65082,13 +65202,13 @@ function (_Component) {
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: _timeline_module_css__WEBPACK_IMPORTED_MODULE_5___default.a.slider,
         style: {
-          width: this.props.timeSpan / (60 * 60 * 1000) / this.props.scale * 100 + "%"
+          width: (this.props.endTime.getTime() - this.props.startTime.getTime()) / (60 * 60 * 1000) / this.props.scale * 100 + "%"
         }
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: _timeline_module_css__WEBPACK_IMPORTED_MODULE_5___default.a.day
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: _timeline_module_css__WEBPACK_IMPORTED_MODULE_5___default.a.date
-      }, "Apr 17")), getLinePlacements(this.props.timeSpan).map(function (p, i) {
+      }, "Apr 17")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_glassbox__WEBPACK_IMPORTED_MODULE_6__["default"], null), getLinePlacements(this.props.startTime, this.props.timeSpan).map(function (p, i) {
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           style: {
             position: "absolute",
@@ -65115,11 +65235,12 @@ function (_Component) {
 
 
 var mapStateToProps = function mapStateToProps(state) {
-  return {
+  return _defineProperty({
+    startTime: state.timeline.startTime,
+    endTime: state.timeline.endTime,
     scale: state.timeline.scale,
-    timeSpan: state.timeline.timeSpan,
-    startTime: state.timeline.startTime
-  };
+    timeSpan: state.timeline.timeSpan
+  }, "startTime", state.timeline.startTime);
 }; //Forward Redux's dispatch function to React props
 
 
@@ -66329,7 +66450,7 @@ var playerReducer = function playerReducer() {
 /*!************************************!*\
   !*** ./src/state/stateTimeline.js ***!
   \************************************/
-/*! exports provided: ZOOM, SET_START_TIME, SET_END_TIME, SET_TIME_LIMITS, initialState, zoom, setStartTime, setEndTime, setTimeLimits, checkTimeSpan, default */
+/*! exports provided: ZOOM, SET_START_TIME, SET_END_TIME, SET_TIME_LIMITS, GB_SET_TIME_LIMITS, initialState, zoom, setStartTime, setEndTime, setTimeLimits, gbSetTimeLimits, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -66338,13 +66459,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_START_TIME", function() { return SET_START_TIME; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_END_TIME", function() { return SET_END_TIME; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_TIME_LIMITS", function() { return SET_TIME_LIMITS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GB_SET_TIME_LIMITS", function() { return GB_SET_TIME_LIMITS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "initialState", function() { return initialState; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "zoom", function() { return zoom; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setStartTime", function() { return setStartTime; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setEndTime", function() { return setEndTime; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setTimeLimits", function() { return setTimeLimits; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "checkTimeSpan", function() { return checkTimeSpan; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "gbSetTimeLimits", function() { return gbSetTimeLimits; });
 /* harmony import */ var _state__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./state */ "./src/state/state.js");
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+
+function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) { return; } var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -66358,19 +66488,28 @@ var ZOOM = "ZOOM";
 var SET_START_TIME = "SET_START_TIME";
 var SET_END_TIME = "SET_END_TIME";
 var SET_TIME_LIMITS = "SET_TIME_LIMITS";
+var GB_SET_TIME_LIMITS = "GB_SET_TIME_LIMITS";
 /* -- TEMPORARY CONSTANTS -- */
 
-var exStartTime = new Date(2020, 3, 17, 12, 0, 0); // the month is 0-indexed. Month 3 = April.
+var exStartTime = new Date(2020, 3, 12, 12, 20, 13); // the month is 0-indexed. Month 3 = April.
 
-var exEndTime = new Date(2020, 3, 19, 0, 0, 0);
+var exEndTime = new Date(2020, 3, 19, 16, 40, 2);
+var gbStartTime = new Date(2020, 3, 14, 12, 30, 0);
+var gbEndTime = new Date(2020, 3, 14, 15, 0, 0);
 /* -- INITIAL STATE -- */
 
 var initialState = {
   scale: 12,
   startTime: exStartTime,
   endTime: exEndTime,
-  timeSpan: 36 * 60 * 60 * 1000 //timeSpan in ms
+  timeSpan: exEndTime.getTime() - exStartTime.getTime(),
+  //timeSpan in ms
+  glassbox: {
+    startTime: gbStartTime,
+    endTime: gbEndTime,
+    timeSpan: gbEndTime.getTime() - gbStartTime.getTime() //timeSpan in ms
 
+  }
 };
 /* -- ACTION CREATORS -- */
 // This function changes the scale-state.
@@ -66399,16 +66538,55 @@ function setTimeLimits(startDate, endDate) {
     start: startDate,
     end: endDate
   };
-} // Checks if startDate is before endDate, and if so throws an error
+}
+function gbSetTimeLimits(startDate, endDate) {
+  return {
+    type: GB_SET_TIME_LIMITS,
+    start: startDate,
+    end: endDate
+  };
+} // Checks if startDate is after endDate, and if so throws an error
 
-function checkTimeSpan(startDate, endDate) {
-  try {
-    if (startDate.getTime() >= endDate.getTime()) throw new RangeError("StartDate before endDate");
-  } catch (e) {
-    console.error(e.name, ": ", e.message);
+function checkTimeSpan(startTime, endTime) {
+  if (startTime.getTime() >= endTime.getTime()) {
+    console.error('RangeError: StartDate before endDate');
   }
+} // Checks input for GB_SET_TIME_LIMITS
+// If one input is undefiend, return the initialState input for that one
+
+
+function handleGlassboxInput(start, end, state) {
+  if (start == undefined && end) {
+    return [state.startTime, end];
+  } else if (start == undefined && end == undefined) {
+    console.error('RangeError: StartDate, endDate undefined');
+  } else if (start && end == undefined) {
+    return [start, state.endTime];
+  } else {
+    return [start, end];
+  }
+
+  return [state.startTime, state.endTime];
+} // Checks if startTime, endTime of glassbox is contained in timeline
+
+
+function checkGlassboxTimeSpan(start, end, state) {
+  if (state.startTime.getTime() < start.getTime() && start.getTime() < state.endTime.getTime()) {
+    if (state.startTime.getTime() < end.getTime() && end.getTime() < state.endTime.getTime()) {
+      if (start.getTime() < end.getTime()) {
+        return; // this is the expected behaviour
+      } else {
+        console.error('RangeError: Glassbox: startTime after endTime');
+        return;
+      }
+    }
+  }
+
+  console.error('RangeError: Glassbox: startTime, endTime of glassbox is not contained inside timeline');
+  return;
 }
 /* -- REDUX REDUCER -- */
+
 
 var timelineReducer = function timelineReducer() {
   var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
@@ -66439,9 +66617,25 @@ var timelineReducer = function timelineReducer() {
 
     case ZOOM:
       return _objectSpread({}, state, {
-        // Compares with timeSpan; if action.hrs is bigger than timeSpan,
+        // Compares with timeSpan; if action.hrs is bigger than timeSpan, 
         // then timeSpan is the max value for scale.
         scale: Math.min(action.hrs, state.timeSpan / (60 * 60 * 1000))
+      });
+
+    case GB_SET_TIME_LIMITS:
+      var start, end;
+
+      var _handleGlassboxInput = handleGlassboxInput(action.start, action.end);
+
+      var _handleGlassboxInput2 = _slicedToArray(_handleGlassboxInput, 2);
+
+      start = _handleGlassboxInput2[0];
+      end = _handleGlassboxInput2[1];
+      checkGlassboxTimeSpan(start, end, state);
+      return _objectSpread({}, state.glassbox, {
+        startTime: start,
+        endTime: end,
+        timeSpan: end.getTime() - start.getTime()
       });
 
     default:

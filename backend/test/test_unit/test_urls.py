@@ -5,6 +5,15 @@ from backend.views import *
 
 class UrlsTest(TestCase):
 
+    def test_filter_get_params(self):
+        '''
+        Test that the url for the filter module is correctly mapped to the view
+        :return: None
+        '''
+        url = reverse('backend:filter get_params')
+        resolver = resolve(url)
+        self.assertEqual(resolver.func, filter_get_params)
+
     def test_filter_get_matching_clips(self):
         '''
         Test that the url for the filter module is correctly mapped to the view

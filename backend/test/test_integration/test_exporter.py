@@ -8,11 +8,12 @@ from backend.exporter import *
 
 
 class ExportFilterTest(TestCase):
-
-    def setUp(self) -> None:
+    @patch('backend.database_wrapper.create_hash_sum')
+    def setUp(self, mock_create_hash_sum) -> None:
         """
         Create a folder, clip, project and filter.
         """
+        mock_create_hash_sum.return_value = '1234'
         self.rid = create_root_folder(path="/home/user/", name="test_folder")
         self.lat = Decimal(value="13.37")
         self.lon = Decimal(value="0.42")

@@ -177,6 +177,7 @@ class Clip(models.Model):
     frame_rate = models.FloatField()
     duplicates = models.ManyToManyField('self', related_name="duplicates")
     overlap = models.ManyToManyField('self', related_name="overlap")
+    hash_sum = models.CharField(max_length=256, null=True, blank=True)
 
     class Meta:
         constraints = [

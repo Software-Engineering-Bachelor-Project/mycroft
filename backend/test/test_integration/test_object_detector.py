@@ -10,7 +10,9 @@ class DetectObjectsTest(TestCase):
     Hard to test full call because of threading.
     """
 
-    def setUp(self) -> None:
+    @patch('backend.database_wrapper.create_hash_sum')
+    def setUp(self, mock_create_hash_sum) -> None:
+        mock_create_hash_sum.return_value = '1234'
         self.fid = create_root_folder(path='home/user/', name='test_folder')
         self.st = timezone.now()
         self.et = timezone.now() + timezone.timedelta(seconds=5)
@@ -87,7 +89,9 @@ class DeleteProgressTest(TestCase):
 
 class RunObjectDetectionTest(TestCase):
 
-    def setUp(self) -> None:
+    @patch('backend.database_wrapper.create_hash_sum')
+    def setUp(self, mock_create_hash_sum) -> None:
+        mock_create_hash_sum.return_value = '1234'
         self.fid = create_root_folder(path='home/user/', name='test_folder')
         self.st = timezone.now()
         self.et = timezone.now() + timezone.timedelta(seconds=5)

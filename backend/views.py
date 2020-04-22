@@ -33,6 +33,7 @@ def filter_get_areas(request):
     data = filter_module.get_areas_in_filter(request.data)
     return Response(data[1], data[0])
 
+
 @api_view(['POST'])
 def filter_get_params(request):
     """
@@ -131,8 +132,6 @@ def video_get_info(request):
     """
     data = video_manager.get_clip_info(request.data)
     return Response(data[1], data[0])
-
-
 
 
 @api_view(['POST'])

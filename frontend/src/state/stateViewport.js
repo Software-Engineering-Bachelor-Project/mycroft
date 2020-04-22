@@ -1,28 +1,28 @@
-import store from './state';
+import store from "./state";
 
 /* -- ACTIONS -- */
 const DUMMY = "DUMMY";
 
 /* -- INITIAL STATE -- */
 const initialState = {
-    //TODO::add states
-}
+  //TODO::add states
+};
 
 /* -- ACTION CREATORS -- */
 export function dummy() {
-    return {
-	    type: DUMMY
-    }
+  return {
+    type: DUMMY,
+  };
 }
 
 /* -- REDUX REDUCER -- */
 const viewportReducer = (state = initialState, action) => {
-    switch(action.type) {
+  switch (action.type) {
     case DUMMY:
-	    break;
+      break;
     default:
-	    return state;
-    }
-}
+      return state;
+  }
+};
 
 export default viewportReducer;

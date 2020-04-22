@@ -1,41 +1,41 @@
 .main {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 15vw !important;
-    height: 70vh !important;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 15vw !important;
+  height: 70vh !important;
 }
 
 .browserCol {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .browserNav {
-    width: 7.5vw;
+  width: 7.5vw;
 }
 
 .browserTab {
-    flex-grow: 1;
+  flex-grow: 1;
 }
 
 .browserItem {
-    position: relative;
-    width: 15vw !important;
-    height: 100% !important;
+  position: relative;
+  width: 15vw !important;
+  height: 100% !important;
 }
 
 .browserClip {
-    position: absolute;
-    width: 100% !important;
-    height: 100% !important;
-    overflow-y: scroll;
+  position: absolute;
+  width: 100% !important;
+  height: 100% !important;
+  overflow-y: scroll;
 }
 
 .browserFile {
-    position: absolute;
-    width: 100% !important;
-    height: 100% !important;
-    overflow-y: scroll;
+  position: absolute;
+  width: 100% !important;
+  height: 100% !important;
+  overflow-y: scroll;
 }

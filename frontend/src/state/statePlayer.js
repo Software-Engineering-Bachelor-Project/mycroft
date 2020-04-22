@@ -1,28 +1,28 @@
-import store from './state';
+import store from "./state";
 
 /* -- ACTIONS -- */
 const PLAY_CLIP = "PLAY_CLIP";
 
 /* -- INITIAL STATE -- */
 const initialState = {
-    clips: []
-}
+  clips: [],
+};
 
 /* -- ACTION CREATORS -- */
 export function playClip() {
-    return {
-	    type: PLAY_CLIP
-    }
+  return {
+    type: PLAY_CLIP,
+  };
 }
 
 /* -- REDUX REDUCER -- */
 const playerReducer = (state = initialState, action) => {
-    switch(action.type) {
+  switch (action.type) {
     case PLAY_CLIP:
-	    break;
+      break;
     default:
-	    return state;
-    }
-}
+      return state;
+  }
+};
 
 export default playerReducer;

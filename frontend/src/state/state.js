@@ -1,13 +1,13 @@
-import { createStore, combineReducers } from 'redux';
-import communicationReducer from './stateCommunication';
-import playerReducer from './statePlayer';
-import mapReducer from './stateMap';
+import { createStore, combineReducers } from "redux";
+import communicationReducer from "./stateCommunication";
+import playerReducer from "./statePlayer";
+import mapReducer from "./stateMap";
 import menuReducer from "./stateMenu";
 import viewportReducer from "./stateViewport";
 import timelineReducer from "./stateTimeline";
 import browserRecuder from "./stateBrowser";
 
-/* 
+/*
  * This file contains the main state of Mycroft.
  * Application state is managed using Redux.
  */
@@ -17,13 +17,13 @@ import browserRecuder from "./stateBrowser";
 // documentation. Each reducer covers a specific state-group.
 // Follow the imports for further info about each one.
 const rootReducer = combineReducers({
-    com: communicationReducer,
-	player: playerReducer,
-	map: mapReducer,
-	menu: menuReducer,
-	viewport: viewportReducer,
-	timeline: timelineReducer,
-	browser: browserRecuder,
+  com: communicationReducer,
+  player: playerReducer,
+  map: mapReducer,
+  menu: menuReducer,
+  viewport: viewportReducer,
+  timeline: timelineReducer,
+  browser: browserRecuder,
 });
 
 // Main state-container of Mycroft

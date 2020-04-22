@@ -1,52 +1,43 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import styles from './browser.module.css';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import styles from "./browser.module.css";
 
 // React Bootstrap
-import ListGroup from 'react-bootstrap/ListGroup';
+import ListGroup from "react-bootstrap/ListGroup";
 
 /* -- Browser -- */
 class ClipBrowser extends Component {
-    constructor(props) {
-        super(props);
-    }
+  constructor(props) {
+    super(props);
+  }
 
-    render() {
-        return (
-            <div className={styles.browserClip}>
-              <ListGroup variant="flush"> 
-                {Object.values(this.props.cameras).map((camera) => (
-                    <ListGroup.Item key={camera.id}>
-                      <p>{camera.name}</p>
-                      {Object.values(camera.clips).map((clip) => (
-                          <ListGroup.Item key={clip.id}>
-                            {clip.name}
-                          </ListGroup.Item>
-                      )
-                                                      )}
-                    </ListGroup.Item>
-                ))}
-              </ListGroup>
-            </div>
-        );
-    }
+  render() {
+    return (
+      <div className={styles.browserClip}>
+        <ListGroup variant="flush">
+          {Object.values(this.props.cameras).map((camera) => (
+            <ListGroup.Item key={camera.id}>
+              <p>{camera.name}</p>
+              {Object.values(camera.clips).map((clip) => (
+                <ListGroup.Item key={clip.id}>{clip.name}</ListGroup.Item>
+              ))}
+            </ListGroup.Item>
+          ))}
+        </ListGroup>
+      </div>
+    );
+  }
 }
 
 // Map Redux states to React props
-const mapStateToProps = state => {
-    return { cameras: state.browser.cameras }
-}
-
+const mapStateToProps = (state) => {
+  return { cameras: state.browser.cameras };
+};
 
 // Forward Redux's dispatch function to React props
-const mapDispatchToProps = dispatch => {
-    return {}
-}
-
+const mapDispatchToProps = (dispatch) => {
+  return {};
+};
 
 // Connect Redux with React
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(ClipBrowser);
-
+export default connect(mapStateToProps, mapDispatchToProps)(ClipBrowser);

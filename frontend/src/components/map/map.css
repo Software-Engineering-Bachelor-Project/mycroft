@@ -1,11 +1,11 @@
-@import '~leaflet/dist/leaflet.css';
+@import "~leaflet/dist/leaflet.css";
 
 .leaflet-container {
-    width: 100%;
-    height: 100%;
-    z-index: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
 }
 
 .leaflet-control-zoom {
-    top: 50px;
+  top: 50px;
 }

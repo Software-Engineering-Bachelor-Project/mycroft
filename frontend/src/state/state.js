@@ -5,7 +5,7 @@ import mapReducer from "./stateMap";
 import menuReducer from "./stateMenu";
 import viewportReducer from "./stateViewport";
 import timelineReducer from "./stateTimeline";
-import browserRecuder from "./stateBrowser";
+import browserReducer from "./stateBrowser";
 import objectDetectorReducer from "./stateObjectDetector";
 
 /*
@@ -24,7 +24,7 @@ const rootReducer = combineReducers({
   menu: menuReducer,
   viewport: viewportReducer,
   timeline: timelineReducer,
-  browser: browserRecuder,
+  browser: browserReducer,
   od: objectDetectorReducer,
 });
 

@@ -24,6 +24,7 @@ class FilterGetAreas(TestCase):
         # Did we propagate properly?
         mock_mod.get_areas_in_filter.assert_called_with(QueryDict('test=data'))
 
+
 class FilterGetParams(TestCase):
     @mock.patch('backend.views.filter_module')
     def test_propagation(self, mock_mod):
@@ -40,6 +41,7 @@ class FilterGetParams(TestCase):
 
         # Did we propagate properly?
         mock_mod.get_params.assert_called_with(QueryDict('test=data'))
+
 
 class FilterCreateArea(TestCase):
 

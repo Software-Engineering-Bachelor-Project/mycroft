@@ -141,3 +141,29 @@ def create_area(data: dict) -> (int, dict):
     }
 
     return 200, os_aware(res)
+
+
+def get_params(data: dict) -> (int, dict):
+    """
+    Returns the params in a filter
+
+    :param data: A dictionary that need to have the key filter id
+    :return: Status code and a dict of resolutions that exist in the project and available classes
+    """
+    # Retrieve parameters and verify that they exist
+    try:
+        fid = data[FILTER_ID]
+    except KeyError:
+        return 400, {}  # Bad request, missing parameters
+
+    f: Filter = dbw.get_filter_by_id(fid)
+    if f is None:
+        return 204, {}  # Bad fid
+
+    # Construct the response
+    res = {
+        CLASSES: ["car", "person", "bicycle"],
+        RESOLUTIONS: serialize(dbw.get_all_resolutions_in_project(f.project.id))
+    }
+
+    return 200, os_aware(res)

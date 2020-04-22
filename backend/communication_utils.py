@@ -36,6 +36,7 @@ INCLUDED_CLIP_IDS = "included_clip_ids"
 EXCLUDED_CLIP_IDS = "excluded_clip_ids"
 
 # --- Lists of values ---
+RESOLUTIONS = "resolutions"
 WHITELISTED_RESOLUTIONS = "whitelisted_resolutions"
 LONGITUDE = "longitude"
 LATITUDE = "latitude"

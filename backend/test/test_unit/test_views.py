@@ -24,6 +24,22 @@ class FilterGetAreas(TestCase):
         # Did we propagate properly?
         mock_mod.get_areas_in_filter.assert_called_with(QueryDict('test=data'))
 
+class FilterGetParams(TestCase):
+    @mock.patch('backend.views.filter_module')
+    def test_propagation(self, mock_mod):
+        '''
+        Tests propagation of the 'filter get params' request.
+        :return: None
+        '''
+        # Set up mock
+        mock_mod.get_params.return_value = (200, {})
+
+        # Test function
+        req = APIRequestFactory().post('', {'test': 'data'})
+        response = views.filter_get_params(req)
+
+        # Did we propagate properly?
+        mock_mod.get_params.assert_called_with(QueryDict('test=data'))
 
 class FilterCreateArea(TestCase):
 

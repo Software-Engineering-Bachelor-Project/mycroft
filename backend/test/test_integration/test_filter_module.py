@@ -301,7 +301,6 @@ class GetFilterParametersTest(TestCase):
         self.fid = dbw.create_filter(pid=self.pid)
         dbw.add_folder_to_project(self.fid, self.pid)
 
-
     def test_simple_call(self):
         """
         Test calling function with correct fid
@@ -309,7 +308,9 @@ class GetFilterParametersTest(TestCase):
         data = {FILTER_ID: self.fid}
 
         res = get_params(data)
-        self.assertEqual(res, (200, {'classes': ['car', 'person', 'bicycle'], 'resolutions': [OrderedDict([('id', 1), ('width', 200), ('height', 300)]), OrderedDict([('id', 2), ('width', 400), ('height', 500)])]}))
+        self.assertEqual(res, (200, {'classes': ['car', 'person', 'bicycle'],
+                                     'resolutions': [OrderedDict([('id', 1), ('width', 200), ('height', 300)]),
+                                                     OrderedDict([('id', 2), ('width', 400), ('height', 500)])]}))
 
     def test_missing_param(self):
         """
@@ -324,7 +325,7 @@ class GetFilterParametersTest(TestCase):
         """
         Test calling function with nonexistent fid
         """
-        data = {FILTER_ID: self.fid+10}
+        data = {FILTER_ID: self.fid + 10}
 
         res = get_params(data)
         self.assertEqual(res, (204, {}))

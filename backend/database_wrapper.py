@@ -2,6 +2,8 @@ from typing import List, Optional, Tuple, Dict
 from django.utils import timezone
 from decimal import Decimal
 from django.db.models import Q
+import hashlib
+import cv2
 
 from .models import Project, Folder, Filter, Camera, ObjectDetection, Object, ObjectClass, Clip, Resolution, Progress, \
     Area
@@ -301,17 +303,36 @@ def create_clip(fid: int, name: str, video_format: str, start_time: timezone.dat
     clip = Clip.objects.get_or_create(folder=f, name=name, video_format=video_format, start_time=start_time,
                                       end_time=end_time, camera=camera, resolution=resolution,
                                       frame_rate=frame_rate)[0]
+    hash_sum = create_hash_sum(f, clip)
+    assert hash_sum is not None
+    clip.hash_sum = hash_sum
+    clip.save()
 
     # check for duplicates and overlapping clips
     for c in camera.clip_set.all():
         if clip != c:
-            if clip.start_time == c.start_time and clip.end_time == c.end_time:
+            if clip.hash_sum == c.hash_sum:
                 clip.duplicates.add(c)
             elif clip.start_time <= c.start_time < clip.end_time or \
                     clip.start_time < c.end_time <= clip.end_time or \
                     clip.start_time > c.start_time and clip.end_time < c.end_time:
                 clip.overlap.add(c)
     return clip.id
+
+
+def create_hash_sum(folder: Folder, clip: Clip) -> Optional[str] or Optional[None]:
+    file = folder.path+clip.name
+    file_hash = hashlib.sha256()
+
+    cap = cv2.VideoCapture(file)
+    success, frame = cap.read()
+
+    if success:
+        file_hash.update(frame)
+        cap.release()
+        return file_hash.hexdigest()
+    else:
+        return None
 
 
 def get_clip_by_id(cid: int) -> Optional[Clip]:

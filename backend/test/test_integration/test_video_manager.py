@@ -9,7 +9,9 @@ from backend.video_manager import *
 
 class GetClipInfoTest(TestCase):
 
-    def setUp(self) -> None:
+    @patch('backend.database_wrapper.create_hash_sum')
+    def setUp(self, mock_create_hash_sum) -> None:
+        mock_create_hash_sum.return_value = '1234'
         self.fid = create_root_folder(path='home/user/', name='test_folder')
         self.cid = create_clip(name='test_clip', fid=self.fid, video_format='tvf', latitude=Decimal('0.0'),
                                longitude=Decimal('0.0'),
@@ -29,12 +31,14 @@ class GetClipInfoTest(TestCase):
                                'end_time': '2020-01-18T00:00:00+01:00', 'resolution': 1,
                                'frame_rate': 42.0, 'folder': 1, 'camera': 1,
                                'file_path': 'home/user/test_folder/test_clip.tvf', 'duplicates': [],
-                               'overlap': []})
+                               'overlap': [], 'hash_sum': '1234'})
 
 
 class GetSequentialClipTest(TestCase):
 
-    def setUp(self) -> None:
+    @patch('backend.database_wrapper.create_hash_sum')
+    def setUp(self, mock_create_hash_sum) -> None:
+        mock_create_hash_sum.return_value = '1234'
         self.fid = create_root_folder(path='home/user/', name='test_folder')
         self.cid = create_clip(name='test_clip', fid=self.fid, video_format='tvf', latitude=Decimal('0.0'),
                                longitude=Decimal('0.0'),
@@ -52,10 +56,12 @@ class GetSequentialClipTest(TestCase):
         self.assertEqual(code, 200)
         self.assertEqual(res, {CLIP_ID: None})
 
-    def test_sequential_clip(self):
+    @patch('backend.database_wrapper.create_hash_sum')
+    def test_sequential_clip(self, mock_create_hash_sum):
         """
         Tests a sequential clip.
         """
+        mock_create_hash_sum.return_value = '1234567'
         cid2 = create_clip(name='test_clip2', fid=self.fid, video_format='tvf', latitude=Decimal('0.0'),
                            longitude=Decimal('0.0'), start_time=self.clip.end_time,
                            end_time=timezone.now() + timezone.timedelta(hours=1),
@@ -65,10 +71,12 @@ class GetSequentialClipTest(TestCase):
         self.assertEqual(code, 200)
         self.assertEqual(res, {CLIP_ID: cid2})
 
-    def test_almost_sequential_clip(self):
+    @patch('backend.database_wrapper.create_hash_sum')
+    def test_almost_sequential_clip(self, mock_create_hash_sum):
         """
         Tests a clip that has a start time 5 seconds after the first clip.
         """
+        mock_create_hash_sum.return_value = '1234567'
         cid2 = create_clip(name='test_clip2', fid=self.fid, video_format='tvf', latitude=Decimal('0.0'),
                            longitude=Decimal('0.0'),
                            start_time=self.clip.end_time + timezone.timedelta(seconds=5),
@@ -79,10 +87,12 @@ class GetSequentialClipTest(TestCase):
         self.assertEqual(code, 200)
         self.assertEqual(res, {CLIP_ID: cid2})
 
-    def test_not_sequential_clip(self):
+    @patch('backend.database_wrapper.create_hash_sum')
+    def test_not_sequential_clip(self, mock_create_hash_sum):
         """
         Tests a clip that is not sequential.
         """
+        mock_create_hash_sum.return_value = '1234567'
         create_clip(name='test_clip2', fid=self.fid, video_format='tvf', latitude=Decimal('0.0'),
                     longitude=Decimal('0.0'),
                     start_time=self.clip.end_time + timezone.timedelta(seconds=6),
@@ -96,10 +106,12 @@ class GetSequentialClipTest(TestCase):
 
 class GetCamerasTest(TestCase):
 
-    def setUp(self) -> None:
+    @patch('backend.database_wrapper.create_hash_sum')
+    def setUp(self, mock_create_hash_sum) -> None:
         """
         Create cameras and a project.
         """
+        mock_create_hash_sum.return_value = '1234'
         self.pid = create_project(name="test_project")
         self.lat = Decimal(value="13.37")
         self.lon = Decimal(value="0.42")

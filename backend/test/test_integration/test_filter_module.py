@@ -12,7 +12,9 @@ from backend.filter_module import *
 
 
 class ModifyFilterTest(TestCase):
-    def setUp(self) -> None:
+    @patch('backend.database_wrapper.create_hash_sum')
+    def setUp(self, mock_create_hash_sum) -> None:
+        mock_create_hash_sum.return_value = '1234'
         self.pid = dbw.create_project("Test project")
         self.fid = dbw.create_filter(self.pid)
         self.lat = Decimal(value="13.37")
@@ -70,9 +72,10 @@ class ModifyFilterTest(TestCase):
         self.assertEqual(res, (204, {}))
 
 
-class GetClipsMatchingFilterTest(TestCase):
-
-    def setUp(self) -> None:
+class GetClipsMatchingFilter(TestCase):
+    @patch('backend.database_wrapper.create_hash_sum')
+    def setUp(self, mock_create_hash_sum) -> None:
+        mock_create_hash_sum.return_value = '1234'
         self.rid = dbw.create_root_folder(path="/home/user/", name="test_folder")
         self.lat = Decimal(value="13.37")
         self.lon = Decimal(value="0.42")
@@ -186,11 +189,12 @@ class GetClipsMatchingFilterTest(TestCase):
         res = get_clips_matching_filter(data)
         self.assertEqual(res, (200, {CLIP_IDS: [1], CAMERA_IDS: [1]}))
 
-    def test_class_filter_object_detection_outside_timespan(self):
+    @patch('backend.database_wrapper.create_hash_sum')
+    def test_class_filter_object_detection_outside_timespan(self, mock_create_hash_sum):
         """
         Test that the filter only filters on object detections within the timespan
         """
-
+        mock_create_hash_sum.return_value = '1234567'
         data = {FILTER_ID: 1}
         cid1_copy = dbw.create_clip(fid=self.rid, name="test_clip1_copy", video_format="tvf",
                                     start_time=self.st1, end_time=self.et1, latitude=self.lat,
@@ -256,7 +260,6 @@ class GetAreasInFilterTest(TestCase):
 
 
 class CreateAreaTest(TestCase):
-
     def test_simple_call(self) -> None:
         """
         Test calling function with correct values
@@ -282,7 +285,9 @@ class CreateAreaTest(TestCase):
 
 
 class GetFilterParametersTest(TestCase):
-    def setUp(self) -> None:
+    @patch('backend.database_wrapper.create_hash_sum')
+    def setUp(self, mock_create_hash_sum) -> None:
+        mock_create_hash_sum.return_value = '1234'
         self.rid = dbw.create_root_folder(path="/home/user/", name="test_folder")
         self.lat = Decimal(value="13.37")
         self.lon = Decimal(value="0.42")

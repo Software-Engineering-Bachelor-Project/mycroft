@@ -15,6 +15,7 @@ import TabContainer from "react-bootstrap/TabContainer";
 import styles from "./browser.module.css";
 import ClipBrowser from "./clipBrowser";
 import FileBrowser from "./fileBrowser";
+import InspectorBrowser from "./inspectorBrowser";
 
 /* -- Browser -- */
 class Browser extends Component {
@@ -30,10 +31,13 @@ class Browser extends Component {
             <Row>
               <Nav justify variant="pills">
                 <Nav.Item className={styles.browserNav}>
-                  <Nav.Link eventKey="clipBrowser">Klipp</Nav.Link>
+                  <Nav.Link eventKey="clipBrowser">Clips</Nav.Link>
                 </Nav.Item>
                 <Nav.Item className={styles.browserNav}>
-                  <Nav.Link eventKey="fileBrowser">Filer</Nav.Link>
+                  <Nav.Link eventKey="fileBrowser">Filesystem</Nav.Link>
+                </Nav.Item>
+                <Nav.Item className={styles.browserNav}>
+                  <Nav.Link eventKey="inspectorBrowser">Inspect</Nav.Link>
                 </Nav.Item>
               </Nav>
             </Row>
@@ -44,6 +48,12 @@ class Browser extends Component {
                 </Tab.Pane>
                 <Tab.Pane eventKey="clipBrowser" className={styles.browserItem}>
                   <ClipBrowser />
+                </Tab.Pane>
+                <Tab.Pane
+                  eventKey="inspectorBrowser"
+                  className={styles.browserItem}
+                >
+                  <InspectorBrowser />
                 </Tab.Pane>
               </Tab.Content>
             </Row>

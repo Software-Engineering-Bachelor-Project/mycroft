@@ -39,3 +39,8 @@
   height: 100% !important;
   overflow-y: scroll;
 }
+
+.browserInspectorHeader {
+  text-align: center;
+  border: px solid green;
+}

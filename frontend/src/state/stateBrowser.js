@@ -1,9 +1,18 @@
 import store from "./state";
 
 import { Camera, Clip, Folder } from "../types";
+import { getClipInfo } from "./stateCommunication";
+
+/* -- CONSTANT -- */
+export const INSPECTOR_MODE_CAMERA = 0;
+export const INSPECTOR_MODE_CLIP = 1;
+export const INSPECTOR_MODE_EXLUDED_INCLUDED = 2;
+export const INSPECTOR_MODE_AREA = 3;
 
 /* -- ACTIONS -- */
 const DUMMY = "DUMMY";
+
+export const CHANGE_MODE = "CHANGE_MODE";
 
 /* -- INITIAL STATE -- */
 
@@ -99,6 +108,10 @@ const initialState = {
       false
     ),
   },
+  inspector: {
+    mode: INSPECTOR_MODE_CAMERA,
+    id: 0,
+  },
 };
 
 /* -- ACTION CREATORS -- */
@@ -108,9 +121,26 @@ export function dummy() {
   };
 }
 
+export function changeMode(mode, id) {
+  return {
+    type: CHANGE_MODE,
+    mode: mode,
+    id: id,
+  };
+}
+
 /* -- REDUX REDUCER -- */
 const browserReducer = (state = initialState, action) => {
   switch (action.type) {
+    case CHANGE_MODE:
+      return {
+        ...state,
+        inspector: {
+          ...state.inspector,
+          mode: action.mode,
+          id: action.id,
+        },
+      };
     case DUMMY:
       return state;
     default:

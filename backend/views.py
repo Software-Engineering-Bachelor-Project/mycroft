@@ -222,3 +222,13 @@ def delete_progress(request):
     """
     data = object_detector.delete_progress(request.data)
     return Response(data[1], data[0])
+
+
+@api_view(['GET'])
+def get_clip_stream(request, cid):
+    """
+    Delegates a 'get video stream' request to the vide manager.
+    :return: A response from the Object Detector.
+    """
+    response = video_manager.get_video_stream(request, cid)
+    return response

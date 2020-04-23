@@ -14,6 +14,8 @@ import {
   deleteODProgress,
 } from "../state/stateCommunication";
 
+import { playClip } from "../state/statePlayer";
+
 /* -- Evoker -- */
 class Evoker extends Component {
   render() {
@@ -52,6 +54,16 @@ class Evoker extends Component {
           >
             {" "}
             deleteProject{" "}
+          </Dropdown.Item>
+
+          <Dropdown.Item
+            onClick={() => {
+              var id = window.prompt("ID: ");
+              this.props.playClip(id);
+            }}
+          >
+            {" "}
+            playClip{" "}
           </Dropdown.Item>
 
           <Dropdown.Item
@@ -118,6 +130,7 @@ const menuDispatchToProps = (dispatch) => {
     detectObjects: (rate, target) => dispatch(detectObjects(rate, target)),
     getODProgress: () => dispatch(getODProgress()),
     deleteODProgress: () => dispatch(deleteODProgress()),
+    playClip: (x) => dispatch(playClip(x)),
   };
 };
 

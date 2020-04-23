@@ -1,5 +1,6 @@
+from django.http import HttpRequest
 from django.test import TestCase
-from unittest.mock import patch
+from unittest.mock import patch, Mock
 
 # Import module
 from backend.video_manager import *
@@ -73,3 +74,9 @@ class GetCamerasTest(TestCase):
         code, res = get_cameras(data={FOLDER_ID: 42})
         self.assertEqual(code, 400)
         self.assertEqual(res, {})
+
+
+class GetVideoStreamTest(TestCase):
+    def test_simple_call(self):
+        pass
+        # TODO: I have no idea how to test this one

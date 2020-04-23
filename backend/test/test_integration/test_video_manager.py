@@ -145,3 +145,9 @@ class GetCamerasTest(TestCase):
         code, res = get_cameras(data={PROJECT_ID: 42})
         self.assertEqual(code, 204)
         self.assertEqual(res, {})
+
+
+class GetVideoStreamTest(TestCase):
+    def test_simple_call(self):
+        pass
+        # TODO: I have no idea how to test this one

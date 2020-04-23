@@ -35,4 +35,5 @@ urlpatterns = [
     path('object_detection/detect_objects', views.detect_objects, name='detect objects'),
     path('object_detection/get_progress', views.get_progress, name='get progress'),
     path('object_detection/delete_progress', views.delete_progress, name='delete progress'),
+    path('video/stream/<int:cid>/', views.get_clip_stream, name='video stream'),
 ]

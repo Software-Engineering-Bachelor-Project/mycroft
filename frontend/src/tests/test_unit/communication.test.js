@@ -1,7 +1,7 @@
 /* -- THIS FILE TESTS THE COMMUNICATION STATE FILE .. */
 
 // Misc
-import { Project } from "../../types";
+import { Project, Folder } from "../../types";
 import { TARGET } from "../../state/stateObjectDetector";
 
 // Reducer and initial state
@@ -16,6 +16,13 @@ import { GET_PROJECTS, getProjects } from "../../state/stateCommunication";
 import { NEW_PROJECT, newProject } from "../../state/stateCommunication";
 import { DELETE_PROJECT, deleteProject } from "../../state/stateCommunication";
 import { RENAME_PROJECT, renameProject } from "../../state/stateCommunication";
+import { GET_FOLDERS, getFolders } from "../../state/stateCommunication";
+import {
+  GET_SOURCE_FOLDERS,
+  getSourceFolders,
+} from "../../state/stateCommunication";
+import { ADD_FOLDER, addFolder } from "../../state/stateCommunication";
+import { REMOVE_FOLDER, removeFolder } from "../../state/stateCommunication";
 import { DETECT_OBJECTS, detectObjects } from "../../state/stateCommunication";
 import { GET_OD_PROGRESS, getODProgress } from "../../state/stateCommunication";
 import {
@@ -221,6 +228,95 @@ describe("Communication reducer", () => {
     expect(
       reducer(initialState, requestResponse(RENAME_PROJECT, 404, undefined))
     ).toEqual(initialState);
+  });
+
+  it("should handle GET_FOLDERS", () => {
+    // Declare variables
+    let testState = { ...initialState, projectID: 42 };
+
+    // Action constant
+    expect(GET_FOLDERS).toEqual("GET_FOLDERS");
+
+    // Action creator
+    expect(getFolders()).toEqual({
+      type: GET_FOLDERS,
+    });
+
+    // Get folders
+    expect(
+      reducer(
+        testState,
+        requestResponse(GET_FOLDERS, 200, {
+          folders: [
+            {
+              id: 42,
+              clip_set: [1337, 21],
+              path: "home/user/",
+              name: "test_folder",
+              parent: null,
+            },
+          ],
+        })
+      )
+    ).toEqual({
+      ...testState,
+      folders: {
+        42: new Folder(42, "test_folder", null, {}, [1337, 21]),
+      },
+    });
+  });
+
+  it("should handle GET_SOURCE_FOLDERS", () => {
+    // Action constant
+    expect(GET_SOURCE_FOLDERS).toEqual("GET_SOURCE_FOLDERS");
+
+    // Action creator
+    expect(getSourceFolders()).toEqual({
+      type: GET_SOURCE_FOLDERS,
+    });
+
+    // Get source folders
+    expect(
+      reducer(
+        initialState,
+        requestResponse(GET_SOURCE_FOLDERS, 200, {
+          folders: [
+            {
+              id: 42,
+              clip_set: [1337, 21],
+              path: "home/user/",
+              name: "test_folder",
+              parent: null,
+            },
+          ],
+        })
+      )
+    ).toEqual({
+      ...initialState,
+      sourceFolders: {
+        42: new Folder(42, "test_folder", null, {}, [1337, 21]),
+      },
+    });
+  });
+
+  it("should handle ADD_FOLDER", () => {
+    // Action constant
+    expect(ADD_FOLDER).toEqual("ADD_FOLDER");
+
+    // Action creator
+    expect(addFolder()).toEqual({
+      type: ADD_FOLDER,
+    });
+  });
+
+  it("should handle REMOVE_FOLDER", () => {
+    // Action constant
+    expect(REMOVE_FOLDER).toEqual("REMOVE_FOLDER");
+
+    // Action creator
+    expect(removeFolder()).toEqual({
+      type: REMOVE_FOLDER,
+    });
   });
 
   it("should handle DETECT_OBJECTS", () => {

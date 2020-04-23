@@ -1,8 +1,8 @@
 import store from "./state";
-import { makePOST } from "../util";
+import { makePOST, createFolderHierarchy } from "../util";
 
 // Types
-import { Project } from "../types";
+import { Project, Folder } from "../types";
 
 /*
  * This file defines the state, reducers, and actions
@@ -55,10 +55,12 @@ export const URL_GET_SEQUENTIAL_CLIP = "/video/get_sequential";
 export const GET_FOLDERS = "GET_FOLDERS";
 export const GET_SOURCE_FOLDERS = "GET_SOURCE_FOLDERS";
 export const ADD_FOLDER = "ADD_FOLDER";
+export const REMOVE_FOLDER = "REMOVE_FOLDER";
 
 export const URL_GET_FOLDERS = "/file/get_folders";
 export const URL_GET_SOURCE_FOLDERS = "/file/get_source_folders";
 export const URL_ADD_FOLDER = "/file/add_folder";
+export const URL_REMOVE_FOLDER = "/file/remove_folder";
 
 // Object Detector requests
 export const DETECT_OBJECTS = "DETECT_OBJECTS";
@@ -76,6 +78,8 @@ export const REQUEST_RESPONSE = "REQUEST_RESPONSE";
 export const initialState = {
   projectID: -1,
   projects: {},
+  folders: {},
+  sourceFolders: {},
   od: {
     progressID: -1,
     currentProgress: 0,
@@ -195,7 +199,7 @@ export function getCameras() {
 
 // File Manager requests
 /**
- * TODO: Add doc-comment
+ * This action is used to get all folders in the current project.
  */
 export function getFolders() {
   return {
@@ -204,7 +208,7 @@ export function getFolders() {
 }
 
 /**
- * TODO: Add doc-comment
+ * This action is used to get all source folder.
  */
 export function getSourceFolders() {
   return {
@@ -213,11 +217,24 @@ export function getSourceFolders() {
 }
 
 /**
- * TODO: Add doc-comment
+ * This action is used to add a source folder to the current project.
+ * @param {Number} fid The ID of the folder to be added.
  */
-export function addFolders() {
+export function addFolder(fid) {
   return {
-    type: ADD_FOLDERS,
+    type: ADD_FOLDER,
+    fid: fid,
+  };
+}
+
+/**
+ * This action is used to remove a source folder to the current project.
+ * @param {Number} fid The ID of the folder to be added.
+ */
+export function removeFolder(fid) {
+  return {
+    type: REMOVE_FOLDER,
+    fid: fid,
   };
 }
 
@@ -379,13 +396,53 @@ function handleResponse(state, reqType, status, data) {
       return state;
 
     case GET_FOLDERS:
-      return state;
+      switch (status) {
+        case 200:
+          return {
+            ...state,
+            folders: createFolderHierarchy(data.folders),
+          };
+        case 204:
+          e = "no project with specified ID";
+          break;
+        case 400:
+          e = "'project_id' parameter was missing from request";
+          break;
+        default:
+          e = "unknown reason";
+      }
+
+      break;
 
     case GET_SOURCE_FOLDERS:
-      return state;
+      switch (status) {
+        case 200:
+          return {
+            ...state,
+            sourceFolders: createFolderHierarchy(data.folders),
+          };
+        default:
+          e = "unknown reason";
+      }
+
+      break;
 
     case ADD_FOLDER:
-      return state;
+    case REMOVE_FOLDER:
+      switch (status) {
+        case 200:
+          return state;
+        case 204:
+          e = "no project with specified ID";
+          break;
+        case 400:
+          e = "'project_id' or 'folder_id' parameter was missing from request";
+          break;
+        default:
+          e = "unknown reason";
+      }
+
+      break;
 
     case DETECT_OBJECTS:
       switch (status) {
@@ -468,10 +525,27 @@ const communicationReducer = (state = initialState, action) => {
 
   switch (action.type) {
     case GET_CLIPS_MATCHING_FILTER:
+      url = URL_GET_CLIPS_MATCHING_FILTER;
       body = {};
       break;
 
     case MODIFY_FILTER:
+      url = URL_MODIFY_FILTER;
+      body = {};
+      break;
+
+    case GET_AREAS_IN_FILTER:
+      url = URL_GET_AREAS_IN_FILTER;
+      body = {};
+      break;
+
+    case CREATE_AREA:
+      url = URL_CREATE_AREA;
+      body = {};
+      break;
+
+    case GET_FILTER_PARAMS:
+      url = URL_GET_FILTER_PARAMS;
       body = {};
       break;
 
@@ -503,31 +577,43 @@ const communicationReducer = (state = initialState, action) => {
       break;
 
     case EXPORT_FILTER:
+      url = URL_EXPORT_FILTER;
       body = {};
       break;
 
     case EXPORT_CLIPS:
+      url = URL_EXPORT_CLIPS;
       body = {};
       break;
 
     case GET_CLIP_INFO:
+      url = URL_GET_CLIP_INFO;
       body = {};
       break;
 
     case GET_CAMERAS:
+      url = URL_GET_CAMERAS;
       body = {};
       break;
 
     case GET_FOLDERS:
-      body = {};
+      url = URL_GET_FOLDERS;
+      body = { project_id: state.projectID };
       break;
 
     case GET_SOURCE_FOLDERS:
-      body = {};
+      url = URL_GET_SOURCE_FOLDERS;
+      body = { project_id: state.projectID };
       break;
 
     case ADD_FOLDER:
-      body = {};
+      url = URL_ADD_FOLDER;
+      body = { project_id: state.projectID, folder_id: action.fid };
+      break;
+
+    case REMOVE_FOLDER:
+      url = URL_REMOVE_FOLDER;
+      body = { project_id: state.projectID, folder_id: action.fid };
       break;
 
     case DETECT_OBJECTS:

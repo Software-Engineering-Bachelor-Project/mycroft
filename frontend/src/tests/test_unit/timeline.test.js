@@ -11,6 +11,7 @@ import { SET_TIME_LIMITS, setTimeLimits } from "../../state/stateTimeline";
 import { GB_SET_TIME_LIMITS, gbSetTimeLimits } from "../../state/stateTimeline";
 
 import { getLinePlacements } from "../../components/timeline/timeline";
+import { getDayPlacements } from "../../components/timeline/timeline";
 
 // Mock the error function.
 // This is used to count the number of expected errors.
@@ -694,5 +695,65 @@ describe("Timeline component", () => {
 
     // get list of line placements #4
     expect(getLinePlacements(startTime4, timeSpan4)).toEqual(expReturn4);
+  });
+
+  it("should handle getDayPlacements", () => {
+    // Setup variables for test 1
+    const startTime1 = new Date(2020, 3, 12, 12, 0, 0);
+    const endTime1 = new Date(2020, 3, 13, 12, 0, 0);
+    var timeSpan1 = endTime1.getTime() - startTime1.getTime();
+    var expReturn1 = [
+      ["50%", "0%", "Apr 12"],
+      ["50%", "50%", "Apr 13"],
+    ];
+
+    // Setup variables for test 2
+    const startTime2 = new Date(2020, 6, 25, 2, 0, 0);
+    const endTime2 = new Date(2020, 6, 25, 20, 0, 0);
+    var timeSpan2 = endTime2.getTime() - startTime2.getTime();
+    var expReturn2 = [["100%", "0%", "Jul 25"]];
+
+    // Setup variables for test 3
+    const startTime3 = new Date(2020, 11, 29, 12, 0, 0);
+    const endTime3 = new Date(2021, 0, 2, 12, 0, 0);
+    var timeSpan3 = endTime3.getTime() - startTime3.getTime();
+    var expReturn3 = [
+      ["12.5%", "0%", "Dec 29"],
+      ["25%", "12.5%", "Dec 30"],
+      ["25%", "37.5%", "Dec 31"],
+      ["25%", "62.5%", "Jan 1"],
+      ["12.5%", "87.5%", "Jan 2"],
+    ];
+
+    // Setup variables for test 4
+    const startTime4 = new Date(2001, 8, 11, 0, 0, 0);
+    const endTime4 = new Date(2001, 8, 21, 0, 0, 0);
+    var timeSpan4 = endTime4.getTime() - startTime4.getTime();
+    var expReturn4 = [
+      ["10%", "0%", "Sep 11"],
+      ["10%", "10%", "Sep 12"],
+      ["10%", "20%", "Sep 13"],
+      ["10%", "30%", "Sep 14"],
+      ["10%", "40%", "Sep 15"],
+      ["10%", "50%", "Sep 16"],
+      ["10%", "60%", "Sep 17"],
+      ["10%", "70%", "Sep 18"],
+      ["10%", "80%", "Sep 19"],
+      ["10%", "90%", "Sep 20"],
+    ];
+
+    // Execute tests
+    expect(getDayPlacements(startTime1, endTime1, timeSpan1)).toEqual(
+      expReturn1
+    );
+    expect(getDayPlacements(startTime2, endTime2, timeSpan2)).toEqual(
+      expReturn2
+    );
+    expect(getDayPlacements(startTime3, endTime3, timeSpan3)).toEqual(
+      expReturn3
+    );
+    expect(getDayPlacements(startTime4, endTime4, timeSpan4)).toEqual(
+      expReturn4
+    );
   });
 });

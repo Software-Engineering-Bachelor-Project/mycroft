@@ -15,7 +15,7 @@ describe("CreateFolderHierachy", () => {
       },
     ];
     expect(createFolderHierarchy(single)).toEqual({
-      42: new Folder(42, "test_folder", null, {}, [1337, 21]),
+      42: new Folder(42, "test_folder", undefined, {}, [1337, 21]),
     });
   });
 
@@ -51,14 +51,14 @@ describe("CreateFolderHierachy", () => {
         clip_set: [1337, 21],
         path: "home/user/",
         name: "test_folder",
-        parent: null,
+        parent: undefined,
       },
     ];
     expect(createFolderHierarchy(multipleLevels)).toEqual({
       42: new Folder(
         42,
         "test_folder",
-        null,
+        undefined,
         {
           1337: new Folder(
             1337,
@@ -109,14 +109,14 @@ describe("CreateFolderHierachy", () => {
       42: new Folder(
         42,
         "test_folder",
-        null,
+        undefined,
         { 1337: new Folder(1337, "test_folder1", 42, {}, [22]) },
         [1337, 21]
       ),
       21: new Folder(
         21,
         "another_test_folder",
-        null,
+        undefined,
         { 7331: new Folder(7331, "test_folder2", 21, {}, [23]) },
         [12]
       ),

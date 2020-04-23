@@ -37,7 +37,7 @@ export class Camera {
   /**
    * @param {int} id The unique identifier of this camera. Corresponds to the backend database.
    * @param {string} name The name of this camera.
-   * @param {[number, number]} pos The decimal longitude and latitude of this camera.
+   * @param {Object} pos The decimal longitude and latitude of this camera. The object has two attributes, latitude and longitude.
    * @param {dict[int: Clip]} clips A dictionary containing this camera's clips, mapped by their own IDs.
    * @param {boolean} selected Whether this camera is selected or not.
    */
@@ -69,8 +69,8 @@ export class Clip {
    * @param {string} name The file name of this clip, without file extension.
    * @param {Folder} folder The path of the folder containing this clip.
    * @param {string} format The file format of this clip, 'wav' etc.
-   * @param {??????} startTime The point in time when the clip starts.
-   * @param {??????} endTime The point in time when the clip ends.
+   * @param {Date} startTime The point in time when the clip starts.
+   * @param {Date} endTime The point in time when the clip ends.
    */
   constructor(id, name, folder, format, startTime, endTime) {
     this.id = id;
@@ -99,7 +99,7 @@ export class Folder {
   /**
    * @param {int} id The unique identifier of this folder. Corresponds to the backend database.
    * @param {string} name The name of this folder.
-   * @param {Folder} parent The folder containing this folder. Should be undefined if root.
+   * @param {int} parent The id of the folder containing this folder. Should be undefined if root.
    * @param {dict[int: Folder]} folders A dictionary containing subfolders, mapped by their own IDs.
    * @param {dict[int: Clip]} clips A dictionary containing this folder's clips, mapped by their own IDs.
    */

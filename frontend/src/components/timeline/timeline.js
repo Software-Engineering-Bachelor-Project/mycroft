@@ -29,7 +29,7 @@ export function getLinePlacements(startTime, timeSpan) {
     return [];
   }
   var list_ = new Array();
-  for (var j = 1; j < totalHrs; j++) {
+  for (var j = 1; j < totalHrs + hrsOffset; j++) {
     list_.push(step * j - percentOffset + "%");
   }
   return list_;

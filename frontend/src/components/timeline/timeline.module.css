@@ -32,6 +32,8 @@
   width: 100%;
   /*border: 2px solid;*/
   overflow: auto;
+
+  /* TODO:: same color as slider! */
   background-color: rgb(106, 158, 255);
 }
 

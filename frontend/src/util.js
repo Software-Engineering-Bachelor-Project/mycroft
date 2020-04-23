@@ -3,6 +3,8 @@
  * used throughout Mycroft.
  */
 
+import { Folder } from "./types";
+
 /**
  *
  * This function is used to make POST-requests.
@@ -38,4 +40,29 @@ export function makePOST(url, opts = {}, onResponse) {
       onResponse(r.status, undefined);
     }
   });
+}
+
+/**
+ * Takes an array of JSON folders and returns a folder hiearchy.
+ * @param {Array[Object]} folderResponse List of folders in JSON.
+ */
+export function createFolderHierarchy(folderResponse) {
+  let res = {};
+  let unassigned = {};
+
+  // Find all roots and construct folder objects.
+  for (let f of folderResponse) {
+    let newFolder = new Folder(f.id, f.name, f.parent, {}, f.clip_set);
+    if (f.parent == undefined) res[f.id] = newFolder;
+    else unassigned[f.id] = newFolder;
+  }
+
+  // Assign all subfolders to their parent.
+  for (let id in unassigned) {
+    let pid = unassigned[id].parent;
+    if (unassigned[id].parent in res) res[pid].folders[id] = unassigned[id];
+    else unassigned[pid].folders[id] = unassigned[id];
+  }
+
+  return res;
 }

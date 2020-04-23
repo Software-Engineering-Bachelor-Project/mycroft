@@ -9,6 +9,10 @@ import {
   newProject,
   deleteProject,
   renameProject,
+  getFolders,
+  getSourceFolders,
+  addFolder,
+  removeFolder,
   detectObjects,
   getODProgress,
   deleteODProgress,
@@ -78,6 +82,45 @@ class Evoker extends Component {
             renameProject{" "}
           </Dropdown.Item>
 
+          {/* File manager */}
+          <Dropdown.Item
+            onClick={() => {
+              return this.props.getFolders();
+            }}
+          >
+            {" "}
+            getFolders{" "}
+          </Dropdown.Item>
+
+          <Dropdown.Item
+            onClick={() => {
+              return this.props.getSourceFolders();
+            }}
+          >
+            {" "}
+            getSourceFolders{" "}
+          </Dropdown.Item>
+
+          <Dropdown.Item
+            onClick={() => {
+              var fid = parseInt(window.prompt("FOLDER ID: "));
+              return this.props.addFolder(fid);
+            }}
+          >
+            {" "}
+            addFolder{" "}
+          </Dropdown.Item>
+
+          <Dropdown.Item
+            onClick={() => {
+              var fid = parseInt(window.prompt("FOLDER ID: "));
+              return this.props.removeFolder(fid);
+            }}
+          >
+            {" "}
+            removeFolder{" "}
+          </Dropdown.Item>
+
           {/* Object detection */}
           <Dropdown.Item
             onClick={() => {
@@ -137,6 +180,10 @@ const menuDispatchToProps = (dispatch) => {
     newProject: (n) => dispatch(newProject(n)),
     deleteProject: (i) => dispatch(deleteProject(i)),
     renameProject: (i, n) => dispatch(renameProject(i, n)),
+    getFolders: () => dispatch(getFolders()),
+    getSourceFolders: () => dispatch(getSourceFolders()),
+    addFolder: (i) => dispatch(addFolder(i)),
+    removeFolder: (i) => dispatch(removeFolder(i)),
     detectObjects: (rate, target) => dispatch(detectObjects(rate, target)),
     getODProgress: () => dispatch(getODProgress()),
     deleteODProgress: () => dispatch(deleteODProgress()),

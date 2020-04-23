@@ -9,6 +9,9 @@ import {
   newProject,
   deleteProject,
   renameProject,
+  detectObjects,
+  getODProgress,
+  deleteODProgress,
 } from "../state/stateCommunication";
 
 /* -- Evoker -- */
@@ -25,6 +28,7 @@ class Evoker extends Component {
       >
         {/* Drop down menu containing all actions to evoke */}
         <DropdownButton alignRight title="Evoke" id="dropdown-menu-align-right">
+          {/* Project manager */}
           <Dropdown.Item onClick={() => this.props.getProjects()}>
             {" "}
             getProjects{" "}
@@ -60,8 +64,37 @@ class Evoker extends Component {
             {" "}
             renameProject{" "}
           </Dropdown.Item>
+
+          {/* Object detection */}
+          <Dropdown.Item
+            onClick={() => {
+              return this.props.detectObjects(5, "filter");
+            }}
+          >
+            {" "}
+            detectObjects{" "}
+          </Dropdown.Item>
+
+          <Dropdown.Item
+            onClick={() => {
+              return this.props.getODProgress();
+            }}
+          >
+            {" "}
+            getODProgress{" "}
+          </Dropdown.Item>
+
+          <Dropdown.Item
+            onClick={() => {
+              return this.props.deleteODProgress();
+            }}
+          >
+            {" "}
+            deleteODProgress{" "}
+          </Dropdown.Item>
         </DropdownButton>
 
+        {/* Log state */}
         <button onClick={() => this.props.logState()}> Log State </button>
       </div>
     );
@@ -82,6 +115,9 @@ const menuDispatchToProps = (dispatch) => {
     newProject: (n) => dispatch(newProject(n)),
     deleteProject: (i) => dispatch(deleteProject(i)),
     renameProject: (i, n) => dispatch(renameProject(i, n)),
+    detectObjects: (rate, target) => dispatch(detectObjects(rate, target)),
+    getODProgress: () => dispatch(getODProgress()),
+    deleteODProgress: () => dispatch(deleteODProgress()),
   };
 };
 

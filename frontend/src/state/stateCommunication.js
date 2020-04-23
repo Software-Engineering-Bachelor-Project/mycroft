@@ -44,6 +44,10 @@ export const DETECT_OBJECTS = "DETECT_OBJECTS";
 export const GET_OD_PROGRESS = "GET_OD_PROGRESS";
 export const DELETE_OD_PROGRESS = "DELETE_OD_PROGRESS";
 
+export const URL_DETECT_OBJECTS = "/object_detection/detect_objects";
+export const URL_GET_OD_PROGRESS = "/object_detection/get_progress";
+export const URL_DELETE_OD_PROGRESS = "/object_detection/delete_progress";
+
 // Response
 export const REQUEST_RESPONSE = "REQUEST_RESPONSE";
 
@@ -52,7 +56,7 @@ export const initialState = {
   projectID: -1,
   projects: {},
   od: {
-    progressId: -1,
+    progressID: -1,
     currentProgress: 0,
   },
 };
@@ -198,16 +202,20 @@ export function addFolders() {
 
 // Object Detector requests
 /**
- * TODO: Add doc-comment
+ * This action is used to perform object detection.
+ * @param {Number} rate rate for object detection.
+ * @param {string} target from TARGET (FILTER or PROJECT).
  */
-export function detectObjects() {
+export function detectObjects(rate, target) {
   return {
     type: DETECT_OBJECTS,
+    rate: rate,
+    target: target,
   };
 }
 
 /**
- * TODO: Add doc-comment
+ * This action is used to get the progress of an object detection.
  */
 export function getODProgress() {
   return {
@@ -216,7 +224,7 @@ export function getODProgress() {
 }
 
 /**
- * TODO: Add doc-comment
+ * This action is used to get the progress of an object detection.
  */
 export function deleteODProgress() {
   return {
@@ -359,13 +367,65 @@ function handleResponse(state, reqType, status, data) {
       return state;
 
     case DETECT_OBJECTS:
-      return state;
+      switch (status) {
+        case 200:
+          return {
+            ...state,
+            od: { ...state.od, progressID: data.progress_id },
+          };
+        case 400:
+          e = "'clip_ids' or 'rate' parameter was missing from request";
+          break;
+        default:
+          e = "unknown reason";
+      }
+
+      break;
 
     case GET_OD_PROGRESS:
-      return state;
+      switch (status) {
+        case 200:
+          const total = data.total;
+          return {
+            ...state,
+            od: {
+              ...state.od,
+              currentProgress:
+                total > 0 ? parseInt((100 * data.current) / total) : 100,
+            },
+          };
+        case 204:
+          e = "no progress with specified ID";
+          break;
+        case 400:
+          e = "'progress_id' parameter was missing from request";
+          break;
+        default:
+          e = "unknown reason";
+      }
+
+      break;
 
     case DELETE_OD_PROGRESS:
-      return state;
+      switch (status) {
+        case 200:
+          // Reset currentProgress and progressID.
+          return {
+            ...state,
+            od: { ...state.od, progressID: -1, currentProgress: 0 },
+          };
+        case 204:
+          e = "no progress with specified ID";
+          break;
+        case 400:
+          e = "'progress_id' parameter was missing from request";
+          break;
+        default:
+          e = "unknown reason";
+      }
+
+      break;
+
     default:
       return state;
   }
@@ -450,15 +510,19 @@ const communicationReducer = (state = initialState, action) => {
       break;
 
     case DETECT_OBJECTS:
-      body = {};
+      // TODO: Add clip_ids based on target. Needs information from filter.
+      url = URL_DETECT_OBJECTS;
+      body = { clip_ids: [], rate: action.rate };
       break;
 
     case GET_OD_PROGRESS:
-      body = {};
+      url = URL_GET_OD_PROGRESS;
+      body = { progress_id: state.od.progressID };
       break;
 
     case DELETE_OD_PROGRESS:
-      body = {};
+      url = URL_DELETE_OD_PROGRESS;
+      body = { progress_id: state.od.progressID };
       break;
 
     default:

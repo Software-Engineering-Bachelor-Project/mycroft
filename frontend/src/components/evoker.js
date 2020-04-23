@@ -9,6 +9,8 @@ import {
   newProject,
   deleteProject,
   renameProject,
+  getCameras,
+  getSequentialClip,
   getFolders,
   getSourceFolders,
   addFolder,
@@ -80,6 +82,26 @@ class Evoker extends Component {
           >
             {" "}
             renameProject{" "}
+          </Dropdown.Item>
+
+          {/* Video manager */}
+          <Dropdown.Item
+            onClick={() => {
+              return this.props.getCameras();
+            }}
+          >
+            {" "}
+            getCameras{" "}
+          </Dropdown.Item>
+
+          <Dropdown.Item
+            onClick={() => {
+              var id = parseInt(window.prompt("ID: "));
+              return this.props.getSequentialClip(id);
+            }}
+          >
+            {" "}
+            getSequentialClip{" "}
           </Dropdown.Item>
 
           {/* File manager */}
@@ -180,6 +202,8 @@ const menuDispatchToProps = (dispatch) => {
     newProject: (n) => dispatch(newProject(n)),
     deleteProject: (i) => dispatch(deleteProject(i)),
     renameProject: (i, n) => dispatch(renameProject(i, n)),
+    getCameras: () => dispatch(getCameras()),
+    getSequentialClip: (i) => dispatch(getSequentialClip(i)),
     getFolders: () => dispatch(getFolders()),
     getSourceFolders: () => dispatch(getSourceFolders()),
     addFolder: (i) => dispatch(addFolder(i)),

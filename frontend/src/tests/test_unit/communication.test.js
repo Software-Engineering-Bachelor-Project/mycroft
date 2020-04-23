@@ -1,7 +1,7 @@
 /* -- THIS FILE TESTS THE COMMUNICATION STATE FILE .. */
 
 // Misc
-import { Project, Folder } from "../../types";
+import { Project, Folder, Camera } from "../../types";
 import { TARGET } from "../../state/stateObjectDetector";
 
 // Reducer and initial state
@@ -23,6 +23,11 @@ import {
 } from "../../state/stateCommunication";
 import { ADD_FOLDER, addFolder } from "../../state/stateCommunication";
 import { REMOVE_FOLDER, removeFolder } from "../../state/stateCommunication";
+import { GET_CAMERAS, getCameras } from "../../state/stateCommunication";
+import {
+  GET_SEQUENTIAL_CLIP,
+  getSequentialClip,
+} from "../../state/stateCommunication";
 import { DETECT_OBJECTS, detectObjects } from "../../state/stateCommunication";
 import { GET_OD_PROGRESS, getODProgress } from "../../state/stateCommunication";
 import {
@@ -230,6 +235,118 @@ describe("Communication reducer", () => {
     ).toEqual(initialState);
   });
 
+  it("should handle GET_CAMERAS", () => {
+    // Declare variables
+    let one_camera = [
+      {
+        id: 42,
+        clip_set: [1, 4, 5],
+        name: "camera_name",
+        latitude: "59.38866800",
+        longitude: "17.92650100",
+        start_time: "2018-09-06T16:45:59+02:00",
+        end_time: "2018-09-06T16:46:50+02:00",
+      },
+    ];
+    // Action constant
+    expect(GET_CAMERAS).toEqual("GET_CAMERAS");
+
+    // Action creator
+    expect(getCameras()).toEqual({
+      type: GET_CAMERAS,
+    });
+
+    // Get cameras
+    expect(
+      reducer(
+        initialState,
+        requestResponse(GET_CAMERAS, 200, { cameras: one_camera })
+      )
+    ).toEqual({
+      ...initialState,
+      cameras: {
+        42: new Camera(
+          42,
+          "camera_name",
+          {
+            latitude: "59.38866800",
+            longitude: "17.92650100",
+          },
+          [1, 4, 5]
+        ),
+      },
+    });
+
+    // 204
+    expect(
+      reducer(initialState, requestResponse(GET_CAMERAS, 204, undefined))
+    ).toEqual(initialState);
+
+    // 400
+    expect(
+      reducer(initialState, requestResponse(GET_CAMERAS, 400, undefined))
+    ).toEqual(initialState);
+
+    // 404
+    expect(
+      reducer(initialState, requestResponse(GET_CAMERAS, 404, undefined))
+    ).toEqual(initialState);
+  });
+
+  it("should handle GET_SEQUENTIAL_CLIP", () => {
+    // Action constant
+    expect(GET_SEQUENTIAL_CLIP).toEqual("GET_SEQUENTIAL_CLIP");
+
+    // Action creator
+    expect(getSequentialClip(42)).toEqual({
+      type: GET_SEQUENTIAL_CLIP,
+      cid: 42,
+    });
+
+    // Get existing sequential clip
+    expect(
+      reducer(
+        initialState,
+        requestResponse(GET_SEQUENTIAL_CLIP, 200, { clip_id: 42 })
+      )
+    ).toEqual({
+      ...initialState,
+      player: { ...initialState.player, nextClip: 42 },
+    });
+
+    // Get non existing sequential clip
+    expect(
+      reducer(
+        initialState,
+        requestResponse(GET_SEQUENTIAL_CLIP, 200, { clip_id: null })
+      )
+    ).toEqual(initialState);
+
+    // 204
+    expect(
+      reducer(
+        initialState,
+        requestResponse(GET_SEQUENTIAL_CLIP, 204, undefined)
+      )
+    ).toEqual(initialState);
+
+    // 400
+    expect(
+      reducer(
+        initialState,
+        requestResponse(GET_SEQUENTIAL_CLIP, 400, undefined)
+      )
+    ).toEqual(initialState);
+
+    // 404
+    expect(
+      reducer(
+        initialState,
+        requestResponse(GET_SEQUENTIAL_CLIP, 404, undefined)
+      )
+    ).toEqual(initialState);
+  });
+
   it("should handle GET_FOLDERS", () => {
     // Declare variables
     let testState = { ...initialState, projectID: 42 };
@@ -261,9 +378,24 @@ describe("Communication reducer", () => {
     ).toEqual({
       ...testState,
       folders: {
-        42: new Folder(42, "test_folder", null, {}, [1337, 21]),
+        42: new Folder(42, "test_folder", undefined, {}, [1337, 21]),
       },
     });
+
+    // 204
+    expect(
+      reducer(initialState, requestResponse(GET_FOLDERS, 204, undefined))
+    ).toEqual(initialState);
+
+    // 400
+    expect(
+      reducer(initialState, requestResponse(GET_FOLDERS, 400, undefined))
+    ).toEqual(initialState);
+
+    // 404
+    expect(
+      reducer(initialState, requestResponse(GET_FOLDERS, 404, undefined))
+    ).toEqual(initialState);
   });
 
   it("should handle GET_SOURCE_FOLDERS", () => {
@@ -294,9 +426,14 @@ describe("Communication reducer", () => {
     ).toEqual({
       ...initialState,
       sourceFolders: {
-        42: new Folder(42, "test_folder", null, {}, [1337, 21]),
+        42: new Folder(42, "test_folder", undefined, {}, [1337, 21]),
       },
     });
+
+    // 404
+    expect(
+      reducer(initialState, requestResponse(GET_SOURCE_FOLDERS, 404, undefined))
+    ).toEqual(initialState);
   });
 
   it("should handle ADD_FOLDER", () => {
@@ -307,6 +444,26 @@ describe("Communication reducer", () => {
     expect(addFolder()).toEqual({
       type: ADD_FOLDER,
     });
+
+    // Add folder
+    expect(
+      reducer(initialState, requestResponse(ADD_FOLDER, 200, { folder_id: 42 }))
+    ).toEqual(initialState);
+
+    // 204
+    expect(
+      reducer(initialState, requestResponse(ADD_FOLDER, 204, undefined))
+    ).toEqual(initialState);
+
+    // 400
+    expect(
+      reducer(initialState, requestResponse(ADD_FOLDER, 400, undefined))
+    ).toEqual(initialState);
+
+    // 404
+    expect(
+      reducer(initialState, requestResponse(ADD_FOLDER, 404, undefined))
+    ).toEqual(initialState);
   });
 
   it("should handle REMOVE_FOLDER", () => {
@@ -317,6 +474,29 @@ describe("Communication reducer", () => {
     expect(removeFolder()).toEqual({
       type: REMOVE_FOLDER,
     });
+
+    // Remove folder
+    expect(
+      reducer(
+        initialState,
+        requestResponse(REMOVE_FOLDER, 200, { folder_id: 42 })
+      )
+    ).toEqual(initialState);
+
+    // 204
+    expect(
+      reducer(initialState, requestResponse(REMOVE_FOLDER, 204, undefined))
+    ).toEqual(initialState);
+
+    // 400
+    expect(
+      reducer(initialState, requestResponse(REMOVE_FOLDER, 400, undefined))
+    ).toEqual(initialState);
+
+    // 404
+    expect(
+      reducer(initialState, requestResponse(REMOVE_FOLDER, 404, undefined))
+    ).toEqual(initialState);
   });
 
   it("should handle DETECT_OBJECTS", () => {

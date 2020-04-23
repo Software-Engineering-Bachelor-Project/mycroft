@@ -12,9 +12,13 @@ import Viewport from "./viewport/viewport";
 import MiniViewport from "./viewport/miniViewport";
 import Timeline from "./timeline/timeline";
 import Browser from "./browser/browser";
+import Player from "./player/player";
+import Map from "./map/map";
 
 // TODO: Remove
 import Evoker from "./evoker";
+
+const state = store.getState();
 
 /*
  * This is the main component of Mycroft.
@@ -26,8 +30,10 @@ class App extends Component {
     return (
       <div>
         <Menu />
-        <Viewport />
-        <MiniViewport />
+
+        {/* mode decides which component Viewport and MiniViewport should render */}
+        <Viewport content={state.viewport.mode ? <Map /> : <Player />} />
+        <MiniViewport content={state.viewport.mode ? <Player /> : <Map />} />
         <Browser />
         <Timeline />
         <Evoker />

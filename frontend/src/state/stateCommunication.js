@@ -14,6 +14,15 @@ import { Project } from "../types";
 // Filter Module requests
 export const GET_CLIPS_MATCHING_FILTER = "GET_CLIPS_MATCHING_FILTER";
 export const MODIFY_FILTER = "MODIFY_FILTER";
+export const GET_AREAS_IN_FILTER = "GET_AREAS_IN_FILTER";
+export const CREATE_AREA = "CREATE_AREA";
+export const GET_FILTER_PARAMS = "GET_FILTER_PARAMS";
+
+export const URL_GET_CLIPS_MATCHING_FILTER = "/filter/get_matching_clips";
+export const URL_MODIFY_FILTER = "/filter/modify";
+export const URL_GET_AREAS_IN_FILTER = "/filter/get_areas";
+export const URL_CREATE_AREA = "/filter/create_area";
+export const URL_GET_FILTER_PARAMS = "/filter/getFilterParams";
 
 // Project Manager requests
 export const GET_PROJECTS = "GET_PROJECTS";
@@ -30,14 +39,26 @@ export const URL_RENAME_PROJECT = "/project/rename";
 export const EXPORT_FILTER = "EXPORT_FILTER";
 export const EXPORT_CLIPS = "EXPORT_CLIPS";
 
+export const URL_EXPORT_FILTER = "/export/filter";
+export const URL_EXPORT_CLIPS = "/export/clips";
+
 // Video Manager requests
 export const GET_CLIP_INFO = "GET_CLIP_INFO";
 export const GET_CAMERAS = "GET_CAMERAS";
+export const GET_SEQUENTIAL_CLIP = "GET_SEQUENTIAL_CLIP";
+
+export const URL_GET_CLIP_INFO = "/video/get_info";
+export const URL_GET_CAMERAS = "/video/get_cameras";
+export const URL_GET_SEQUENTIAL_CLIP = "/video/get_sequential";
 
 // File Manager requests
 export const GET_FOLDERS = "GET_FOLDERS";
 export const GET_SOURCE_FOLDERS = "GET_SOURCE_FOLDERS";
 export const ADD_FOLDER = "ADD_FOLDER";
+
+export const URL_GET_FOLDERS = "/file/get_folders";
+export const URL_GET_SOURCE_FOLDERS = "/file/get_source_folders";
+export const URL_ADD_FOLDER = "/file/add_folder";
 
 // Object Detector requests
 export const DETECT_OBJECTS = "DETECT_OBJECTS";

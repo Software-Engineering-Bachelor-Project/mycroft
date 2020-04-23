@@ -2,6 +2,7 @@
 
 // Misc
 import { Project } from "../../types";
+import { TARGET } from "../../state/stateObjectDetector";
 
 // Reducer and initial state
 import reducer, { initialState } from "../../state/stateCommunication";
@@ -15,6 +16,12 @@ import { GET_PROJECTS, getProjects } from "../../state/stateCommunication";
 import { NEW_PROJECT, newProject } from "../../state/stateCommunication";
 import { DELETE_PROJECT, deleteProject } from "../../state/stateCommunication";
 import { RENAME_PROJECT, renameProject } from "../../state/stateCommunication";
+import { DETECT_OBJECTS, detectObjects } from "../../state/stateCommunication";
+import { GET_OD_PROGRESS, getODProgress } from "../../state/stateCommunication";
+import {
+  DELETE_OD_PROGRESS,
+  deleteODProgress,
+} from "../../state/stateCommunication";
 
 describe("Communication reducer", () => {
   it("should return the initial state", () => {
@@ -202,7 +209,7 @@ describe("Communication reducer", () => {
 
     // 204
     expect(
-      reducer(initialState, requestResponse(RENAME_PROJECT, 400, undefined))
+      reducer(initialState, requestResponse(RENAME_PROJECT, 204, undefined))
     ).toEqual(initialState);
 
     // 400
@@ -213,6 +220,119 @@ describe("Communication reducer", () => {
     // 404
     expect(
       reducer(initialState, requestResponse(RENAME_PROJECT, 404, undefined))
+    ).toEqual(initialState);
+  });
+
+  it("should handle DETECT_OBJECTS", () => {
+    // Action constant
+    expect(DETECT_OBJECTS).toEqual("DETECT_OBJECTS");
+
+    // Action creator
+    expect(detectObjects(42, TARGET.PROJECT)).toEqual({
+      type: DETECT_OBJECTS,
+      rate: 42,
+      target: TARGET.PROJECT,
+    });
+
+    // Object detection
+    expect(
+      reducer(
+        initialState,
+        requestResponse(DETECT_OBJECTS, 200, { progress_id: 42 })
+      )
+    ).toEqual({
+      ...initialState,
+      od: { ...initialState.od, progressID: 42 },
+    });
+
+    // 400
+    expect(
+      reducer(initialState, requestResponse(DETECT_OBJECTS, 400, undefined))
+    ).toEqual(initialState);
+
+    // 404
+    expect(
+      reducer(initialState, requestResponse(DETECT_OBJECTS, 404, undefined))
+    ).toEqual(initialState);
+  });
+
+  it("should handle GET_OD_PROGRESS", () => {
+    // Action constant
+    expect(GET_OD_PROGRESS).toEqual("GET_OD_PROGRESS");
+
+    // Action creator
+    expect(getODProgress()).toEqual({
+      type: GET_OD_PROGRESS,
+    });
+
+    // Get od progress
+    expect(
+      reducer(
+        initialState,
+        requestResponse(GET_OD_PROGRESS, 200, { total: 1337, current: 42 })
+      )
+    ).toEqual({
+      ...initialState,
+      od: { ...initialState.od, currentProgress: 3 },
+    });
+
+    // Get od progress of zero clips
+    expect(
+      reducer(
+        initialState,
+        requestResponse(GET_OD_PROGRESS, 200, { total: 0, current: 0 })
+      )
+    ).toEqual({
+      ...initialState,
+      od: { ...initialState.od, currentProgress: 100 },
+    });
+
+    // 204
+    expect(
+      reducer(initialState, requestResponse(GET_OD_PROGRESS, 204, undefined))
+    ).toEqual(initialState);
+
+    // 400
+    expect(
+      reducer(initialState, requestResponse(GET_OD_PROGRESS, 400, undefined))
+    ).toEqual(initialState);
+
+    // 404
+    expect(
+      reducer(initialState, requestResponse(GET_OD_PROGRESS, 404, undefined))
+    ).toEqual(initialState);
+  });
+
+  it("should handle DELETE_OD_PROGRESS", () => {
+    // Action constant
+    expect(DELETE_OD_PROGRESS).toEqual("DELETE_OD_PROGRESS");
+
+    // Action creator
+    expect(deleteODProgress()).toEqual({
+      type: DELETE_OD_PROGRESS,
+    });
+
+    // Delete od progress, check that progress and id is reset
+    expect(
+      reducer(initialState, requestResponse(DELETE_OD_PROGRESS, 200, {}))
+    ).toEqual({
+      ...initialState,
+      od: { ...initialState.od, progressID: -1, currentProgress: 0 },
+    });
+
+    // 204
+    expect(
+      reducer(initialState, requestResponse(DELETE_OD_PROGRESS, 204, undefined))
+    ).toEqual(initialState);
+
+    // 400
+    expect(
+      reducer(initialState, requestResponse(DELETE_OD_PROGRESS, 400, undefined))
+    ).toEqual(initialState);
+
+    // 404
+    expect(
+      reducer(initialState, requestResponse(DELETE_OD_PROGRESS, 404, undefined))
     ).toEqual(initialState);
   });
 });

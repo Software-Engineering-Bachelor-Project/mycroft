@@ -170,3 +170,6 @@ dmypy.json
 
 # YOLOv3 weights. To large for GitHub.
 backend/utils/yolov3.weights
+
+# Ignore make-files
+frontend/static/frontend/*

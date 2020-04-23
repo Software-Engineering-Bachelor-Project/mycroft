@@ -45,6 +45,7 @@ export function makePOST(url, opts = {}, onResponse) {
 /**
  * Takes an array of JSON folders and returns a folder hiearchy.
  * @param {Array[Object]} folderResponse List of folders in JSON.
+ * @return {Object[id, Folder]} An object with id as key and a Folder as value.
  */
 export function createFolderHierarchy(folderResponse) {
   let res = {};
@@ -52,7 +53,13 @@ export function createFolderHierarchy(folderResponse) {
 
   // Find all roots and construct folder objects.
   for (let f of folderResponse) {
-    let newFolder = new Folder(f.id, f.name, f.parent, {}, f.clip_set);
+    let newFolder = new Folder(
+      f.id,
+      f.name,
+      f.parent != null ? f.parent : undefined,
+      {},
+      f.clip_set
+    );
     if (f.parent == undefined) res[f.id] = newFolder;
     else unassigned[f.id] = newFolder;
   }
@@ -65,4 +72,14 @@ export function createFolderHierarchy(folderResponse) {
   }
 
   return res;
+}
+
+/**
+ * Converts a datetime string to
+ * @param {string} dateStr A date in string format.
+ * @return {Date} The string converted to a date.
+ */
+export function parseDatetimeString(dateStr) {
+  // TODO: Implement
+  return new Date(2020, 1, 1, 3, 24, 0);
 }

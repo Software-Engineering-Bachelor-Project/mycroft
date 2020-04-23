@@ -1,8 +1,8 @@
 import store from "./state";
-import { makePOST, createFolderHierarchy } from "../util";
+import { makePOST, createFolderHierarchy, parseDatetimeString } from "../util";
 
 // Types
-import { Project, Folder } from "../types";
+import { Project, Folder, Clip, Camera } from "../types";
 
 /*
  * This file defines the state, reducers, and actions
@@ -43,11 +43,9 @@ export const URL_EXPORT_FILTER = "/export/filter";
 export const URL_EXPORT_CLIPS = "/export/clips";
 
 // Video Manager requests
-export const GET_CLIP_INFO = "GET_CLIP_INFO";
 export const GET_CAMERAS = "GET_CAMERAS";
 export const GET_SEQUENTIAL_CLIP = "GET_SEQUENTIAL_CLIP";
 
-export const URL_GET_CLIP_INFO = "/video/get_info";
 export const URL_GET_CAMERAS = "/video/get_cameras";
 export const URL_GET_SEQUENTIAL_CLIP = "/video/get_sequential";
 
@@ -80,9 +78,14 @@ export const initialState = {
   projects: {},
   folders: {},
   sourceFolders: {},
+  cameras: {},
+  clips: {},
   od: {
     progressID: -1,
     currentProgress: 0,
+  },
+  player: {
+    nextClip: undefined,
   },
 };
 
@@ -182,18 +185,20 @@ export function exportClips() {
 /**
  * TODO: Add doc-comment
  */
-export function getClipInfo() {
+export function getCameras() {
   return {
-    type: GET_CLIP_INFO,
+    type: GET_CAMERAS,
   };
 }
 
 /**
- * TODO: Add doc-comment
+ * This action is used to get the id of the next sequential clip.
+ * @param cid ID of the current clip.
  */
-export function getCameras() {
+export function getSequentialClip(cid) {
   return {
-    type: GET_CAMERAS,
+    type: GET_SEQUENTIAL_CLIP,
+    cid: cid,
   };
 }
 
@@ -389,11 +394,54 @@ function handleResponse(state, reqType, status, data) {
     case EXPORT_CLIPS:
       return state;
 
-    case GET_CLIP_INFO:
-      return state;
-
     case GET_CAMERAS:
-      return state;
+      switch (status) {
+        case 200:
+          let newCameras = {};
+          for (let c of data.cameras)
+            newCameras[c.id] = new Camera(
+              c.id,
+              c.name,
+              { latitude: c.latitude, longitude: c.longitude },
+              c.clip_set
+            );
+          return {
+            ...state,
+            cameras: newCameras,
+          };
+        case 204:
+          e = "no project with specified ID";
+          break;
+        case 400:
+          e = "'project_id' parameter was missing from request";
+          break;
+        default:
+          e = "unknown reason";
+      }
+
+      break;
+
+    case GET_SEQUENTIAL_CLIP:
+      switch (status) {
+        case 200:
+          return {
+            ...state,
+            player: {
+              ...state.player,
+              nextClip: data.clip_id != null ? data.clip_id : undefined,
+            },
+          };
+        case 204:
+          e = "no clip with specified ID";
+          break;
+        case 400:
+          e = "'clip_id' parameter was missing from request";
+          break;
+        default:
+          e = "unknown reason";
+      }
+
+      break;
 
     case GET_FOLDERS:
       switch (status) {
@@ -586,14 +634,14 @@ const communicationReducer = (state = initialState, action) => {
       body = {};
       break;
 
-    case GET_CLIP_INFO:
-      url = URL_GET_CLIP_INFO;
-      body = {};
-      break;
-
     case GET_CAMERAS:
       url = URL_GET_CAMERAS;
-      body = {};
+      body = { project_id: state.projectID };
+      break;
+
+    case GET_SEQUENTIAL_CLIP:
+      url = URL_GET_SEQUENTIAL_CLIP;
+      body = { clip_id: action.cid };
       break;
 
     case GET_FOLDERS:

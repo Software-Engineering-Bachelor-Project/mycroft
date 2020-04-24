@@ -36,10 +36,11 @@ export function getLinePlacements(startTime, timeSpan) {
 }
 
 /**
+ * This function returns all information needed to draw out dates to days
  *
- * @param {Date} startTime
- * @param {Date} endTime
- * @param {int} timeSpan
+ * @param {Date} startTime The start date of timeline
+ * @param {Date} endTime The end date of timeline
+ * @param {int} timeSpan The time span from startTime to endTime
  * @return {Array[Array]} List of Lists containing width, position and date of a given day
  */
 export function getDayPlacements(startTime, endTime, timeSpan) {
@@ -56,6 +57,7 @@ export function getDayPlacements(startTime, endTime, timeSpan) {
   //Date variable to increment
   var currentDate = new Date(startTime.getTime());
 
+  //Variable to decrement in loop
   var secLeft = totalSec;
 
   //Edge case if startTime and endTime are within the same day
@@ -94,6 +96,7 @@ export function getDayPlacements(startTime, endTime, timeSpan) {
   currentDate.setDate(currentDate.getDate() + 1);
   var pos = firstDaySize;
 
+  //Add width, position and date string to all days between first and last
   while (secLeft > dayInSec) {
     list_.push([daySize + "%", pos + "%", getDateString(currentDate)]);
     currentDate.setDate(currentDate.getDate() + 1);
@@ -101,24 +104,20 @@ export function getDayPlacements(startTime, endTime, timeSpan) {
     secLeft = secLeft - dayInSec;
   }
 
-  /*
-  if (totalSec - firstDay > dayInSec) {
-    for (var j = 0; j < totalDays - 2; j++) {
-      list_.push([daySize + "%", pos + "%", getDateString(currentDate)]);
-      currentDate.setDate(currentDate.getDate() + 1);
-      pos = pos + daySize;
-    }
-  }
-  */
-  //Add position and width of lastday
+  //Add width, position and date string of last day
   list_.push([lastDaySize + "%", pos + "%", getDateString(currentDate)]);
   return list_;
 }
 
+/**
+ * This function takes a date and returns a string version of it
+ *
+ * @param {Date} date Date to be converted into string
+ * @return {String} Date converted to string
+ */
 export function getDateString(date) {
   let month = date.getMonth();
   let day = date.getDate();
-  console.log(day);
 
   switch (month) {
     case 0:
@@ -187,30 +186,6 @@ class Timeline extends Component {
                 "%",
             }}
           >
-            {getDayPlacements(
-              this.props.startTime,
-              this.props.endTime,
-              this.props.timeSpan
-            ).map(([w, p, d], i) => {
-              let color = "rgba(185, 185, 185, 0.3)";
-              if (i % 2) {
-                color = "rgba(0, 0, 0, 0)";
-              }
-              return (
-                <div
-                  className={styles.day}
-                  style={{
-                    backgroundColor: color,
-                    left: p,
-                    width: w,
-                  }}
-                  key={p}
-                >
-                  <div className={styles.date}> {d} </div>
-                </div>
-              );
-            })}
-
             {/* Glassbox component */}
             <Glassbox />
 
@@ -234,22 +209,37 @@ class Timeline extends Component {
                     key={p}
                   >
                     <div className={styles.line}> </div>
-                    <div
-                      style={{
-                        position: "absolute",
-                        left: "5px",
-                        bottom: "2px",
-                        width: "1em",
-                        borderRadius: "2px",
-                        backgroundColor: "rgb(236, 236, 236)",
-                      }}
-                    >
-                      {hourStr}
-                    </div>
+                    <div className={styles.hour}> {hourStr} </div>
                   </div>
                 );
               }
             )}
+
+            {/*Creates days a box for each day and draws dates in them*/}
+            {getDayPlacements(
+              this.props.startTime,
+              this.props.endTime,
+              this.props.timeSpan
+            ).map(([w, p, d], i) => {
+              //Makes it so every other day is slightly darker
+              let color = "rgba(185, 185, 185, 0.3)";
+              if (i % 2) {
+                color = "rgba(0, 0, 0, 0)";
+              }
+              return (
+                <div
+                  className={styles.day}
+                  style={{
+                    backgroundColor: color,
+                    left: p,
+                    width: w,
+                  }}
+                  key={p}
+                >
+                  <div className={styles.date}> {d} </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>

@@ -96,3 +96,45 @@ class AddFoldersTest(TestCase):
         code, res = add_folder(data={PROJECT_ID: self.pid, FOLDER_ID: 42})
         self.assertEqual(code, 204)
         self.assertEqual(res, {})
+
+
+class RemoveFoldersTest(TestCase):
+
+    def setUp(self) -> None:
+        """
+        Setup a test project.
+        """
+        self.pid = create_project('test_project')
+        self.fid = create_root_folder(path='home/user/', name='test_folder')
+
+    def test_simple_call(self):
+        """
+        Test removing a folder from a project.
+        """
+        code, res = remove_folder({PROJECT_ID: self.pid, FOLDER_ID: self.fid})
+        self.assertEqual(code, 200)
+        self.assertEqual(res, {})
+
+    def test_bad_file_path(self):
+        """
+        Test with a bad file path.
+        """
+        code, res = remove_folder({FILE_PATH: 'test_folder'})
+        self.assertEqual(code, 400)
+        self.assertEqual(res, {})
+
+    def test_non_existing_project(self):
+        """
+        Test with a project id that doesn't exist.
+        """
+        code, res = remove_folder(data={PROJECT_ID: 42, FOLDER_ID: self.fid})
+        self.assertEqual(code, 204)
+        self.assertEqual(res, {})
+
+    def test_non_existing_folder(self):
+        """
+        Test with a folder id that doesn't exist.
+        """
+        code, res = remove_folder(data={PROJECT_ID: self.pid, FOLDER_ID: 42})
+        self.assertEqual(code, 204)
+        self.assertEqual(res, {})

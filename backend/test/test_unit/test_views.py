@@ -276,7 +276,7 @@ class FileGetSourceFoldersTest(TestCase):
     @mock.patch('backend.views.file_manager')
     def test_propagation(self, mock_mod):
         '''
-        Tests propagation of the 'get folders' request.
+        Tests propagation of the 'get  source folders' request.
         :return: None
         '''
         # Set up mock

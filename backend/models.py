@@ -34,6 +34,7 @@ class Folder(models.Model):
     parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
     path = models.CharField(max_length=200)
     name = models.CharField(max_length=200)
+    is_entry = models.BooleanField(default=False)
 
     class Meta:
         constraints = [

@@ -1,7 +1,7 @@
 /* -- THIS FILE TESTS THE COMMUNICATION STATE FILE .. */
 
 // Misc
-import { Project, Folder, Camera } from "../../types";
+import { Project, Folder, Camera, Clip } from "../../types";
 import { TARGET } from "../../state/stateObjectDetector";
 
 // Reducer and initial state
@@ -23,6 +23,7 @@ import {
 } from "../../state/stateCommunication";
 import { ADD_FOLDER, addFolder } from "../../state/stateCommunication";
 import { REMOVE_FOLDER, removeFolder } from "../../state/stateCommunication";
+import { GET_CLIPS, getClips } from "../../state/stateCommunication";
 import { GET_CAMERAS, getCameras } from "../../state/stateCommunication";
 import {
   GET_SEQUENTIAL_CLIP,
@@ -496,6 +497,75 @@ describe("Communication reducer", () => {
     // 404
     expect(
       reducer(initialState, requestResponse(REMOVE_FOLDER, 404, undefined))
+    ).toEqual(initialState);
+  });
+
+  it("should handle GET_CLIPS", () => {
+    // Declare variables
+    let testState = { ...initialState, projectID: 42 };
+    let tempDate = new Date(2020, 1, 1, 3, 24, 0);
+
+    // Action constant
+    expect(GET_CLIPS).toEqual("GET_CLIPS");
+
+    // Action creator
+    expect(getClips()).toEqual({
+      type: GET_CLIPS,
+    });
+
+    // Get clips
+    expect(
+      reducer(
+        testState,
+        requestResponse(GET_CLIPS, 200, {
+          clips: [
+            {
+              id: 42,
+              name: "test_clip",
+              video_format: "avi",
+              start_time: "2018-09-06T16:45:59+02:00",
+              end_time: "2018-09-06T16:46:50+02:00",
+              frame_rate: 24.0,
+              hash_sum: null,
+              folder: 1,
+              camera: 1,
+              resolution: 1,
+              duplicates: [6],
+              overlap: [4, 5],
+            },
+          ],
+        })
+      )
+    ).toEqual({
+      ...testState,
+      clips: {
+        42: new Clip(
+          42,
+          "test_clip",
+          1,
+          1,
+          "avi",
+          tempDate,
+          tempDate,
+          [6],
+          [4, 5]
+        ),
+      },
+    });
+
+    // 204
+    expect(
+      reducer(initialState, requestResponse(GET_CLIPS, 204, undefined))
+    ).toEqual(initialState);
+
+    // 400
+    expect(
+      reducer(initialState, requestResponse(GET_CLIPS, 400, undefined))
+    ).toEqual(initialState);
+
+    // 404
+    expect(
+      reducer(initialState, requestResponse(GET_CLIPS, 404, undefined))
     ).toEqual(initialState);
   });
 

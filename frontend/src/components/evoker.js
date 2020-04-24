@@ -15,6 +15,7 @@ import {
   getSourceFolders,
   addFolder,
   removeFolder,
+  getClips,
   detectObjects,
   getODProgress,
   deleteODProgress,
@@ -143,6 +144,15 @@ class Evoker extends Component {
             removeFolder{" "}
           </Dropdown.Item>
 
+          <Dropdown.Item
+            onClick={() => {
+              return this.props.getClips();
+            }}
+          >
+            {" "}
+            getClips{" "}
+          </Dropdown.Item>
+
           {/* Object detection */}
           <Dropdown.Item
             onClick={() => {
@@ -208,6 +218,7 @@ const menuDispatchToProps = (dispatch) => {
     getSourceFolders: () => dispatch(getSourceFolders()),
     addFolder: (i) => dispatch(addFolder(i)),
     removeFolder: (i) => dispatch(removeFolder(i)),
+    getClips: () => dispatch(getClips()),
     detectObjects: (rate, target) => dispatch(detectObjects(rate, target)),
     getODProgress: () => dispatch(getODProgress()),
     deleteODProgress: () => dispatch(deleteODProgress()),

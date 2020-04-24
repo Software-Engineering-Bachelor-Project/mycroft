@@ -33,17 +33,22 @@ describe("Camera class", () => {
 describe("Clip class", () => {
   let f = new Folder(1, "root");
   let allFolders = { 1: f };
+  const st = new Date(2020, 1, 1, 3, 24, 0);
+  const et = new Date(2020, 1, 1, 4, 24, 0);
 
   // Create clip
-  var clip = new Clip(7, "test_name", 1, "wav", "69", "420");
+  var clip = new Clip(7, "test_name", 1, 1, "wav", st, et, [1337], [1338]);
 
   it("should have all members set correctly", () => {
     expect(clip.id).toEqual(7);
     expect(clip.name).toEqual("test_name");
     expect(clip.folder).toEqual(1);
+    expect(clip.camera).toEqual(1);
     expect(clip.format).toEqual("wav");
-    expect(clip.startTime).toEqual("69");
-    expect(clip.endTime).toEqual("420");
+    expect(clip.startTime).toEqual(st);
+    expect(clip.endTime).toEqual(et);
+    expect(clip.duplicates).toEqual([1337]);
+    expect(clip.overlapping).toEqual([1338]);
   });
 
   it("should produce correct full path", () => {

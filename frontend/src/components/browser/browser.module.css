@@ -4,6 +4,7 @@
   right: 0;
   width: 15vw !important;
   height: 70vh !important;
+  z-index: 1;
 }
 
 .browserCol {

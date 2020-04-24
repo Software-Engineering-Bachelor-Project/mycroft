@@ -5,8 +5,8 @@
   padding: 0;
   border: 2px solid;
   border-radius: 6px;
-  width: 85vw;
-  height: 30vh;
+  width: 75vw;
+  height: 20vh;
   bottom: 0;
   left: 0;
 }
@@ -59,7 +59,8 @@
   position: sticky;
   left: 5px;
   top: 5px;
-  width: 50px;
+  width: 3.3em;
+  font-size: 16pt;
   border-radius: 3px;
   background-color: #cdd18f;
 }
@@ -83,8 +84,9 @@
   position: absolute;
   left: 5px;
   bottom: 2px;
+  font-size: 14pt;
   width: 1.2em;
   border-radius: 2px;
   color: rgb(0, 0, 0);
-  background-color: #e0ebf6;
+  /*background-color: #e0ebf6;*/
 }

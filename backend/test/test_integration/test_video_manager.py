@@ -12,12 +12,13 @@ class GetClipInfoTest(TestCase):
     @patch('backend.database_wrapper.create_hash_sum')
     def setUp(self, mock_create_hash_sum) -> None:
         mock_create_hash_sum.return_value = '1234'
+        self.cm_name = 'Test camera name'
         self.fid = create_root_folder(path='home/user/', name='test_folder')
-        self.cid = create_clip(name='test_clip', fid=self.fid, video_format='tvf', latitude=Decimal('0.0'),
+        self.cid = create_clip(clip_name='test_clip', fid=self.fid, video_format='tvf', latitude=Decimal('0.0'),
                                longitude=Decimal('0.0'),
                                start_time=timezone.datetime(2020, 1, 17, tzinfo=pytz.timezone(settings.TIME_ZONE)),
                                end_time=timezone.datetime(2020, 1, 18, tzinfo=pytz.timezone(settings.TIME_ZONE)),
-                               width=256, height=240, frame_rate=42)
+                               width=256, height=240, frame_rate=42, camera_name=self.cm_name)
 
     @patch('backend.video_manager.os_aware', side_effect=lambda x: x)
     def test_basic(self, mock_os_aware):
@@ -39,16 +40,14 @@ class GetSequentialClipTest(TestCase):
     @patch('backend.database_wrapper.create_hash_sum')
     def setUp(self, mock_create_hash_sum) -> None:
         mock_create_hash_sum.return_value = '1234'
+        self.cm_name = 'Test camera name'
         self.fid = create_root_folder(path='home/user/', name='test_folder')
-        self.cid = create_clip(name='test_clip', fid=self.fid, video_format='tvf', latitude=Decimal('0.0'),
-                               longitude=Decimal('0.0'),
-                               start_time=timezone.now() - timezone.timedelta(hours=1),
-                               end_time=timezone.now(),
-                               width=256, height=240, frame_rate=42)
+        self.cid = create_clip(clip_name='test_clip', fid=self.fid, video_format='tvf', latitude=Decimal('0.0'),
+                               longitude=Decimal('0.0'), start_time=timezone.now() - timezone.timedelta(hours=1),
+                               end_time=timezone.now(), width=256, height=240, frame_rate=42, camera_name=self.cm_name)
         self.clip = get_clip_by_id(cid=self.cid)
 
-    @patch('backend.video_manager.os_aware', side_effect=lambda x: x)
-    def test_basic(self, mock_os_aware):
+    def test_basic(self):
         """
         Makes a simple call.
         """
@@ -62,10 +61,10 @@ class GetSequentialClipTest(TestCase):
         Tests a sequential clip.
         """
         mock_create_hash_sum.return_value = '1234567'
-        cid2 = create_clip(name='test_clip2', fid=self.fid, video_format='tvf', latitude=Decimal('0.0'),
+        cid2 = create_clip(clip_name='test_clip2', fid=self.fid, video_format='tvf', latitude=Decimal('0.0'),
                            longitude=Decimal('0.0'), start_time=self.clip.end_time,
                            end_time=timezone.now() + timezone.timedelta(hours=1),
-                           width=256, height=240, frame_rate=42)
+                           width=256, height=240, frame_rate=42, camera_name=self.cm_name)
         code, res = get_sequential_clip(data={CLIP_ID: self.cid})
 
         self.assertEqual(code, 200)
@@ -77,11 +76,11 @@ class GetSequentialClipTest(TestCase):
         Tests a clip that has a start time 5 seconds after the first clip.
         """
         mock_create_hash_sum.return_value = '1234567'
-        cid2 = create_clip(name='test_clip2', fid=self.fid, video_format='tvf', latitude=Decimal('0.0'),
+        cid2 = create_clip(clip_name='test_clip2', fid=self.fid, video_format='tvf', latitude=Decimal('0.0'),
                            longitude=Decimal('0.0'),
                            start_time=self.clip.end_time + timezone.timedelta(seconds=5),
                            end_time=timezone.now() + timezone.timedelta(hours=1),
-                           width=256, height=240, frame_rate=42)
+                           width=256, height=240, frame_rate=42, camera_name=self.cm_name)
         code, res = get_sequential_clip(data={CLIP_ID: self.cid})
 
         self.assertEqual(code, 200)
@@ -93,11 +92,27 @@ class GetSequentialClipTest(TestCase):
         Tests a clip that is not sequential.
         """
         mock_create_hash_sum.return_value = '1234567'
-        create_clip(name='test_clip2', fid=self.fid, video_format='tvf', latitude=Decimal('0.0'),
+        create_clip(clip_name='test_clip2', fid=self.fid, video_format='tvf', latitude=Decimal('0.0'),
                     longitude=Decimal('0.0'),
                     start_time=self.clip.end_time + timezone.timedelta(seconds=6),
                     end_time=timezone.now() + timezone.timedelta(hours=1),
-                    width=256, height=240, frame_rate=42)
+                    width=256, height=240, frame_rate=42, camera_name=self.cm_name)
+        code, res = get_sequential_clip(data={CLIP_ID: self.cid})
+
+        self.assertEqual(code, 200)
+        self.assertEqual(res, {CLIP_ID: None})
+
+    @patch('backend.database_wrapper.create_hash_sum')
+    def test_sequential_clip_different_camera(self, mock_create_hash_sum):
+        """
+        Tests a clip that is sequential but belongs to a different camera.
+        """
+        cm_name = 'Another test camera name'
+        mock_create_hash_sum.return_value = '1234567'
+        cid2 = create_clip(clip_name='test_clip2', fid=self.fid, video_format='tvf', latitude=Decimal('0.0'),
+                           longitude=Decimal('0.0'), start_time=self.clip.end_time,
+                           end_time=timezone.now() + timezone.timedelta(hours=1),
+                           width=256, height=240, frame_rate=42, camera_name=cm_name)
         code, res = get_sequential_clip(data={CLIP_ID: self.cid})
 
         self.assertEqual(code, 200)
@@ -111,7 +126,8 @@ class GetCamerasTest(TestCase):
         """
         Create cameras and a project.
         """
-        mock_create_hash_sum.return_value = '1234'
+        self.cm_name1 = 'Test camera name'
+        self.cm_name2 = 'Test another camera name'
         self.pid = create_project(name="test_project")
         self.lat = Decimal(value="13.37")
         self.lon = Decimal(value="0.42")
@@ -119,15 +135,17 @@ class GetCamerasTest(TestCase):
         self.et = timezone.datetime(2020, 1, 18, tzinfo=pytz.timezone(settings.TIME_ZONE))
         self.rid = create_root_folder(path="/home/user/", name="test_folder")
         self.sid = create_subfolder(parent_fid=self.rid, name="test_subfolder")
-        create_clip(fid=self.rid, name="test_clip1", video_format="tvf", start_time=self.st,
+        mock_create_hash_sum.return_value = '1234'
+        create_clip(fid=self.rid, clip_name="test_clip1", video_format="tvf", start_time=self.st,
                     end_time=self.et, latitude=self.lat, longitude=self.lon, width=256, height=240,
-                    frame_rate=42.0)
-        create_clip(fid=self.sid, name="test_clip2", video_format="tvf", start_time=self.st,
+                    frame_rate=42.0, camera_name=self.cm_name1)
+        mock_create_hash_sum.return_value = '12345'
+        create_clip(fid=self.sid, clip_name="test_clip2", video_format="tvf", start_time=self.st,
                     end_time=self.et, latitude=self.lat, longitude=self.lon, width=256, height=240,
-                    frame_rate=42.0)
-        create_clip(fid=self.sid, name="test_clip3", video_format="tvf", start_time=self.st,
+                    frame_rate=42.0, camera_name=self.cm_name1)
+        create_clip(fid=self.sid, clip_name="test_clip3", video_format="tvf", start_time=self.st,
                     end_time=self.et, latitude=self.lon, longitude=self.lat, width=256, height=240,
-                    frame_rate=42.0)
+                    frame_rate=42.0, camera_name=self.cm_name2)
         add_folder_to_project(fid=self.rid, pid=self.pid)
 
     def test_basic(self):

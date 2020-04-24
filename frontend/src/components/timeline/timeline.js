@@ -154,92 +154,123 @@ const SCALE_LIST = [12, 24, 36, 48];
  * This class respresents the timeline react-component.
  */
 class Timeline extends Component {
+  constructor(props) {
+    super(props);
+    this.renderScaleList = this.renderScaleList.bind(this);
+    this.renderTimestamps = this.renderTimestamps.bind(this);
+    this.getWidthOfTimeline = this.getWidthOfTimeline.bind(this);
+  }
+
+  /**
+   * This will render the dropdown menu which contains the scaling options for timeline.
+   * The contents of SCALE_LIST is a preset of options to scale with.
+   */
+  renderScaleList() {
+    return (
+      <DropdownButton
+        className={styles.dropdown}
+        title={this.props.scale + " Hours"}
+      >
+        {/* Create dropdown items for every scaling option */}
+        {SCALE_LIST.map((hrs) => {
+          return (
+            <Dropdown.Item onClick={(a) => this.props.zoom(hrs)} key={hrs}>
+              {hrs + " Hours"}
+            </Dropdown.Item>
+          );
+        })}
+      </DropdownButton>
+    );
+  }
+
+  /**
+   * This will render the lines and timestamps on timeline.
+   * Shows an hour-stamp beside every line and in the top it shows which day.
+   */
+  renderTimestamps() {
+    return (
+      <div>
+        {getLinePlacements(this.props.startTime, this.props.timeSpan).map(
+          (p, i) => {
+            let hour = (this.props.startTime.getHours() + i + 1) % 24;
+            if (hour < 10) {
+              var hourStr = "0" + hour;
+            } else {
+              var hourStr = "" + hour;
+            }
+            return (
+              <div
+                style={{
+                  position: "absolute",
+                  left: p,
+                  top: "0",
+                  height: "100%",
+                }}
+                key={p}
+              >
+                <div className={styles.line}> </div>
+                <div className={styles.hour}> {hourStr} </div>
+              </div>
+            );
+          }
+        )}
+
+        {/*Creates days a box for each day and draws dates in them*/}
+        {getDayPlacements(
+          this.props.startTime,
+          this.props.endTime,
+          this.props.timeSpan
+        ).map(([w, p, d], i) => {
+          //Makes it so every other day is slightly darker
+          let color = "rgba(185, 185, 185, 0.3)";
+          if (i % 2) {
+            color = "rgba(0, 0, 0, 0)";
+          }
+          return (
+            <div
+              className={styles.day}
+              style={{
+                backgroundColor: color,
+                left: p,
+                width: w,
+              }}
+              key={p}
+            >
+              <div className={styles.date}> {d} </div>
+            </div>
+          );
+        })}
+      </div>
+    );
+  }
+
+  /**
+   * Calculates the width of timeline.
+   * Returns the result in percents.
+   */
+  getWidthOfTimeline() {
+    return (this.props.timeSpan / (60 * 60 * 1000) / this.props.scale) * 100;
+  }
+
   render() {
     return (
       <div className={styles.main}>
-        {/* This is the div for the topbar which contains the dropdown menu(s) */}
-        <div className={styles.topbar}>
-          {/* Dropdown menu for scaling the timeline */}
-          <DropdownButton
-            className={styles.dropdown}
-            title={this.props.scale + " Hours"}
-          >
-            {/* Create dropdown items for every scaling option */}
-            {SCALE_LIST.map((hrs) => {
-              return (
-                <Dropdown.Item onClick={(a) => this.props.zoom(hrs)} key={hrs}>
-                  {hrs + " Hours"}
-                </Dropdown.Item>
-              );
-            })}
-          </DropdownButton>
-        </div>
+        {/* This will render the topbar which contains the dropdown menu(s) */}
+        <div className={styles.topbar}>{this.renderScaleList()}</div>
 
         {/* This is the box containing all the timestamps, which is affected by scaling */}
         <div className={styles.sliderbox}>
           <div
             className={styles.slider}
             style={{
-              width:
-                (this.props.timeSpan / (60 * 60 * 1000) / this.props.scale) *
-                  100 +
-                "%",
+              width: this.getWidthOfTimeline() + "%",
             }}
           >
             {/* Glassbox component */}
             <Glassbox />
 
             {/* Creates a line for each timestamp and draws out hours*/}
-            {getLinePlacements(this.props.startTime, this.props.timeSpan).map(
-              (p, i) => {
-                let hour = (this.props.startTime.getHours() + i + 1) % 24;
-                if (hour < 10) {
-                  var hourStr = "0" + hour;
-                } else {
-                  var hourStr = "" + hour;
-                }
-                return (
-                  <div
-                    style={{
-                      position: "absolute",
-                      left: p,
-                      top: "0",
-                      height: "100%",
-                    }}
-                    key={p}
-                  >
-                    <div className={styles.line}> </div>
-                    <div className={styles.hour}> {hourStr} </div>
-                  </div>
-                );
-              }
-            )}
-
-            {/*Creates days a box for each day and draws dates in them*/}
-            {getDayPlacements(
-              this.props.startTime,
-              this.props.endTime,
-              this.props.timeSpan
-            ).map(([w, p, d], i) => {
-              //Makes it so every other day is slightly darker
-              let color = "rgba(185, 185, 185, 0.3)";
-              if (i % 2) {
-                color = "rgba(0, 0, 0, 0)";
-              }
-              return (
-                <div
-                  className={styles.day}
-                  style={{
-                    backgroundColor: color,
-                    left: p,
-                    width: w,
-                  }}
-                  key={p}
-                >
-                  <div className={styles.date}> {d} </div>
-                </div>
-              );
-            })}
+            {this.renderTimestamps()}
           </div>
         </div>
       </div>

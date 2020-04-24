@@ -1,5 +1,5 @@
 import store from "./state";
-import { makePOST, createFolderHierarchy, parseDatetimeString } from "../util";
+import { makePOST, parseFolders, parseDatetimeString } from "../util";
 
 // Types
 import { Project, Folder, Clip, Camera } from "../types";
@@ -183,7 +183,7 @@ export function exportClips() {
 
 // Video Manager requests
 /**
- * TODO: Add doc-comment
+ * This action is used to get all cameras.
  */
 export function getCameras() {
   return {
@@ -428,7 +428,7 @@ function handleResponse(state, reqType, status, data) {
             ...state,
             player: {
               ...state.player,
-              nextClip: data.clip_id != null ? data.clip_id : undefined,
+              nextClip: data.clip_id ? data.clip_id : undefined,
             },
           };
         case 204:
@@ -448,7 +448,7 @@ function handleResponse(state, reqType, status, data) {
         case 200:
           return {
             ...state,
-            folders: createFolderHierarchy(data.folders),
+            folders: parseFolders(data.folders),
           };
         case 204:
           e = "no project with specified ID";
@@ -467,7 +467,7 @@ function handleResponse(state, reqType, status, data) {
         case 200:
           return {
             ...state,
-            sourceFolders: createFolderHierarchy(data.folders),
+            sourceFolders: parseFolders(data.folders),
           };
         default:
           e = "unknown reason";

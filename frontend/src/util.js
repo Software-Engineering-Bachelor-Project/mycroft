@@ -71,11 +71,21 @@ export function parseFolders(folderResponse) {
 }
 
 /**
- * Converts a datetime string to
+ * Converts a datetime string to a Date object
  * @param {string} dateStr A date in string format.
  * @return {Date} The string converted to a date.
  */
 export function parseDatetimeString(dateStr) {
   // TODO: Implement
   return new Date(2020, 1, 1, 3, 24, 0);
+}
+
+/**
+ * Converts a Date object to a datetime string
+ * @param {Date} date A Date object.
+ * @return {string} The Date converted to a string.
+ */
+export function parseDateToString(date) {
+  // TODO: Implement
+  return "2018-09-06T16:45:59+02:00";
 }

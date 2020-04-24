@@ -92,7 +92,6 @@ class AddFoldersTest(TestCase):
         """
         Test with a folder id that doesn't exist.
         """
-        pid = create_project(name='test_project')
         code, res = add_folder(data={PROJECT_ID: self.pid, FOLDER_ID: 42})
         self.assertEqual(code, 204)
         self.assertEqual(res, {})
@@ -148,6 +147,7 @@ class GetClipsTest(TestCase):
         Setup a test project.
         """
         mock_create_hash_sum.return_value = '1234'
+        self.cam_name = 'test_camera'
         self.lat = Decimal(value="13.37")
         self.lon = Decimal(value="0.42")
         self.st = timezone.datetime(2020, 1, 17, tzinfo=pytz.timezone(settings.TIME_ZONE))
@@ -158,15 +158,15 @@ class GetClipsTest(TestCase):
         self.sid1 = create_subfolder(parent_fid=self.rid, name='test_subfolder')
         self.sid2 = create_subfolder(parent_fid=self.rid, name='another_test_subfolder')
         self.sid3 = create_subfolder(parent_fid=self.sid1, name='third_test_subfolder')
-        self.cid1 = create_clip(fid=self.rid, name="test_clip1", video_format="tvf", start_time=self.st,
+        self.cid1 = create_clip(fid=self.rid, clip_name="test_clip1", video_format="tvf", start_time=self.st,
                                 end_time=self.et, latitude=self.lat, longitude=self.lon, width=256, height=240,
-                                frame_rate=42.0)
-        self.cid2 = create_clip(fid=self.sid1, name="test_clip2", video_format="tvf", start_time=self.st,
+                                frame_rate=42.0, camera_name=self.cam_name)
+        self.cid2 = create_clip(fid=self.sid1, clip_name="test_clip2", video_format="tvf", start_time=self.st,
                                 end_time=self.et, latitude=self.lat, longitude=self.lon, width=256, height=240,
-                                frame_rate=42.0)
-        self.cid3 = create_clip(fid=self.sid3, name="test_clip3", video_format="tvf", start_time=self.st,
+                                frame_rate=42.0, camera_name=self.cam_name)
+        self.cid3 = create_clip(fid=self.sid3, clip_name="test_clip3", video_format="tvf", start_time=self.st,
                                 end_time=self.et, latitude=self.lat, longitude=self.lon, width=256, height=240,
-                                frame_rate=42.0)
+                                frame_rate=42.0, camera_name=self.cam_name)
         add_folder_to_project(fid=self.rid, pid=self.pid)
 
     def test_complex_file_structure(self):

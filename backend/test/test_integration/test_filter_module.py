@@ -15,6 +15,7 @@ class ModifyFilterTest(TestCase):
     @patch('backend.database_wrapper.create_hash_sum')
     def setUp(self, mock_create_hash_sum) -> None:
         mock_create_hash_sum.return_value = '1234'
+        self.cm_name = 'Test camera name'
         self.pid = dbw.create_project("Test project")
         self.fid = dbw.create_filter(self.pid)
         self.lat = Decimal(value="13.37")
@@ -22,9 +23,9 @@ class ModifyFilterTest(TestCase):
         self.st1 = timezone.datetime(2020, 1, 17, tzinfo=pytz.timezone(settings.TIME_ZONE))
         self.et1 = self.st1 + timezone.timedelta(hours=1)
         self.rid = dbw.create_root_folder(path="/home/user/", name="test_folder")
-        dbw.create_clip(fid=self.rid, name="test_clip1", video_format="tvf",
+        dbw.create_clip(fid=self.rid, clip_name="test_clip1", video_format="tvf",
                         start_time=self.st1, end_time=self.et1, latitude=self.lat,
-                        longitude=self.lon, width=256, height=240, frame_rate=42.0)
+                        longitude=self.lon, width=256, height=240, frame_rate=42.0, camera_name=self.cm_name)
 
     def test_simple_call(self):
         """
@@ -76,6 +77,8 @@ class GetClipsMatchingFilter(TestCase):
     @patch('backend.database_wrapper.create_hash_sum')
     def setUp(self, mock_create_hash_sum) -> None:
         mock_create_hash_sum.return_value = '1234'
+        self.cm_name1 = 'Test camera name'
+        self.cm_name2 = 'Test another camera name'
         self.rid = dbw.create_root_folder(path="/home/user/", name="test_folder")
         self.lat = Decimal(value="13.37")
         self.lon = Decimal(value="0.42")
@@ -84,12 +87,14 @@ class GetClipsMatchingFilter(TestCase):
         self.st2 = self.st1 + timezone.timedelta(hours=2)
         self.et2 = self.st2 + timezone.timedelta(hours=1)
 
-        self.cid1 = dbw.create_clip(fid=self.rid, name="test_clip1", video_format="tvf",
+        self.cid1 = dbw.create_clip(fid=self.rid, clip_name="test_clip1", video_format="tvf",
                                     start_time=self.st1, end_time=self.et1, latitude=self.lat,
-                                    longitude=self.lon + 1, width=200, height=300, frame_rate=42.0)
-        self.cid2 = dbw.create_clip(fid=self.rid, name="test_clip2", video_format="tvf",
+                                    longitude=self.lon + 1, width=200, height=300, frame_rate=42.0,
+                                    camera_name=self.cm_name1)
+        self.cid2 = dbw.create_clip(fid=self.rid, clip_name="test_clip2", video_format="tvf",
                                     start_time=self.st2, end_time=self.et2, latitude=self.lat,
-                                    longitude=self.lon, width=400, height=500, frame_rate=42.0)
+                                    longitude=self.lon, width=400, height=500, frame_rate=42.0,
+                                    camera_name=self.cm_name2)
         self.pid = dbw.create_project(name="test_project")
         self.fid = dbw.create_filter(pid=self.pid)
         dbw.add_folder_to_project(self.fid, self.pid)
@@ -196,9 +201,10 @@ class GetClipsMatchingFilter(TestCase):
         """
         mock_create_hash_sum.return_value = '1234567'
         data = {FILTER_ID: 1}
-        cid1_copy = dbw.create_clip(fid=self.rid, name="test_clip1_copy", video_format="tvf",
+        cid1_copy = dbw.create_clip(fid=self.rid, clip_name="test_clip1_copy", video_format="tvf",
                                     start_time=self.st1, end_time=self.et1, latitude=self.lat,
-                                    longitude=self.lon + 1, width=200, height=300, frame_rate=42.0)
+                                    longitude=self.lon + 1, width=200, height=300, frame_rate=42.0,
+                                    camera_name=self.cm_name1)
 
         dbw.modify_filter(fid=self.fid, classes=["car"], start_time=self.st1 + timezone.timedelta(seconds=10))
 
@@ -288,6 +294,8 @@ class GetFilterParametersTest(TestCase):
     @patch('backend.database_wrapper.create_hash_sum')
     def setUp(self, mock_create_hash_sum) -> None:
         mock_create_hash_sum.return_value = '1234'
+        self.cm_name1 = 'Test camera name'
+        self.cm_name2 = 'Test another camera name'
         self.rid = dbw.create_root_folder(path="/home/user/", name="test_folder")
         self.lat = Decimal(value="13.37")
         self.lon = Decimal(value="0.42")
@@ -296,12 +304,14 @@ class GetFilterParametersTest(TestCase):
         self.st2 = self.st1 + timezone.timedelta(hours=2)
         self.et2 = self.st2 + timezone.timedelta(hours=1)
 
-        self.cid1 = dbw.create_clip(fid=self.rid, name="test_clip1", video_format="tvf",
+        self.cid1 = dbw.create_clip(fid=self.rid, clip_name="test_clip1", video_format="tvf",
                                     start_time=self.st1, end_time=self.et1, latitude=self.lat,
-                                    longitude=self.lon + 1, width=200, height=300, frame_rate=42.0)
-        self.cid2 = dbw.create_clip(fid=self.rid, name="test_clip2", video_format="tvf",
+                                    longitude=self.lon + 1, width=200, height=300, frame_rate=42.0,
+                                    camera_name=self.cm_name1)
+        self.cid2 = dbw.create_clip(fid=self.rid, clip_name="test_clip2", video_format="tvf",
                                     start_time=self.st2, end_time=self.et2, latitude=self.lat,
-                                    longitude=self.lon, width=400, height=500, frame_rate=42.0)
+                                    longitude=self.lon, width=400, height=500, frame_rate=42.0,
+                                    camera_name=self.cm_name2)
         self.pid = dbw.create_project(name="test_project")
         self.fid = dbw.create_filter(pid=self.pid)
         dbw.add_folder_to_project(self.fid, self.pid)

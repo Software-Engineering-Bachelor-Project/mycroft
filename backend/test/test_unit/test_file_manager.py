@@ -5,7 +5,7 @@ from django.test import TestCase
 from backend.file_manager import *
 
 METADATA_EXAMPLE = "59°23'19.2\"N 17°55'35.4\"E   (59.388668, 17.926501)\n2018-09-06 15:45:59.603     " \
-                   "(2018-09-06 15:45:59)"
+                   "(2018-09-06 15:45:59)\n(Test camera name)"
 
 
 class GetSourceFolders(TestCase):
@@ -132,12 +132,13 @@ class GetClipsTest(TestCase):
         Set up a file structure.
         """
         self.resolution = Resolution.objects.get_or_create(width=256, height=240)[0]
-        self.lat = Decimal(value="13.37")
-        self.lon = Decimal(value="0.42")
+        self.cm_name = 'Test camera name'
+        self.lon = Decimal('0.42')
+        self.lat = Decimal('42.0')
         self.st = timezone.datetime(2020, 1, 17, tzinfo=pytz.timezone(settings.TIME_ZONE))
         self.et = timezone.datetime(2020, 1, 18, tzinfo=pytz.timezone(settings.TIME_ZONE))
         self.rf = Folder.objects.create(path='home/user/', name='test_folder')
-        self.ca = Camera.objects.create(latitude=self.lat, longitude=self.lon)
+        self.ca = Camera.objects.create(name=self.cm_name, longitude=self.lon, latitude=self.lat)
         self.cl = Clip.objects.create(folder=self.rf, name='test_clip', video_format='mkv', start_time=self.st,
                                       end_time=self.et, camera=self.ca, frame_rate=42.0, resolution=self.resolution)
 
@@ -234,6 +235,7 @@ class AnalyzeFileTest(TestCase):
 class GetClipInfoTest(TestCase):
 
     def setUp(self) -> None:
+        self.cm_name = 'Test camera name'
         self.lat = Decimal('42.0')
         self.lon = Decimal('0.42')
         self.st = timezone.datetime(year=2018, month=9, day=6, hour=15, minute=45, second=59,
@@ -247,13 +249,13 @@ class GetClipInfoTest(TestCase):
         """
         Test with valid clip.
         """
-        mock_parse_metadata.return_value = (self.lat, self.lon, self.st)
+        mock_parse_metadata.return_value = (self.lat, self.lon, self.st, self.cm_name)
         mock_get_clip_details.return_value = (42, 1337, 256, 240)
         res = get_clip_info(file_path='home/user/test_folder/test_clip.avi', folder_id=1337, name='test_clip',
                             video_format='avi')
-        self.assertEqual(res, {'fid': 1337, 'name': 'test_clip', 'video_format': 'avi', 'start_time': self.st,
+        self.assertEqual(res, {'fid': 1337, 'clip_name': 'test_clip', 'video_format': 'avi', 'start_time': self.st,
                                'end_time': self.et, 'latitude': self.lat, 'longitude': self.lon, 'width': 256,
-                               'height': 240, 'frame_rate': 1337})
+                               'height': 240, 'frame_rate': 1337, 'camera_name': 'Test camera name'})
 
     def test_non_existing_clip(self):
         """
@@ -270,11 +272,12 @@ class ParseMetadataTest(TestCase):
         """
         Test parsing an example metadata file.
         """
-        lat, lon, st = parse_metadata(file_path='home/user/test_folder/test_clip.avi')
+        lat, lon, st, cm_name = parse_metadata(file_path='home/user/test_folder/test_clip.avi')
         self.assertEqual(lat, Decimal('59.388668'))
         self.assertEqual(lon, Decimal('17.926501'))
         self.assertEqual(st, timezone.datetime(year=2018, month=9, day=6, hour=15, minute=45, second=59,
                                                tzinfo=pytz.timezone(settings.TIME_ZONE)))
+        self.assertEqual(cm_name, 'Test camera name')
         mock_file.assert_called_once_with(file='home/user/test_folder/test_clip.avi.txt', mode='r')
 
     def test_non_existing_file(self):
@@ -291,7 +294,8 @@ class ParseMetadataTest(TestCase):
         self.assertRaises(ValueError, parse_metadata, file_path='home/user/test_folder/test_clip.avi')
 
     @patch('builtins.open', new_callable=mock_open, read_data="2018-09-06 15:45:59.603    (2018-09-06 15:45:59)"
-                                                              "59°23'19.2\"N 17°55'35.4\"E   (59.388668, 17.926501)\n")
+                                                              "59°23'19.2\"N 17°55'35.4\"E   (59.388668, 17.926501)"
+                                                              "\n(Test camera name)")
     def test_wrong_order_of_metadata(self, mock_file):
         """
         Test parsing metadata with location and time in reversed order. Should give ValueError.
@@ -299,18 +303,28 @@ class ParseMetadataTest(TestCase):
         self.assertRaises(ValueError, parse_metadata, file_path='home/user/test_folder/test_clip.avi')
 
     @patch('builtins.open', new_callable=mock_open, read_data="59°23'19.2\"N 17°55'35.4\"E   (59.38, 17.9, 42.0)\n"
-                                                              "2018-09-06 15:45:59.603     (2018-09-06 15:45:59)")
+                                                              "2018-09-06 15:45:59.603     (2018-09-06 15:45:59)\n"
+                                                              "(Test camera name)")
     def test_extra_location_value_of_metadata(self, mock_file):
         """
-        Test parsing metadata . Should give ValueError.
+        Test parsing metadata. Should give ValueError.
+        """
+        self.assertRaises(ValueError, parse_metadata, file_path='home/user/test_folder/test_clip.avi')
+
+    @patch('builtins.open', new_callable=mock_open, read_data="59°23'19.2\"N 17°55'35.4\"E   (59.388668, 17.926501)\n"
+                                                              "2018-09-06 25:45:59.603     (2018-09-06 25:45:59)\n"
+                                                              "(Test camera name)")
+    def test_wrong_datetime_format(self, mock_file):
+        """
+        Test parsing metadata. Should give ValueError.
         """
         self.assertRaises(ValueError, parse_metadata, file_path='home/user/test_folder/test_clip.avi')
 
     @patch('builtins.open', new_callable=mock_open, read_data="59°23'19.2\"N 17°55'35.4\"E   (59.388668, 17.926501)\n"
                                                               "2018-09-06 25:45:59.603     (2018-09-06 25:45:59)")
-    def test_wrong_datetime_format(self, mock_file):
+    def test_missing_camera_name(self, mock_file):
         """
-        Test parsing metadata . Should give ValueError.
+        Test parsing metadata. Should give ValueError.
         """
         self.assertRaises(ValueError, parse_metadata, file_path='home/user/test_folder/test_clip.avi')
 

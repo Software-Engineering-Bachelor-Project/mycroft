@@ -12,6 +12,7 @@ class SerializeTest(TestCase):
         """
         Create objects to be used.
         """
+        self.cm_name = 'Test camera name'
         self.rf = Folder.objects.create(path="/home/user/", name="test_folder", is_entry=True)
         self.sf = Folder.objects.create(parent=self.rf, name="test_subfolder",
                                         path="/home/user/test_folder/", is_entry=False)
@@ -19,7 +20,7 @@ class SerializeTest(TestCase):
                                                                      tzinfo=pytz.timezone(settings.TIME_ZONE)),
                                         end_time=timezone.datetime(2020, 5, 18,
                                                                    tzinfo=pytz.timezone(settings.TIME_ZONE)),
-                                        latitude=Decimal('0.0'), longitude=Decimal('0.0'))
+                                        latitude=Decimal('0.0'), longitude=Decimal('0.0'), name=self.cm_name)
         self.resolution = Resolution.objects.create(height=10, width=10)
 
         self.cl = Clip.objects.create(folder=self.rf, name='test_clip', video_format='tvf',
@@ -42,7 +43,8 @@ class SerializeTest(TestCase):
                          {'id': 2, 'path': '/home/user/test_folder/', 'name': 'test_subfolder', 'parent': 1, 'clip_set': [], 'is_entry': False})
         self.assertEqual(serialize(data=self.cm), {'id': 1, 'latitude': '0.00000000', 'longitude': '0.00000000',
                                                    'start_time': '2020-05-17T00:00:00+01:00',
-                                                   'end_time': '2020-05-18T00:00:00+01:00', 'clip_set': [self.cl.id]})
+                                                   'end_time': '2020-05-18T00:00:00+01:00', 'clip_set': [self.cl.id],
+                                                   'name': 'Test camera name'})
         self.assertEqual(serialize(data=self.cl), {'id': 1, 'name': 'test_clip', 'video_format': 'tvf',
                                                    'start_time': '2020-05-17T00:00:00+01:00',
                                                    'end_time': '2020-05-18T00:00:00+01:00', 'resolution': 1,

@@ -180,15 +180,15 @@ def get_clip_info(file_path: str, folder_id: int, name: str, video_format: str) 
     :param video_format: The video format of the clip.
     :return: A dictionary with the valid parameters for create_clip in database_wrapper.py.
     """
-    latitude, longitude, start_time = parse_metadata(file_path=file_path)
+    latitude, longitude, start_time, camera_name = parse_metadata(file_path=file_path)
     duration, frame_rate, width, height = get_clip_details(file_path=file_path)
     end_time = start_time + timezone.timedelta(seconds=duration)
-    return {'fid': folder_id, 'name': name, 'video_format': video_format, 'start_time': start_time,
+    return {'fid': folder_id, 'clip_name': name, 'video_format': video_format, 'start_time': start_time,
             'end_time': end_time, 'latitude': latitude, 'longitude': longitude, 'width': width, 'height': height,
-            'frame_rate': frame_rate}
+            'frame_rate': frame_rate, 'camera_name': camera_name}
 
 
-def parse_metadata(file_path: str) -> (Decimal, Decimal, timezone.datetime):
+def parse_metadata(file_path: str) -> (Decimal, Decimal, timezone.datetime, str):
     """
     Parses a clip's metadata for location and start time.
 
@@ -197,6 +197,7 @@ def parse_metadata(file_path: str) -> (Decimal, Decimal, timezone.datetime):
     Example of metadata:
     59°23'19.2"N 17°55'35.4"E   (59.388668, 17.926501)
     2018-09-06 15:45:59.603     (2018-09-06 15:45:59)
+                                (Test camera name)
 
     :param file_path: The absolute path to a clip.
     :return: (latitude: Decimal, longitude, Decimal: datetime.datetime)
@@ -207,9 +208,9 @@ def parse_metadata(file_path: str) -> (Decimal, Decimal, timezone.datetime):
     with open(file=file_path + '.txt', mode='r') as f:
         content = f.read()
 
-    # Find both parentheses from metadata.
+    # Find all three parentheses from metadata.
     parentheses = re.findall('\(.*?\)', content)
-    if len(parentheses) != 2:
+    if len(parentheses) != 3:
         raise wrong_format_error
 
     # Extract latitude and longitude from location parentheses.
@@ -229,7 +230,13 @@ def parse_metadata(file_path: str) -> (Decimal, Decimal, timezone.datetime):
     except ValueError:
         raise wrong_format_error
 
-    return lat, lon, start_time
+    # Extract camera name from name parentheses.
+    try:
+        camera_name = parentheses[2][1:-1]
+    except SyntaxError:
+        raise wrong_format_error
+
+    return lat, lon, start_time, camera_name
 
 
 def get_clip_details(file_path: str) -> (int, float, int, int):

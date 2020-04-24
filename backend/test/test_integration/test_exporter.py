@@ -14,17 +14,18 @@ class ExportFilterTest(TestCase):
         Create a folder, clip, project and filter.
         """
         mock_create_hash_sum.return_value = '1234'
+        self.cm_name = 'Test camera name'
         self.rid = create_root_folder(path="/home/user/", name="test_folder")
         self.lat = Decimal(value="13.37")
         self.lon = Decimal(value="0.42")
         self.st = timezone.datetime(2020, 1, 17, tzinfo=pytz.timezone(settings.TIME_ZONE))
         self.et = timezone.datetime(2020, 1, 18, tzinfo=pytz.timezone(settings.TIME_ZONE))
-        create_clip(fid=self.rid, name="test_clip1", video_format="tvf",
+        create_clip(fid=self.rid, clip_name="test_clip1", video_format="tvf",
                     start_time=self.st, end_time=self.et, latitude=self.lat,
-                    longitude=self.lon, width=256, height=240, frame_rate=42.0)
-        create_clip(fid=self.rid, name="test_clip2", video_format="tvf",
+                    longitude=self.lon, width=256, height=240, frame_rate=42.0, camera_name=self.cm_name)
+        create_clip(fid=self.rid, clip_name="test_clip2", video_format="tvf",
                     start_time=self.st, end_time=self.et, latitude=self.lat,
-                    longitude=self.lon, width=256, height=240, frame_rate=42.0)
+                    longitude=self.lon, width=256, height=240, frame_rate=42.0, camera_name=self.cm_name)
         self.pid = create_project(name="test_project")
         self.fid = create_filter(pid=self.pid)
         add_folder_to_project(self.fid, self.pid)

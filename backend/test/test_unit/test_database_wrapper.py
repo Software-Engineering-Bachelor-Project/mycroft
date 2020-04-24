@@ -44,14 +44,15 @@ class BaseTestCases:
             Create a folder and a clip.
             """
             mock_create_hash_sum.return_value = '1234'
+            self.cm_name = 'Test camera name'
             self.lat = Decimal(value="13.37")
             self.lon = Decimal(value="0.42")
             self.st = timezone.now() - timezone.timedelta(hours=1)
             self.et = timezone.now()
             self.fid = create_root_folder(path="/home/user/", name="test_folder")
-            self.cid = create_clip(fid=self.fid, name="test_clip", video_format="tvf", start_time=self.st,
+            self.cid = create_clip(fid=self.fid, clip_name="test_clip", video_format="tvf", start_time=self.st,
                                    end_time=self.et, latitude=self.lat, longitude=self.lon, width=256, height=240,
-                                   frame_rate=42.0)
+                                   frame_rate=42.0, camera_name=self.cm_name)
             mock_create_hash_sum.assert_called_once()
 
     class FilterTest(TestCase):
@@ -61,13 +62,14 @@ class BaseTestCases:
             Create a folder, clip, project and filter.
             """
             mock_create_hash_sum.return_value = '1234'
+            self.cm_name = 'Test camera clip'
             self.rid = create_root_folder(path="/home/user/", name="test_folder")
             self.lat = Decimal(value="13.37")
             self.lon = Decimal(value="0.42")
-            self.cid = create_clip(fid=self.rid, name="test_clip", video_format="tvf",
+            self.cid = create_clip(fid=self.rid, clip_name="test_clip", video_format="tvf",
                                    start_time=timezone.now() - timezone.timedelta(hours=1),
                                    end_time=timezone.now(), latitude=self.lat,
-                                   longitude=self.lon, width=256, height=240, frame_rate=42.0)
+                                   longitude=self.lon, width=256, height=240, frame_rate=42.0, camera_name=self.cm_name)
             self.pid = create_project(name="test_project")
             self.fid = create_filter(pid=self.pid)
 
@@ -81,11 +83,12 @@ class BaseTestCases:
             Create a folder, clip and object detection.
             """
             mock_create_hash_sum.return_value = '1234'
+            self.cm_name = 'Test camera clip'
             self.rid = create_root_folder(path="/home/user/", name="test_folder")
-            self.cid = create_clip(fid=self.rid, name="test_clip", video_format="tvf",
+            self.cid = create_clip(fid=self.rid, clip_name="test_clip", video_format="tvf",
                                    start_time=timezone.now() - timezone.timedelta(hours=1),
                                    end_time=timezone.now(), latitude=Decimal(value="13.37"),
-                                   longitude=Decimal(value="0.42"), width=256, height=240, frame_rate=42.0)
+                                   longitude=Decimal(value="0.42"), width=256, height=240, frame_rate=42.0, camera_name=self.cm_name)
             self.cmid = get_camera_by_location(latitude=Decimal(value="13.37"), longitude=Decimal(value="0.42")).id
             self.st = timezone.now() - timezone.timedelta(hours=0.5)
             self.et = timezone.now() - timezone.timedelta(hours=0.25)
@@ -609,10 +612,10 @@ class CreateClipTest(BaseTestCases.ClipTest):
         Make sure that creating a clip with end time before start time doesn't work.
         """
         time = timezone.now()
-        self.assertRaises(ValidationError, create_clip, fid=self.fid, name="valid_name", video_format="tvf",
+        self.assertRaises(ValidationError, create_clip, fid=self.fid, clip_name="valid_name", video_format="tvf",
                           start_time=time, end_time=time - timezone.timedelta(microseconds=1),
                           latitude=Decimal(value="13.37"), longitude=Decimal(value="0.42"), width=256, height=240,
-                          frame_rate=42.0)
+                          frame_rate=42.0, camera_name=self.cm_name)
 
     @patch('backend.database_wrapper.create_hash_sum')
     def test_time_updates_when_adding_clip(self, mock_create_hash_sum):
@@ -622,13 +625,15 @@ class CreateClipTest(BaseTestCases.ClipTest):
         mock_create_hash_sum.return_value = '1234567'
         new_st = self.st - timezone.timedelta(hours=1)
         new_et = self.et + timezone.timedelta(hours=1)
-        self.cid = create_clip(fid=self.fid, name="before", video_format="tvf", start_time=new_st, end_time=self.st,
-                               latitude=self.lat, longitude=self.lon, width=256, height=240, frame_rate=42.0)
+        self.cid = create_clip(fid=self.fid, clip_name="before", video_format="tvf", start_time=new_st, end_time=self.st,
+                               latitude=self.lat, longitude=self.lon, width=256, height=240, frame_rate=42.0,
+                               camera_name=self.cm_name)
         cm = get_camera_by_location(latitude=self.lat, longitude=self.lon)
         self.assertEqual(cm.start_time, new_st)
         self.assertEqual(cm.end_time, self.et)
-        self.cid = create_clip(fid=self.fid, name="after", video_format="tvf", start_time=self.et, end_time=new_et,
-                               latitude=self.lat, longitude=self.lon, width=256, height=240, frame_rate=42.0)
+        self.cid = create_clip(fid=self.fid, clip_name="after", video_format="tvf", start_time=self.et, end_time=new_et,
+                               latitude=self.lat, longitude=self.lon, width=256, height=240, frame_rate=42.0,
+                               camera_name=self.cm_name)
         cm = get_camera_by_location(latitude=self.lat, longitude=self.lon)
         self.assertEqual(cm.start_time, new_st)
         self.assertEqual(cm.end_time, new_et)
@@ -639,31 +644,31 @@ class CreateClipTest(BaseTestCases.ClipTest):
         Test that clips are added to the same camera if they are from the same location.
         """
         mock_create_hash_sum.return_value = '1234567'
-        create_clip(fid=self.fid, name="another_test_clip", video_format="tvf",
+        create_clip(fid=self.fid, clip_name="another_test_clip", video_format="tvf",
                     start_time=self.st - timezone.timedelta(hours=1), end_time=self.st, latitude=self.lat,
-                    longitude=self.lon, width=256, height=240, frame_rate=42.0)
+                    longitude=self.lon, width=256, height=240, frame_rate=42.0, camera_name=self.cm_name)
         self.assertEqual(len(Camera.objects.all()), 1)
 
     def test_bad_format(self):
         """
         Test that clips with a format longer than 5 characters are not allowed
         """
-        self.assertRaises(ValidationError, lambda: create_clip(fid=self.fid, name="another_test_clip",
+        self.assertRaises(ValidationError, lambda: create_clip(fid=self.fid, clip_name="another_test_clip",
                                                                video_format="tvfabc",
                                                                start_time=self.st - timezone.timedelta(hours=1),
                                                                end_time=self.st,
                                                                latitude=self.lat, longitude=self.lon, width=256,
-                                                               height=240, frame_rate=42.0))
+                                                               height=240, frame_rate=42.0, camera_name=self.cm_name))
 
     def test_bad_folder(self):
         """
         Test that clips without a folder asserts None
         """
-        self.assertRaises(AssertionError, lambda: create_clip(fid=999, name="another_test_clip", video_format="tvf",
+        self.assertRaises(AssertionError, lambda: create_clip(fid=999, clip_name="another_test_clip", video_format="tvf",
                                                               start_time=self.st - timezone.timedelta(hours=1),
                                                               end_time=self.st, latitude=self.lat,
                                                               longitude=self.lon, width=256, height=240,
-                                                              frame_rate=42.0))
+                                                              frame_rate=42.0, camera_name=self.cm_name))
 
     @patch('backend.database_wrapper.create_hash_sum')
     def test_duplicate(self, mock_create_hash_sum):
@@ -671,9 +676,9 @@ class CreateClipTest(BaseTestCases.ClipTest):
         Test if there is duplicated clips.
         """
         mock_create_hash_sum.return_value = '1234'
-        cid2 = create_clip(fid=self.fid, name="another_test_clip", video_format="tvf", start_time=self.st,
+        cid2 = create_clip(fid=self.fid, clip_name="another_test_clip", video_format="tvf", start_time=self.st,
                            end_time=self.et, latitude=self.lat, longitude=self.lon, width=256, height=240,
-                           frame_rate=42.0)
+                           frame_rate=42.0, camera_name=self.cm_name)
         clip = get_clip_by_id(cid=self.cid)
         clip2 = get_clip_by_id(cid=cid2)
 
@@ -690,9 +695,10 @@ class CreateClipTest(BaseTestCases.ClipTest):
         Test if there is no duplicated clips and is overlapping.
         """
         mock_create_hash_sum.return_value = '1234567'
-        cid2 = create_clip(fid=self.fid, name="another_test_clip", video_format="tvf",
+        cid2 = create_clip(fid=self.fid, clip_name="another_test_clip", video_format="tvf",
                            start_time=self.st - timezone.timedelta(hours=1), end_time=self.et,
-                           latitude=self.lat, longitude=self.lon, width=256, height=240, frame_rate=42.0)
+                           latitude=self.lat, longitude=self.lon, width=256, height=240, frame_rate=42.0,
+                           camera_name=self.cm_name)
         clip2 = get_clip_by_id(cid=cid2)
         clip = get_clip_by_id(cid=self.cid)
 
@@ -708,9 +714,10 @@ class CreateClipTest(BaseTestCases.ClipTest):
         Test if there is overlapping clips.
         """
         mock_create_hash_sum.return_value = '1234567'
-        cid2 = create_clip(fid=self.fid, name="another_test_clip", video_format="tvf",
+        cid2 = create_clip(fid=self.fid, clip_name="another_test_clip", video_format="tvf",
                            start_time=self.st, end_time=self.et + timezone.timedelta(hours=1),
-                           latitude=self.lat, longitude=self.lon, width=256, height=240, frame_rate=42.0)
+                           latitude=self.lat, longitude=self.lon, width=256, height=240, frame_rate=42.0,
+                           camera_name=self.cm_name)
         clip2 = get_clip_by_id(cid=cid2)
         clip = get_clip_by_id(cid=self.cid)
 
@@ -726,10 +733,10 @@ class CreateClipTest(BaseTestCases.ClipTest):
         Test if there is overlapping clips.
         """
         mock_create_hash_sum.return_value = '1234567'
-        cid2 = create_clip(fid=self.fid, name="another_test_clip", video_format="tvf",
+        cid2 = create_clip(fid=self.fid, clip_name="another_test_clip", video_format="tvf",
                            start_time=self.st + timezone.timedelta(minutes=1),
                            end_time=self.et - timezone.timedelta(minutes=1), latitude=self.lat,
-                           longitude=self.lon, width=256, height=240, frame_rate=42.0)
+                           longitude=self.lon, width=256, height=240, frame_rate=42.0, camera_name=self.cm_name)
         clip2 = get_clip_by_id(cid=cid2)
         clip = get_clip_by_id(cid=self.cid)
 
@@ -745,10 +752,10 @@ class CreateClipTest(BaseTestCases.ClipTest):
         Test if there is overlapping clips.
         """
         mock_create_hash_sum.return_value = '1234567'
-        cid2 = create_clip(fid=self.fid, name="another_test_clip", video_format="tvf",
+        cid2 = create_clip(fid=self.fid, clip_name="another_test_clip", video_format="tvf",
                            start_time=self.st - timezone.timedelta(minutes=1),
                            end_time=self.et + timezone.timedelta(minutes=1), latitude=self.lat,
-                           longitude=self.lon, width=256, height=240, frame_rate=42.0)
+                           longitude=self.lon, width=256, height=240, frame_rate=42.0, camera_name=self.cm_name)
         clip2 = get_clip_by_id(cid=cid2)
         clip = get_clip_by_id(cid=self.cid)
 
@@ -761,10 +768,10 @@ class CreateClipTest(BaseTestCases.ClipTest):
     @patch('backend.database_wrapper.create_hash_sum')
     def test_sequential(self, mock_create_hash_sum):
         mock_create_hash_sum.return_value = '1234567'
-        cid2 = create_clip(fid=self.fid, name="another_test_clip", video_format="tvf",
+        cid2 = create_clip(fid=self.fid, clip_name="another_test_clip", video_format="tvf",
                            start_time=self.et,
                            end_time=self.et + timezone.timedelta(minutes=1), latitude=self.lat,
-                           longitude=self.lon, width=256, height=240, frame_rate=42.0)
+                           longitude=self.lon, width=256, height=240, frame_rate=42.0, camera_name=self.cm_name)
         clip2 = get_clip_by_id(cid=cid2)
         clip = get_clip_by_id(cid=self.cid)
         self.assertFalse(clip2 in clip.overlap.all())
@@ -834,10 +841,10 @@ class GetAllClipsFromFolderTest(BaseTestCases.ClipTest):
         """
         mock_create_hash_sum.return_value = '1234567'
         sid = create_subfolder(parent_fid=self.fid, name="test_subfolder")
-        create_clip(fid=sid, name="new_test_clip", video_format="tvf",
+        create_clip(fid=sid, clip_name="new_test_clip", video_format="tvf",
                     start_time=timezone.now() - timezone.timedelta(hours=1),
                     end_time=timezone.now(), latitude=Decimal(value="42.0099"),
-                    longitude=Decimal(value="0.1337"), width=256, height=240, frame_rate=42.0)
+                    longitude=Decimal(value="0.1337"), width=256, height=240, frame_rate=42.0, camera_name=self.cm_name)
         self.assertEqual(len(get_all_clips_from_folder(fid=self.fid)), 1)
 
     @patch('backend.database_wrapper.create_hash_sum')
@@ -847,10 +854,10 @@ class GetAllClipsFromFolderTest(BaseTestCases.ClipTest):
         """
         mock_create_hash_sum.return_value = '1234567'
         sid = create_subfolder(parent_fid=self.fid, name="test_subfolder")
-        create_clip(fid=sid, name="new_test_clip", video_format="tvf",
+        create_clip(fid=sid, clip_name="new_test_clip", video_format="tvf",
                     start_time=timezone.now() - timezone.timedelta(hours=1),
                     end_time=timezone.now(), latitude=Decimal(value="42.0099"),
-                    longitude=Decimal(value="0.1337"), width=256, height=240, frame_rate=42.0)
+                    longitude=Decimal(value="0.1337"), width=256, height=240, frame_rate=42.0, camera_name=self.cm_name)
         self.assertRaises(AssertionError, lambda: get_all_clips_from_folder(fid=999))
 
 
@@ -864,10 +871,10 @@ class GetAllClipsFromFolderRecursiveTest(BaseTestCases.ClipTest):
 
         mock_create_hash_sum.return_value = '1234567'
         sid = create_subfolder(parent_fid=self.fid, name="test_subfolder")
-        create_clip(fid=sid, name="new_test_clip", video_format="tvf",
+        create_clip(fid=sid, clip_name="new_test_clip", video_format="tvf",
                     start_time=timezone.now() - timezone.timedelta(hours=1),
                     end_time=timezone.now(), latitude=Decimal(value="42.0099"),
-                    longitude=Decimal(value="0.1337"), width=256, height=240, frame_rate=42.0)
+                    longitude=Decimal(value="0.1337"), width=256, height=240, frame_rate=42.0, camera_name=self.cm_name)
 
     def test_existing_fid(self):
         """
@@ -1221,9 +1228,9 @@ class GetAllClipsInProject(BaseTestCases.ClipTest):
         """
         mock_create_hash_sum.return_value = '1234567'
         fid2 = create_subfolder(self.fid, "test2")
-        create_clip(fid=fid2, name="test_clip2", video_format="tvf", start_time=self.st,
+        create_clip(fid=fid2, clip_name="test_clip2", video_format="tvf", start_time=self.st,
                     end_time=self.et, latitude=self.lat, longitude=self.lon, width=256, height=240,
-                    frame_rate=42.0)
+                    frame_rate=42.0, camera_name=self.cm_name)
 
         add_folder_to_project(self.fid, self.pid)
         self.assertEqual(len(get_all_clips_in_project(self.pid)), 2)
@@ -1279,12 +1286,12 @@ class GetAllCamerasInProject(BaseTestCases.ClipTest):
         """
         mock_create_hash_sum.return_value = '1234567'
         fid2 = create_subfolder(self.fid, "test2")
-        create_clip(fid=fid2, name="test_clip2", video_format="tvf", start_time=self.st,
+        create_clip(fid=fid2, clip_name="test_clip2", video_format="tvf", start_time=self.st,
                     end_time=self.et, latitude=self.lat, longitude=self.lon, width=256, height=240,
-                    frame_rate=42.0)
-        create_clip(fid=fid2, name="test_clip3", video_format="tvf", start_time=self.st,
+                    frame_rate=42.0, camera_name=self.cm_name)
+        create_clip(fid=fid2, clip_name="test_clip3", video_format="tvf", start_time=self.st,
                     end_time=self.et, latitude=self.lon, longitude=self.lat, width=256, height=240,
-                    frame_rate=42.0)
+                    frame_rate=42.0, camera_name=self.cm_name)
 
         add_folder_to_project(self.fid, self.pid)
         self.assertEqual(len(get_all_cameras_in_project(self.pid)), 2)
@@ -1376,15 +1383,18 @@ class GetAllResolutionsInProject(TestCase):
         Create a folder and several clips
         """
         mock_create_hash_sum.return_value = '1234'
+        self.cm_name = 'Test camera name'
         self.rid = create_root_folder(path="/home/user/", name="test_folder")
-        self.cid = create_clip(fid=self.rid, name="test_clip1", video_format="tvf",
+        self.cid = create_clip(fid=self.rid, clip_name="test_clip1", video_format="tvf",
                                start_time=timezone.now() - timezone.timedelta(hours=1),
                                end_time=timezone.now(), latitude=Decimal(value="13.37"),
-                               longitude=Decimal(value="0.42"), width=256, height=240, frame_rate=42.0)
-        self.cid = create_clip(fid=self.rid, name="test_clip2", video_format="tvf",
+                               longitude=Decimal(value="0.42"), width=256, height=240, frame_rate=42.0,
+                               camera_name=self.cm_name)
+        self.cid = create_clip(fid=self.rid, clip_name="test_clip2", video_format="tvf",
                                start_time=timezone.now() - timezone.timedelta(hours=1),
                                end_time=timezone.now(), latitude=Decimal(value="13.37"),
-                               longitude=Decimal(value="0.42"), width=10, height=20, frame_rate=42.0)
+                               longitude=Decimal(value="0.42"), width=10, height=20, frame_rate=42.0,
+                               camera_name=self.cm_name)
 
         self.pid = create_project(name="test_project")
         add_folder_to_project(self.rid, self.pid)
@@ -1410,13 +1420,15 @@ class GetResolutionByValue(TestCase):
         Create a folder and several clips
         """
         mock_create_hash_sum.return_value = '1234'
+        self.cm_name = 'Test camera name'
         self.rid = create_root_folder(path="/home/user/", name="test_folder")
         self.w1 = 256
         self.h1 = 240
-        self.cid = create_clip(fid=self.rid, name="test_clip1", video_format="tvf",
+        self.cid = create_clip(fid=self.rid, clip_name="test_clip1", video_format="tvf",
                                start_time=timezone.now() - timezone.timedelta(hours=1),
                                end_time=timezone.now(), latitude=Decimal(value="13.37"),
-                               longitude=Decimal(value="0.42"), width=self.w1, height=self.h1, frame_rate=42.0)
+                               longitude=Decimal(value="0.42"), width=self.w1, height=self.h1, frame_rate=42.0,
+                               camera_name=self.cm_name)
         self.pid = create_project(name="test_project")
         add_folder_to_project(self.rid, self.pid)
 
@@ -1441,10 +1453,11 @@ class GetResolutionByValue(TestCase):
         Test getting a res that has been created twice
         """
         mock_create_hash_sum.return_value = '1234'
-        self.cid2 = create_clip(fid=self.rid, name="test_clip12", video_format="tvf",
+        self.cid2 = create_clip(fid=self.rid, clip_name="test_clip12", video_format="tvf",
                                 start_time=timezone.now() - timezone.timedelta(hours=1),
                                 end_time=timezone.now(), latitude=Decimal(value="13.37"),
-                                longitude=Decimal(value="0.42"), width=self.w1, height=self.h1, frame_rate=42.0)
+                                longitude=Decimal(value="0.42"), width=self.w1, height=self.h1, frame_rate=42.0,
+                                camera_name=self.cm_name)
         rs = get_resolution_by_values(height=self.h1, width=self.w1)
         self.assertEqual(rs.width, self.w1)
         self.assertEqual(rs.height, self.h1)

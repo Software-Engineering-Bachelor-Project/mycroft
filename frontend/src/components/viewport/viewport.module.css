@@ -1,7 +1,7 @@
 .viewport {
   position: absolute;
   width: 85vw;
-  height: 70vh;
+  height: 80vh;
   top: 0;
   left: 0;
 }
@@ -10,8 +10,9 @@
   background-color: rgb(43, 44, 46);
   border-radius: 6px;
   position: absolute;
-  width: 15vw;
+  width: 25vw;
   height: 30vh;
   bottom: 0;
   right: 0;
+  z-index: 1;
 }

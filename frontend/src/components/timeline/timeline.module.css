@@ -17,13 +17,13 @@
   height: 20%;
   border-bottom: 2px solid;
   background-color: rgb(43, 44, 46);
+  color: rgb(255, 255, 255); /*text color*/
 }
 
 .dropdown {
-  position: relative;
+  position: absolute;
   top: 5px;
-  left: 5px;
-  width: 200px;
+  right: 5px;
 }
 
 .sliderbox {

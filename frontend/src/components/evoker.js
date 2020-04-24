@@ -15,6 +15,7 @@ import {
 } from "../state/stateCommunication";
 
 import { playClip } from "../state/statePlayer";
+import { switchMode } from "../state/stateViewport";
 
 /* -- Evoker -- */
 class Evoker extends Component {
@@ -104,6 +105,15 @@ class Evoker extends Component {
             {" "}
             deleteODProgress{" "}
           </Dropdown.Item>
+
+          <Dropdown.Item
+            onClick={() => {
+              return this.props.switchMode();
+            }}
+          >
+            {" "}
+            switchMode{" "}
+          </Dropdown.Item>
         </DropdownButton>
 
         {/* Log state */}
@@ -131,6 +141,7 @@ const menuDispatchToProps = (dispatch) => {
     getODProgress: () => dispatch(getODProgress()),
     deleteODProgress: () => dispatch(deleteODProgress()),
     playClip: (x) => dispatch(playClip(x)),
+    switchMode: () => dispatch(switchMode()),
   };
 };
 

@@ -73,6 +73,27 @@ def add_folder(data: dict) -> (int, dict):
     return 200, {}
 
 
+def remove_folder(data: dict) -> (int, dict):
+    """
+    Removes a folder from a project.
+
+    :param data: Project id and (absolute) file path to folder.
+    :return: Status code, id of given folder.
+    """
+    try:
+        pid = data[PROJECT_ID]
+        fid = data[FOLDER_ID]
+    except KeyError:
+        return 400, {}  # Bad request
+
+    try:
+        delete_folder_from_project(fid=fid, pid=pid)
+    except AssertionError:
+        return 204, {}  # No content
+
+    return 200, {}
+
+
 def build_file_structure(file_path: str) -> None:
     """
     Traverses the user's file system from the given folder downwards while adding all folder and clips to the database.

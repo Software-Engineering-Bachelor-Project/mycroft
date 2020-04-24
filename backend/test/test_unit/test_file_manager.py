@@ -97,6 +97,27 @@ class AddFoldersTest(TestCase):
         self.assertEqual(res, {})
 
 
+class RemoveFoldersTest(TestCase):
+
+    @patch('backend.file_manager.delete_folder_from_project')
+    def test_simple_call(self, mock_delete_folder_from_project):
+        """
+        Test removing a folder to a project.
+        """
+        code, res = remove_folder({PROJECT_ID: 42, FOLDER_ID: 1337})
+        mock_delete_folder_from_project.assert_called_once_with(fid=1337, pid=42)
+        self.assertEqual(code, 200)
+        self.assertEqual(res, {})
+
+    def test_missing_parameter(self):
+        """
+        Test with a missing parameter.
+        """
+        code, res = remove_folder({FOLDER_ID: 1337})
+        self.assertEqual(code, 400)
+        self.assertEqual(res, {})
+
+
 class BuildFileStructureTest(TestCase):
 
     @patch('backend.file_manager.create_root_folder')

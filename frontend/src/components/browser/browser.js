@@ -17,6 +17,9 @@ import ClipBrowser from "./clipBrowser";
 import FileBrowser from "./fileBrowser";
 import InspectorBrowser from "./inspectorBrowser";
 
+// Import actions
+import { changeBrowserTab } from "../../state/stateBrowser";
+
 /* -- Browser -- */
 class Browser extends Component {
   constructor(props) {
@@ -26,7 +29,12 @@ class Browser extends Component {
   render() {
     return (
       <div className={styles.main}>
-        <Tab.Container id="browser" defaultActiveKey="clipBrowser">
+        <Tab.Container
+          id="browser"
+          defaultActiveKey="clipBrowser"
+          onSelect={this.props.changeBrowserTab}
+          activeKey={this.props.currentTab}
+        >
           <Col className={styles.browserCol}>
             <Row>
               <Nav justify variant="pills">
@@ -66,12 +74,16 @@ class Browser extends Component {
 
 // Map Redux states to React props
 const mapStateToProps = (state) => {
-  return {};
+  return {
+    currentTab: state.browser.currentTab,
+  };
 };
 
 // Forward Redux's dispatch function to React props
 const mapDispatchToProps = (dispatch) => {
-  return {};
+  return {
+    changeBrowserTab: (key) => dispatch(changeBrowserTab(key)),
+  };
 };
 
 // Connect Redux with React

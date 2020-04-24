@@ -10,16 +10,23 @@ METADATA_EXAMPLE = "59°23'19.2\"N 17°55'35.4\"E   (59.388668, 17.926501)\n2018
 
 class GetSourceFolders(TestCase):
 
-    @patch('backend.file_manager.get_all_folders')
-    def test_basic_call(self, mock_get_all_projects):
+    def setUp(self) -> None:
+        """
+        Set up a complex file structure.
+        """
+        self.rf = Folder.objects.create(path='home/user/', name='test_folder')
+        self.sf = Folder.objects.create(path='home/user/test_folder/', name='test_subfolder')
+
+    @patch('backend.file_manager.get_subfolders_to_entries')
+    def test_basic_call(self, mock_get_subfolders_to_entries):
         """
         Test simple call.
         """
-        mock_get_all_projects.return_value = []
-        code, res = get_source_folders(data={})
-        mock_get_all_projects.assert_called_once()
+        mock_get_subfolders_to_entries.return_value = [self.sf]
+        code, res = get_source_folders()
+        mock_get_subfolders_to_entries.assert_called_once()
         self.assertEqual(code, 200)
-        self.assertEqual(res, {FOLDERS: []})
+        self.assertEqual(len(res), 1)
 
 
 class GetFoldersTest(TestCase):

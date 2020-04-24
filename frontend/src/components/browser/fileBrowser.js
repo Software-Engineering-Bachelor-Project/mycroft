@@ -20,7 +20,7 @@ class FileBrowser extends Component {
   expandFolder(folder) {
     return (
       <Tree content={folder.name} key={"f" + folder.id}>
-        {Object.values(folder.folders).map(this.expandFolder)}
+        {Object.values(folder.children).map(this.expandFolder)}
         {Object.values(folder.clips).map((clip) => {
           return <Tree content={clip.name} key={"c" + clip.id} />;
         })}

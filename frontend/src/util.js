@@ -43,32 +43,28 @@ export function makePOST(url, opts = {}, onResponse) {
 }
 
 /**
- * Takes an array of JSON folders and returns a folder hiearchy.
+ * Takes an array of JSON folders and parses to folder objects.
  * @param {Array[Object]} folderResponse List of folders in JSON.
  * @return {Object[id, Folder]} An object with id as key and a Folder as value.
  */
-export function createFolderHierarchy(folderResponse) {
+export function parseFolders(folderResponse) {
   let res = {};
-  let unassigned = {};
 
-  // Find all roots and construct folder objects.
+  // Construct folder objects.
   for (let f of folderResponse) {
     let newFolder = new Folder(
       f.id,
       f.name,
-      f.parent != null ? f.parent : undefined,
-      {},
+      f.parent ? f.parent : undefined,
+      [],
       f.clip_set
     );
-    if (f.parent == undefined) res[f.id] = newFolder;
-    else unassigned[f.id] = newFolder;
+    res[f.id] = newFolder;
   }
 
   // Assign all subfolders to their parent.
-  for (let id in unassigned) {
-    let pid = unassigned[id].parent;
-    if (unassigned[id].parent in res) res[pid].folders[id] = unassigned[id];
-    else unassigned[pid].folders[id] = unassigned[id];
+  for (const sub of Object.values(res)) {
+    if (sub.parent in res) res[sub.parent].children.push(sub.id);
   }
 
   return res;

@@ -378,7 +378,7 @@ describe("Communication reducer", () => {
     ).toEqual({
       ...testState,
       folders: {
-        42: new Folder(42, "test_folder", undefined, {}, [1337, 21]),
+        42: new Folder(42, "test_folder", undefined, [], [1337, 21]),
       },
     });
 
@@ -426,7 +426,7 @@ describe("Communication reducer", () => {
     ).toEqual({
       ...initialState,
       sourceFolders: {
-        42: new Folder(42, "test_folder", undefined, {}, [1337, 21]),
+        42: new Folder(42, "test_folder", undefined, [], [1337, 21]),
       },
     });
 

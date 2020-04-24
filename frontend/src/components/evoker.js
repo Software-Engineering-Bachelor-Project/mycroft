@@ -9,6 +9,12 @@ import {
   newProject,
   deleteProject,
   renameProject,
+  getClipsMatchingFilter,
+  modifyFilter,
+  getAreasInFilter,
+  createArea,
+  deleteArea,
+  getFilterParams,
   getCameras,
   getSequentialClip,
   getFolders,
@@ -72,6 +78,28 @@ class Evoker extends Component {
           >
             {" "}
             renameProject{" "}
+          </Dropdown.Item>
+
+          {/* Filter Module */}
+          <Dropdown.Item
+            onClick={() => {
+              return this.props.getAreasInFilter();
+            }}
+          >
+            {" "}
+            getAreasInFilter{" "}
+          </Dropdown.Item>
+
+          <Dropdown.Item
+            onClick={() => {
+              let lat = window.prompt("latitude: ");
+              let lon = window.prompt("longitude: ");
+              let rad = parseInt(window.prompt("radius: "));
+              return this.props.createArea(lat, lon, rad);
+            }}
+          >
+            {" "}
+            createArea{" "}
           </Dropdown.Item>
 
           {/* Video manager */}
@@ -235,6 +263,9 @@ const menuDispatchToProps = (dispatch) => {
     newProject: (n) => dispatch(newProject(n)),
     deleteProject: (i) => dispatch(deleteProject(i)),
     renameProject: (i, n) => dispatch(renameProject(i, n)),
+    getAreasInFilter: () => dispatch(getAreasInFilter()),
+    createArea: (lat, lon, rad) => dispatch(createArea(lat, lon, rad)),
+    deleteArea: (i) => dispatch(deleteArea(i)),
     getCameras: () => dispatch(getCameras()),
     getSequentialClip: (i) => dispatch(getSequentialClip(i)),
     getFolders: () => dispatch(getFolders()),

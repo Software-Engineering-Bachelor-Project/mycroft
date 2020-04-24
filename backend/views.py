@@ -193,6 +193,15 @@ def file_remove_folder(request):
     data = file_manager.remove_folder(request.data)
     return Response(data[1], data[0])
 
+@api_view(['POST'])
+def file_get_clips(request):
+    """
+    Delegates a 'get clips' request to the File Manager.
+    :return: A response from the File Manager.
+    """
+    data = file_manager.get_clips(request.data)
+    return Response(data[1], data[0])
+
 
 @api_view(['POST'])
 def detect_objects(request):

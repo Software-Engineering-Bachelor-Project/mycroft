@@ -118,6 +118,51 @@ class RemoveFoldersTest(TestCase):
         self.assertEqual(res, {})
 
 
+class GetClipsTest(TestCase):
+
+    def setUp(self) -> None:
+        """
+        Set up a file structure.
+        """
+        self.resolution = Resolution.objects.get_or_create(width=256, height=240)[0]
+        self.lat = Decimal(value="13.37")
+        self.lon = Decimal(value="0.42")
+        self.st = timezone.datetime(2020, 1, 17, tzinfo=pytz.timezone(settings.TIME_ZONE))
+        self.et = timezone.datetime(2020, 1, 18, tzinfo=pytz.timezone(settings.TIME_ZONE))
+        self.rf = Folder.objects.create(path='home/user/', name='test_folder')
+        self.ca = Camera.objects.create(latitude=self.lat, longitude=self.lon)
+        self.cl = Clip.objects.create(folder=self.rf, name='test_clip', video_format='mkv', start_time=self.st,
+                                      end_time=self.et, camera=self.ca, frame_rate=42.0, resolution=self.resolution)
+
+    @patch('backend.file_manager.get_all_clips_in_project')
+    def test_basic_call(self, mock_get_all_clips_in_project):
+        """
+        Test with a complex file structure.
+        """
+        mock_get_all_clips_in_project.return_value = [self.cl]
+        code, res = get_clips(data={PROJECT_ID: 1})
+
+        mock_get_all_clips_in_project.assert_called_once_with(pid=1)
+        self.assertEqual(code, 200)
+        self.assertEqual(len(res[CLIPS]), 1)
+
+    def test_missing_parameter(self):
+        """
+        Test with a missing parameter.
+        """
+        code, res = get_clips(data={})
+        self.assertEqual(code, 400)
+        self.assertEqual(res, {})
+
+    def test_non_existing_project(self):
+        """
+        Test with a project id that doesn't exist.
+        """
+        code, res = get_clips(data={PROJECT_ID: 42})
+        self.assertEqual(code, 204)
+        self.assertEqual(res, {})
+
+
 class BuildFileStructureTest(TestCase):
 
     @patch('backend.file_manager.create_root_folder')

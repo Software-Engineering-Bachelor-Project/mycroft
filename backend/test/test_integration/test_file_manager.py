@@ -138,3 +138,66 @@ class RemoveFoldersTest(TestCase):
         code, res = remove_folder(data={PROJECT_ID: self.pid, FOLDER_ID: 42})
         self.assertEqual(code, 204)
         self.assertEqual(res, {})
+
+
+class GetClipsTest(TestCase):
+
+    @patch('backend.database_wrapper.create_hash_sum')
+    def setUp(self, mock_create_hash_sum) -> None:
+        """
+        Setup a test project.
+        """
+        mock_create_hash_sum.return_value = '1234'
+        self.lat = Decimal(value="13.37")
+        self.lon = Decimal(value="0.42")
+        self.st = timezone.datetime(2020, 1, 17, tzinfo=pytz.timezone(settings.TIME_ZONE))
+        self.et = timezone.datetime(2020, 1, 18, tzinfo=pytz.timezone(settings.TIME_ZONE))
+
+        self.pid = create_project(name="test_project")
+        self.rid = create_root_folder(path='home/user/', name='test_folder')
+        self.sid1 = create_subfolder(parent_fid=self.rid, name='test_subfolder')
+        self.sid2 = create_subfolder(parent_fid=self.rid, name='another_test_subfolder')
+        self.sid3 = create_subfolder(parent_fid=self.sid1, name='third_test_subfolder')
+        self.cid1 = create_clip(fid=self.rid, name="test_clip1", video_format="tvf", start_time=self.st,
+                                end_time=self.et, latitude=self.lat, longitude=self.lon, width=256, height=240,
+                                frame_rate=42.0)
+        self.cid2 = create_clip(fid=self.sid1, name="test_clip2", video_format="tvf", start_time=self.st,
+                                end_time=self.et, latitude=self.lat, longitude=self.lon, width=256, height=240,
+                                frame_rate=42.0)
+        self.cid3 = create_clip(fid=self.sid3, name="test_clip3", video_format="tvf", start_time=self.st,
+                                end_time=self.et, latitude=self.lat, longitude=self.lon, width=256, height=240,
+                                frame_rate=42.0)
+        add_folder_to_project(fid=self.rid, pid=self.pid)
+
+    def test_complex_file_structure(self):
+        """
+        Test retrieving all clips in a project.
+        """
+        code, res = get_clips(data={PROJECT_ID: self.pid})
+        self.assertEqual(code, 200)
+        self.assertEqual(len(res[CLIPS]), 3)
+
+    def test_no_clips_in_project(self):
+        """
+        Test when there are no clips in project.
+        """
+        pid = create_project(name="test_project2")
+        code, res = get_clips(data={PROJECT_ID: pid})
+        self.assertEqual(code, 200)
+        self.assertEqual(len(res[CLIPS]), 0)
+
+    def test_non_existing_project(self):
+        """
+        Test with a project id that doesn't exist.
+        """
+        code, res = get_clips(data={PROJECT_ID: 42})
+        self.assertEqual(code, 204)
+        self.assertEqual(res, {})
+
+    def test_bad_request(self):
+        """
+        Test with bad request.
+        """
+        code, res = get_clips(data={FOLDER_ID: self.pid})
+        self.assertEqual(code, 400)
+        self.assertEqual(res, {})

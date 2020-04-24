@@ -347,6 +347,25 @@ class FileRemoveFoldersTest(TestCase):
         mock_mod.remove_folder.assert_called_with(QueryDict('test=data'))
 
 
+class FileGetClipsTest(TestCase):
+
+    @mock.patch('backend.views.file_manager')
+    def test_propagation(self, mock_mod):
+        '''
+        Tests propagation of the 'get clips' request.
+        :return: None
+        '''
+        # Set up mock
+        mock_mod.get_clips.return_value = (200, {})
+
+        # Test function
+        req = APIRequestFactory().post('', {'test': 'data'})
+        response = views.file_get_clips(req)
+
+        # Did we propagate properly?
+        mock_mod.get_clips.assert_called_with(QueryDict('test=data'))
+
+
 class DetectObjectsTest(TestCase):
 
     @mock.patch('backend.views.object_detector')

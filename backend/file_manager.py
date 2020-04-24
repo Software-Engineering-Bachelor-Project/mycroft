@@ -150,6 +150,26 @@ def analyze_file(file: str) -> (bool, str, str):
     return is_clip, name, suffix
 
 
+def get_clips(data: dict) -> (int, dict):
+    """
+    Gets all clips in a project.
+
+    :param data: Project id.
+    :return: Status code, all clips in project in JSON.
+    """
+    try:
+        pid = data[PROJECT_ID]
+    except KeyError:
+        return 400, {}  # Bad request
+
+    try:
+        clips_in_project = get_all_clips_in_project(pid=pid)
+    except AssertionError:
+        return 204, {}  # No content
+
+    return 200, os_aware({CLIPS: serialize(clips_in_project)})
+
+
 def get_clip_info(file_path: str, folder_id: int, name: str, video_format: str) -> dict:
     """
     Finds all information related to the clip and returns a dictionary that can be used as input to the

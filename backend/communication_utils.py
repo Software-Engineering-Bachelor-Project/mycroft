@@ -25,6 +25,7 @@ PROJECTS = 'projects'
 FOLDERS = 'folders'
 CAMERAS = 'cameras'
 AREAS = "areas"
+CLIPS = 'clips'
 
 # --- Lists of ID:s ---
 CAMERA_IDS = 'camera_ids'

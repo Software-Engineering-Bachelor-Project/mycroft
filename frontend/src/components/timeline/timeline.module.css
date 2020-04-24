@@ -1,5 +1,7 @@
 .main {
   position: absolute;
+  display: flex;
+  flex-direction: column;
   padding: 0;
   border: 2px solid;
   border-radius: 6px;
@@ -14,7 +16,8 @@
   width: 100%;
   top: 0;
   left: 0;
-  height: 20%;
+  height: 50px;
+  flex-shrink: 0;
   border-bottom: 2px solid;
   background-color: rgb(43, 44, 46);
   color: rgb(255, 255, 255); /*text color*/
@@ -29,11 +32,9 @@
 .sliderbox {
   position: relative;
   bottom: 0;
-  height: 80%;
+  flex-grow: 1;
   width: 100%;
-  /*border: 2px solid;*/
   overflow: auto;
-
   /* TODO:: same color as slider! */
   background-color: rgb(106, 158, 255);
 }

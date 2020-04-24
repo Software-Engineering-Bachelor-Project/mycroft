@@ -4,13 +4,17 @@ import { connect } from "react-redux";
 // CSS
 import styles from "./viewport.module.css";
 
+// import components
+import Player from "../player/player";
+import Map from "../map/map";
+
 /* -- Viewport -- */
 class Viewport extends Component {
   render() {
     return (
       <div className={styles.viewport}>
-        {/* this.props.content is given from app.js. It contains either Map or Player */}
-        {this.props.content}
+        {/* viewportMode decides which component Viewport should render */}
+        {this.props.viewportMode ? <Map /> : <Player />}
       </div>
     );
   }
@@ -18,7 +22,9 @@ class Viewport extends Component {
 
 // Map Redux states to React props
 const mapStateToProps = (state) => {
-  return {};
+  return {
+    viewportMode: state.viewport.mode,
+  };
 };
 
 // Forward Redux's dispatch function to React props

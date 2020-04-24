@@ -22,7 +22,7 @@ class Player extends Component {
         </video>
       );
     }
-    return <h2>No video selected</h2>;
+    return <h2 style={{ color: "white" }}>No video selected</h2>;
   }
 
   render() {

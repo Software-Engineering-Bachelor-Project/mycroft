@@ -17,14 +17,13 @@ VIDEO_FORMATS = ["mkv", "flv", "vob", "ogv", "ogg",
                  "flv", "f4v", "f4p", "f4a", "f4b", "webm"]
 
 
-def get_source_folders(data: dict) -> (int, dict):
+def get_source_folders() -> (int, dict):
     """
-    Gets all folders in the database.
+    Gets all folders in the database that has a parent who is an entry.
 
-    :param data: Empty.
-    :return: Status code, all folders in tha database.
+    :return: Status code, all folders in the database with an entry parent.
     """
-    folders = get_all_folders()
+    folders = get_subfolders_to_entries()
     return 200, os_aware({FOLDERS: serialize(folders)})
 
 
@@ -106,7 +105,7 @@ def build_file_structure(file_path: str) -> None:
     # Create root and set parent id.
     parent_id = create_root_folder(path=path, name=name)
 
-    # Traverse all subfolders and add the to the database.
+    # Traverse all subfolders and add them to the database.
     traverse_subfolders(path=file_path, parent_id=parent_id)
 
 

@@ -1,7 +1,7 @@
 /* -- THIS FILE TESTS THE COMMUNICATION STATE FILE .. */
 
 // Misc
-import { Project, Folder, Camera, Clip } from "../../types";
+import { Project, Folder, Camera, Clip, Area, Resolution } from "../../types";
 import { TARGET } from "../../state/stateObjectDetector";
 
 // Reducer and initial state
@@ -13,6 +13,21 @@ import {
   requestResponse,
 } from "../../state/stateCommunication";
 import { OPEN_PROJECT, openProject } from "../../state/stateCommunication";
+import {
+  GET_CLIPS_MATCHING_FILTER,
+  getClipsMatchingFilter,
+} from "../../state/stateCommunication";
+import { MODIFY_FILTER, modifyFilter } from "../../state/stateCommunication";
+import {
+  GET_AREAS_IN_FILTER,
+  getAreasInFilter,
+} from "../../state/stateCommunication";
+import { CREATE_AREA, createArea } from "../../state/stateCommunication";
+import { DELETE_AREA, deleteArea } from "../../state/stateCommunication";
+import {
+  GET_FILTER_PARAMS,
+  getFilterParams,
+} from "../../state/stateCommunication";
 import { GET_PROJECTS, getProjects } from "../../state/stateCommunication";
 import { NEW_PROJECT, newProject } from "../../state/stateCommunication";
 import { DELETE_PROJECT, deleteProject } from "../../state/stateCommunication";
@@ -100,6 +115,223 @@ describe("Communication reducer", () => {
     ).toEqual({
       ...initialState,
       projectID: 1337,
+    });
+  });
+
+  it("should handle GET_CLIPS_MATCHING_FILTER", () => {
+    // Action constant
+    expect(GET_CLIPS_MATCHING_FILTER).toEqual("GET_CLIPS_MATCHING_FILTER");
+
+    // Action creator
+    expect(getClipsMatchingFilter()).toEqual({
+      type: GET_CLIPS_MATCHING_FILTER,
+    });
+  });
+
+  it("should handle MODIFY_FILTER", () => {
+    // Action constant
+    expect(MODIFY_FILTER).toEqual("MODIFY_FILTER");
+
+    // Action creator
+    expect(modifyFilter()).toEqual({
+      type: MODIFY_FILTER,
+    });
+
+    // Modify filter
+    expect(
+      reducer(initialState, requestResponse(MODIFY_FILTER, 200, {}))
+    ).toEqual(initialState);
+
+    // 204
+    expect(
+      reducer(initialState, requestResponse(MODIFY_FILTER, 204, undefined))
+    ).toEqual(initialState);
+
+    // 400
+    expect(
+      reducer(initialState, requestResponse(MODIFY_FILTER, 400, undefined))
+    ).toEqual(initialState);
+
+    // 404
+    expect(
+      reducer(initialState, requestResponse(MODIFY_FILTER, 404, undefined))
+    ).toEqual(initialState);
+  });
+
+  it("should handle GET_AREAS_IN_FILTER", () => {
+    // Declare variables
+    let testArea = new Area("10.10", "-42.99", 42);
+
+    // Action constant
+    expect(GET_AREAS_IN_FILTER).toEqual("GET_AREAS_IN_FILTER");
+
+    // Action creator
+    expect(getAreasInFilter()).toEqual({
+      type: GET_AREAS_IN_FILTER,
+    });
+
+    // Get areas in filter (empty)
+    expect(
+      reducer(
+        initialState,
+        requestResponse(GET_AREAS_IN_FILTER, 200, { areas: [] })
+      )
+    ).toEqual(initialState);
+
+    // Get areas in filter (empty)
+    expect(
+      reducer(
+        initialState,
+        requestResponse(GET_AREAS_IN_FILTER, 200, {
+          areas: [
+            {
+              id: 1337,
+              latitude: "10.10",
+              longitude: "-42.99",
+              radius: 42,
+            },
+          ],
+        })
+      )
+    ).toEqual({
+      ...initialState,
+      filter: {
+        ...initialState.filter,
+        areas: { 1337: testArea },
+      },
+    });
+
+    // 204
+    expect(
+      reducer(
+        initialState,
+        requestResponse(GET_AREAS_IN_FILTER, 204, undefined)
+      )
+    ).toEqual(initialState);
+
+    // 400
+    expect(
+      reducer(
+        initialState,
+        requestResponse(GET_AREAS_IN_FILTER, 400, undefined)
+      )
+    ).toEqual(initialState);
+
+    // 404
+    expect(
+      reducer(
+        initialState,
+        requestResponse(GET_AREAS_IN_FILTER, 404, undefined)
+      )
+    ).toEqual(initialState);
+  });
+
+  it("should handle CREATE_AREA", () => {
+    // Declare variables
+    let testArea = new Area("10.10", "-42.99", 42);
+
+    // Action constant
+    expect(CREATE_AREA).toEqual("CREATE_AREA");
+
+    // Action creator
+    expect(createArea()).toEqual({
+      type: CREATE_AREA,
+    });
+
+    // Create area
+    expect(
+      reducer(
+        initialState,
+        requestResponse(CREATE_AREA, 200, {
+          area: {
+            id: 1337,
+            latitude: "10.10",
+            longitude: "-42.99",
+            radius: 42,
+          },
+        })
+      )
+    ).toEqual({
+      ...initialState,
+      filter: {
+        ...initialState.filter,
+        areas: { 1337: testArea },
+      },
+    });
+
+    // 204
+    expect(
+      reducer(initialState, requestResponse(CREATE_AREA, 204, undefined))
+    ).toEqual(initialState);
+
+    // 400
+    expect(
+      reducer(initialState, requestResponse(CREATE_AREA, 400, undefined))
+    ).toEqual(initialState);
+
+    // 404
+    expect(
+      reducer(initialState, requestResponse(CREATE_AREA, 404, undefined))
+    ).toEqual(initialState);
+  });
+
+  it("should handle DELETE_AREA", () => {
+    // Declare variables
+    let testArea = new Area("10.10", "-42.99", 42);
+
+    // Action constant
+    expect(DELETE_AREA).toEqual("DELETE_AREA");
+
+    // Action creator
+    expect(deleteArea()).toEqual({
+      type: DELETE_AREA,
+    });
+
+    // Delete area
+    expect(
+      reducer(
+        {
+          ...initialState,
+          filter: {
+            ...initialState.filter,
+            areas: { 1337: testArea },
+          },
+        },
+        requestResponse(DELETE_AREA, 200, {
+          area_id: 1337,
+        })
+      )
+    ).toEqual({
+      ...initialState,
+      filter: {
+        ...initialState.filter,
+        areas: {},
+      },
+    });
+
+    // 204
+    expect(
+      reducer(initialState, requestResponse(DELETE_AREA, 204, undefined))
+    ).toEqual(initialState);
+
+    // 400
+    expect(
+      reducer(initialState, requestResponse(DELETE_AREA, 400, undefined))
+    ).toEqual(initialState);
+
+    // 404
+    expect(
+      reducer(initialState, requestResponse(DELETE_AREA, 404, undefined))
+    ).toEqual(initialState);
+  });
+
+  it("should handle GET_FILTER_PARAMS", () => {
+    // Action constant
+    expect(GET_FILTER_PARAMS).toEqual("GET_FILTER_PARAMS");
+
+    // Action creator
+    expect(getFilterParams()).toEqual({
+      type: GET_FILTER_PARAMS,
     });
   });
 
@@ -542,7 +774,12 @@ describe("Communication reducer", () => {
 
   it("should handle GET_CLIPS", () => {
     // Declare variables
-    let testState = { ...initialState, projectID: 42 };
+    let tempResolution = new Resolution(1920, 1080);
+    let testState = {
+      ...initialState,
+      projectID: 42,
+      filter: { ...initialState.filter, resolutions: { 1: tempResolution } },
+    };
     let tempDate = new Date(2020, 1, 1, 3, 24, 0);
 
     // Action constant
@@ -587,6 +824,7 @@ describe("Communication reducer", () => {
           "avi",
           tempDate,
           tempDate,
+          tempResolution,
           [6],
           [4, 5]
         ),

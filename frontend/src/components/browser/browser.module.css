@@ -34,6 +34,10 @@
   overflow-y: scroll;
 }
 
+.inspectHeader {
+    width: 3em !important;
+}
+
 .browserFile {
   position: absolute;
   width: 100% !important;

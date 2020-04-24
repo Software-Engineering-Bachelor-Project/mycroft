@@ -10,9 +10,9 @@ export const INSPECTOR_MODE_EXLUDED_INCLUDED = 2;
 export const INSPECTOR_MODE_AREA = 3;
 
 /* -- ACTIONS -- */
-const DUMMY = "DUMMY";
-
 export const CHANGE_MODE = "CHANGE_MODE";
+
+export const CHANGE_BROWSER_TAB = "CHANGE_BROWSER_TAB";
 
 /* -- INITIAL STATE -- */
 
@@ -62,7 +62,8 @@ var FOLDER_1 = genFolderTree(2);
 var FOLDER_2 = genFolderTree(3);
 var FOLDER_3 = genFolderTree(4);
 
-const initialState = {
+export const initialState = {
+  currentTab: undefined,
   folders: {
     [FOLDER_1.id]: FOLDER_1,
     [FOLDER_2.id]: FOLDER_2,
@@ -115,11 +116,6 @@ const initialState = {
 };
 
 /* -- ACTION CREATORS -- */
-export function dummy() {
-  return {
-    type: DUMMY,
-  };
-}
 
 export function changeMode(mode, id) {
   return {
@@ -129,8 +125,28 @@ export function changeMode(mode, id) {
   };
 }
 
+/**
+ * This action is used to change what tab is currently being displayed.
+ *
+ * @param {string} key Should be "clipBrowser", "fileBrowser", or "inspectorBrowser"
+ */
+export function changeBrowserTab(key) {
+  if (
+    key != "clipBrowser" &&
+    key != "fileBrowser" &&
+    key != "inspectorBrowser"
+  ) {
+    console.error("Cannot change to non-existent tab: '" + key + "'");
+    key = undefined;
+  }
+  return {
+    type: CHANGE_BROWSER_TAB,
+    key: key,
+  };
+}
+
 /* -- REDUX REDUCER -- */
-const browserReducer = (state = initialState, action) => {
+export const browserReducer = (state = initialState, action) => {
   switch (action.type) {
     case CHANGE_MODE:
       return {
@@ -141,8 +157,13 @@ const browserReducer = (state = initialState, action) => {
           id: action.id,
         },
       };
-    case DUMMY:
-      return state;
+    case CHANGE_BROWSER_TAB:
+      if (action.key == undefined) return state;
+      return {
+        ...state,
+        currentTab: action.key,
+      };
+      break;
     default:
       return state;
   }

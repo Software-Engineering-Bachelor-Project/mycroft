@@ -159,6 +159,8 @@ class Timeline extends Component {
     this.renderScaleList = this.renderScaleList.bind(this);
     this.renderTimestamps = this.renderTimestamps.bind(this);
     this.getWidthOfTimeline = this.getWidthOfTimeline.bind(this);
+    this.renderContentOfTopbar = this.renderContentOfTopbar.bind(this);
+    this.renderSliderContent = this.renderSliderContent.bind(this);
   }
 
   /**
@@ -167,19 +169,18 @@ class Timeline extends Component {
    */
   renderScaleList() {
     return (
-      <DropdownButton
-        className={styles.dropdown}
-        title={this.props.scale + " Hours"}
-      >
-        {/* Create dropdown items for every scaling option */}
-        {SCALE_LIST.map((hrs) => {
-          return (
-            <Dropdown.Item onClick={(a) => this.props.zoom(hrs)} key={hrs}>
-              {hrs + " Hours"}
-            </Dropdown.Item>
-          );
-        })}
-      </DropdownButton>
+      <div className={styles.dropdown}>
+        <DropdownButton alignRight title={this.props.scale + " Hours"}>
+          {/* Create dropdown items for every scaling option */}
+          {SCALE_LIST.map((hrs) => {
+            return (
+              <Dropdown.Item onClick={(a) => this.props.zoom(hrs)} key={hrs}>
+                {hrs + " Hours"}
+              </Dropdown.Item>
+            );
+          })}
+        </DropdownButton>
+      </div>
     );
   }
 
@@ -245,6 +246,54 @@ class Timeline extends Component {
   }
 
   /**
+   * Render different content in topbar depending on what mode viewport is in.
+   */
+  renderContentOfTopbar() {
+    if (this.props.viewportMode) {
+      // TODO:: draw the content of topbar when in Map-mode.
+      return (
+        <div style={{ left: "50%", position: "absolute" }}>
+          Topbar: Map-mode
+        </div>
+      );
+    }
+    // TODO:: draw the content of topbar when in Player-mode.
+    return (
+      <div style={{ left: "50%", position: "absolute" }}>
+        Topbar: Player-mode
+      </div>
+    );
+  }
+
+  /**
+   * Render slider content, either Map or Player depending on viewport mode
+   */
+  renderSliderContent() {
+    if (this.props.viewportMode) {
+      return (
+        <div
+          className={styles.slider}
+          style={{
+            width: this.getWidthOfTimeline() + "%",
+          }}
+        >
+          {/* Creates a line for each timestamp and draws out hours*/}
+          {this.renderTimestamps()}
+
+          {/* Glassbox component */}
+          <Glassbox />
+        </div>
+      );
+    }
+    // TODO:: draw the content of slider when in Player-mode.
+    return (
+      <div style={{ left: "50%", position: "absolute" }}>
+        Slider: Player-mode
+      </div>
+    );
+  }
+
+  /**
    * Calculates the width of timeline.
    * Returns the result in percents.
    */
@@ -256,22 +305,15 @@ class Timeline extends Component {
     return (
       <div className={styles.main}>
         {/* This will render the topbar which contains the dropdown menu(s) */}
-        <div className={styles.topbar}>{this.renderScaleList()}</div>
+        <div className={styles.topbar}>
+          {this.renderContentOfTopbar()}
+          {this.renderScaleList()}
+        </div>
 
         {/* This is the box containing all the timestamps, which is affected by scaling */}
         <div className={styles.sliderbox}>
-          <div
-            className={styles.slider}
-            style={{
-              width: this.getWidthOfTimeline() + "%",
-            }}
-          >
-            {/* Glassbox component */}
-            <Glassbox />
-
-            {/* Creates a line for each timestamp and draws out hours*/}
-            {this.renderTimestamps()}
-          </div>
+          {/* This renders the content of slider */}
+          {this.renderSliderContent()}
         </div>
       </div>
     );
@@ -285,6 +327,7 @@ const mapStateToProps = (state) => {
     endTime: state.timeline.endTime,
     scale: state.timeline.scale,
     timeSpan: state.timeline.timeSpan,
+    viewportMode: state.viewport.mode,
   };
 };
 

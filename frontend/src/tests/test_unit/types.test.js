@@ -1,6 +1,6 @@
 /* -- Tests for the types.js file -- */
 
-import { Camera, Clip, Folder } from "../../types";
+import { Camera, Clip, Folder, Resolution, Area } from "../../types";
 
 describe("Camera class", () => {
   it("should have all members set correctly", () => {
@@ -33,11 +33,23 @@ describe("Camera class", () => {
 describe("Clip class", () => {
   let f = new Folder(1, "root");
   let allFolders = { 1: f };
+  const resolution = new Resolution(1920, 1080);
   const st = new Date(2020, 1, 1, 3, 24, 0);
   const et = new Date(2020, 1, 1, 4, 24, 0);
 
   // Create clip
-  var clip = new Clip(7, "test_name", 1, 1, "wav", st, et, [1337], [1338]);
+  var clip = new Clip(
+    7,
+    "test_name",
+    1,
+    1,
+    "wav",
+    st,
+    et,
+    resolution,
+    [1337],
+    [1338]
+  );
 
   it("should have all members set correctly", () => {
     expect(clip.id).toEqual(7);
@@ -47,6 +59,7 @@ describe("Clip class", () => {
     expect(clip.format).toEqual("wav");
     expect(clip.startTime).toEqual(st);
     expect(clip.endTime).toEqual(et);
+    expect(clip.resolution).toEqual(resolution);
     expect(clip.duplicates).toEqual([1337]);
     expect(clip.overlapping).toEqual([1338]);
   });
@@ -86,5 +99,26 @@ describe("Folder class", () => {
     expect(f2.getPath(allFolders)).toEqual("root/test1/");
     expect(f3.getPath(allFolders)).toEqual("root/test2/");
     expect(f4.getPath(allFolders)).toEqual("root/test2/test3/");
+  });
+});
+
+describe("Resolution class", () => {
+  // Create resolution
+  var r = new Resolution(1920, 1080);
+
+  it("should have all members set correctly", () => {
+    expect(r.width).toEqual(1920);
+    expect(r.height).toEqual(1080);
+  });
+});
+
+describe("Area class", () => {
+  // Create area
+  var a = new Area("0.1337", "1.4200", 1337);
+
+  it("should have all members set correctly", () => {
+    expect(a.latitude).toEqual("0.1337");
+    expect(a.longitude).toEqual("1.4200");
+    expect(a.radius).toEqual(1337);
   });
 });

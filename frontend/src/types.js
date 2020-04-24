@@ -37,7 +37,7 @@ export class Camera {
   /**
    * @param {int} id The unique identifier of this camera. Corresponds to the backend database.
    * @param {string} name The name of this camera.
-   * @param {Object} pos The decimal longitude and latitude of this camera. The object has two attributes, latitude and longitude.
+   * @param {Object} pos The decimal latitude and longitude of this camera. The object has two attributes, latitude and longitude.
    * @param {Array[int]} clips A list containing this camera's clip's ID:s.
    * @param {boolean} selected Whether this camera is selected or not.
    */
@@ -83,6 +83,7 @@ export class Clip {
     format,
     startTime,
     endTime,
+    resolution,
     duplicates = [],
     overlapping = []
   ) {
@@ -93,6 +94,7 @@ export class Clip {
     this.format = format;
     this.startTime = startTime;
     this.endTime = endTime;
+    this.resolution = resolution;
     this.duplicates = duplicates;
     this.overlapping = overlapping;
   }
@@ -139,5 +141,36 @@ export class Folder {
     if (this.parent != undefined && this.parent in folders)
       return folders[this.parent].getPath(folders) + this.name + "/";
     else return this.name + "/";
+  }
+}
+
+/**
+ * This class represents an Area.
+ */
+export class Area {
+  /**
+   * @param {string} latitude Latidue for Area.
+   * @param {string} longitude Longitude for Area.
+   * @param {number} radius Radius of Area in meters.
+   */
+  constructor(latitude, longitude, radius) {
+    this.latitude = latitude;
+    this.longitude = longitude;
+    this.radius = radius;
+  }
+}
+
+/**
+ * This class represents a Resolution.
+ */
+export class Resolution {
+  /**
+   *
+   * @param {Number} width width in pixels.
+   * @param {*} height height in pixels.
+   */
+  constructor(width, height) {
+    this.width = width;
+    this.height = height;
   }
 }

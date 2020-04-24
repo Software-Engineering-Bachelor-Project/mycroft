@@ -1,8 +1,13 @@
 import store from "./state";
-import { makePOST, parseFolders, parseDatetimeString } from "../util";
+import {
+  makePOST,
+  parseFolders,
+  parseDatetimeString,
+  parseDateToString,
+} from "../util";
 
 // Types
-import { Project, Folder, Clip, Camera } from "../types";
+import { Project, Folder, Clip, Camera, Area, Resolution } from "../types";
 
 /*
  * This file defines the state, reducers, and actions
@@ -19,12 +24,14 @@ export const GET_CLIPS_MATCHING_FILTER = "GET_CLIPS_MATCHING_FILTER";
 export const MODIFY_FILTER = "MODIFY_FILTER";
 export const GET_AREAS_IN_FILTER = "GET_AREAS_IN_FILTER";
 export const CREATE_AREA = "CREATE_AREA";
+export const DELETE_AREA = "DELETE_AREA";
 export const GET_FILTER_PARAMS = "GET_FILTER_PARAMS";
 
 export const URL_GET_CLIPS_MATCHING_FILTER = "/filter/get_matching_clips";
 export const URL_MODIFY_FILTER = "/filter/modify";
 export const URL_GET_AREAS_IN_FILTER = "/filter/get_areas";
 export const URL_CREATE_AREA = "/filter/create_area";
+export const URL_DELETE_AREA = "/filter/delete_area";
 export const URL_GET_FILTER_PARAMS = "/filter/getFilterParams";
 
 // Project Manager requests
@@ -85,6 +92,27 @@ export const initialState = {
   sourceFolders: {},
   cameras: {},
   clips: {},
+  filter: {
+    filterID: -1,
+
+    // Results
+    cameras: [], // ids
+    clips: [], // ids
+
+    // Options
+    resolutions: {}, // {id, {height, width}}??
+    availableObjects: [], // strings
+
+    // Parameters
+    areas: {}, // {id, {latitude, longitude, radius}}
+    includedClips: [], // ids
+    excludedClips: [], // ids
+    startTime: undefined, // Date
+    endTime: undefined, // Date
+    objects: [], // strings
+    minFrameRate: 0,
+    whitelistedResolutions: [], // ids
+  },
   od: {
     progressID: -1,
     currentProgress: 0,
@@ -106,7 +134,7 @@ export function openProject(id) {
 
 // Filter Module requests
 /**
- * TODO: Add doc-comment
+ * This action is used to filter clips.
  */
 export function getClipsMatchingFilter() {
   return {
@@ -115,11 +143,55 @@ export function getClipsMatchingFilter() {
 }
 
 /**
- * TODO: Add doc-comment
+ * This action is used to modify a filter.
  */
 export function modifyFilter() {
   return {
     type: MODIFY_FILTER,
+  };
+}
+
+/**
+ * This action is used to get areas in a filter.
+ */
+export function getAreasInFilter() {
+  return {
+    type: GET_AREAS_IN_FILTER,
+  };
+}
+
+/**
+ * This action is used to create an area.
+ * @param {string} latitude Latitude of the area.
+ * @param {string} longitude Longitude of the area.
+ * @param {number} radius Radius of the area.
+ */
+export function createArea(latitude, longitude, radius) {
+  return {
+    type: CREATE_AREA,
+    latitude: latitude,
+    longitude: longitude,
+    radius: radius,
+  };
+}
+
+/**
+ * This action is used to delete an area.
+ * @param {Number} aid The id of the area to be deleted.
+ */
+export function deleteArea(aid) {
+  return {
+    type: DELETE_AREA,
+    aid: aid,
+  };
+}
+
+/**
+ * This function is used to get the options for objects and resolutions to filter on.
+ */
+export function getFilterParams() {
+  return {
+    type: GET_FILTER_PARAMS,
   };
 }
 
@@ -335,6 +407,90 @@ function handleResponse(state, reqType, status, data) {
       return state;
 
     case MODIFY_FILTER:
+      switch (status) {
+        case 200:
+          return state;
+        case 204:
+          e = "no filter with specified ID";
+          break;
+        case 400:
+          e = "'filter_id parameter was missing from request'";
+          break;
+        default:
+          e = "unknown reason";
+      }
+
+      break;
+
+    case GET_AREAS_IN_FILTER:
+      switch (status) {
+        case 200:
+          let newAreas = {};
+          for (let a of data.areas) {
+            newAreas[a.id] = new Area(a.latitude, a.longitude, a.radius);
+          }
+          return {
+            ...state,
+            filter: { ...state.filter, areas: newAreas },
+          };
+        case 204:
+          e = "no filter with specified ID";
+          break;
+        case 400:
+          e = "'filter_id parameter was missing from request'";
+          break;
+        default:
+          e = "unknown reason";
+      }
+
+      break;
+
+    case CREATE_AREA:
+      switch (status) {
+        case 200:
+          let newAreas = state.filter.areas;
+          const { latitude, longitude, radius } = data.area;
+          newAreas[data.area.id] = new Area(latitude, longitude, radius);
+          return {
+            ...state,
+            filter: { ...state.filter, areas: newAreas },
+          };
+        case 204:
+          e = "no filter with specified ID";
+          break;
+        case 400:
+          e =
+            "'filter_id, latitude, longitude or radius parameter was missing from request'";
+          break;
+        default:
+          e = "unknown reason";
+      }
+
+      break;
+
+    case DELETE_AREA:
+      switch (status) {
+        case 200:
+          let newAreas = state.filter.areas;
+          delete newAreas[data.area_id];
+          return {
+            ...state,
+            filter: { ...state.filter, areas: newAreas },
+          };
+        case 204:
+          e = "no filter with specified ID";
+          break;
+        case 400:
+          e =
+            "'filter_id, latitude, longitude or radius parameter was missing from request'";
+          break;
+        default:
+          e = "unknown reason";
+      }
+
+      break;
+
+    case GET_FILTER_PARAMS:
       return state;
 
     case GET_PROJECTS:
@@ -527,6 +683,7 @@ function handleResponse(state, reqType, status, data) {
               c.video_format,
               parseDatetimeString(c.start_time),
               parseDatetimeString(c.end_time),
+              state.filter.resolutions[c.resolution],
               c.duplicates,
               c.overlap
             );
@@ -639,17 +796,47 @@ const communicationReducer = (state = initialState, action) => {
 
     case MODIFY_FILTER:
       url = URL_MODIFY_FILTER;
-      body = {};
+      const {
+        filterID,
+        startTime,
+        endTime,
+        objects,
+        minFrameRate,
+        whitelistedResolutions,
+        includedClips,
+        excludedClips,
+      } = state.filter;
+      body = { filter_id: filterID };
+      if (startTime) body[start_time] = parseDateToString(startTime);
+      if (endTime) body[end_time] = parseDateToString(endTime);
+      if (objects) body[classes] = objects;
+      if (whitelistedResolutions)
+        body[whitelisted_resolutions] = whitelistedResolutions.map(
+          (id) => state.resolutions[id]
+        );
+      if (minFrameRate > 0) body[min_framerate] = minFrameRate;
+      if (includedClips) body[included_clips] = includedClips;
+      if (excludedClips) body[excluded_clips] = excludedClips;
       break;
 
     case GET_AREAS_IN_FILTER:
       url = URL_GET_AREAS_IN_FILTER;
-      body = {};
+      body = { filter_id: state.filter.filterID };
       break;
 
     case CREATE_AREA:
       url = URL_CREATE_AREA;
-      body = {};
+      body = {
+        filter_id: state.filter.filterID,
+        latitude: action.latitude,
+        longitude: action.longitude,
+        radius: action.radius,
+      };
+      break;
+
+    case DELETE_AREA:
+      url = URL_DELETE_AREA;
+      body = { filter_id: state.filter.filterID, area_id: action.aid };
       break;
 
     case GET_FILTER_PARAMS:

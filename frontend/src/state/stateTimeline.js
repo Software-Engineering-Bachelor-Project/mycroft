@@ -8,8 +8,8 @@ export const SET_TIME_LIMITS = "SET_TIME_LIMITS";
 export const GB_SET_TIME_LIMITS = "GB_SET_TIME_LIMITS";
 
 /* -- TIMELINE DEFAULT CONSTANT -- */
-const defaultStartTime = new Date(2020, 11, 29, 23, 50, 0); // the month is 0-indexed. Month 3 = April.
-const defaultEndTime = new Date(2021, 0, 2, 1, 10, 0);
+const defaultStartTime = new Date(2020, 3, 10, 23, 50, 0); // the month is 0-indexed. Month 3 = April.
+const defaultEndTime = new Date(2020, 3, 20, 0, 0, 0);
 const gbDefaultStartTime = new Date(2020, 3, 14, 12, 30, 0);
 const gbDefaultEndTime = new Date(2020, 3, 14, 15, 0, 0);
 

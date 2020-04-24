@@ -54,11 +54,13 @@ export const GET_FOLDERS = "GET_FOLDERS";
 export const GET_SOURCE_FOLDERS = "GET_SOURCE_FOLDERS";
 export const ADD_FOLDER = "ADD_FOLDER";
 export const REMOVE_FOLDER = "REMOVE_FOLDER";
+export const GET_CLIPS = "GET_CLIPS";
 
 export const URL_GET_FOLDERS = "/file/get_folders";
 export const URL_GET_SOURCE_FOLDERS = "/file/get_source_folders";
 export const URL_ADD_FOLDER = "/file/add_folder";
 export const URL_REMOVE_FOLDER = "/file/remove_folder";
+export const URL_GET_CLIPS = "/file/get_clips";
 
 // Object Detector requests
 export const DETECT_OBJECTS = "DETECT_OBJECTS";
@@ -240,6 +242,15 @@ export function removeFolder(fid) {
   return {
     type: REMOVE_FOLDER,
     fid: fid,
+  };
+}
+
+/**
+ * This action is used to get all clips in the current project.
+ */
+export function getClips() {
+  return {
+    type: GET_CLIPS,
   };
 }
 
@@ -492,6 +503,38 @@ function handleResponse(state, reqType, status, data) {
 
       break;
 
+    case GET_CLIPS:
+      switch (status) {
+        case 200:
+          let newClips = {};
+          for (const c of data.clips)
+            newClips[c.id] = new Clip(
+              c.id,
+              c.name,
+              c.folder,
+              c.camera,
+              c.video_format,
+              parseDatetimeString(c.start_time),
+              parseDatetimeString(c.end_time),
+              c.duplicates,
+              c.overlap
+            );
+          return {
+            ...state,
+            clips: newClips,
+          };
+        case 204:
+          e = "no project with specified ID";
+          break;
+        case 400:
+          e = "'project_id' parameter was missing from request";
+          break;
+        default:
+          e = "unknown reason";
+      }
+
+      break;
+
     case DETECT_OBJECTS:
       switch (status) {
         case 200:
@@ -662,6 +705,11 @@ const communicationReducer = (state = initialState, action) => {
     case REMOVE_FOLDER:
       url = URL_REMOVE_FOLDER;
       body = { project_id: state.projectID, folder_id: action.fid };
+      break;
+
+    case GET_CLIPS:
+      url = URL_GET_CLIPS;
+      body = { project_id: state.projectID };
       break;
 
     case DETECT_OBJECTS:

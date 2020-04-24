@@ -13,16 +13,17 @@ class DetectObjectsTest(TestCase):
     @patch('backend.database_wrapper.create_hash_sum')
     def setUp(self, mock_create_hash_sum) -> None:
         mock_create_hash_sum.return_value = '1234'
+        self.cm_name = 'Test camera name'
         self.fid = create_root_folder(path='home/user/', name='test_folder')
         self.st = timezone.now()
         self.et = timezone.now() + timezone.timedelta(seconds=5)
         self.cids = []
         for i in range(1, 4):
             self.cids.append(
-                create_clip(name='test_clip{}'.format(i), fid=self.fid, video_format='tvf', latitude=Decimal('0.0'),
+                create_clip(clip_name='test_clip{}'.format(i), fid=self.fid, video_format='tvf', latitude=Decimal('0.0'),
                             longitude=Decimal('0.0'), start_time=self.st + timezone.timedelta(seconds=3 * i - 2),
                             end_time=self.et + timezone.timedelta(seconds=3 * i - 2),
-                            width=256, height=240, frame_rate=42))
+                            width=256, height=240, frame_rate=42, camera_name=self.cm_name))
 
     @patch('backend.object_detector.ObjectDetector')
     @patch('backend.object_detector.threading')
@@ -92,16 +93,17 @@ class RunObjectDetectionTest(TestCase):
     @patch('backend.database_wrapper.create_hash_sum')
     def setUp(self, mock_create_hash_sum) -> None:
         mock_create_hash_sum.return_value = '1234'
+        self.cm_name = 'Test camera name'
         self.fid = create_root_folder(path='home/user/', name='test_folder')
         self.st = timezone.now()
         self.et = timezone.now() + timezone.timedelta(seconds=5)
         self.cids = []
         for i in range(1, 4):
             self.cids.append(
-                create_clip(name='test_clip{}'.format(i), fid=self.fid, video_format='tvf', latitude=Decimal('0.0'),
+                create_clip(clip_name='test_clip{}'.format(i), fid=self.fid, video_format='tvf', latitude=Decimal('0.0'),
                             longitude=Decimal('0.0'), start_time=self.st + timezone.timedelta(seconds=2 * i - 3),
                             end_time=self.et + timezone.timedelta(seconds=2 * i - 3),
-                            width=256, height=240, frame_rate=42))
+                            width=256, height=240, frame_rate=42, camera_name=self.cm_name))
         self.od = ObjectDetector()
         self.pid = create_progress(total=len(self.cids))
 

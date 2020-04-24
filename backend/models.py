@@ -126,14 +126,15 @@ class Camera(models.Model):
     )
     start_time = models.DateTimeField('start time', null=True, blank=True)
     end_time = models.DateTimeField('end time', null=True, blank=True)
+    name = models.CharField(max_length=200)
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=['latitude', 'longitude'], name='position constraint'),
+            models.UniqueConstraint(fields=['name', 'latitude', 'longitude'], name='name and position constraint'),
         ]
 
     def __str__(self):
-        return "Camera at ({0}, {1})".format(self.latitude, self.longitude)
+        return "Camera {0} at ({1}, {0})".format(self.name, self.latitude, self.longitude)
 
     def clean(self):
         if self.start_time is not None and self.start_time > self.end_time:

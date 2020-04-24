@@ -299,15 +299,16 @@ def get_subfolders_to_entries() -> List[Folder]:
 
 # --- Clip ---
 
-def create_clip(fid: int, name: str, video_format: str, start_time: timezone.datetime, end_time: timezone.datetime,
-                latitude: Decimal, longitude: Decimal, width: int, height: int, frame_rate: float) -> int:
+def create_clip(fid: int, clip_name: str, video_format: str, start_time: timezone.datetime,
+                end_time: timezone.datetime, latitude: Decimal, longitude: Decimal,
+                width: int, height: int, frame_rate: float, camera_name: str) -> int:
     """
     Creates a clip if not already in database.
     Fetches id if clip already in database.
     Creates a camera for the clip if not already in database.
 
     :param fid: The id of the folder which the clip is located in.
-    :param name: The name of the clip.
+    :param clip_name: The name of the clip.
     :param video_format: The format of the clip (max 5 characters).
     :param start_time: The start time for the clip.
     :param end_time: The end time for the clip.
@@ -316,14 +317,16 @@ def create_clip(fid: int, name: str, video_format: str, start_time: timezone.dat
     :param width: Width of clip in pixels.
     :param height: Height of clip in pixels.
     :param frame_rate: The frame rate of the clip in FPS.
+    :param camera_name: The name of the camera the clip belongs to.
     :return: The created clip's id.
     """
 
     f = get_folder_by_id(fid=fid)
     assert f is not None
-    camera = Camera.objects.get_or_create(latitude=latitude, longitude=longitude)[0]
+
+    camera = Camera.objects.get_or_create(name=camera_name, longitude=longitude, latitude=latitude)[0]
     resolution = Resolution.objects.get_or_create(width=width, height=height)[0]
-    clip = Clip.objects.get_or_create(folder=f, name=name, video_format=video_format, start_time=start_time,
+    clip = Clip.objects.get_or_create(folder=f, name=clip_name, video_format=video_format, start_time=start_time,
                                       end_time=end_time, camera=camera, resolution=resolution,
                                       frame_rate=frame_rate)[0]
     hash_sum = create_hash_sum(f, clip)

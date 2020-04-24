@@ -158,6 +158,7 @@ def create_root_folder(path: str, name: str) -> int:
     """
     path = path.replace('\\', '/')
     f = Folder.objects.get_or_create(path=path, name=name)[0]
+    set_to_entry(fid=f.id)
     return f.id
 
 
@@ -272,6 +273,27 @@ def delete_folder(fid: int) -> None:
         Folder.objects.get(id=fid).delete()
     except Folder.DoesNotExist:
         pass
+
+
+def set_to_entry(fid: int) -> None:
+    """
+    Changes the is_entry field to True.
+
+    :param fid: The folder's id.
+    """
+    f = get_folder_by_id(fid=fid)
+    assert f is not None
+    f.is_entry = True
+    f.save()
+
+
+def get_subfolders_to_entries() -> List[Folder]:
+    """
+    Gets all folders who's parent is an entry folder.
+
+    :return: A list of folders.
+    """
+    return Folder.objects.filter(parent__is_entry=True).all()[::1]
 
 
 # --- Clip ---

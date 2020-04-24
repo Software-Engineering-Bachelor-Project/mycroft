@@ -580,6 +580,26 @@ class DeleteFolderTest(BaseTestCases.FolderTest):
         self.assertIs(Folder.objects.count(), 3)
 
 
+class SetToEntry(BaseTestCases.FolderTest):
+    def test_entry_is_set(self):
+        """
+        Test that entry is set on root folder and not on subfolder.
+        """
+        rf = get_folder_by_id(fid=self.rid)
+        sf = get_folder_by_id(fid=self.sid)
+        self.assertEqual(rf.is_entry, True)
+        self.assertEqual(sf.is_entry, False)
+
+
+class GetSubfoldersToEntry(BaseTestCases.FolderTest):
+    def test_get_subfolders(self):
+        """
+        Test that only subfolder to root folder is returned.
+        """
+        sf = get_folder_by_id(fid=self.sid)
+        self.assertEqual(get_subfolders_to_entries(), [sf])
+
+
 class CreateClipTest(BaseTestCases.ClipTest):
     def test_correct_values(self):
         self.assertEqual(get_clip_by_id(self.cid).name, "test_clip")

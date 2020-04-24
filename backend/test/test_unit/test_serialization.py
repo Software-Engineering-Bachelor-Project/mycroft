@@ -12,8 +12,9 @@ class SerializeTest(TestCase):
         """
         Create objects to be used.
         """
-        self.rf = Folder.objects.create(path="/home/user/", name="test_folder")
-        self.sf = Folder.objects.create(parent=self.rf, name="test_subfolder", path="/home/user/test_folder/")
+        self.rf = Folder.objects.create(path="/home/user/", name="test_folder", is_entry=True)
+        self.sf = Folder.objects.create(parent=self.rf, name="test_subfolder",
+                                        path="/home/user/test_folder/", is_entry=False)
         self.cm = Camera.objects.create(start_time=timezone.datetime(2020, 5, 17,
                                                                      tzinfo=pytz.timezone(settings.TIME_ZONE)),
                                         end_time=timezone.datetime(2020, 5, 18,
@@ -36,9 +37,9 @@ class SerializeTest(TestCase):
         Test serializing various objects.
         """
         self.assertEqual(serialize(data=self.rf),
-                         {'id': 1, 'path': '/home/user/', 'name': 'test_folder', 'parent': None, 'clip_set': [self.cl.id]})
+                         {'id': 1, 'path': '/home/user/', 'name': 'test_folder', 'parent': None, 'clip_set': [self.cl.id], 'is_entry': True})
         self.assertEqual(serialize(data=self.sf),
-                         {'id': 2, 'path': '/home/user/test_folder/', 'name': 'test_subfolder', 'parent': 1, 'clip_set': []})
+                         {'id': 2, 'path': '/home/user/test_folder/', 'name': 'test_subfolder', 'parent': 1, 'clip_set': [], 'is_entry': False})
         self.assertEqual(serialize(data=self.cm), {'id': 1, 'latitude': '0.00000000', 'longitude': '0.00000000',
                                                    'start_time': '2020-05-17T00:00:00+01:00',
                                                    'end_time': '2020-05-18T00:00:00+01:00', 'clip_set': [self.cl.id]})
@@ -55,9 +56,9 @@ class SerializeTest(TestCase):
         self.assertEqual(serialize(data=self.folders),
                          [OrderedDict(
                              [('id', 1), ('clip_set', [self.cl.id]), ('path', '/home/user/'), ('name', 'test_folder'),
-                              ('parent', None)]),
+                              ('is_entry', True), ('parent', None)]),
                           OrderedDict([('id', 2), ('clip_set', []), ('path', '/home/user/test_folder/'),
-                                       ('name', 'test_subfolder'), ('parent', 1)])])
+                                       ('name', 'test_subfolder'), ('is_entry', False), ('parent', 1)])])
 
     def test_serialize_empty_collection(self):
         """

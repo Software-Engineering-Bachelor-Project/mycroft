@@ -68,17 +68,33 @@ export class Clip {
    * @param {int} id The unique identifier of this clip. Corresponds to the backend database.
    * @param {string} name The file name of this clip, without file extension.
    * @param {Number} folder The id of the folder containing this clip.
+   * @param {Number} camera The id of the camera containing this clip.
    * @param {string} format The file format of this clip, 'wav' etc.
    * @param {Date} startTime The point in time when the clip starts.
    * @param {Date} endTime The point in time when the clip ends.
+   * @param {Array[int]} duplicates List of id's of duplicated clips.
+   * @param {Array[int]} overlapping List of id's of overlapping clips.
    */
-  constructor(id, name, folder, format, startTime, endTime) {
+  constructor(
+    id,
+    name,
+    folder,
+    camera,
+    format,
+    startTime,
+    endTime,
+    duplicates = [],
+    overlapping = []
+  ) {
     this.id = id;
     this.name = name;
     this.folder = folder;
+    this.camera = camera;
     this.format = format;
     this.startTime = startTime;
     this.endTime = endTime;
+    this.duplicates = duplicates;
+    this.overlapping = overlapping;
   }
 
   /**

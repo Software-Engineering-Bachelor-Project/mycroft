@@ -328,6 +328,25 @@ class FileAddFoldersTest(TestCase):
         mock_mod.add_folder.assert_called_with(QueryDict('test=data'))
 
 
+class FileRemoveFoldersTest(TestCase):
+
+    @mock.patch('backend.views.file_manager')
+    def test_propagation(self, mock_mod):
+        '''
+        Tests propagation of the 'remove folders' request.
+        :return: None
+        '''
+        # Set up mock
+        mock_mod.remove_folder.return_value = (200, {})
+
+        # Test function
+        req = APIRequestFactory().post('', {'test': 'data'})
+        response = views.file_remove_folder(req)
+
+        # Did we propagate properly?
+        mock_mod.remove_folder.assert_called_with(QueryDict('test=data'))
+
+
 class DetectObjectsTest(TestCase):
 
     @mock.patch('backend.views.object_detector')

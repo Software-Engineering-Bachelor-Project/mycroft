@@ -152,6 +152,16 @@ class UrlsTest(TestCase):
         resolver = resolve(url)
         self.assertEqual(resolver.func, file_add_folder)
 
+    def test_file_remove_folders(self):
+        '''
+        Test that the url for the file_remove_folders module is correctly mapped to the view
+        :return: None
+        '''
+
+        url = reverse('backend:file remove folder')
+        resolver = resolve(url)
+        self.assertEqual(resolver.func, file_remove_folder)
+
     def test_object_detection(self):
         '''
         Test that the url for the object_detection module is correctly mapped to the view

@@ -185,6 +185,16 @@ def file_add_folder(request):
 
 
 @api_view(['POST'])
+def file_remove_folder(request):
+    """
+    Delegates a 'remove folder' request to the File Manager.
+    :return: A response from the File Manager.
+    """
+    data = file_manager.remove_folder(request.data)
+    return Response(data[1], data[0])
+
+
+@api_view(['POST'])
 def detect_objects(request):
     """
     Delegates a 'detect objects' request to the Object Detector.

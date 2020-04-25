@@ -92,7 +92,6 @@ class AddFoldersTest(TestCase):
         """
         Test with a folder id that doesn't exist.
         """
-        pid = create_project(name='test_project')
         code, res = add_folder(data={PROJECT_ID: self.pid, FOLDER_ID: 42})
         self.assertEqual(code, 204)
         self.assertEqual(res, {})

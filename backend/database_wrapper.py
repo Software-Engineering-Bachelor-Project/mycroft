@@ -28,10 +28,10 @@ def create_project(name: str) -> int:
     :return: The created project's id (primary key).
     """
 
-    if not Project.objects.filter(name=name):
-        p = Project.objects.create(name=name)
-    else:
-        return None
+    if Project.objects.filter(name=name):
+        raise ValueError
+    p = Project.objects.create(name=name)
+
     return p.id
 
 

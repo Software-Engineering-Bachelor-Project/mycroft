@@ -30,7 +30,11 @@ def new_project(data: dict) -> (int, dict):
     except KeyError:
         return 400, {}  # Bad request
 
-    pid = create_project(name=name)
+    try:
+        pid = create_project(name=name)
+    except ValueError:
+        return 204, {} #No project found
+
     create_filter(pid=pid)
     return 200, os_aware({PROJECT_ID: pid})
 

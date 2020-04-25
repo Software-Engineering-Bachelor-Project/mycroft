@@ -114,7 +114,7 @@ class CreateProjectTest(BaseTestCases.ProjectTest):
         """
         Test that no project can be created with the same name
         """
-        self.assertIsNone(create_project(name="test project"))
+        self.assertRaises(ValueError, lambda: create_project("test project"))
 
 
 class GetProjectByIdTest(BaseTestCases.ProjectTest):

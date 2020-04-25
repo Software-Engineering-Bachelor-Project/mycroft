@@ -5,6 +5,7 @@ from django.db.models import Q
 import hashlib
 import cv2
 
+from .communication_utils import replace_sep
 from .models import Project, Folder, Filter, Camera, ObjectDetection, Object, ObjectClass, Clip, Resolution, Progress, \
     Area
 
@@ -343,7 +344,7 @@ def create_clip(fid: int, name: str, video_format: str, start_time: timezone.dat
 
 
 def create_hash_sum(folder: Folder, clip: Clip) -> Optional[str] or Optional[None]:
-    file = folder.path+clip.name
+    file = replace_sep(folder.path + folder.name + "\\" + clip.name + "." + clip.video_format)
     file_hash = hashlib.sha256()
 
     cap = cv2.VideoCapture(file)

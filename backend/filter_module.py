@@ -141,6 +141,25 @@ def create_area(data: dict) -> (int, dict):
     return 200, os_aware(res)
 
 
+def delete_area(data: dict) -> (int, dict):
+    """
+    Deletes a given area from a given filter.
+
+    :param data: A dictionary that need to have the keys area_id and filter_id.
+    :return: Status code, empty dict.
+    """
+    # Retrieve parameters and verify that they exist
+    try:
+        aid = data[AREA_ID]
+        fid = data[FILTER_ID]
+    except KeyError:
+        return 400, {}  # Bad request, missing parameters
+
+    dbw.delete_area(aid=aid, fid=fid)
+
+    return 200, {}
+
+
 def get_params(data: dict) -> (int, dict):
     """
     Returns the params in a filter

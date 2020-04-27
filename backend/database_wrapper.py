@@ -880,6 +880,8 @@ def get_areas_in_filter(fid: int) -> List[Area]:
 
 def create_area(latitude: Decimal, longitude: Decimal, radius: Decimal, fid: int) -> int:
     """
+    Creates an area and adds to filter.
+
     :param latitude: longitude of area
     :param longitude: latitude of area
     :param radius: radius of area
@@ -893,3 +895,21 @@ def create_area(latitude: Decimal, longitude: Decimal, radius: Decimal, fid: int
     f.areas.add(area)
 
     return area.id
+
+
+def delete_area(aid: int, fid: int) -> None:
+    """
+    Deletes a given area from Area object and given filter.
+
+    :param aid: area id.
+    :param fid: filter id.
+    :return: None.
+    """
+    f = get_filter_by_id(fid=fid)
+    assert f is not None
+
+    try:
+        area = Area.objects.get(id=aid)
+        f.areas.get(id=aid).delete()
+    except Area.DoesNotExist:
+        pass

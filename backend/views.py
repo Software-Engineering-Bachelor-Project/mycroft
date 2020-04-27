@@ -25,6 +25,16 @@ def filter_create_area(request):
 
 
 @api_view(['POST'])
+def filter_delete_area(request):
+    """
+    Delegates a 'filter_delete_area' request to the Filter Module.
+    :return: A response from the Filter Module.
+    """
+    data = filter_module.delete_area(request.data)
+    return Response(data[1], data[0])
+
+
+@api_view(['POST'])
 def filter_get_areas(request):
     """
     Delegates a 'filter_get_areas' request to the Filter Module.

@@ -11,6 +11,7 @@ not affect the tests if the name parameter is unchanged
 app_name = 'backend'
 urlpatterns = [
     path('filter/create_area', views.filter_create_area, name='filter create area'),
+    path('filter/delete_area', views.filter_delete_area, name='filter delete area'),
     path('filter/get_areas', views.filter_get_areas, name='filter get areas'),
     path('filter/get_matching_clips', views.filter_get_matching_clips, name='filter get matching'),
     path('filter/modify', views.filter_modify, name='filter modify'),

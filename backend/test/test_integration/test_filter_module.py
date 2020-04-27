@@ -295,6 +295,37 @@ class CreateAreaTest(TestCase):
         self.assertEqual(res, (400, {}))
 
 
+class DeleteAreaTest(TestCase):
+    def setUp(self) -> None:
+        """
+        Create filter, project and area.
+        """
+        self.pid = dbw.create_project(name="test_project")
+        self.fid = dbw.create_filter(pid=self.pid)
+        self.aid = dbw.create_area(latitude=Decimal(value="1.1"), longitude=Decimal(value="1.1"),
+                                   radius=Decimal(value="1.1"), fid=self.fid)
+
+    def test_simple_call(self):
+        """
+        Test calling function with correct values
+        """
+        data = {AREA_ID: self.aid,
+                FILTER_ID: self.fid
+                }
+        res = delete_area(data)
+        self.assertEqual(res, (200, {}))
+
+    def test_missing_parameter(self) -> None:
+        """
+        Test calling function without necessary parameter
+        """
+        data = {AREA_ID: self.aid,
+                }
+
+        res = delete_area(data)
+        self.assertEqual(res, (400, {}))
+
+
 class GetFilterParametersTest(TestCase):
     @patch('backend.database_wrapper.create_hash_sum')
     def setUp(self, mock_create_hash_sum) -> None:

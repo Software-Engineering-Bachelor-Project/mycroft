@@ -127,6 +127,21 @@ class CreateArea(TestCase):
                                                                    radius=Decimal(value="1.1"), fid="test_data")
 
 
+class DeleteArea(TestCase):
+
+    @patch('backend.filter_module.dbw.delete_area')
+    def test_simple_call(self, mock_filter_module_dbw_delete_area):
+        """
+        Makes a simple call to the function, check that the correct function is called in the database_wrapper
+        """
+        data = {AREA_ID: "test_data_area_id",
+                FILTER_ID: "test_data_filter_id"
+                }
+
+        res = delete_area(data)
+        mock_filter_module_dbw_delete_area.assert_called_once_with(aid="test_data_area_id", fid="test_data_filter_id")
+
+
 class GetFilterParametersTest(TestCase):
 
     @patch('backend.filter_module.dbw')

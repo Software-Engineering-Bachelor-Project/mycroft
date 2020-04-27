@@ -1,17 +1,25 @@
 import store from "./state";
 
+import { Camera, Clip } from "../types";
+
 /* -- ACTIONS -- */
 export const ZOOM = "ZOOM";
 export const SET_START_TIME = "SET_START_TIME";
 export const SET_END_TIME = "SET_END_TIME";
 export const SET_TIME_LIMITS = "SET_TIME_LIMITS";
 export const GB_SET_TIME_LIMITS = "GB_SET_TIME_LIMITS";
+export const ADD_CAMERA = "ADD_CAMERA";
+export const REMOVE_CAMERA = "REMOVE_CAMERA";
 
 /* -- TIMELINE DEFAULT CONSTANT -- */
 const defaultStartTime = new Date(2020, 3, 10, 23, 50, 0); // the month is 0-indexed. Month 3 = April.
 const defaultEndTime = new Date(2020, 3, 20, 0, 0, 0);
-const gbDefaultStartTime = new Date(2020, 3, 14, 12, 30, 0);
-const gbDefaultEndTime = new Date(2020, 3, 14, 15, 0, 0);
+const gbDefaultStartTime = new Date(2020, 3, 13, 12, 30, 0);
+const gbDefaultEndTime = new Date(2020, 3, 14, 18, 0, 0);
+
+//testdata for cameras
+const c1StartTime = new Date(2020, 3, 13, 12, 30, 0);
+const c1EndTime = new Date(2020, 3, 14, 10, 0, 0);
 
 /* -- INITIAL STATE -- */
 export const initialState = {
@@ -25,19 +33,88 @@ export const initialState = {
     endTime: gbDefaultEndTime,
     timeSpan: gbDefaultEndTime.getTime() - gbDefaultStartTime.getTime(), //timeSpan in ms
   },
+
+  //testdata
+  cameras: {
+    1: new Camera(
+      1,
+      "cam1",
+      [2, 2],
+      {
+        1: new Clip(1, "clip1", "tdir", 1, "tformat", c1StartTime, c1EndTime),
+        //2: new Clip(2, "clip2", "tdir", 1, "tformat", c1StartTime, c1EndTime),
+      },
+      false
+    ),
+    2: new Camera(
+      2,
+      "cam2",
+      [2, 4],
+      { 1: new Clip(1, "clip1", "tdir", 2, "tformat", c1StartTime, c1EndTime) },
+      false
+    ),
+    3: new Camera(
+      3,
+      "cam3",
+      [6, 9],
+      { 1: new Clip(1, "clip1", "tdir", 3, "tformat", c1StartTime, c1EndTime) },
+      false
+    ),
+    4: new Camera(
+      4,
+      "cam4",
+      [6, 9],
+      {
+        1: new Clip(1, "clip1", "tdir", 4, "tformat", c1StartTime, c1EndTime),
+        //2: new Clip(2, "clip2", "tdir", 4, "tformat", c1StartTime, c1EndTime),
+      },
+      false
+    ),
+    5: new Camera(
+      5,
+      "cam5",
+      [7, 9],
+      { 1: new Clip(1, "clip1", "tdir", 5, "tformat", c1StartTime, c1EndTime) },
+      false
+    ),
+    6: new Camera(
+      6,
+      "cam6",
+      [7, 9],
+      { 1: new Clip(1, "clip1", "tdir", 6, "tformat", c1StartTime, c1EndTime) },
+      false
+    ),
+    7: new Camera(
+      7,
+      "cam7",
+      [7, 9],
+      { 1: new Clip(1, "clip1", "tdir", 7, "tformat", c1StartTime, c1EndTime) },
+      false
+    ),
+    8: new Camera(
+      8,
+      "cam8",
+      [7, 9],
+      { 1: new Clip(1, "clip1", "tdir", 8, "tformat", c1StartTime, c1EndTime) },
+      false
+    ),
+  },
 };
 
 /* -- ACTION CREATORS -- */
 
 /**
  * This function changes the scale-state.
+ * It depends on what mode viewport is in.
  *
+ * @param {Boolean} viewportMode is the mode of viewport
  * @param {int} hrs sets new scale parameter
  */
-export function zoom(hrs) {
+export function zoom(hrs, viewportMode) {
   return {
     type: ZOOM,
     hrs: hrs,
+    viewportMode: viewportMode,
   };
 }
 
@@ -99,6 +176,32 @@ export function gbSetTimeLimits(startDate, endDate) {
     type: GB_SET_TIME_LIMITS,
     start: startDate,
     end: endDate,
+  };
+}
+
+/**
+ * Creates an action used for adding a camera.
+ *
+ * @param {Camera} camera camera to add.
+ * @return {action} Action for adding a camera.
+ */
+export function addCamera(camera) {
+  return {
+    type: ADD_CAMERA,
+    camera: camera,
+  };
+}
+
+/**
+ * Creates an action used for removing a camera.
+ *
+ * @param {int} id Unique idenfitifier of a camera to remove.
+ * @return {action} Action for removing a camera.
+ */
+export function removeCamera(id) {
+  return {
+    type: REMOVE_CAMERA,
+    id: id,
   };
 }
 
@@ -197,12 +300,17 @@ const timelineReducer = (state = initialState, action) => {
         timeSpan: action.end.getTime() - action.start.getTime(),
       };
     case ZOOM:
+      //if action.hrs is undefiend, then use state.scale
+      var hours = action.hrs ? action.hrs : state.scale;
       return {
         ...state,
 
-        // Compares with timeSpan; if action.hrs is bigger than timeSpan,
+        // Compares with timeSpan or glassbox timeSpan depending on mode;
+        // if action.hrs is bigger than timeSpan,
         // then timeSpan is the max value for scale.
-        scale: Math.min(action.hrs, state.timeSpan / (60 * 60 * 1000)),
+        scale: action.viewportMode
+          ? Math.min(hours, state.timeSpan / (60 * 60 * 1000))
+          : Math.min(hours, state.glassbox.timeSpan / (60 * 60 * 1000)),
       };
     case GB_SET_TIME_LIMITS:
       var startT, endT;
@@ -215,6 +323,21 @@ const timelineReducer = (state = initialState, action) => {
           endTime: endT,
           timeSpan: endT.getTime() - startT.getTime(),
         },
+      };
+    case ADD_CAMERA:
+      return {
+        ...state,
+        cameras: {
+          ...state.cameras,
+          [action.camera.id]: action.camera,
+        },
+      };
+    case REMOVE_CAMERA:
+      var cameras = { ...state.cameras };
+      delete cameras[action.id];
+      return {
+        ...state,
+        cameras: cameras,
       };
     default:
       return state;

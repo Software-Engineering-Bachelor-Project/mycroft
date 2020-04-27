@@ -9,7 +9,16 @@ import { SET_START_TIME, setStartTime } from "../../state/stateTimeline";
 import { SET_END_TIME, setEndTime } from "../../state/stateTimeline";
 import { SET_TIME_LIMITS, setTimeLimits } from "../../state/stateTimeline";
 import { GB_SET_TIME_LIMITS, gbSetTimeLimits } from "../../state/stateTimeline";
+import { ADD_CAMERA, addCamera } from "../../state/stateTimeline";
+import { REMOVE_CAMERA, removeCamera } from "../../state/stateTimeline";
 
+//import constants
+import { MAP_MODE, PLAYER_MODE } from "../../state/stateViewport";
+
+//import classes
+import { Camera, Clip } from "../../types";
+
+//import functions
 import { getLinePlacements } from "../../components/timeline/timeline";
 import { getDayPlacements } from "../../components/timeline/timeline";
 
@@ -25,6 +34,7 @@ describe("Timeline reducer", () => {
   it("should handle ZOOM", () => {
     // Setup variables
     var timeSpanInHours = initialState.timeSpan / (60 * 60 * 1000);
+    var gbTimeSpanInHours = initialState.glassbox.timeSpan / (60 * 60 * 1000);
     var nextState = {
       ...initialState,
       scale: 24,
@@ -34,10 +44,10 @@ describe("Timeline reducer", () => {
     expect(ZOOM).toEqual("ZOOM");
 
     // Action creator
-
-    expect(zoom(24)).toEqual({
+    expect(zoom(24, MAP_MODE)).toEqual({
       type: ZOOM,
       hrs: 24,
+      viewportMode: MAP_MODE,
     });
 
     // Change scale on timeline #1
@@ -47,6 +57,7 @@ describe("Timeline reducer", () => {
         {
           type: ZOOM,
           hrs: 24,
+          viewportMode: MAP_MODE,
         }
       )
     ).toEqual(nextState);
@@ -56,10 +67,11 @@ describe("Timeline reducer", () => {
       reducer(nextState, {
         type: ZOOM,
         hrs: 36,
+        viewportMode: PLAYER_MODE,
       })
     ).toEqual({
       ...initialState,
-      scale: Math.min(36, timeSpanInHours),
+      scale: Math.min(36, gbTimeSpanInHours),
     });
 
     // Change scale on timeline #3
@@ -67,6 +79,7 @@ describe("Timeline reducer", () => {
       reducer(nextState, {
         type: ZOOM,
         hrs: 720000,
+        viewportMode: MAP_MODE,
       })
     ).toEqual({
       ...initialState,
@@ -78,6 +91,7 @@ describe("Timeline reducer", () => {
       reducer(nextState, {
         type: ZOOM,
         hrs: 0.0001,
+        viewportMode: MAP_MODE,
       })
     ).toEqual({
       ...initialState,
@@ -405,6 +419,79 @@ describe("Timeline reducer", () => {
 
   it("expect 10 console errors", () => {
     expect(console.error).toHaveBeenCalledTimes(10);
+  });
+
+  it("should handle ADD_CAMERA", () => {
+    // Setup variables
+    var c1 = new Camera(3, "Test Name", [42, 69]);
+    var c2 = new Camera(2, "Another Name", [420, 1337]);
+    var initState = { ...initialState, cameras: {} };
+    var nextState = {
+      ...initialState,
+      cameras: { 3: c1 },
+    };
+
+    // Action constant
+    expect(ADD_CAMERA).toEqual("ADD_CAMERA");
+
+    // Action creator
+    expect(addCamera(c1)).toEqual({
+      type: ADD_CAMERA,
+      camera: c1,
+    });
+
+    // Add camera to dict
+    expect(
+      reducer(
+        { ...initState },
+        {
+          type: ADD_CAMERA,
+          camera: c1,
+        }
+      )
+    ).toEqual(nextState);
+
+    // Add another camera to dict
+    expect(
+      reducer(nextState, {
+        type: ADD_CAMERA,
+        camera: c2,
+      })
+    ).toEqual({
+      ...initState,
+      cameras: { 3: c1, 2: c2 },
+    });
+  });
+
+  it("should handle REMOVE_CAMERA", () => {
+    // Setup cameras
+    var c1 = new Camera(3, "Test Name", [42, 69]);
+    var c2 = new Camera(2, "Another Name", [420, 1337]);
+    var initState = { ...initialState, cameras: {} };
+    var testState = {
+      ...initialState,
+      cameras: { 3: c1, 2: c2 },
+    };
+
+    // Action constant
+    expect(REMOVE_CAMERA).toEqual("REMOVE_CAMERA");
+
+    // Action creator
+    expect(removeCamera(3)).toEqual({
+      type: REMOVE_CAMERA,
+      id: 3,
+    });
+
+    // Remove camera
+    expect(
+      reducer(testState, {
+        type: REMOVE_CAMERA,
+        id: 3,
+      })
+    ).toEqual({
+      ...initState,
+      cameras: { 2: c2 },
+    });
   });
 });
 

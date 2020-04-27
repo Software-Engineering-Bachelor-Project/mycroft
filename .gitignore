@@ -172,4 +172,4 @@ dmypy.json
 backend/utils/yolov3.weights
 
 # Ignore make-files
-frontend/static/frontend/*
+# frontend/static/frontend/*

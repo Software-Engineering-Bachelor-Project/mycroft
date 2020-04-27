@@ -7,6 +7,8 @@ import reducer, { initialState } from "../../state/stateMenu";
 import {
   TOGGLE_OBJECT_DETECTION,
   toggleShowObjectDetection,
+  TOGGLE_PROJECT_SWITCHER,
+  toggleShowProjectSwitcher,
 } from "../../state/stateMenu";
 
 describe("Menu reducer", () => {
@@ -47,6 +49,42 @@ describe("Menu reducer", () => {
     ).toEqual({
       ...initialState,
       showObjectDetection: false,
+    });
+  });
+
+  it("should handle TOGGLE_PROJECT_SWITCHER", () => {
+    // Action constant
+    expect(TOGGLE_PROJECT_SWITCHER).toEqual("TOGGLE_PROJECT_SWITCHER");
+
+    // Action creator
+    expect(toggleShowProjectSwitcher()).toEqual({
+      type: TOGGLE_PROJECT_SWITCHER,
+    });
+
+    // Toggle from false to true
+    expect(
+      reducer(
+        { ...initialState, showProjectSwitcher: false },
+        {
+          type: TOGGLE_PROJECT_SWITCHER,
+        }
+      )
+    ).toEqual({
+      ...initialState,
+      showProjectSwitcher: true,
+    });
+
+    // Toggle from true to false
+    expect(
+      reducer(
+        { ...initialState, showProjectSwitcher: true },
+        {
+          type: TOGGLE_PROJECT_SWITCHER,
+        }
+      )
+    ).toEqual({
+      ...initialState,
+      showProjectSwitcher: false,
     });
   });
 });

@@ -11,6 +11,9 @@ import { Project, Folder, Clip, Camera } from "../types";
 
 /* -- ACTIONS -- */
 
+// Miscellaneous
+export const OPEN_PROJECT = "OPEN_PROJECT";
+
 // Filter Module requests
 export const GET_CLIPS_MATCHING_FILTER = "GET_CLIPS_MATCHING_FILTER";
 export const MODIFY_FILTER = "MODIFY_FILTER";
@@ -92,6 +95,14 @@ export const initialState = {
 };
 
 /* -- ACTION CREATORS -- */
+
+// Miscellaneous
+export function openProject(id) {
+  return {
+    type: OPEN_PROJECT,
+    id: id,
+  };
+}
 
 // Filter Module requests
 /**
@@ -615,6 +626,12 @@ const communicationReducer = (state = initialState, action) => {
   var body = {};
 
   switch (action.type) {
+    case OPEN_PROJECT:
+      return {
+        ...state,
+        projectID: action.id,
+      };
+
     case GET_CLIPS_MATCHING_FILTER:
       url = URL_GET_CLIPS_MATCHING_FILTER;
       body = {};

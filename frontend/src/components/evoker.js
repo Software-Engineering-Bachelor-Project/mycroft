@@ -29,6 +29,7 @@ import {
 
 import { playClip, jump, play, pause } from "../state/statePlayer";
 import { switchMode } from "../state/stateViewport";
+import { changeMode, INSPECTOR_MODE_CAMERA } from "../state/stateBrowser";
 
 /* -- Evoker -- */
 class Evoker extends Component {
@@ -250,6 +251,15 @@ class Evoker extends Component {
             {" "}
             playClip{" "}
           </Dropdown.Item>
+          <Dropdown.Item
+            onClick={() => {
+              var id = window.prompt("ID: ");
+              this.props.changeMode(INSPECTOR_MODE_CAMERA, parseInt(id));
+            }}
+          >
+            {" "}
+            changeMode (camera){" "}
+          </Dropdown.Item>
         </DropdownButton>
 
         {/* Log state */}
@@ -291,6 +301,7 @@ const menuDispatchToProps = (dispatch) => {
     play: () => dispatch(play()),
     pause: () => dispatch(pause()),
     jump: (x) => dispatch(jump(x)),
+    changeMode: (mode, id) => dispatch(changeMode(mode, id)),
   };
 };
 

@@ -1534,3 +1534,43 @@ class CreateArea(TestCase):
         """
         self.assertRaises(ValidationError, create_area, latitude=Decimal(value="1"), longitude=Decimal(value="181"),
                           radius=Decimal(value="1.3"), fid=self.fid)
+
+
+class DeleteArea(TestCase):
+    def setUp(self) -> None:
+        """
+        Create project and filter
+        """
+        self.pid = create_project(name="test_project")
+        self.fid = create_filter(pid=self.pid)
+        self.aid = create_area(Decimal(value="1.1"), Decimal(value="1.2"), Decimal(value="1.3"), self.fid)
+        self.area = Area.objects.get(id=self.aid)
+        self.f = get_filter_by_id(self.fid)
+
+    def test_simple_call(self):
+        """
+        Test a simple call with valid params.
+        """
+        delete_area(aid=self.aid, fid=self.fid)
+        self.assertEqual(Area.objects.count(), 0)
+        self.assertFalse(self.area in self.f.areas.all())
+
+    def test_multiple_areas(self):
+        """
+        Tests deleting one of many areas.
+        """
+        aid2 = create_area(Decimal(value="2.1"), Decimal(value="2.2"), Decimal(value="2.3"), self.fid)
+        aid3 = create_area(Decimal(value="3.1"), Decimal(value="3.2"), Decimal(value="3.3"), self.fid)
+        area2 = Area.objects.get(id=aid2)
+        area3 = Area.objects.get(id=aid3)
+        delete_area(aid=aid2, fid=self.fid)
+        self.assertEqual(Area.objects.count(), 2)
+        self.assertTrue(self.area in self.f.areas.all())
+        self.assertTrue(area3 in self.f.areas.all())
+        self.assertFalse(area2 in self.f.areas.all())
+
+    def test_non_existing_area(self):
+        """
+        Tests so there is no error when trying to delete a non existing area.
+        """
+        delete_area(aid=42, fid=self.fid)

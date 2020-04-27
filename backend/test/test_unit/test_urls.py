@@ -14,6 +14,15 @@ class UrlsTest(TestCase):
         resolver = resolve(url)
         self.assertEqual(resolver.func, filter_create_area)
 
+    def test_filter_delete_area(self):
+        '''
+        Test that the url for the filter module is correctly mapped to the view
+        :return: None
+        '''
+        url = reverse('backend:filter delete area')
+        resolver = resolve(url)
+        self.assertEqual(resolver.func, filter_delete_area)
+
     def test_filter_get_params(self):
         '''
         Test that the url for the filter module is correctly mapped to the view

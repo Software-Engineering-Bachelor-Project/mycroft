@@ -25,6 +25,25 @@ class FilterCreateArea(TestCase):
         mock_mod.create_area.assert_called_with(QueryDict('test=data'))
 
 
+class FilterDeleteArea(TestCase):
+
+    @mock.patch('backend.views.filter_module')
+    def test_propagation(self, mock_mod):
+        '''
+        Tests propagation of the 'filter delete area' request.
+        :return: None
+        '''
+        # Set up mock
+        mock_mod.delete_area.return_value = (200, {})
+
+        # Test function
+        req = APIRequestFactory().post('', {'test': 'data'})
+        response = views.filter_delete_area(req)
+
+        # Did we propagate properly?
+        mock_mod.delete_area.assert_called_with(QueryDict('test=data'))
+
+
 class FilterGetAreas(TestCase):
 
     @mock.patch('backend.views.filter_module')

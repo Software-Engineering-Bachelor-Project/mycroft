@@ -1029,8 +1029,7 @@ class ModifyFilterTest(BaseTestCases.FilterTest):
         self.assertEqual(filter.whitelisted_resolutions.first().height, 240)
 
     def test_modify_areas(self):
-        area = create_area(Decimal(value="10.0"), Decimal(value="10.0"), Decimal(value="10.0"))
-        modify_filter(fid=self.fid, areas=[area])
+        area = create_area(Decimal(value="10.0"), Decimal(value="10.0"), Decimal(value="10.0"), self.fid)
         self.assertEqual(area, get_areas_in_filter(self.fid)[0].id)
 
     def test_bad_time(self):
@@ -1488,8 +1487,7 @@ class GetAreasInFilter(TestCase):
         """
         Test getting areas when one exists
         """
-        a1 = create_area(Decimal(value="1.1"), Decimal(value="1.2"), Decimal(value="1.3"))
-        modify_filter(self.fid, areas=[a1])
+        create_area(Decimal(value="1.1"), Decimal(value="1.2"), Decimal(value="1.3"), self.fid)
         res = get_areas_in_filter(self.fid)
         self.assertEqual(len(res), 1)
 
@@ -1497,35 +1495,42 @@ class GetAreasInFilter(TestCase):
         """
         Test getting areas when multiple exists
         """
-        a1 = create_area(Decimal(value="1.1"), Decimal(value="1.2"), Decimal(value="1.3"))
-        a2 = create_area(Decimal(value="1.12"), Decimal(value="1.22"), Decimal(value="1.32"))
-        modify_filter(self.fid, areas=[a1, a2])
+        create_area(Decimal(value="1.1"), Decimal(value="1.2"), Decimal(value="1.3"), self.fid)
+        create_area(Decimal(value="1.12"), Decimal(value="1.22"), Decimal(value="1.32"), self.fid)
         res = get_areas_in_filter(self.fid)
         self.assertEqual(len(res), 2)
 
 
 class CreateArea(TestCase):
+    def setUp(self) -> None:
+        """
+        Create project and filter
+        """
+        self.pid = create_project(name="test_project")
+        self.fid = create_filter(pid=self.pid)
 
     def test_simple_call(self):
         """
         Test a simple with valid params
         """
-        aid = create_area(Decimal(value="1.1"), Decimal(value="1.2"), Decimal(value="1.3"))
+        aid = create_area(Decimal(value="1.1"), Decimal(value="1.2"), Decimal(value="1.3"), self.fid)
         area = Area.objects.get(id=aid)
         self.assertEqual(area.radius, Decimal(value="1.3"))
         self.assertEqual(area.latitude, Decimal(value="1.1"))
         self.assertEqual(area.longitude, Decimal(value="1.2"))
+        f = get_filter_by_id(self.fid)
+        self.assertTrue(area in f.areas.all())
 
     def test_bad_latitude(self):
         """
         Test with invalid latitude
         """
         self.assertRaises(ValidationError, create_area, latitude=Decimal(value="91"), longitude=Decimal(value="1.2"),
-                          radius=Decimal(value="1.3"))
+                          radius=Decimal(value="1.3"), fid=self.fid)
 
     def test_bad_longitude(self):
         """
         Test with invalid longitude
         """
         self.assertRaises(ValidationError, create_area, latitude=Decimal(value="1"), longitude=Decimal(value="181"),
-                          radius=Decimal(value="1.3"))
+                          radius=Decimal(value="1.3"), fid=self.fid)

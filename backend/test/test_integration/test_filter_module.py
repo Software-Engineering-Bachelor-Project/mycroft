@@ -138,8 +138,7 @@ class GetClipsMatchingFilter(TestCase):
         """
         data = {FILTER_ID: 1}
 
-        area = dbw.create_area(self.lat, self.lon, Decimal(value="0.5"))
-        dbw.modify_filter(fid=self.fid, areas=[area])
+        area = dbw.create_area(self.lat, self.lon, Decimal(value="0.5"), fid=self.fid)
         res = get_clips_matching_filter(data)
         self.assertEqual(res, (200, {CLIP_IDS: [1], CAMERA_IDS: [1]}))
 
@@ -247,8 +246,7 @@ class GetAreasInFilterTest(TestCase):
         """
         Test
         """
-        area_id = dbw.create_area(Decimal(value="1.1"), Decimal(value="1.1"), Decimal(value="1.1"))
-        dbw.modify_filter(self.fid, areas=[area_id])
+        dbw.create_area(Decimal(value="1.1"), Decimal(value="1.1"), Decimal(value="1.1"), self.fid)
         data = {FILTER_ID: self.fid}
         res = get_areas_in_filter(data)
         self.assertEqual(len(res[1]["areas"]), 1)
@@ -257,22 +255,29 @@ class GetAreasInFilterTest(TestCase):
         """
         Test getting all areas when multiple area exist
         """
-        area_id = dbw.create_area(Decimal(value="1.1"), Decimal(value="1.1"), Decimal(value="1.1"))
-        area_id2 = dbw.create_area(Decimal(value="1.2"), Decimal(value="1.2"), Decimal(value="1.2"))
-        dbw.modify_filter(self.fid, areas=[area_id, area_id2])
+        dbw.create_area(Decimal(value="1.1"), Decimal(value="1.1"), Decimal(value="1.1"), self.fid)
+        dbw.create_area(Decimal(value="1.2"), Decimal(value="1.2"), Decimal(value="1.2"), self.fid)
         data = {FILTER_ID: self.fid}
         res = get_areas_in_filter(data)
         self.assertEqual(len(res[1]["areas"]), 2)
 
 
 class CreateAreaTest(TestCase):
+    def setUp(self) -> None:
+        """
+        Create filter and project
+        """
+        self.pid = dbw.create_project(name="test_project")
+        self.fid = dbw.create_filter(pid=self.pid)
+
     def test_simple_call(self) -> None:
         """
         Test calling function with correct values
         """
         data = {LATITUDE: Decimal(value="1.1"),
                 LONGITUDE: Decimal(value="1.1"),
-                RADIUS: Decimal(value="1.1")
+                RADIUS: Decimal(value="1.1"),
+                FILTER_ID: self.fid
                 }
 
         res = create_area(data)

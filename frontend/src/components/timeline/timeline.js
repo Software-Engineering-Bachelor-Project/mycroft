@@ -8,6 +8,7 @@ import { zoom } from "../../state/stateTimeline";
 import styles from "./timeline.module.css";
 
 import Glassbox from "./glassbox";
+import Cliplines from "./cliplines";
 
 /**
  * This function returns a list of line placements in percents.
@@ -174,7 +175,10 @@ class Timeline extends Component {
           {/* Create dropdown items for every scaling option */}
           {SCALE_LIST.map((hrs) => {
             return (
-              <Dropdown.Item onClick={(a) => this.props.zoom(hrs)} key={hrs}>
+              <Dropdown.Item
+                onClick={(a) => this.props.zoom(hrs, this.props.viewportMode)}
+                key={hrs}
+              >
                 {hrs + " Hours"}
               </Dropdown.Item>
             );
@@ -269,6 +273,8 @@ class Timeline extends Component {
    * Render slider content, either Map or Player depending on viewport mode
    */
   renderSliderContent() {
+    this.props.zoom(undefined, this.props.viewportMode);
+
     if (this.props.viewportMode) {
       return (
         <div
@@ -287,8 +293,8 @@ class Timeline extends Component {
     }
     // TODO:: draw the content of slider when in Player-mode.
     return (
-      <div style={{ left: "50%", position: "absolute" }}>
-        Slider: Player-mode
+      <div>
+        <Cliplines />
       </div>
     );
   }
@@ -334,7 +340,7 @@ const mapStateToProps = (state) => {
 //Forward Redux's dispatch function to React props
 const mapDispatchToProps = (dispatch) => {
   return {
-    zoom: (hrs) => dispatch(zoom(hrs)),
+    zoom: (hrs, viewportMode) => dispatch(zoom(hrs, viewportMode)),
   };
 };
 

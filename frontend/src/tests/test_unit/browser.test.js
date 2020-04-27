@@ -13,6 +13,8 @@ import {
   changeMode,
   CHANGE_BROWSER_TAB,
   changeBrowserTab,
+  UPDATE_LIST,
+  updateList,
 } from "../../state/stateBrowser";
 
 // Mock the error function.
@@ -177,6 +179,57 @@ describe("Browser reducer", () => {
         mode: INSPECTOR_MODE_AREA,
         id: 73,
       },
+    });
+  });
+
+  it("should handle UPDATE_LIST", () => {
+    // Action constant
+    expect(UPDATE_LIST).toEqual("UPDATE_LIST");
+
+    // Action creator
+    expect(updateList(true, 24)).toEqual({
+      type: UPDATE_LIST,
+      include: true,
+      clipId: 24,
+    });
+
+    // Action creator invalid key
+    console.error.mockClear();
+    expect(updateList(true, undefined)).toEqual({
+      type: UPDATE_LIST,
+      include: true,
+      clipId: -1,
+    });
+    expect(console.error).toHaveBeenCalledTimes(1);
+
+    // Update includeList, excludeList is empty
+    expect(
+      reducer(
+        { ...initialState },
+        {
+          type: UPDATE_LIST,
+          include: true,
+          clipId: 10,
+        }
+      )
+    ).toEqual({
+      ...initialState,
+      incList: [10],
+    });
+
+    // Update excludeList, includeList is empty
+    expect(
+      reducer(
+        { ...initialState },
+        {
+          type: UPDATE_LIST,
+          include: false,
+          clipId: 4,
+        }
+      )
+    ).toEqual({
+      ...initialState,
+      excList: [4],
     });
   });
 });

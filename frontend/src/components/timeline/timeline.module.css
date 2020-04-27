@@ -36,7 +36,7 @@
   width: 100%;
   overflow: auto;
   /* TODO:: same color as slider! */
-  background-color: rgb(106, 158, 255);
+  background-color: rgba(185, 185, 185, 0.3);
 }
 
 .slider {
@@ -88,5 +88,13 @@
   width: 1.2em;
   border-radius: 2px;
   color: rgb(0, 0, 0);
-  /*background-color: #e0ebf6;*/
+}
+
+.cliplines {
+  position: relative;
+  margin: 15px;
+  height: 12px;
+  border-radius: 2px;
+  border: 1px solid;
+  color: rgba(184, 184, 184, 0.431);
 }

@@ -21,7 +21,7 @@ import {
   deleteODProgress,
 } from "../state/stateCommunication";
 
-import { playClip } from "../state/statePlayer";
+import { playClip, jump, play, pause } from "../state/statePlayer";
 import { switchMode } from "../state/stateViewport";
 
 /* -- Evoker -- */
@@ -63,17 +63,6 @@ class Evoker extends Component {
             {" "}
             deleteProject{" "}
           </Dropdown.Item>
-
-          <Dropdown.Item
-            onClick={() => {
-              var id = window.prompt("ID: ");
-              this.props.playClip(id);
-            }}
-          >
-            {" "}
-            playClip{" "}
-          </Dropdown.Item>
-
           <Dropdown.Item
             onClick={() => {
               var id = parseInt(window.prompt("ID: "));
@@ -189,6 +178,40 @@ class Evoker extends Component {
             {" "}
             switchMode{" "}
           </Dropdown.Item>
+          <Dropdown.Item
+            onClick={() => {
+              return this.props.play();
+            }}
+          >
+            {" "}
+            play{" "}
+          </Dropdown.Item>
+          <Dropdown.Item
+            onClick={() => {
+              return this.props.pause();
+            }}
+          >
+            {" "}
+            pause{" "}
+          </Dropdown.Item>
+          <Dropdown.Item
+            onClick={() => {
+              var fid = parseInt(window.prompt("Seconds to jump "));
+              return this.props.jump(fid);
+            }}
+          >
+            {" "}
+            jump{" "}
+          </Dropdown.Item>
+          <Dropdown.Item
+            onClick={() => {
+              var id = window.prompt("ID: ");
+              this.props.playClip(id);
+            }}
+          >
+            {" "}
+            playClip{" "}
+          </Dropdown.Item>
         </DropdownButton>
 
         {/* Log state */}
@@ -224,6 +247,9 @@ const menuDispatchToProps = (dispatch) => {
     deleteODProgress: () => dispatch(deleteODProgress()),
     playClip: (x) => dispatch(playClip(x)),
     switchMode: () => dispatch(switchMode()),
+    play: () => dispatch(play()),
+    pause: () => dispatch(pause()),
+    jump: (x) => dispatch(jump(x)),
   };
 };
 

@@ -51,9 +51,6 @@ def modify_filter(data: dict) -> (int, dict):
     if INCLUDED_CLIP_IDS in data:
         params["included_clips"] = data[INCLUDED_CLIP_IDS] if data[INCLUDED_CLIP_IDS] is not None else []
 
-    if AREA_IDS in data:
-        params["areas"] = data[AREA_IDS] if data[AREA_IDS] is not None else []
-
     # Modify the given filter
     try:
         dbw.modify_filter(**params)
@@ -124,7 +121,7 @@ def create_area(data: dict) -> (int, dict):
     """
     Creates an area
 
-    :param data: A dictionary that need to have the keys longitude, latitude and longitude
+    :param data: A dictionary that need to have the keys longitude, latitude, radius and filter id
     :return: Status code and area id
     """
     # Retrieve parameters and verify that they exist
@@ -132,12 +129,13 @@ def create_area(data: dict) -> (int, dict):
         lon = data[LONGITUDE]
         lat = data[LATITUDE]
         rad = data[RADIUS]
+        fid = data[FILTER_ID]
     except KeyError:
         return 400, {}  # Bad request, missing parameters
 
     # Construct the response
     res = {
-        AREA_ID: dbw.create_area(latitude=lat, longitude=lon, radius=rad)
+        AREA_ID: dbw.create_area(latitude=lat, longitude=lon, radius=rad, fid=fid)
     }
 
     return 200, os_aware(res)

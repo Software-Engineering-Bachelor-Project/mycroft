@@ -5,6 +5,15 @@ from backend.views import *
 
 class UrlsTest(TestCase):
 
+    def test_filter_create_area(self):
+        '''
+        Test that the url for the filter module is correctly mapped to the view
+        :return: None
+        '''
+        url = reverse('backend:filter create area')
+        resolver = resolve(url)
+        self.assertEqual(resolver.func, filter_create_area)
+
     def test_filter_get_params(self):
         '''
         Test that the url for the filter module is correctly mapped to the view

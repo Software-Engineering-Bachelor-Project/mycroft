@@ -23,7 +23,6 @@ class ModifyFilterTest(TestCase):
                 MIN_FRAMERATE: "min_f",
                 EXCLUDED_CLIP_IDS: "exc_clip",
                 INCLUDED_CLIP_IDS: "inc_clip",
-                AREA_IDS: "area_ids"
                 }
         res = modify_filter(data)
         mock_dbw_modify_filter.assert_called_once_with(fid=data[FILTER_ID], start_time=None,
@@ -31,7 +30,7 @@ class ModifyFilterTest(TestCase):
                                                        min_frame_rate=data[MIN_FRAMERATE],
                                                        whitelisted_resolutions=data[WHITELISTED_RESOLUTIONS],
                                                        excluded_clips=data[EXCLUDED_CLIP_IDS],
-                                                       included_clips=data[INCLUDED_CLIP_IDS], areas=data[AREA_IDS]
+                                                       included_clips=data[INCLUDED_CLIP_IDS]
                                                        )
 
     def test_missing_parameter(self):
@@ -111,18 +110,21 @@ class GetAreasInFilterTest(TestCase):
 
 class CreateArea(TestCase):
 
-    @patch('backend.filter_module.dbw')
-    def test_simple_call(self, mock_dbw):
+    @patch('backend.filter_module.dbw.create_area')
+    def test_simple_call(self, mock_filter_module_dbw_create_area):
         """
         Makes a simple call to the function, check that the correct function is called in the database_wrapper
         """
         data = {LATITUDE: Decimal(value="1.1"),
                 LONGITUDE: Decimal(value="1.1"),
-                RADIUS: Decimal(value="1.1")
+                RADIUS: Decimal(value="1.1"),
+                FILTER_ID: "test_data"
                 }
 
         res = create_area(data)
-        mock_dbw.create_area.assert_called_once_with(**data)
+        mock_filter_module_dbw_create_area.assert_called_once_with(latitude=Decimal(value="1.1"),
+                                                                   longitude=Decimal(value="1.1"),
+                                                                   radius=Decimal(value="1.1"), fid="test_data")
 
 
 class GetFilterParametersTest(TestCase):

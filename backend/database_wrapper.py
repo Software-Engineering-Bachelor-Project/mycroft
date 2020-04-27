@@ -630,8 +630,7 @@ def modify_filter(fid: int, start_time: timezone.datetime = None, end_time: time
                   whitelisted_resolutions: List[Dict[str, int]] = None,
                   excluded_clips: List[int] = None,
                   included_clips: List[int] = None,
-                  min_frame_rate: int = None,
-                  areas: List[int] = None) -> None:
+                  min_frame_rate: int = None) -> None:
     """
     Changes the given values in the specified filter.
 
@@ -642,7 +641,6 @@ def modify_filter(fid: int, start_time: timezone.datetime = None, end_time: time
     :param excluded_clips: The clips that always should be excluded from the filter
     :param whitelisted_resolutions: id of Resolutions that should be included in the filter
     :param classes: The classes the filter should filter for
-    :param areas: A list of ids of areas that should be included in the filter
     :param fid: The filter's id.
     :param start_time: New start time for filter.
     :param end_time: New end time for filter.
@@ -683,16 +681,9 @@ def modify_filter(fid: int, start_time: timezone.datetime = None, end_time: time
     if min_frame_rate is not None:
         f.min_frame_rate = min_frame_rate
 
-    if areas is not None:
-        set_areas_in_filter(areas, f)
-
     f.project.last_updated = timezone.datetime.now()
     f.project.save()
     f.save()
-
-
-def set_areas_in_filter(areas: List[int], filter: Filter):
-    filter.areas.set(areas)
 
 
 def get_all_classes_in_filter(fid: int) -> List[ObjectClass]:
@@ -887,11 +878,18 @@ def get_areas_in_filter(fid: int) -> List[Area]:
     return f.areas.all()[::1]
 
 
-def create_area(latitude: Decimal, longitude: Decimal, radius: Decimal) -> int:
+def create_area(latitude: Decimal, longitude: Decimal, radius: Decimal, fid: int) -> int:
     """
     :param latitude: longitude of area
     :param longitude: latitude of area
     :param radius: radius of area
+    :param fid: id of the filter the area belongs to
     :return: the id of the created area
     """
-    return Area.objects.get_or_create(latitude=latitude, longitude=longitude, radius=radius)[0].id
+    f = get_filter_by_id(fid=fid)
+    assert f is not None
+
+    area = Area.objects.get_or_create(latitude=latitude, longitude=longitude, radius=radius)[0]
+    f.areas.add(area)
+
+    return area.id

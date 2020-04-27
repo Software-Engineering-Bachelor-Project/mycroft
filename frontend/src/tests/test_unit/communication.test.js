@@ -12,6 +12,7 @@ import {
   REQUEST_RESPONSE,
   requestResponse,
 } from "../../state/stateCommunication";
+import { OPEN_PROJECT, openProject } from "../../state/stateCommunication";
 import { GET_PROJECTS, getProjects } from "../../state/stateCommunication";
 import { NEW_PROJECT, newProject } from "../../state/stateCommunication";
 import { DELETE_PROJECT, deleteProject } from "../../state/stateCommunication";
@@ -61,6 +62,45 @@ describe("Communication reducer", () => {
 
     // Receival of specific request types will be
     // handled in their respective request action.
+  });
+
+  it("should handle OPEN_PROJECT", () => {
+    // Action constant
+    expect(OPEN_PROJECT).toEqual("OPEN_PROJECT");
+
+    // Action creator
+    expect(openProject(69)).toEqual({
+      type: OPEN_PROJECT,
+      id: 69,
+    });
+
+    // Open project from undefined
+    expect(
+      reducer(
+        {
+          ...initialState,
+          projectID: -1,
+        },
+        openProject(69)
+      )
+    ).toEqual({
+      ...initialState,
+      projectID: 69,
+    });
+
+    // Open project from valid
+    expect(
+      reducer(
+        {
+          ...initialState,
+          projectID: 69,
+        },
+        openProject(1337)
+      )
+    ).toEqual({
+      ...initialState,
+      projectID: 1337,
+    });
   });
 
   it("should handle GET_PROJECTS", () => {

@@ -6,13 +6,17 @@ import styles from "./menu.module.css";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 
-import { toggleShowObjectDetection } from "../../state/stateMenu";
+import {
+  toggleShowObjectDetection,
+  toggleShowProjectSwitcher,
+} from "../../state/stateMenu";
 import ObjectDetector from "./objectDetector";
+import ProjectSwitcher from "./projectSwitcher";
 
 /* -- Menu -- */
 class Menu extends Component {
   switchProject() {
-    console.log("Switch Project was clicked.");
+    this.props.toggleShowProjectSwitcher();
   }
 
   manageSources() {
@@ -65,6 +69,10 @@ class Menu extends Component {
           show={this.props.showObjectDetection}
           toggleShow={this.props.toggleShowObjectDetection}
         />
+        <ProjectSwitcher
+          show={this.props.showProjectSwitcher}
+          toggleShow={this.props.toggleShowProjectSwitcher}
+        />
       </div>
     );
   }
@@ -74,6 +82,7 @@ class Menu extends Component {
 const mapStateToProps = (state) => {
   return {
     showObjectDetection: state.menu.showObjectDetection,
+    showProjectSwitcher: state.menu.showProjectSwitcher,
   };
 };
 
@@ -81,6 +90,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     toggleShowObjectDetection: () => dispatch(toggleShowObjectDetection()),
+    toggleShowProjectSwitcher: () => dispatch(toggleShowProjectSwitcher()),
   };
 };
 

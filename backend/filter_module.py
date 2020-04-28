@@ -133,9 +133,20 @@ def create_area(data: dict) -> (int, dict):
     except KeyError:
         return 400, {}  # Bad request, missing parameters
 
+    f: Filter = dbw.get_filter_by_id(fid)
+    if f is None:
+        return 204, {}  # Bad fid
+
+    try:
+        aid = dbw.create_area(latitude=lat, longitude=lon, radius=rad, fid=fid)
+    except ValueError:
+        return 204, {}  # Bad fid
+
+    area = dbw.get_area_by_id(aid=aid)
+
     # Construct the response
     res = {
-        AREA_ID: dbw.create_area(latitude=lat, longitude=lon, radius=rad, fid=fid)
+        AREA: serialize(area)
     }
 
     return 200, os_aware(res)
@@ -146,7 +157,7 @@ def delete_area(data: dict) -> (int, dict):
     Deletes a given area from a given filter.
 
     :param data: A dictionary that need to have the keys area_id and filter_id.
-    :return: Status code, empty dict.
+    :return: Status code, Status code and area id
     """
     # Retrieve parameters and verify that they exist
     try:
@@ -155,9 +166,15 @@ def delete_area(data: dict) -> (int, dict):
     except KeyError:
         return 400, {}  # Bad request, missing parameters
 
-    dbw.delete_area(aid=aid, fid=fid)
+    f: Filter = dbw.get_filter_by_id(fid)
+    if f is None:
+        return 204, {}  # Bad fid
 
-    return 200, {}
+    res = {
+        AREA_ID: dbw.delete_area(aid=aid, fid=fid)
+    }
+
+    return 200, os_aware(res)
 
 
 def get_params(data: dict) -> (int, dict):

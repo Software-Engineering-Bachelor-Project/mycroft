@@ -153,3 +153,16 @@ class GetFilterParametersTest(TestCase):
 
         get_params(data)
         mock_dbw.get_all_resolutions_in_project.assert_called_once_with(mock_dbw.get_filter_by_id().project.id)
+
+
+class GetFilterSerialized(TestCase):
+
+    @patch('backend.filter_module.dbw')
+    def test_simple(self, mock_dbw):
+        """
+        Makes a simple call to the function
+        """
+        data = {FILTER_ID: 1}
+        code, response = get_serialized_filter(data)
+        mock_dbw.get_filter_by_id.assert_called_once_with(1)
+        self.assertEqual(code, 200)

@@ -251,3 +251,13 @@ def get_clip_stream(request, cid):
     """
     response = video_manager.get_video_stream(request, cid)
     return response
+
+
+@api_view(['GET'])
+def filter_get_filter(request):
+    """
+    Delegates a 'get filter' request to
+    :return: A response from the function
+    """
+    response = filter_module.get_serialized_filter(request)
+    return response

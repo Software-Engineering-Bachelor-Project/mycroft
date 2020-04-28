@@ -17,7 +17,7 @@ VIDEO_FORMATS = ["mkv", "flv", "vob", "ogv", "ogg",
                  "flv", "f4v", "f4p", "f4a", "f4b", "webm"]
 
 
-def get_source_folders() -> (int, dict):
+def get_source_folders(data: dict) -> (int, dict):
     """
     Gets all folders in the database that has a parent who is an entry.
 

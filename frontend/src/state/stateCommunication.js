@@ -898,7 +898,7 @@ const communicationReducer = (state = initialState, action) => {
 
     case GET_SOURCE_FOLDERS:
       url = URL_GET_SOURCE_FOLDERS;
-      body = { project_id: state.projectID };
+      body = {};
       break;
 
     case ADD_FOLDER:

@@ -23,7 +23,7 @@ class GetSourceFolders(TestCase):
         Test simple call.
         """
         mock_get_subfolders_to_entries.return_value = [self.sf]
-        code, res = get_source_folders()
+        code, res = get_source_folders(data={})
         mock_get_subfolders_to_entries.assert_called_once()
         self.assertEqual(code, 200)
         self.assertEqual(len(res), 1)

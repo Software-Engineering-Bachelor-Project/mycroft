@@ -20,7 +20,7 @@ class GetSourceFolders(TestCase):
         """
         Test simple call.
         """
-        code, res = get_source_folders()
+        code, res = get_source_folders(data={})
         self.assertEqual(code, 200)
         self.assertEqual(len(res[FOLDERS]), 2)
 

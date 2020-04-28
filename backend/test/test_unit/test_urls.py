@@ -28,7 +28,7 @@ class UrlsTest(TestCase):
         Test that the url for the filter module is correctly mapped to the view
         :return: None
         '''
-        url = reverse('backend:filter get_params')
+        url = reverse('backend:filter get params')
         resolver = resolve(url)
         self.assertEqual(resolver.func, filter_get_params)
 
@@ -49,6 +49,15 @@ class UrlsTest(TestCase):
         url = reverse('backend:filter modify')
         resolver = resolve(url)
         self.assertEqual(resolver.func, filter_modify)
+
+    def test_filter_get_filter(self):
+        '''
+        Test that the url for the filter module is correctly mapped to the view
+        :return: None
+        '''
+        url = reverse('backend:filter get filter')
+        resolver = resolve(url)
+        self.assertEqual(resolver.func, filter_get_filter)
 
     def test_project_get_all(self):
         '''

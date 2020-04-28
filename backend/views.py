@@ -75,6 +75,16 @@ def filter_modify(request):
 
 
 @api_view(['POST'])
+def filter_get_filter(request):
+    """
+    Delegates a 'get filter' request to
+    :return: A response from the function
+    """
+    data = filter_module.get_filter(request.data)
+    return Response(data[1], data[0])
+
+
+@api_view(['POST'])
 def project_get_all(request):
     """
     Delegates a 'get all' request to the Project Manager.
@@ -250,14 +260,4 @@ def get_clip_stream(request, cid):
     :return: A response from the Object Detector.
     """
     response = video_manager.get_video_stream(request, cid)
-    return response
-
-
-@api_view(['GET'])
-def filter_get_filter(request):
-    """
-    Delegates a 'get filter' request to
-    :return: A response from the function
-    """
-    response = filter_module.get_serialized_filter(request)
     return response

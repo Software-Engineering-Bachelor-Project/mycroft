@@ -110,36 +110,34 @@ class GetAreasInFilterTest(TestCase):
 
 class CreateArea(TestCase):
 
-    @patch('backend.filter_module.dbw.create_area')
-    def test_simple_call(self, mock_filter_module_dbw_create_area):
+    @patch('backend.filter_module.dbw')
+    def test_simple_call(self, mock_dbw):
         """
         Makes a simple call to the function, check that the correct function is called in the database_wrapper
         """
         data = {LATITUDE: Decimal(value="1.1"),
                 LONGITUDE: Decimal(value="1.1"),
                 RADIUS: Decimal(value="1.1"),
-                FILTER_ID: "test_data"
+                FILTER_ID: "Filter id"
                 }
-
         res = create_area(data)
-        mock_filter_module_dbw_create_area.assert_called_once_with(latitude=Decimal(value="1.1"),
-                                                                   longitude=Decimal(value="1.1"),
-                                                                   radius=Decimal(value="1.1"), fid="test_data")
+        mock_dbw.create_area.assert_called_once_with(latitude=Decimal(value="1.1"),
+                                                     longitude=Decimal(value="1.1"),
+                                                     radius=Decimal(value="1.1"), fid="Filter id")
 
 
 class DeleteArea(TestCase):
 
-    @patch('backend.filter_module.dbw.delete_area')
-    def test_simple_call(self, mock_filter_module_dbw_delete_area):
+    @patch('backend.filter_module.dbw')
+    def test_simple_call(self, mock_dbw):
         """
         Makes a simple call to the function, check that the correct function is called in the database_wrapper
         """
         data = {AREA_ID: "test_data_area_id",
-                FILTER_ID: "test_data_filter_id"
+                FILTER_ID: "Filter id"
                 }
-
         res = delete_area(data)
-        mock_filter_module_dbw_delete_area.assert_called_once_with(aid="test_data_area_id", fid="test_data_filter_id")
+        mock_dbw.delete_area.assert_called_once_with(aid="test_data_area_id", fid="Filter id")
 
 
 class GetFilterParametersTest(TestCase):

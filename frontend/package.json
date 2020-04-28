@@ -34,6 +34,7 @@
     "react": "^16.13.1",
     "react-animated-tree": "^1.0.10",
     "react-bootstrap": "^1.0.0",
+    "react-calendar": "^3.0.1",
     "react-dom": "^16.13.1",
     "react-leaflet": "^2.6.3",
     "react-redux": "^7.2.0",

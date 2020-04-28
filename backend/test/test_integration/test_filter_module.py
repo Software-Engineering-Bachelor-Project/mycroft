@@ -380,3 +380,25 @@ class GetFilterParametersTest(TestCase):
 
         res = get_params(data)
         self.assertEqual(res, (204, {}))
+
+
+class GetFilterTest(TestCase):
+
+    def setUp(self) -> None:
+        self.pid = dbw.create_project(name="test_project")
+        self.fid = dbw.create_filter(pid=self.pid)
+
+    def test_simple(self):
+        """
+        Makes a simple call to the function
+        """
+        data = {FILTER_ID: self.fid}
+        code, response = get_filter(data)
+        self.assertEqual(code, 200)
+
+    def test_non_existing_fid(self):
+        """
+        Tests calling the function without all parameters.
+        """
+        data = {FILTER_ID: 42}
+        self.assertEqual(get_filter(data), (204, {}))

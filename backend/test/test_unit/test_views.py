@@ -138,6 +138,25 @@ class FilterGetMatchingClipsTest(TestCase):
         mock_mod.get_clips_matching_filter.assert_called_with(QueryDict('test=data'))
 
 
+class FilterGetTest(TestCase):
+
+    @mock.patch('backend.views.filter_module')
+    def test_propagation(self, mock_mod):
+        '''
+        Tests propagation of the 'filter get matching clips' request.
+        :return: None
+        '''
+        # Set up mock
+        mock_mod.get_filter.return_value = (200, {})
+
+        # Test function
+        req = APIRequestFactory().post('', {'test': 'data'})
+        response = views.filter_get_filter(req)
+
+        # Did we propagate properly?
+        mock_mod.get_filter.assert_called_with(QueryDict('test=data'))
+
+
 class ProjectGetAllTest(TestCase):
 
     @mock.patch('backend.views.project_manager')

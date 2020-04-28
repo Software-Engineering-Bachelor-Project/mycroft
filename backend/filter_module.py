@@ -186,9 +186,9 @@ def get_params(data: dict) -> (int, dict):
     return 200, os_aware(res)
 
 
-def get_serialized_filter(data: dict) -> (int, dict):
+def get_filter(data: dict) -> (int, dict):
     """
-    Gets a serialized version of a filter.
+    Gets a filter.
 
     :param data: Filter id.
     :return: Status code, the serialized filter.
@@ -198,9 +198,15 @@ def get_serialized_filter(data: dict) -> (int, dict):
     except KeyError:
         return 400, {}  # Bad request
 
-    try:
-        found_filter = dbw.get_filter_by_id(fid)
-    except AssertionError:
+
+    found_filter = dbw.get_filter_by_id(fid)
+    if not found_filter:
         return 204, {}  # No content
+
+    # Prepare found filter for serialization. NOTE: Not saving on purpose.
+    if found_filter.start_time == timezone.datetime.min.replace(tzinfo=utc):
+        found_filter.start_time = None
+    if found_filter.end_time == timezone.datetime.max.replace(tzinfo=utc):
+        found_filter.end_time = None
 
     return 200, os_aware({FILTER: serialize(found_filter)})

@@ -16,6 +16,7 @@ from .serialization import *
 def get_clip_info(data: dict) -> (int, dict):
     """
     Gets a clip based on id.
+    May be deleted i the future because is not used.
 
     :param data: Clip id.
     :return: Status code, clip
@@ -87,7 +88,7 @@ def get_video_stream(request: WSGIRequest, cid: int) -> FileResponse:
     Stream the given clip
     :param request:
     :param cid: the clip id
-    :return: a respoinse to a request for a part of a video
+    :return: a response to a request for a part of a video
     """
     clip = get_clip_by_id(cid)
     assert clip is not None
@@ -127,9 +128,6 @@ def get_video_stream(request: WSGIRequest, cid: int) -> FileResponse:
     return resp
 
 
-
-
-
 class RangeFileWrapper(object):
     """
     Wrapper for a file that is sent in a request
@@ -163,6 +161,7 @@ class RangeFileWrapper(object):
                 raise StopIteration()
             self.remaining -= len(data)
             return data
+
 
 # Pattern for parameters in range header
 range_re = re.compile(r'bytes\s*=\s*(\d+)\s*-\s*(\d*)', re.I)

@@ -25,6 +25,7 @@ PROJECTS = 'projects'
 FOLDERS = 'folders'
 CAMERAS = 'cameras'
 AREAS = "areas"
+AREA = "area"
 CLIPS = 'clips'
 FILTER = 'filter'
 

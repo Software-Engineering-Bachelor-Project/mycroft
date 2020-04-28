@@ -917,13 +917,13 @@ def create_area(latitude: Decimal, longitude: Decimal, radius: Decimal, fid: int
     return area.id
 
 
-def delete_area(aid: int, fid: int) -> None:
+def delete_area(aid: int, fid: int) -> int:
     """
     Deletes a given area from Area object and given filter.
 
     :param aid: area id.
     :param fid: filter id.
-    :return: None.
+    :return: the id of the deleted area
     """
     f = get_filter_by_id(fid=fid)
     assert f is not None
@@ -933,3 +933,18 @@ def delete_area(aid: int, fid: int) -> None:
         f.areas.get(id=aid).delete()
     except Area.DoesNotExist:
         pass
+
+    return aid
+
+
+def get_area_by_id(aid: int) -> Optional[Area]:
+    """
+    Gets an area with the given id.
+
+    :param aid: area id.
+    :return: List of an area if there is one.
+    """
+    try:
+        return Area.objects.get(id=aid)
+    except Area.DoesNotExist:
+        return None

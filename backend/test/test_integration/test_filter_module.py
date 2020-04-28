@@ -281,7 +281,7 @@ class CreateAreaTest(TestCase):
                 }
 
         res = create_area(data)
-        self.assertEqual(res, (200, {AREA_ID: 1}))
+        self.assertEqual(len(res[1]), 1)
 
     def test_missing_parameter(self) -> None:
         """
@@ -293,6 +293,18 @@ class CreateAreaTest(TestCase):
 
         res = create_area(data)
         self.assertEqual(res, (400, {}))
+
+    def test_invalid_filter_id(self):
+        """
+        Test calling function with a non existing filter id.
+        """
+        data = {LATITUDE: Decimal(value="1.1"),
+                LONGITUDE: Decimal(value="1.1"),
+                RADIUS: Decimal(value="1.1"),
+                FILTER_ID: 42
+                }
+        res = create_area(data)
+        self.assertEqual(res, (204, {}))
 
 
 class DeleteAreaTest(TestCase):
@@ -313,7 +325,7 @@ class DeleteAreaTest(TestCase):
                 FILTER_ID: self.fid
                 }
         res = delete_area(data)
-        self.assertEqual(res, (200, {}))
+        self.assertEqual(res, (200, {AREA_ID: self.aid}))
 
     def test_missing_parameter(self) -> None:
         """
@@ -324,6 +336,16 @@ class DeleteAreaTest(TestCase):
 
         res = delete_area(data)
         self.assertEqual(res, (400, {}))
+
+    def test_invalid_filter_id(self):
+        """
+        Test calling function with a non existing filter id.
+        """
+        data = {AREA_ID: self.aid,
+                FILTER_ID: 42
+                }
+        res = delete_area(data)
+        self.assertEqual(res, (204, {}))
 
 
 class GetFilterParametersTest(TestCase):

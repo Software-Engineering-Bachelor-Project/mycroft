@@ -671,6 +671,25 @@ class CreateClipTest(BaseTestCases.ClipTest):
                                                               frame_rate=42.0, camera_name=self.cm_name))
 
     @patch('backend.database_wrapper.create_hash_sum')
+    def test_playable_format(self, mock_create_hash_sum):
+        """
+        Test that a clip is playable.
+        """
+        mock_create_hash_sum.return_value = '1234567'
+        cid2 = create_clip(fid=self.fid, clip_name="another_test_clip", video_format="mp4", start_time=self.st,
+                           end_time=self.et, latitude=self.lat, longitude=self.lon, width=256, height=240,
+                           frame_rate=42.0, camera_name=self.cm_name)
+        clip2 = get_clip_by_id(cid=cid2)
+        self.assertEqual(clip2.playable, True)
+
+    def test_not_playable_format(self):
+        """
+        Test that a clip is not playable.
+        """
+        clip = get_clip_by_id(self.cid)
+        self.assertEqual(clip.playable, False)
+
+    @patch('backend.database_wrapper.create_hash_sum')
     def test_duplicate(self, mock_create_hash_sum):
         """
         Test if there is duplicated clips.

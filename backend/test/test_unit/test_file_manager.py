@@ -278,7 +278,7 @@ class ParseMetadataTest(TestCase):
         self.assertEqual(st, timezone.datetime(year=2018, month=9, day=6, hour=15, minute=45, second=59,
                                                tzinfo=pytz.timezone(settings.TIME_ZONE)))
         self.assertEqual(cm_name, 'Test camera name')
-        mock_file.assert_called_once_with(file='home/user/test_folder/test_clip.avi.txt', mode='r')
+        mock_file.assert_called_once_with(file='home/user/test_folder/test_clip.avi.txt', errors='ignore', mode='r')
 
     def test_non_existing_file(self):
         """

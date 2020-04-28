@@ -205,7 +205,7 @@ def parse_metadata(file_path: str) -> (Decimal, Decimal, timezone.datetime, str)
     wrong_format_error = ValueError("Metadata has the wrong format.")
 
     # Read metadata from file.
-    with open(file=file_path + '.txt', mode='r') as f:
+    with open(file=file_path + '.txt', errors='ignore', mode='r') as f:
         content = f.read()
 
     # Find all three parentheses from metadata.

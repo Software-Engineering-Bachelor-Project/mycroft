@@ -180,6 +180,7 @@ class Clip(models.Model):
     duplicates = models.ManyToManyField('self', related_name="duplicates")
     overlap = models.ManyToManyField('self', related_name="overlap")
     hash_sum = models.CharField(max_length=256, null=True, blank=True)
+    playable = models.BooleanField(default=False)
 
     class Meta:
         constraints = [

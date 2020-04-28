@@ -18,6 +18,9 @@ Philosophy:
     - QuerySets are never returned, just Python lists. 
 """
 
+# Todo: Test different formats to determine which are playable
+PLAYABLE_FORMATS = ["mp4"]
+
 
 # --- Project ---
 
@@ -320,7 +323,6 @@ def create_clip(fid: int, clip_name: str, video_format: str, start_time: timezon
     :param camera_name: The name of the camera the clip belongs to.
     :return: The created clip's id.
     """
-
     f = get_folder_by_id(fid=fid)
     assert f is not None
 
@@ -329,12 +331,31 @@ def create_clip(fid: int, clip_name: str, video_format: str, start_time: timezon
     clip = Clip.objects.get_or_create(folder=f, name=clip_name, video_format=video_format, start_time=start_time,
                                       end_time=end_time, camera=camera, resolution=resolution,
                                       frame_rate=frame_rate)[0]
+
+    if video_format in PLAYABLE_FORMATS:
+        clip.playable = True
+
     hash_sum = create_hash_sum(f, clip)
     assert hash_sum is not None
     clip.hash_sum = hash_sum
     clip.save()
 
-    # check for duplicates and overlapping clips
+    find_duplicate_overlapping_clips(cmid=camera.id, cid=clip.id)
+
+    return clip.id
+
+
+def find_duplicate_overlapping_clips(cmid: int, cid: int) -> None:
+    """
+    Check for duplicates and overlapping clips.
+
+    :param cmid: Camera id.
+    :param cid: Clip id.
+    :return: None.
+    """
+    camera = get_camera_by_id(cmid=cmid)
+    clip = get_clip_by_id(cid=cid)
+
     for c in camera.clip_set.all():
         if clip != c:
             if clip.hash_sum == c.hash_sum:
@@ -343,7 +364,6 @@ def create_clip(fid: int, clip_name: str, video_format: str, start_time: timezon
                     clip.start_time < c.end_time <= clip.end_time or \
                     clip.start_time > c.start_time and clip.end_time < c.end_time:
                 clip.overlap.add(c)
-    return clip.id
 
 
 def create_hash_sum(folder: Folder, clip: Clip) -> Optional[str] or Optional[None]:

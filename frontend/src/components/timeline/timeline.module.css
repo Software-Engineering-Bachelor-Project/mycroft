@@ -43,7 +43,7 @@
   position: relative;
   height: 100%;
   /*border: 1px solid;*/
-  background-color: rgb(245, 251, 253);
+  background-color: rgb(244, 247, 248);
 }
 
 .line {
@@ -52,7 +52,7 @@
   left: 0;
   width: 1px;
   height: 100%;
-  background-color: black;
+  background-color: rgb(156, 156, 156);
 }
 
 .date {
@@ -60,9 +60,9 @@
   left: 5px;
   top: 5px;
   width: 3.3em;
-  font-size: 16pt;
+  font-size: 14pt;
   border-radius: 3px;
-  background-color: #cdd18f;
+  background-color: #cad18f;
 }
 
 .day {
@@ -82,12 +82,12 @@
 
 .hour {
   position: absolute;
-  left: 5px;
-  bottom: 2px;
-  font-size: 14pt;
+  left: 7px;
+  bottom: 4%;
+  font-size: 11pt;
   width: 1.2em;
   border-radius: 2px;
-  color: rgb(0, 0, 0);
+  color: rgb(27, 27, 27);
 }
 
 .cliplines {

@@ -184,3 +184,23 @@ def get_params(data: dict) -> (int, dict):
     }
 
     return 200, os_aware(res)
+
+
+def get_serialized_filter(data: dict) -> (int, dict):
+    """
+    Gets a serialized version of a filter.
+
+    :param data: Filter id.
+    :return: Status code, the serialized filter.
+    """
+    try:
+        fid = data[FILTER_ID]
+    except KeyError:
+        return 400, {}  # Bad request
+
+    try:
+        found_filter = dbw.get_filter_by_id(fid)
+    except AssertionError:
+        return 204, {}  # No content
+
+    return 200, os_aware({FILTER: serialize(found_filter)})

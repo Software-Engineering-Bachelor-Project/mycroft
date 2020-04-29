@@ -9,6 +9,8 @@ import {
   INSPECTOR_MODE_CAMERA,
 } from "../../state/stateBrowser";
 
+import { playClip, play } from "../../state/statePlayer";
+
 // React Bootstrap
 import ListGroup from "react-bootstrap/ListGroup";
 import Collapse from "react-bootstrap/Collapse";
@@ -29,17 +31,18 @@ class ClipBrowser extends Component {
   /**
    * This function is the callback for whenever the
    * play button of a specific clip was clicked.
-   * 
+   *
    * @param {Number} id The unique identifier of the clip to be played. Should be an integer.
    */
   playClip(id) {
-    console.log("Play clip with ID " + id);
+    this.props.playClip(id);
+    setTimeout(() => this.props.play(), 100);
   }
 
   /**
    * Checks whether or not the camera with the specified ID
    * has an expanded clip list or not.
-   * 
+   *
    * @param {Number} id The unique identifier of the camera whose clip list should be checked.
    * @return {boolean} true if the camera's clip list is expanded.
    */
@@ -49,7 +52,7 @@ class ClipBrowser extends Component {
 
   /**
    * Toggles the specified camera's clip list between collapsed and expanded.
-   * 
+   *
    * @param {Number} id The unique identifier of the camera whose clip list should be toggled.
    */
   toggle(id) {
@@ -66,6 +69,7 @@ class ClipBrowser extends Component {
       <div className={styles.browserClip}>
         <ListGroup>
           {/* Iterate through cameras */}
+          {/* TODO: CHECK IF CAMERAS ARE IN FILTER */}
           {Object.values(this.props.cameras).map((camera) => (
             <div key={camera.id}>
               {/* Camera item */}
@@ -107,42 +111,46 @@ class ClipBrowser extends Component {
               <Collapse in={this.isToggled(camera.id)}>
                 <ListGroup id={"cam" + camera.id}>
                   {/* Iterate through the clips of the current camera */}
-                  {Object.values(camera.clips).map((clip) => (
-                    <ListGroup key={clip.id} horizontal>
-                      {/* Clip header */}
-                      <ListGroup.Item
-                        variant="warning"
-                        style={{
-                          width: "100%",
-                        }}
-                      >
-                        {clip.name}
-                        <Button
-                          size="sm"
+                  {/* TODO: CHECK IF CLIPS ARE IN FILTER */}
+                  {camera.clips.map((clipID) => {
+                    if (this.props.clips[clipID] == undefined) return "";
+                    return (
+                      <ListGroup key={clipID} horizontal>
+                        {/* Clip header */}
+                        <ListGroup.Item
+                          variant="warning"
                           style={{
-                            position: "absolute",
-                            right: "1em",
+                            width: "100%",
                           }}
-                          onClick={() => this.playClip(clip.id)}
                         >
-                          Play
-                        </Button>
-                      </ListGroup.Item>
+                          {this.props.clips[clipID].name}
+                          <Button
+                            size="sm"
+                            style={{
+                              position: "absolute",
+                              right: "1em",
+                            }}
+                            onClick={() => this.playClip(clipID)}
+                          >
+                            Play
+                          </Button>
+                        </ListGroup.Item>
 
-                      {/* Clip item inspect button */}
-                      <ListGroup.Item
-                        action
-                        variant="secondary"
-                        className={styles.inspectHeader}
-                        onClick={() => {
-                          this.props.inspectClip(clip.id);
-                          this.props.changeTab("inspectorBrowser");
-                        }}
-                      >
-                        i
-                      </ListGroup.Item>
-                    </ListGroup>
-                  ))}
+                        {/* Clip item inspect button */}
+                        <ListGroup.Item
+                          action
+                          variant="secondary"
+                          className={styles.inspectHeader}
+                          onClick={() => {
+                            this.props.inspectClip(clipID);
+                            this.props.changeTab("inspectorBrowser");
+                          }}
+                        >
+                          i
+                        </ListGroup.Item>
+                      </ListGroup>
+                    );
+                  })}
                 </ListGroup>
               </Collapse>
             </div>
@@ -156,7 +164,8 @@ class ClipBrowser extends Component {
 // Map Redux states to React props
 const mapStateToProps = (state) => {
   return {
-    cameras: state.browser.cameras,
+    cameras: state.com.cameras,
+    clips: state.com.clips,
   };
 };
 
@@ -166,6 +175,8 @@ const mapDispatchToProps = (dispatch) => {
     inspectCamera: (id) => dispatch(changeMode(INSPECTOR_MODE_CAMERA, id)),
     inspectClip: (id) => dispatch(changeMode(INSPECTOR_MODE_CLIP, id)),
     changeTab: (key) => dispatch(changeBrowserTab(key)),
+    playClip: (id) => dispatch(playClip(id)),
+    play: () => dispatch(play()),
   };
 };
 

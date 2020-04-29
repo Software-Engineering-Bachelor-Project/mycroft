@@ -814,7 +814,10 @@ describe("Communication reducer", () => {
       projectID: 42,
       filter: { ...initialState.filter, resolutions: { 1: tempResolution } },
     };
-    let tempDate = new Date(2020, 1, 1, 3, 24, 0);
+
+
+    let tempStartDate = new Date("2018-09-06T16:45:59+02:00");
+    let tempEndDate = new Date("2018-09-06T16:46:50+02:00");
 
     // Action constant
     expect(GET_CLIPS).toEqual("GET_CLIPS");
@@ -856,8 +859,8 @@ describe("Communication reducer", () => {
           1,
           1,
           "avi",
-          tempDate,
-          tempDate,
+          tempStartDate,
+          tempEndDate,
           tempResolution,
           [6],
           [4, 5]

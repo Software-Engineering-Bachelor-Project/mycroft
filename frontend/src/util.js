@@ -76,8 +76,7 @@ export function parseFolders(folderResponse) {
  * @return {Date} The string converted to a date.
  */
 export function parseDatetimeString(dateStr) {
-  // TODO: Implement
-  return new Date(2020, 1, 1, 3, 24, 0);
+  return new Date(dateStr);
 }
 
 /**
@@ -86,6 +85,5 @@ export function parseDatetimeString(dateStr) {
  * @return {string} The Date converted to a string.
  */
 export function parseDateToString(date) {
-  // TODO: Implement
-  return "2018-09-06T16:45:59+02:00";
+  return date.toISOString()
 }

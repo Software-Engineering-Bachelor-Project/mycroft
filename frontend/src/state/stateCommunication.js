@@ -506,13 +506,23 @@ function handleResponse(state, reqType, status, data) {
               p.name,
               p.created,
               p.last_updated,
-              p.folders
+              p.folders,
+              p.filter_set[0]
             );
           }
+
+          // Update filterID
+          let newFilterID = state.filter.filterID;
+          if (state.projectID != -1)
+            newFilterID = newList[state.projectID].filter;
 
           return {
             ...state,
             projects: { ...newList },
+            filter: {
+              ...initialState.filter,
+              filterID: newFilterID,
+            },
           };
         default:
           e = "unknown reason";
@@ -787,6 +797,10 @@ const communicationReducer = (state = initialState, action) => {
       return {
         ...state,
         projectID: action.id,
+        filter: {
+          ...initialState.filter,
+          filterID: state.projects[action.id].filter,
+        },
       };
 
     case GET_CLIPS_MATCHING_FILTER:

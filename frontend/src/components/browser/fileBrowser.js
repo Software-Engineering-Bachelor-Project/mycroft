@@ -15,14 +15,20 @@ class FileBrowser extends Component {
    * This method recursively generates HTML for
    * the specified folder, and all subfolders.
    *
-   * @param
+   * @param {Folder} folder The folder to generate the Tree node for.
    */
   expandFolder(folder) {
+    if (folder == undefined) return "";
     return (
       <Tree content={folder.name} key={"f" + folder.id}>
-        {Object.values(folder.children).map(this.expandFolder)}
-        {Object.values(folder.clips).map((clip) => {
-          return <Tree content={clip.name} key={"c" + clip.id} />;
+        {folder.children.map((folderID) =>
+          this.expandFolder(this.props.folders[folderID])
+        )}
+        {folder.clips.map((clipID) => {
+          if (this.props.clips[clipID] == undefined) return "";
+          return (
+            <Tree content={this.props.clips[clipID].name} key={"c" + clipID} />
+          );
         })}
       </Tree>
     );
@@ -31,7 +37,11 @@ class FileBrowser extends Component {
   render() {
     return (
       <div className={styles.browserFile}>
-        {Object.values(this.props.folders).map(this.expandFolder)}
+        {Object.values(this.props.folders).map((folder) => {
+          if (folder.isSource(this.props.folders))
+            return this.expandFolder(folder);
+          return "";
+        })}
       </div>
     );
   }
@@ -40,7 +50,8 @@ class FileBrowser extends Component {
 // Map Redux states to React props
 const mapStateToProps = (state) => {
   return {
-    folders: state.browser.folders,
+    folders: state.com.folders,
+    clips: state.com.clips,
   };
 };
 

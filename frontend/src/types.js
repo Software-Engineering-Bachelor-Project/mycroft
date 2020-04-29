@@ -136,13 +136,24 @@ export class Folder {
   /**
    *
    * Calculates the full path of this folder recursively.
-   * @param {Object[int, Folder]} Current folders in store.
+   * @param {Object[int, Folder]} folders Current folders in store.
    * @return {string} the full path of this folder.
    */
   getPath(folders) {
     if (this.parent != undefined && this.parent in folders)
       return folders[this.parent].getPath(folders) + this.name + "/";
     else return this.name + "/";
+  }
+
+  /**
+   * Checks whether or not this folder is a source folder.
+   * Should be true if the parent is not contained in the supplied project set.
+   * 
+   * @param {Object[int, Folder]} folders The set of folders in the current project.
+   * @return {boolean} true if this folder is a source folder.
+   */
+  isSource(folders) {
+    return !(this.parent in folders);
   }
 }
 

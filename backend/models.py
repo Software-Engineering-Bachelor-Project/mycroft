@@ -93,7 +93,7 @@ class Area(models.Model):
         :param latitude:
         :return: Whether the given coordinates is within the area
         """
-        return self.radius <= distance(self.longitude, self.latitude, longitude, latitude)
+        return self.radius >= distance(self.longitude, self.latitude, longitude, latitude)
 
     def clean(self):
         if not (Decimal(value="-180.0") <= self.longitude <= Decimal(value="180.0")):

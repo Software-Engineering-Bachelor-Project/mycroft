@@ -80,6 +80,15 @@ describe("Communication reducer", () => {
   });
 
   it("should handle OPEN_PROJECT", () => {
+    let tempDate = new Date(2020, 1, 1, 3, 24, 0);
+    let testState = {
+      ...initialState,
+      projects: {
+        69: new Project(69, "p1", tempDate, tempDate, [], 39),
+        1337: new Project(1337, "p2", tempDate, tempDate, [], 42),
+      },
+    };
+
     // Action constant
     expect(OPEN_PROJECT).toEqual("OPEN_PROJECT");
 
@@ -93,28 +102,40 @@ describe("Communication reducer", () => {
     expect(
       reducer(
         {
-          ...initialState,
+          ...testState,
           projectID: -1,
         },
         openProject(69)
       )
     ).toEqual({
-      ...initialState,
+      ...testState,
       projectID: 69,
+      filter: {
+        ...testState.filter,
+        filterID: 39,
+      },
     });
 
     // Open project from valid
     expect(
       reducer(
         {
-          ...initialState,
+          ...testState,
           projectID: 69,
+          filter: {
+            ...testState.filter,
+            filterID: 39,
+          },
         },
         openProject(1337)
       )
     ).toEqual({
-      ...initialState,
+      ...testState,
       projectID: 1337,
+      filter: {
+        ...testState.filter,
+        filterID: 42,
+      },
     });
   });
 
@@ -341,6 +362,7 @@ describe("Communication reducer", () => {
       projects: [
         {
           id: 4,
+          filter_set: [1337],
           name: "test proj 1",
           created: "datetime1",
           last_updated: "datetime2",
@@ -348,6 +370,7 @@ describe("Communication reducer", () => {
         },
         {
           id: 69,
+          filter_set: [42],
           name: "test proj 2",
           created: "datetime3",
           last_updated: "datetime4",
@@ -360,6 +383,7 @@ describe("Communication reducer", () => {
       projects: [
         {
           id: 1337,
+          filter_set: [39],
           name: "test proj 3",
           created: "datetime5",
           last_updated: "datetime6",
@@ -369,16 +393,26 @@ describe("Communication reducer", () => {
     };
 
     var dict1 = {
-      4: new Project(4, "test proj 1", "datetime1", "datetime2", [5, 7, 8]),
-      69: new Project(69, "test proj 2", "datetime3", "datetime4", []),
+      4: new Project(
+        4,
+        "test proj 1",
+        "datetime1",
+        "datetime2",
+        [5, 7, 8],
+        1337
+      ),
+      69: new Project(69, "test proj 2", "datetime3", "datetime4", [], 42),
     };
 
     var dict2 = {
-      1337: new Project(1337, "test proj 3", "datetime5", "datetime6", [
-        500,
-        725,
-        1016,
-      ]),
+      1337: new Project(
+        1337,
+        "test proj 3",
+        "datetime5",
+        "datetime6",
+        [500, 725, 1016],
+        39
+      ),
     };
 
     // Action constant

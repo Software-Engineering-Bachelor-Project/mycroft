@@ -102,6 +102,16 @@ class Evoker extends Component {
             createArea{" "}
           </Dropdown.Item>
 
+          <Dropdown.Item
+            onClick={() => {
+              let id = parseInt(window.prompt("ID: "));
+              return this.props.deleteArea(id);
+            }}
+          >
+            {" "}
+            deleteArea{" "}
+          </Dropdown.Item>
+
           {/* Video manager */}
           <Dropdown.Item
             onClick={() => {

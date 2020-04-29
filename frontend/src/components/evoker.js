@@ -15,6 +15,7 @@ import {
   createArea,
   deleteArea,
   getFilterParams,
+  getFilter,
   getCameras,
   getSequentialClip,
   getFolders,
@@ -84,6 +85,32 @@ class Evoker extends Component {
           {/* Filter Module */}
           <Dropdown.Item
             onClick={() => {
+              return this.props.getClipsMatchingFilter();
+            }}
+          >
+            {" "}
+            getClipsMatchingFilter{" "}
+          </Dropdown.Item>
+
+          <Dropdown.Item
+            onClick={() => {
+              return this.props.modifyFilter({
+                start_time: new Date("2019-10-11"),
+                end_time: new Date("2019-10-13"),
+                whitelisted_resolutions: [1, 3],
+                min_framerate: 42,
+                included_clip_ids: [1],
+                excluded_clip_ids: [3],
+                classes: ["car"],
+              });
+            }}
+          >
+            {" "}
+            modifyFilter{" "}
+          </Dropdown.Item>
+
+          <Dropdown.Item
+            onClick={() => {
               return this.props.getAreasInFilter();
             }}
           >
@@ -111,6 +138,24 @@ class Evoker extends Component {
           >
             {" "}
             deleteArea{" "}
+          </Dropdown.Item>
+
+          <Dropdown.Item
+            onClick={() => {
+              return this.props.getFilterParams();
+            }}
+          >
+            {" "}
+            getFilterParams{" "}
+          </Dropdown.Item>
+
+          <Dropdown.Item
+            onClick={() => {
+              return this.props.getFilter();
+            }}
+          >
+            {" "}
+            getFilter{" "}
           </Dropdown.Item>
 
           {/* Video manager */}
@@ -270,22 +315,26 @@ class Evoker extends Component {
 }
 
 // Map Redux states to React props
-const menuStateToProps = (state) => {
+const mapStateToProps = (state) => {
   return {
     logState: () => console.log(state),
   };
 };
 
 // Forward Redux's dispatch function to React props
-const menuDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch) => {
   return {
     getProjects: () => dispatch(getProjects()),
     newProject: (n) => dispatch(newProject(n)),
     deleteProject: (i) => dispatch(deleteProject(i)),
     renameProject: (i, n) => dispatch(renameProject(i, n)),
+    getClipsMatchingFilter: () => dispatch(getClipsMatchingFilter()),
+    modifyFilter: (obj) => dispatch(modifyFilter(obj)),
     getAreasInFilter: () => dispatch(getAreasInFilter()),
     createArea: (lat, lon, rad) => dispatch(createArea(lat, lon, rad)),
     deleteArea: (i) => dispatch(deleteArea(i)),
+    getFilterParams: () => dispatch(getFilterParams()),
+    getFilter: () => dispatch(getFilter()),
     getCameras: () => dispatch(getCameras()),
     getSequentialClip: (i) => dispatch(getSequentialClip(i)),
     getFolders: () => dispatch(getFolders()),
@@ -306,4 +355,4 @@ const menuDispatchToProps = (dispatch) => {
 };
 
 // Connect Redux with React
-export default connect(menuStateToProps, menuDispatchToProps)(Evoker);
+export default connect(mapStateToProps, mapDispatchToProps)(Evoker);

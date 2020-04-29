@@ -85,7 +85,7 @@ export function parseDatetimeString(dateStr) {
  * @return {string} The Date converted to a string.
  */
 export function parseDateToString(date) {
-  return date.toISOString()
+  return date.toISOString();
 }
 
 export function getDistance(origin, destination) {
@@ -108,3 +108,13 @@ export function getDistance(origin, destination) {
 function toRadian(degree) {
   return (degree * Math.PI) / 180;
 }
+/**
+ * Modify filter strings used in modifyFilter.
+ */
+export const START_TIME = "start_time";
+export const END_TIME = "end_time";
+export const MIN_FRAME_RATE = "min_framerate";
+export const WHITELISTED_RESOLUTIONS = "whitelisted_resolutions";
+export const INCLUDED_CLIP_IDS = "included_clip_ids";
+export const EXCLUDED_CLIP_IDS = "excluded_clip_ids";
+export const OBJECTS = "classes";

@@ -19,7 +19,7 @@ Philosophy:
 """
 
 # Todo: Test different formats to determine which are playable
-PLAYABLE_FORMATS = ["mp4"]
+PLAYABLE_FORMATS = ["mp4", "ogg", "webm", "mov", "mkv", "ogv", "3gp", "m4v", "f4v"]
 
 
 # --- Project ---

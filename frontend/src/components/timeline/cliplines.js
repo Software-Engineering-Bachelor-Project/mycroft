@@ -7,6 +7,11 @@ import styles from "./timeline.module.css";
 //import actions
 import { zoom } from "../../state/stateTimeline";
 import { playClip, play } from "../../state/statePlayer";
+import {
+  changeMode,
+  changeBrowserTab,
+  INSPECTOR_MODE_CLIP,
+} from "../../state/stateBrowser";
 
 // import class
 //import { Camera, Clip } from "../../types";
@@ -51,7 +56,7 @@ class Cliplines extends Component {
     super(props);
     this.getLeftPosition = this.getLeftPosition.bind(this);
     this.getWidthOfClip = this.getWidthOfClip.bind(this);
-    this.playClip = this.playClip.bind(this);
+    this.handleClipSelection = this.handleClipSelection.bind(this);
   }
 
   /**
@@ -97,9 +102,11 @@ class Cliplines extends Component {
   }
 
   // Play clip callback
-  playClip(id) {
+  handleClipSelection(id) {
     this.props.playClip(id);
     setTimeout(() => this.props.play(), 100);
+    this.props.changeMode(INSPECTOR_MODE_CLIP, id);
+    this.props.changeBrowserTab();
   }
 
   render() {
@@ -134,7 +141,7 @@ class Cliplines extends Component {
                       "%",
                     top: 15 + (15 + 12) * i + "px",
                   }}
-                  onClick={() => this.playClip(clipID)}
+                  onClick={() => this.handleClipSelection(clipID)}
                 ></div>
               );
             })}
@@ -166,6 +173,8 @@ const mapDispatchToProps = (dispatch) => {
     zoom: (hrs, viewportMode) => dispatch(zoom(hrs, viewportMode)),
     playClip: (id) => dispatch(playClip(id)),
     play: () => dispatch(play()),
+    changeMode: (mode, id) => dispatch(changeMode(mode, id)),
+    changeBrowserTab: () => dispatch(changeBrowserTab("inspectorBrowser")),
   };
 };
 

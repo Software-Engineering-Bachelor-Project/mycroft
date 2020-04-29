@@ -117,13 +117,13 @@ class CreateArea(TestCase):
         """
         data = {LATITUDE: Decimal(value="1.1"),
                 LONGITUDE: Decimal(value="1.1"),
-                RADIUS: Decimal(value="1.1"),
+                RADIUS: 1,
                 FILTER_ID: "Filter id"
                 }
         res = create_area(data)
         mock_dbw.create_area.assert_called_once_with(latitude=Decimal(value="1.1"),
                                                      longitude=Decimal(value="1.1"),
-                                                     radius=Decimal(value="1.1"), fid="Filter id")
+                                                     radius=1, fid="Filter id")
 
 
 class DeleteArea(TestCase):

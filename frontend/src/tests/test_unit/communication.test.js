@@ -28,6 +28,7 @@ import {
   GET_FILTER_PARAMS,
   getFilterParams,
 } from "../../state/stateCommunication";
+import { GET_FILTER, getFilter } from "../../state/stateCommunication";
 import { GET_PROJECTS, getProjects } from "../../state/stateCommunication";
 import { NEW_PROJECT, newProject } from "../../state/stateCommunication";
 import { DELETE_PROJECT, deleteProject } from "../../state/stateCommunication";
@@ -147,6 +148,44 @@ describe("Communication reducer", () => {
     expect(getClipsMatchingFilter()).toEqual({
       type: GET_CLIPS_MATCHING_FILTER,
     });
+
+    // Get clips matching filter
+    expect(
+      reducer(
+        initialState,
+        requestResponse(GET_CLIPS_MATCHING_FILTER, 200, {
+          clip_ids: [1, 7, 9],
+          camera_ids: [2, 3],
+        })
+      )
+    ).toEqual({
+      ...initialState,
+      filter: { ...initialState.filter, clips: [1, 7, 9], cameras: [2, 3] },
+    });
+
+    // 204
+    expect(
+      reducer(
+        initialState,
+        requestResponse(GET_CLIPS_MATCHING_FILTER, 204, undefined)
+      )
+    ).toEqual(initialState);
+
+    // 400
+    expect(
+      reducer(
+        initialState,
+        requestResponse(GET_CLIPS_MATCHING_FILTER, 400, undefined)
+      )
+    ).toEqual(initialState);
+
+    // 404
+    expect(
+      reducer(
+        initialState,
+        requestResponse(GET_CLIPS_MATCHING_FILTER, 404, undefined)
+      )
+    ).toEqual(initialState);
   });
 
   it("should handle MODIFY_FILTER", () => {
@@ -154,8 +193,9 @@ describe("Communication reducer", () => {
     expect(MODIFY_FILTER).toEqual("MODIFY_FILTER");
 
     // Action creator
-    expect(modifyFilter()).toEqual({
+    expect(modifyFilter({ myPayload: "x" })).toEqual({
       type: MODIFY_FILTER,
+      payload: { myPayload: "x" },
     });
 
     // Modify filter
@@ -347,6 +387,12 @@ describe("Communication reducer", () => {
   });
 
   it("should handle GET_FILTER_PARAMS", () => {
+    // Declare variables
+    let testResolutions = {
+      12: new Resolution(360, 240),
+      42: new Resolution(256, 240),
+    };
+
     // Action constant
     expect(GET_FILTER_PARAMS).toEqual("GET_FILTER_PARAMS");
 
@@ -354,6 +400,112 @@ describe("Communication reducer", () => {
     expect(getFilterParams()).toEqual({
       type: GET_FILTER_PARAMS,
     });
+
+    // Get filter params
+    expect(
+      reducer(
+        initialState,
+        requestResponse(GET_FILTER_PARAMS, 200, {
+          classes: ["car", "person", "bicycle"],
+          resolutions: [
+            {
+              id: 12,
+              width: 360,
+              height: 240,
+            },
+            {
+              id: 42,
+              width: 256,
+              height: 240,
+            },
+          ],
+        })
+      )
+    ).toEqual({
+      ...initialState,
+      filter: {
+        ...initialState.filter,
+        availableObjects: ["car", "person", "bicycle"],
+        resolutions: testResolutions,
+      },
+    });
+
+    // 204
+    expect(
+      reducer(initialState, requestResponse(GET_FILTER_PARAMS, 204, undefined))
+    ).toEqual(initialState);
+
+    // 400
+    expect(
+      reducer(initialState, requestResponse(GET_FILTER_PARAMS, 400, undefined))
+    ).toEqual(initialState);
+
+    // 404
+    expect(
+      reducer(initialState, requestResponse(GET_FILTER_PARAMS, 404, undefined))
+    ).toEqual(initialState);
+  });
+
+  it("should handle GET_FILTER", () => {
+    // Declare variables
+    let tempDateString = "2018-09-06T16:45:59+02:00";
+    let tempDate = new Date(tempDateString);
+
+    // Action constant
+    expect(GET_FILTER).toEqual("GET_FILTER");
+
+    // Action creator
+    expect(getFilter()).toEqual({
+      type: GET_FILTER,
+    });
+
+    // Get filter
+    expect(
+      reducer(
+        initialState,
+        requestResponse(GET_FILTER, 200, {
+          filter: {
+            id: 1,
+            start_time: tempDateString,
+            end_time: tempDateString,
+            min_frame_rate: 34,
+            project: 1,
+            included_clips: [8],
+            excluded_clips: [3],
+            classes: ["monkey"],
+            whitelisted_resolutions: [42],
+            areas: [4, 5],
+          },
+        })
+      )
+    ).toEqual({
+      ...initialState,
+      filter: {
+        ...initialState.filter,
+        startTime: tempDate,
+        endTime: tempDate,
+        includedClips: [8],
+        excludedClips: [3],
+        objects: ["monkey"],
+        minFrameRate: 34,
+        whitelistedResolutions: [42],
+      },
+    });
+
+    // 204
+    expect(
+      reducer(initialState, requestResponse(GET_FILTER, 204, undefined))
+    ).toEqual(initialState);
+
+    // 400
+    expect(
+      reducer(initialState, requestResponse(GET_FILTER, 400, undefined))
+    ).toEqual(initialState);
+
+    // 404
+    expect(
+      reducer(initialState, requestResponse(GET_FILTER, 404, undefined))
+    ).toEqual(initialState);
   });
 
   it("should handle GET_PROJECTS", () => {

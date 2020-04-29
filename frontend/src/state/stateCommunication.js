@@ -4,6 +4,9 @@ import {
   parseFolders,
   parseDatetimeString,
   parseDateToString,
+  START_TIME,
+  END_TIME,
+  WHITELISTED_RESOLUTIONS,
 } from "../util";
 
 // Types
@@ -27,13 +30,15 @@ export const GET_AREAS_IN_FILTER = "GET_AREAS_IN_FILTER";
 export const CREATE_AREA = "CREATE_AREA";
 export const DELETE_AREA = "DELETE_AREA";
 export const GET_FILTER_PARAMS = "GET_FILTER_PARAMS";
+export const GET_FILTER = "GET_FILTER";
 
 export const URL_GET_CLIPS_MATCHING_FILTER = "/filter/get_matching_clips";
 export const URL_MODIFY_FILTER = "/filter/modify";
 export const URL_GET_AREAS_IN_FILTER = "/filter/get_areas";
 export const URL_CREATE_AREA = "/filter/create_area";
 export const URL_DELETE_AREA = "/filter/delete_area";
-export const URL_GET_FILTER_PARAMS = "/filter/getFilterParams";
+export const URL_GET_FILTER_PARAMS = "/filter/get_params";
+export const URL_GET_FILTER = "/filter/get_filter";
 
 // Project Manager requests
 export const GET_PROJECTS = "GET_PROJECTS";
@@ -101,7 +106,7 @@ export const initialState = {
     clips: [], // ids
 
     // Options
-    resolutions: {}, // {id, {height, width}}??
+    resolutions: {}, // {id, {height, width}}
     availableObjects: [], // strings
 
     // Parameters
@@ -145,10 +150,16 @@ export function getClipsMatchingFilter() {
 
 /**
  * This action is used to modify a filter.
+ * @param {Object} newValues All values to be modified where key is parameter (as named in request) and value is the new value.
+ *
+ * Example of usage:
+ * this.props.modifyFilter({START_TIME: Date, END_TIME: Date, MIN_FRAME_RATE: x});
+ * This will modify the fields startTime, endTime and minFrameRate in state.com.filter.
  */
-export function modifyFilter() {
+export function modifyFilter(newValues) {
   return {
     type: MODIFY_FILTER,
+    payload: newValues,
   };
 }
 
@@ -193,6 +204,15 @@ export function deleteArea(aid) {
 export function getFilterParams() {
   return {
     type: GET_FILTER_PARAMS,
+  };
+}
+
+/**
+ * This function is used to get the options for objects and resolutions to filter on.
+ */
+export function getFilter() {
+  return {
+    type: GET_FILTER,
   };
 }
 
@@ -405,7 +425,27 @@ function handleResponse(state, reqType, status, data) {
 
   switch (reqType) {
     case GET_CLIPS_MATCHING_FILTER:
-      return state;
+      switch (status) {
+        case 200:
+          return {
+            ...state,
+            filter: {
+              ...state.filter,
+              clips: data.clip_ids,
+              cameras: data.camera_ids,
+            },
+          };
+        case 204:
+          e = "no filter with specified ID";
+          break;
+        case 400:
+          e = "'filter_id parameter was missing from request'";
+          break;
+        default:
+          e = "unknown reason";
+      }
+
+      break;
 
     case MODIFY_FILTER:
       switch (status) {
@@ -492,7 +532,70 @@ function handleResponse(state, reqType, status, data) {
       break;
 
     case GET_FILTER_PARAMS:
-      return state;
+      switch (status) {
+        case 200:
+          let newResolutions = {};
+          for (let r of data.resolutions)
+            newResolutions[r.id] = new Resolution(r.width, r.height);
+
+          return {
+            ...state,
+            filter: {
+              ...state.filter,
+              resolutions: newResolutions,
+              availableObjects: data.classes,
+            },
+          };
+        case 204:
+          e = "no filter with specified ID";
+          break;
+        case 400:
+          e = "'filter_id parameter was missing from request'";
+          break;
+        default:
+          e = "unknown reason";
+      }
+
+      break;
+
+    case GET_FILTER:
+      switch (status) {
+        case 200:
+          const {
+            start_time,
+            end_time,
+            classes,
+            min_frame_rate,
+            included_clips,
+            excluded_clips,
+            whitelisted_resolutions,
+          } = data.filter;
+          return {
+            ...state,
+            filter: {
+              ...state.filter,
+              startTime: start_time
+                ? parseDatetimeString(start_time)
+                : undefined,
+              endTime: end_time ? parseDatetimeString(end_time) : undefined,
+              includedClips: included_clips,
+              excludedClips: excluded_clips,
+              objects: classes,
+              minFrameRate: min_frame_rate,
+              whitelistedResolutions: whitelisted_resolutions,
+            },
+          };
+        case 204:
+          e = "no filter with specified ID";
+          break;
+        case 400:
+          e = "'filter_id parameter was missing from request'";
+          break;
+        default:
+          e = "unknown reason";
+      }
+
+      break;
 
     case GET_PROJECTS:
       switch (status) {
@@ -806,32 +909,21 @@ const communicationReducer = (state = initialState, action) => {
 
     case GET_CLIPS_MATCHING_FILTER:
       url = URL_GET_CLIPS_MATCHING_FILTER;
-      body = {};
+      body = { filter_id: state.filter.filterID };
       break;
 
     case MODIFY_FILTER:
       url = URL_MODIFY_FILTER;
-      const {
-        filterID,
-        startTime,
-        endTime,
-        objects,
-        minFrameRate,
-        whitelistedResolutions,
-        includedClips,
-        excludedClips,
-      } = state.filter;
-      body = { filter_id: filterID };
-      if (startTime) body[start_time] = parseDateToString(startTime);
-      if (endTime) body[end_time] = parseDateToString(endTime);
-      if (objects) body[classes] = objects;
-      if (whitelistedResolutions)
-        body[whitelisted_resolutions] = whitelistedResolutions.map(
-          (id) => state.resolutions[id]
-        );
-      if (minFrameRate > 0) body[min_framerate] = minFrameRate;
-      if (includedClips) body[included_clips] = includedClips;
-      if (excludedClips) body[excluded_clips] = excludedClips;
+      body = { filter_id: state.filter.filterID };
+      for (const param in action.payload) {
+        if (param == START_TIME || param == END_TIME)
+          body[param] = parseDateToString(action.payload[param]);
+        else if (param == WHITELISTED_RESOLUTIONS)
+          body[param] = action.payload[param].map(
+            (id) => state.filter.resolutions[id]
+          );
+        else body[param] = action.payload[param];
+      }
       break;
 
     case GET_AREAS_IN_FILTER:
@@ -856,7 +948,12 @@ const communicationReducer = (state = initialState, action) => {
 
     case GET_FILTER_PARAMS:
       url = URL_GET_FILTER_PARAMS;
-      body = {};
+      body = { filter_id: state.filter.filterID };
+      break;
+
+    case GET_FILTER:
+      url = URL_GET_FILTER;
+      body = { filter_id: state.filter.filterID };
       break;
 
     case GET_PROJECTS:

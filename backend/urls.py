@@ -15,7 +15,7 @@ urlpatterns = [
     path('filter/get_areas', views.filter_get_areas, name='filter get areas'),
     path('filter/get_matching_clips', views.filter_get_matching_clips, name='filter get matching'),
     path('filter/modify', views.filter_modify, name='filter modify'),
-    path('filter/getFilterParams', views.filter_get_params, name='filter get params'),
+    path('filter/get_params', views.filter_get_params, name='filter get params'),
     path('filter/get_filter', views.filter_get_filter, name='filter get filter'),
 
     path('project/get_all', views.project_get_all, name='project get all'),

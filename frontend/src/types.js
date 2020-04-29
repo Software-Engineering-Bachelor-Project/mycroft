@@ -39,7 +39,7 @@ export class Camera {
   /**
    * @param {int} id The unique identifier of this camera. Corresponds to the backend database.
    * @param {string} name The name of this camera.
-   * @param {Object} pos The decimal latitude and longitude of this camera. The object has two attributes, latitude and longitude.
+   * @param {Object} pos The decimal longitude and latitude of this camera. The object has two attributes, latitude and longitude.
    * @param {Array[int]} clips A list containing this camera's clip's ID:s.
    * @param {boolean} selected Whether this camera is selected or not.
    */

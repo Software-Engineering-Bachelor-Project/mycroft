@@ -57,7 +57,7 @@ CLASSES = "classes"
 # --- Quality related ---
 MIN_WIDTH = "min_width"
 MIN_HEIGHT = "max_width"
-MIN_FRAMERATE = " min_framerate"
+MIN_FRAMERATE = "min_framerate"
 
 # --- Time related ---
 START_TIME = "start_time"

@@ -21,8 +21,18 @@ def export_filter(data: dict) -> (int, dict):
     if f is None:
         return 204, {}  # No content
 
-    res = {'start_time': str(f.start_time), 'end_time': str(f.end_time),
-           'clips': [str(clip) for clip in get_all_clips_matching_filter(fid=fid)]}
+    clip_list = [{'file_path': replace_sep(clip.folder.path + clip.folder.name + "/" + clip.name + "." +
+                                           clip.video_format), 'start_time': str(clip.start_time)} for clip in
+                 get_all_clips_matching_filter(fid=fid)]
+
+    area_list = [area for area in f.areas.all()]
+    areas = []
+    for area in area_list:
+        areas.append({"latitude": area.latitude, "longitude": area.longitude, "radius": area.radius})
+    objects = [str(obj) for obj in f.classes.all()[::1]]
+
+    res = {'filter': {'start_time': str(f.start_time), 'end_time': str(f.end_time), 'objects': objects},
+           'areas': areas, 'clips': clip_list}
 
     return 200, os_aware(res)
 

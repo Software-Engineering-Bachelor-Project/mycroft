@@ -138,7 +138,7 @@ class GetClipsMatchingFilter(TestCase):
         """
         data = {FILTER_ID: 1}
 
-        area = dbw.create_area(self.lat, self.lon, 1, fid=self.fid)
+        area = dbw.create_area(self.lat, self.lon + 2, 1, fid=self.fid)
         res = get_clips_matching_filter(data)
         self.assertEqual(res, (200, {CLIP_IDS: [1], CAMERA_IDS: [1]}))
 

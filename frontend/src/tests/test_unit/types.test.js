@@ -100,6 +100,14 @@ describe("Folder class", () => {
     expect(f3.getPath(allFolders)).toEqual("root/test2/");
     expect(f4.getPath(allFolders)).toEqual("root/test2/test3/");
   });
+
+  it("should know whether it is a source", () => {
+    // Source
+    expect(f1.isSource(allFolders)).toEqual(true);
+
+    // Not source
+    expect(f2.isSource(allFolders)).toEqual(false);
+  });
 });
 
 describe("Resolution class", () => {

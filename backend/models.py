@@ -84,7 +84,7 @@ class Area(models.Model):
     """
     longitude = models.DecimalField(max_digits=10, decimal_places=7)
     latitude = models.DecimalField(max_digits=10, decimal_places=7)
-    radius = models.DecimalField(max_digits=10, decimal_places=7)
+    radius = models.PositiveIntegerField()
 
     def is_within(self, longitude: Decimal, latitude: Decimal) -> bool:
         """
@@ -100,8 +100,8 @@ class Area(models.Model):
             raise ValidationError("Longitude must be between -180 and 180")
         if not (Decimal(value="-90.0") <= self.latitude <= Decimal(value="90.0")):
             raise ValidationError("Latitude must be between -90 and 90")
-        if not Decimal(value="0.0") <= self.radius:
-            raise ValidationError("Radius can not be negative")
+        if not 0 <= self.radius:
+            raise ValidationError("Radius must be a positive Integer")
 
     def save(self, *args, **kwargs):
         self.full_clean()

@@ -898,7 +898,7 @@ def get_areas_in_filter(fid: int) -> List[Area]:
     return f.areas.all()[::1]
 
 
-def create_area(latitude: Decimal, longitude: Decimal, radius: Decimal, fid: int) -> int:
+def create_area(latitude: Decimal, longitude: Decimal, radius: int, fid: int) -> int:
     """
     Creates an area and adds to filter.
 

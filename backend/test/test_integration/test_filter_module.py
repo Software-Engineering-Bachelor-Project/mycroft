@@ -138,7 +138,7 @@ class GetClipsMatchingFilter(TestCase):
         """
         data = {FILTER_ID: 1}
 
-        area = dbw.create_area(self.lat, self.lon, Decimal(value="0.5"), fid=self.fid)
+        area = dbw.create_area(self.lat, self.lon, 1, fid=self.fid)
         res = get_clips_matching_filter(data)
         self.assertEqual(res, (200, {CLIP_IDS: [1], CAMERA_IDS: [1]}))
 
@@ -246,7 +246,7 @@ class GetAreasInFilterTest(TestCase):
         """
         Test
         """
-        dbw.create_area(Decimal(value="1.1"), Decimal(value="1.1"), Decimal(value="1.1"), self.fid)
+        dbw.create_area(Decimal(value="1.1"), Decimal(value="1.1"), 1, self.fid)
         data = {FILTER_ID: self.fid}
         res = get_areas_in_filter(data)
         self.assertEqual(len(res[1]["areas"]), 1)
@@ -255,8 +255,8 @@ class GetAreasInFilterTest(TestCase):
         """
         Test getting all areas when multiple area exist
         """
-        dbw.create_area(Decimal(value="1.1"), Decimal(value="1.1"), Decimal(value="1.1"), self.fid)
-        dbw.create_area(Decimal(value="1.2"), Decimal(value="1.2"), Decimal(value="1.2"), self.fid)
+        dbw.create_area(Decimal(value="1.1"), Decimal(value="1.1"), 1, self.fid)
+        dbw.create_area(Decimal(value="1.2"), Decimal(value="1.2"), 2, self.fid)
         data = {FILTER_ID: self.fid}
         res = get_areas_in_filter(data)
         self.assertEqual(len(res[1]["areas"]), 2)
@@ -315,7 +315,7 @@ class DeleteAreaTest(TestCase):
         self.pid = dbw.create_project(name="test_project")
         self.fid = dbw.create_filter(pid=self.pid)
         self.aid = dbw.create_area(latitude=Decimal(value="1.1"), longitude=Decimal(value="1.1"),
-                                   radius=Decimal(value="1.1"), fid=self.fid)
+                                   radius=1, fid=self.fid)
 
     def test_simple_call(self):
         """

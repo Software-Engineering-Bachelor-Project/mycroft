@@ -13,12 +13,6 @@ import styles from "./timeline.module.css";
 class Glassbox extends Component {
   constructor(props) {
     super(props);
-    this.intervalChanged = this.intervalChanged.bind(this);
-  }
-
-  intervalChanged(start, end) {
-    //TODO: dispatch modifyFilter action using start and end time
-    this.props.gbSetTimeLimits(start, end);
   }
 
   render() {

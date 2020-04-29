@@ -13,19 +13,22 @@
 
 .topbar {
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
   width: 100%;
   top: 0;
   left: 0;
   height: 50px;
   flex-shrink: 0;
-  border-bottom: 2px solid;
   background-color: rgb(43, 44, 46);
   color: rgb(255, 255, 255); /*text color*/
 }
 
 .dropdown {
   position: absolute;
-  top: 5px;
+  /*top: 5px;*/
   right: 5px;
 }
 
@@ -53,16 +56,21 @@
   width: 1px;
   height: 100%;
   background-color: rgb(156, 156, 156);
+  z-index: 1;
 }
 
 .date {
   position: sticky;
+  padding: 7px;
+  margin: 5px;
   left: 5px;
   top: 5px;
-  width: 3.3em;
-  font-size: 14pt;
+  width: fit-content;
+  font-size: 11pt;
   border-radius: 3px;
-  background-color: #cad18f;
+  background-color: #28a745;
+  color: white;
+  z-index: 3;
 }
 
 .day {
@@ -73,6 +81,7 @@
 
 .glassbox {
   position: absolute;
+  z-index: 2;
   background-color: rgba(57, 192, 255, 0.329);
   border-radius: 10px;
   border: 3px solid rgba(0, 107, 194, 0.87);
@@ -88,6 +97,7 @@
   width: 1.2em;
   border-radius: 2px;
   color: rgb(27, 27, 27);
+  z-index: 3;
 }
 
 .cliplines {

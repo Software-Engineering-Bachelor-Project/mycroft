@@ -910,8 +910,10 @@ def create_area(latitude: Decimal, longitude: Decimal, radius: int, fid: int) ->
     """
     f = get_filter_by_id(fid=fid)
     assert f is not None
+    lat = Decimal(latitude).quantize(Decimal('.000001'))
+    lon = Decimal(longitude).quantize(Decimal('.000001'))
 
-    area = Area.objects.get_or_create(latitude=latitude, longitude=longitude, radius=radius)[0]
+    area = Area.objects.get_or_create(latitude=lat, longitude=lon, radius=radius)[0]
     f.areas.add(area)
 
     return area.id

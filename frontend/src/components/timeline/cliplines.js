@@ -1,14 +1,15 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-//import functions
-import { addCamera, removeCamera } from "../../state/stateTimeline";
-
 //import css
 import styles from "./timeline.module.css";
 
+//import actions
+import { zoom } from "../../state/stateTimeline";
+import { playClip, play } from "../../state/statePlayer";
+
 // import class
-import { Camera, Clip } from "../../types";
+//import { Camera, Clip } from "../../types";
 
 // Color list for clips
 const COLOR_LIST = [
@@ -50,10 +51,12 @@ class Cliplines extends Component {
     super(props);
     this.getLeftPosition = this.getLeftPosition.bind(this);
     this.getWidthOfClip = this.getWidthOfClip.bind(this);
+    this.playClip = this.playClip.bind(this);
   }
 
   /**
    * Calculates the left positioning of clip.
+   * This will assume that all the clips are inside the startTime and endTime of glassbox.
    *
    * @param {Date} clipStartTime the clip start time
    */
@@ -63,22 +66,40 @@ class Cliplines extends Component {
       clipStartTime.getTime()
     );
     return (
-      ((start - this.props.gbStartTime.getTime()) / this.props.timeSpan) * 100
+      ((start - this.props.gbStartTime.getTime()) / this.props.gbTimeSpan) * 100
     );
   }
 
   /**
    * Calculates the width of the clip.
+   * This will assume that all the clips are inside the startTime and endTime of glassbox.
    *
    * @param {Date} clipStartTime the clip start time
    * @param {Date} clipEndTime the clip end time
    */
   getWidthOfClip(clipStartTime, clipEndTime) {
     var end = Math.min(this.props.gbEndTime.getTime(), clipEndTime.getTime());
+    if (end < clipStartTime.getTime()) {
+      console.error(
+        "RangeError: in cliplines.js, getWidthOfClip(): clipEndTime before clipStartTime"
+      );
+      return 0;
+    }
     return (
       ((end - clipStartTime.getTime()) / (60 * 60 * 1000) / this.props.scale) *
       100
     );
+  }
+
+  // Update scale when switching to Player-mode
+  componentWillMount() {
+    this.props.zoom(undefined, this.props.viewportMode);
+  }
+
+  // Play clip callback
+  playClip(id) {
+    this.props.playClip(id);
+    setTimeout(() => this.props.play(), 100);
   }
 
   render() {
@@ -88,18 +109,35 @@ class Cliplines extends Component {
         {Object.values(this.props.cameras).map((camera, i) => (
           <div key={camera.id}>
             {/* Iterate through the clips of the current camera */}
-            {Object.values(camera.clips).map((clip) => (
-              <div
-                key={clip.id}
-                className={styles.cliplines}
-                style={{
-                  backgroundColor: COLOR_LIST[i % COLOR_LIST.length],
-                  width:
-                    this.getWidthOfClip(clip.startTime, clip.endTime) + "%",
-                  left: this.getLeftPosition(clip.startTime) + "%",
-                }}
-              ></div>
-            ))}
+            {camera.clips.map((clipID) => {
+              if (!(clipID in this.props.clips)) {
+                console.warn(
+                  "Clip with id ",
+                  clipID,
+                  " does not exist in current project"
+                );
+                return;
+              }
+              return (
+                <div
+                  key={clipID}
+                  className={styles.cliplines}
+                  style={{
+                    backgroundColor: COLOR_LIST[i % COLOR_LIST.length],
+                    width:
+                      this.getWidthOfClip(
+                        this.props.clips[clipID].startTime,
+                        this.props.clips[clipID].endTime
+                      ) + "%",
+                    left:
+                      this.getLeftPosition(this.props.clips[clipID].startTime) +
+                      "%",
+                    top: 15 + (15 + 12) * i + "px",
+                  }}
+                  onClick={() => this.playClip(clipID)}
+                ></div>
+              );
+            })}
           </div>
         ))}
       </div>
@@ -112,16 +150,23 @@ const mapStateToProps = (state) => {
   return {
     timeSpan: state.timeline.timeSpan,
     scale: state.timeline.scale,
-    cameras: state.timeline.cameras,
+
     gbTimeSpan: state.timeline.glassbox.timeSpan,
     gbStartTime: state.timeline.glassbox.startTime,
     gbEndTime: state.timeline.glassbox.endTime,
+
+    cameras: state.com.cameras,
+    clips: state.com.clips,
   };
 };
 
 //Forward Redux's dispatch function to React props
 const mapDispatchToProps = (dispatch) => {
-  return {};
+  return {
+    zoom: (hrs, viewportMode) => dispatch(zoom(hrs, viewportMode)),
+    playClip: (id) => dispatch(playClip(id)),
+    play: () => dispatch(play()),
+  };
 };
 
 //Connect Redux with React

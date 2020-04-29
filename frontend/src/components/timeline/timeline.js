@@ -149,7 +149,7 @@ export function getDateString(date) {
 }
 
 // Scaling options for the dropdown menu
-const SCALE_LIST = [12, 24, 36, 48];
+const SCALE_LIST = [1, 5, 12, 24, 36, 48];
 
 /**
  * This class respresents the timeline react-component.
@@ -192,40 +192,34 @@ class Timeline extends Component {
    * This will render the lines and timestamps on timeline.
    * Shows an hour-stamp beside every line and in the top it shows which day.
    */
-  renderTimestamps() {
+  renderTimestamps(startTime, endTime, timeSpan) {
     return (
       <div>
-        {getLinePlacements(this.props.startTime, this.props.timeSpan).map(
-          (p, i) => {
-            let hour = (this.props.startTime.getHours() + i + 1) % 24;
-            if (hour < 10) {
-              var hourStr = "0" + hour;
-            } else {
-              var hourStr = "" + hour;
-            }
-            return (
-              <div
-                style={{
-                  position: "absolute",
-                  left: p,
-                  top: "0",
-                  height: "100%",
-                }}
-                key={p}
-              >
-                <div className={styles.line}> </div>
-                <div className={styles.hour}> {hourStr} </div>
-              </div>
-            );
+        {getLinePlacements(startTime, timeSpan).map((p, i) => {
+          let hour = (startTime.getHours() + i + 1) % 24;
+          if (hour < 10) {
+            var hourStr = "0" + hour;
+          } else {
+            var hourStr = "" + hour;
           }
-        )}
+          return (
+            <div
+              style={{
+                position: "absolute",
+                left: p,
+                top: "0",
+                height: "100%",
+              }}
+              key={p}
+            >
+              <div className={styles.line}> </div>
+              <div className={styles.hour}> {hourStr} </div>
+            </div>
+          );
+        })}
 
         {/*Creates days a box for each day and draws dates in them*/}
-        {getDayPlacements(
-          this.props.startTime,
-          this.props.endTime,
-          this.props.timeSpan
-        ).map(([w, p, d], i) => {
+        {getDayPlacements(startTime, endTime, timeSpan).map(([w, p, d], i) => {
           //Makes it so every other day is slightly darker
           let color = "rgba(185, 185, 185, 0.3)";
           if (i % 2) {
@@ -273,8 +267,6 @@ class Timeline extends Component {
    * Render slider content, either Map or Player depending on viewport mode
    */
   renderSliderContent() {
-    this.props.zoom(undefined, this.props.viewportMode);
-
     if (this.props.viewportMode) {
       return (
         <div
@@ -284,7 +276,11 @@ class Timeline extends Component {
           }}
         >
           {/* Creates a line for each timestamp and draws out hours*/}
-          {this.renderTimestamps()}
+          {this.renderTimestamps(
+            this.props.startTime,
+            this.props.endTime,
+            this.props.timeSpan
+          )}
 
           {/* Glassbox component */}
           <Glassbox />
@@ -293,7 +289,21 @@ class Timeline extends Component {
     }
     // TODO:: draw the content of slider when in Player-mode.
     return (
-      <div>
+      <div
+        className={styles.slider}
+        style={{
+          opacity: "0.7",
+          width: this.getWidthOfTimeline() + "%",
+        }}
+      >
+        {/* Creates a line for each timestamp and draws out hours*/}
+        {this.renderTimestamps(
+          this.props.gbStartTime,
+          this.props.gbEndTime,
+          this.props.gbTimeSpan
+        )}
+
+        {/* Clipline component */}
         <Cliplines />
       </div>
     );
@@ -304,7 +314,10 @@ class Timeline extends Component {
    * Returns the result in percents.
    */
   getWidthOfTimeline() {
-    return (this.props.timeSpan / (60 * 60 * 1000) / this.props.scale) * 100;
+    if (this.props.viewportMode) {
+      return (this.props.timeSpan / (60 * 60 * 1000) / this.props.scale) * 100;
+    }
+    return (this.props.gbTimeSpan / (60 * 60 * 1000) / this.props.scale) * 100;
   }
 
   render() {
@@ -331,8 +344,13 @@ const mapStateToProps = (state) => {
   return {
     startTime: state.timeline.startTime,
     endTime: state.timeline.endTime,
-    scale: state.timeline.scale,
     timeSpan: state.timeline.timeSpan,
+    scale: state.timeline.scale,
+
+    gbStartTime: state.timeline.glassbox.startTime,
+    gbEndTime: state.timeline.glassbox.endTime,
+    gbTimeSpan: state.timeline.glassbox.timeSpan,
+
     viewportMode: state.viewport.mode,
   };
 };

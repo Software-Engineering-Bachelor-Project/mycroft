@@ -1,2 +1,3 @@
 import App from "./components/app";
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "react-calendar/dist/Calendar.css";
+import "bootstrap/dist/css/bootstrap.min.css";

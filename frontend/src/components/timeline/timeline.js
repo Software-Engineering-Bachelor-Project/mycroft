@@ -3,11 +3,15 @@ import { connect } from "react-redux";
 
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
+import Popover from "react-bootstrap/Popover";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import Calendar from "react-calendar";
+import Button from "react-bootstrap/Button";
 
 //import icon
 import markerIcon from "../../images/timemarker.png";
 
-import { zoom } from "../../state/stateTimeline";
+import { zoom, gbSetTimeLimits } from "../../state/stateTimeline";
 import { jump } from "../../state/statePlayer";
 
 import styles from "./timeline.module.css";
@@ -174,6 +178,14 @@ class Timeline extends Component {
     this.moveTimemarker = this.moveTimemarker.bind(this);
     this.updateTimemarker = this.updateTimemarker.bind(this);
     this.updateTimemarker = this.updateTimemarker.bind(this);
+    this.renderFilterPrompts = this.renderFilterPrompts.bind(this);
+    this.renderTimeList = this.renderTimeList.bind(this);
+    this.getFullDate = this.getFullDate.bind(this);
+    this.renderCalendar = this.renderCalendar.bind(this);
+    this.renderFilterPrompts = this.renderFilterPrompts.bind(this);
+    this.renderTimeList = this.renderTimeList.bind(this);
+    this.intervalChanged = this.intervalChanged.bind(this);
+    this.handleGlassboxInput = this.handleGlassboxInput.bind(this);
 
     // state variables
     this.state = {
@@ -269,14 +281,14 @@ class Timeline extends Component {
     if (this.props.viewportMode) {
       // TODO:: draw the content of topbar when in Map-mode.
       return (
-        <div style={{ left: "50%", position: "absolute" }}>
+        <div style={{ left: "5px", top: "12px", position: "absolute" }}>
           Topbar: Map-mode
         </div>
       );
     }
     // TODO:: draw the content of topbar when in Player-mode.
     return (
-      <div style={{ left: "50%", position: "absolute" }}>
+      <div style={{ left: "5px", top: "12px", position: "absolute" }}>
         Topbar: Player-mode
       </div>
     );
@@ -363,6 +375,113 @@ class Timeline extends Component {
         <div id="linemarkerDIV" className={styles.linemarker}></div>
       </div>
     );
+  }
+
+  renderTimeList() {
+    return (
+      <div style={{}}>
+        <DropdownButton alignRight title={"Time"}>
+          {/* Create dropdown items for every scaling option */}
+          {["12:00", "12:30"].map((h) => {
+            return (
+              <Dropdown.Item /*onClick={(a) => this.props.zoom(h)}*/ key={h}>
+                {h}
+              </Dropdown.Item>
+            );
+          })}
+        </DropdownButton>
+      </div>
+    );
+  }
+
+  /**
+   * TODO: Write this function header
+   * @param {*} title
+   */
+  renderCalendar(title) {
+    if (title == "Start Time") {
+      return (
+        <Popover id="popover-basic">
+          <Popover.Title as="h3"> {title} </Popover.Title>
+          <Popover.Content>
+            <Calendar
+              minDate={this.props.startTime}
+              maxDate={this.props.glassbox.endTime}
+              onChange={(date) =>
+                this.intervalChanged(this.getFullDate(date, title), undefined)
+              }
+            />
+          </Popover.Content>
+        </Popover>
+      );
+    }
+    return (
+      <Popover id="popover-basic">
+        <Popover.Title as="h3"> {title} </Popover.Title>
+        <Popover.Content>
+          <Calendar
+            minDate={this.props.glassbox.startTime}
+            maxDate={this.props.endTime}
+            onChange={(date) =>
+              this.intervalChanged(undefined, this.getFullDate(date, title))
+            }
+          />
+        </Popover.Content>
+      </Popover>
+    );
+  }
+
+  /**
+   * TODO: Write this function header
+   */
+  renderFilterPrompts() {
+    return (
+      <div style={{ position: "relative", display: "flex" }}>
+        {/*Start time filter button*/}
+        <div style={{ position: "relative", top: "12px" }}> Filter Start: </div>
+        <div style={{ margin: "5px" }}>
+          <OverlayTrigger
+            trigger="click"
+            placement="top"
+            overlay={this.renderCalendar("Start Time")}
+          >
+            <Button variant="success">
+              {" "}
+              {this.props.glassbox.startTime.toDateString()}{" "}
+            </Button>
+          </OverlayTrigger>
+        </div>
+        <div style={{ margin: "5px" }}> {this.renderTimeList()} </div>
+
+        {/*End time filter button*/}
+        <div style={{ position: "relative", top: "12px" }}> Filter End: </div>
+        <div style={{ margin: "5px" }}>
+          <OverlayTrigger
+            trigger="click"
+            placement="top"
+            overlay={this.renderCalendar("End Time")}
+          >
+            <Button variant="success">
+              {" "}
+              {this.props.glassbox.endTime.toDateString()}{" "}
+            </Button>
+          </OverlayTrigger>
+        </div>
+        <div style={{ margin: "5px" }}> {this.renderTimeList()} </div>
+      </div>
+    );
+  }
+
+  handleGlassboxInput(start, end) {
+    if (start == undefined && end == undefined) {
+      return [this.props.glassbox.startTime, this.props.glassbox.endTime];
+    } else if (start == undefined && end) {
+      return [this.props.glassbox.startTime, end];
+    } else if (start && end == undefined) {
+      return [start, this.props.glassbox.endTime];
+    } else {
+      return [start, end];
+    }
   }
 
   /**
@@ -465,6 +584,52 @@ class Timeline extends Component {
   }
 
   /**
+   * TODO: Write this function header
+   * @param {*} start
+   * @param {*} end
+   */
+  intervalChanged(start, end) {
+    //TODO: dispatch modifyFilter action using start and end time
+    let startTime, endTime;
+    [startTime, endTime] = this.handleGlassboxInput(start, end);
+    if (
+      startTime.getTime() <= endTime.getTime() &&
+      startTime.getTime() >= this.props.startTime.getTime() &&
+      endTime.getTime() <= this.props.endTime.getTime()
+    ) {
+      this.props.gbSetTimeLimits(startTime, endTime);
+    }
+  }
+
+  /**
+   * TODO: Write this function header
+   * @param {*} date
+   * @param {*} title
+   */
+  getFullDate(date, title) {
+    if (title == "Start Time") {
+      let newDate = new Date(
+        date.getFullYear(),
+        date.getMonth(),
+        date.getDate(),
+        this.props.glassbox.startTime.getHours(),
+        this.props.glassbox.startTime.getMinutes(),
+        this.props.glassbox.startTime.getSeconds()
+      );
+      return newDate;
+    }
+    let newDate = new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate(),
+      this.props.glassbox.endTime.getHours(),
+      this.props.glassbox.endTime.getMinutes(),
+      this.props.glassbox.endTime.getSeconds()
+    );
+    return newDate;
+  }
+
+  /**
    * Calculates the width of timeline.
    * Returns the result in percents.
    */
@@ -482,6 +647,7 @@ class Timeline extends Component {
         <div className={styles.topbar}>
           {this.renderContentOfTopbar()}
           {this.renderScaleList()}
+          {this.renderFilterPrompts()}
         </div>
 
         {/* This is the box containing all the timestamps, which is affected by scaling */}
@@ -502,17 +668,18 @@ const mapStateToProps = (state) => {
     timeSpan: state.timeline.timeSpan,
     scale: state.timeline.scale,
 
+    glassbox: state.timeline.glassbox,
     gbStartTime: state.timeline.glassbox.startTime,
     gbEndTime: state.timeline.glassbox.endTime,
     gbTimeSpan: state.timeline.glassbox.timeSpan,
 
     viewportMode: state.viewport.mode,
 
+    clips: state.com.clips,
+
     //Player
     clipID: state.player.clipID,
     position: state.player.position,
-
-    clips: state.com.clips,
   };
 };
 
@@ -521,6 +688,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
     zoom: (hrs, viewportMode) => dispatch(zoom(hrs, viewportMode)),
     jump: (timeDelta) => dispatch(jump(timeDelta)),
+    gbSetTimeLimits: (startDate, endDate) =>
+      dispatch(gbSetTimeLimits(startDate, endDate)),
   };
 };
 

@@ -8,10 +8,10 @@ export const SET_TIME_LIMITS = "SET_TIME_LIMITS";
 export const GB_SET_TIME_LIMITS = "GB_SET_TIME_LIMITS";
 
 /* -- TIMELINE DEFAULT CONSTANT -- */
-const defaultStartTime = new Date(2028, 8, 5, 12, 0, 0); // the month is 0-indexed. Month 3 = April.
-const defaultEndTime = new Date(2028, 8, 7, 16, 0, 0);
-const gbDefaultStartTime = new Date(2028, 8, 6, 16, 30, 0);
-const gbDefaultEndTime = new Date(2028, 8, 6, 17, 0, 0);
+const defaultStartTime = new Date(2020, 3, 10, 0, 0, 0); // the month is 0-indexed. Month 3 = April.
+const defaultEndTime = new Date(2020, 3, 20, 0, 0, 0);
+const gbDefaultStartTime = new Date(2020, 3, 14, 12, 30, 0);
+const gbDefaultEndTime = new Date(2020, 3, 15, 1, 0, 0);
 
 /* -- INITIAL STATE -- */
 export const initialState = {
@@ -129,7 +129,7 @@ function checkTimeSpan(startTime, endTime) {
  * @param {Date} start
  * @param {Date} end
  * @param {State object} state
- */
+ *
 function handleGlassboxInput(start, end, state) {
   if (start == undefined && end) {
     return [state.glassbox.startTime, end];
@@ -150,7 +150,7 @@ function handleGlassboxInput(start, end, state) {
  * @param {Date} start
  * @param {Date} end
  * @param {State object} state
- */
+ *
 function checkGlassboxTimeSpan(start, end, state) {
   if (
     state.startTime.getTime() < start.getTime() &&
@@ -173,7 +173,7 @@ function checkGlassboxTimeSpan(start, end, state) {
   );
   return;
 }
-
+*/
 /* -- REDUX REDUCER -- */
 const timelineReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -213,15 +213,15 @@ const timelineReducer = (state = initialState, action) => {
           : Math.min(hours, state.glassbox.timeSpan / (60 * 60 * 1000)),
       };
     case GB_SET_TIME_LIMITS:
-      var startT, endT;
+      /*var startT, endT;
       [startT, endT] = handleGlassboxInput(action.start, action.end, state);
-      checkGlassboxTimeSpan(startT, endT, state);
+      checkGlassboxTimeSpan(startT, endT, state);*/
       return {
         ...state,
         glassbox: {
-          startTime: startT,
-          endTime: endT,
-          timeSpan: endT.getTime() - startT.getTime(),
+          startTime: action.start,
+          endTime: action.end,
+          timeSpan: action.end.getTime() - action.start.getTime(),
         },
       };
     default:

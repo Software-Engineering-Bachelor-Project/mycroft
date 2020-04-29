@@ -10,13 +10,15 @@ export class Project {
    * @param {Date} created A Date object representing when this project was created.
    * @param {Date} lastUpdated A Date object representing when this project was last updated.
    * @param {dict[int: Folder]} folders The source folders of this project, mapped in a dictionary by their own IDs.
+   * @param {int} filter The filter's id.
    */
-  constructor(id, name, created, lastUpdated, folders) {
+  constructor(id, name, created, lastUpdated, folders, filter) {
     this.id = id;
     this.name = name;
     this.created = created;
     this.lastUpdated = lastUpdated;
     this.folders = folders;
+    this.filter = filter;
   }
 
   /**

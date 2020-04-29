@@ -88,7 +88,8 @@ class BaseTestCases:
             self.cid = create_clip(fid=self.rid, clip_name="test_clip", video_format="tvf",
                                    start_time=timezone.now() - timezone.timedelta(hours=1),
                                    end_time=timezone.now(), latitude=Decimal(value="13.37"),
-                                   longitude=Decimal(value="0.42"), width=256, height=240, frame_rate=42.0, camera_name=self.cm_name)
+                                   longitude=Decimal(value="0.42"), width=256, height=240, frame_rate=42.0,
+                                   camera_name=self.cm_name)
             self.cmid = get_camera_by_location(latitude=Decimal(value="13.37"), longitude=Decimal(value="0.42")).id
             self.st = timezone.now() - timezone.timedelta(hours=0.5)
             self.et = timezone.now() - timezone.timedelta(hours=0.25)
@@ -625,7 +626,8 @@ class CreateClipTest(BaseTestCases.ClipTest):
         mock_create_hash_sum.return_value = '1234567'
         new_st = self.st - timezone.timedelta(hours=1)
         new_et = self.et + timezone.timedelta(hours=1)
-        self.cid = create_clip(fid=self.fid, clip_name="before", video_format="tvf", start_time=new_st, end_time=self.st,
+        self.cid = create_clip(fid=self.fid, clip_name="before", video_format="tvf", start_time=new_st,
+                               end_time=self.st,
                                latitude=self.lat, longitude=self.lon, width=256, height=240, frame_rate=42.0,
                                camera_name=self.cm_name)
         cm = get_camera_by_location(latitude=self.lat, longitude=self.lon)
@@ -664,11 +666,12 @@ class CreateClipTest(BaseTestCases.ClipTest):
         """
         Test that clips without a folder asserts None
         """
-        self.assertRaises(AssertionError, lambda: create_clip(fid=999, clip_name="another_test_clip", video_format="tvf",
-                                                              start_time=self.st - timezone.timedelta(hours=1),
-                                                              end_time=self.st, latitude=self.lat,
-                                                              longitude=self.lon, width=256, height=240,
-                                                              frame_rate=42.0, camera_name=self.cm_name))
+        self.assertRaises(AssertionError,
+                          lambda: create_clip(fid=999, clip_name="another_test_clip", video_format="tvf",
+                                              start_time=self.st - timezone.timedelta(hours=1),
+                                              end_time=self.st, latitude=self.lat,
+                                              longitude=self.lon, width=256, height=240,
+                                              frame_rate=42.0, camera_name=self.cm_name))
 
     @patch('backend.database_wrapper.create_hash_sum')
     def test_playable_format(self, mock_create_hash_sum):
@@ -1048,7 +1051,7 @@ class ModifyFilterTest(BaseTestCases.FilterTest):
         self.assertEqual(filter.whitelisted_resolutions.first().height, 240)
 
     def test_modify_areas(self):
-        area = create_area(Decimal(value="10.0"), Decimal(value="10.0"), Decimal(value="10.0"), self.fid)
+        area = create_area(Decimal(value="10.0"), Decimal(value="10.0"), 10, self.fid)
         self.assertEqual(area, get_areas_in_filter(self.fid)[0].id)
 
     def test_bad_time(self):
@@ -1506,7 +1509,7 @@ class GetAreasInFilter(TestCase):
         """
         Test getting areas when one exists
         """
-        create_area(Decimal(value="1.1"), Decimal(value="1.2"), Decimal(value="1.3"), self.fid)
+        create_area(Decimal(value="1.1"), Decimal(value="1.2"), 3, self.fid)
         res = get_areas_in_filter(self.fid)
         self.assertEqual(len(res), 1)
 
@@ -1514,8 +1517,8 @@ class GetAreasInFilter(TestCase):
         """
         Test getting areas when multiple exists
         """
-        create_area(Decimal(value="1.1"), Decimal(value="1.2"), Decimal(value="1.3"), self.fid)
-        create_area(Decimal(value="1.12"), Decimal(value="1.22"), Decimal(value="1.32"), self.fid)
+        create_area(Decimal(value="1.1"), Decimal(value="1.2"), 3, self.fid)
+        create_area(Decimal(value="1.12"), Decimal(value="1.22"), 4, self.fid)
         res = get_areas_in_filter(self.fid)
         self.assertEqual(len(res), 2)
 
@@ -1532,9 +1535,9 @@ class CreateArea(TestCase):
         """
         Test a simple with valid params
         """
-        aid = create_area(Decimal(value="1.1"), Decimal(value="1.2"), Decimal(value="1.3"), self.fid)
+        aid = create_area(Decimal(value="1.1"), Decimal(value="1.2"), 10000, self.fid)
         area = Area.objects.get(id=aid)
-        self.assertEqual(area.radius, Decimal(value="1.3"))
+        self.assertEqual(area.radius, 10000)
         self.assertEqual(area.latitude, Decimal(value="1.1"))
         self.assertEqual(area.longitude, Decimal(value="1.2"))
         f = get_filter_by_id(self.fid)
@@ -1545,14 +1548,21 @@ class CreateArea(TestCase):
         Test with invalid latitude
         """
         self.assertRaises(ValidationError, create_area, latitude=Decimal(value="91"), longitude=Decimal(value="1.2"),
-                          radius=Decimal(value="1.3"), fid=self.fid)
+                          radius=5, fid=self.fid)
 
     def test_bad_longitude(self):
         """
         Test with invalid longitude
         """
         self.assertRaises(ValidationError, create_area, latitude=Decimal(value="1"), longitude=Decimal(value="181"),
-                          radius=Decimal(value="1.3"), fid=self.fid)
+                          radius=5, fid=self.fid)
+
+    def test_bad_radius(self):
+        """
+        Test with invalid longitude
+        """
+        self.assertRaises(ValidationError, create_area, latitude=Decimal(value="1"), longitude=Decimal(value="180"),
+                          radius=-5, fid=self.fid)
 
 
 class DeleteArea(TestCase):
@@ -1562,7 +1572,7 @@ class DeleteArea(TestCase):
         """
         self.pid = create_project(name="test_project")
         self.fid = create_filter(pid=self.pid)
-        self.aid = create_area(Decimal(value="1.1"), Decimal(value="1.2"), Decimal(value="1.3"), self.fid)
+        self.aid = create_area(Decimal(value="1.1"), Decimal(value="1.2"), 1, self.fid)
         self.area = Area.objects.get(id=self.aid)
         self.f = get_filter_by_id(self.fid)
 
@@ -1578,8 +1588,8 @@ class DeleteArea(TestCase):
         """
         Tests deleting one of many areas.
         """
-        aid2 = create_area(Decimal(value="2.1"), Decimal(value="2.2"), Decimal(value="2.3"), self.fid)
-        aid3 = create_area(Decimal(value="3.1"), Decimal(value="3.2"), Decimal(value="3.3"), self.fid)
+        aid2 = create_area(Decimal(value="2.1"), Decimal(value="2.2"), 2, self.fid)
+        aid3 = create_area(Decimal(value="3.1"), Decimal(value="3.2"), 3, self.fid)
         area2 = Area.objects.get(id=aid2)
         area3 = Area.objects.get(id=aid3)
         delete_area(aid=aid2, fid=self.fid)

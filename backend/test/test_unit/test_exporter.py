@@ -23,9 +23,10 @@ class ExportFilterTest(TestCase):
         mock_get_all_clips_matching_filter.return_value = []
         code, res = export_filter(data={FILTER_ID: 42})
         mock_get_filter_by_id.assert_called_once_with(fid=42)
-        mock_get_all_clips_matching_filter.assert_called_once_with(fid=42)
+        mock_get_all_clips_matching_filter.assert_called_with(fid=42)
         mock_os_aware.assert_called_once_with(
-            {'start_time': '2020-01-17 00:00:00+01:00', 'end_time': '2020-01-18 00:00:00+01:00', 'clips': []})
+            {'filter': {'start_time': '2020-01-17 00:00:00+01:00', 'end_time': '2020-01-18 00:00:00+01:00',
+                        'objects': []}, 'areas': [], 'clips': []})
         self.assertEqual(code, 200)
 
     def test_missing_parameter(self):

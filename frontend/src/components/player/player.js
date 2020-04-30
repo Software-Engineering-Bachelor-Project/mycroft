@@ -52,6 +52,9 @@ class Player extends Component {
           ref={(player) => {
             this.player = player;
           }}
+          fluid={false}
+          width="100%"
+          height="100%"
         >
           <source
             src={

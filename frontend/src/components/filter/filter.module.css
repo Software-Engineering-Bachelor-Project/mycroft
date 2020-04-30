@@ -1,0 +1,19 @@
+
+
+.menu {
+  position: absolute;
+  top: 1vh;
+  right: 16vw;
+  z-index: 1;
+}
+
+
+.updateButton{
+    position: absolute;
+    border: 2px solid;
+}
+
+
+.popoverContent{
+  white-space: pre-wrap;
+}

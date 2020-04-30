@@ -12,6 +12,7 @@ import Viewport from "./viewport/viewport";
 import MiniViewport from "./viewport/miniViewport";
 import Timeline from "./timeline/timeline";
 import Browser from "./browser/browser";
+import Filter from "./filter/filter"
 
 // TODO: Remove
 import Evoker from "./evoker";
@@ -31,6 +32,7 @@ class App extends Component {
         <Browser />
         <Timeline />
         <Evoker />
+        <Filter />
       </div>
     );
   }

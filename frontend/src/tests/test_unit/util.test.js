@@ -15,7 +15,14 @@ describe("parseFolders", () => {
       },
     ];
     expect(parseFolders(single)).toEqual({
-      42: new Folder(42, "test_folder", undefined, [], [1337, 21]),
+      42: new Folder(
+        42,
+        "test_folder",
+        undefined,
+        "home/user/",
+        [],
+        [1337, 21]
+      ),
     });
   });
 
@@ -55,10 +62,38 @@ describe("parseFolders", () => {
       },
     ];
     expect(parseFolders(multipleLevels)).toEqual({
-      42: new Folder(42, "test_folder", undefined, [1337, 7331], [1337, 21]),
-      21: new Folder(21, "test_folder3", 1337, [], [12]),
-      7331: new Folder(7331, "test_folder2", 42, [], [23]),
-      1337: new Folder(1337, "test_folder1", 42, [21], [22]),
+      42: new Folder(
+        42,
+        "test_folder",
+        undefined,
+        "home/user/",
+        [1337, 7331],
+        [1337, 21]
+      ),
+      21: new Folder(
+        21,
+        "test_folder3",
+        1337,
+        "home/user/test_folder/test_folder1/",
+        [],
+        [12]
+      ),
+      7331: new Folder(
+        7331,
+        "test_folder2",
+        42,
+        "home/user/test_folder/",
+        [],
+        [23]
+      ),
+      1337: new Folder(
+        1337,
+        "test_folder1",
+        42,
+        "home/user/test_folder/",
+        [21],
+        [22]
+      ),
     });
   });
 
@@ -94,10 +129,38 @@ describe("parseFolders", () => {
       },
     ];
     expect(parseFolders(multipleRoots)).toEqual({
-      42: new Folder(42, "test_folder", undefined, [1337], [1337, 21]),
-      1337: new Folder(1337, "test_folder1", 42, [], [22]),
-      21: new Folder(21, "another_test_folder", undefined, [7331], [12]),
-      7331: new Folder(7331, "test_folder2", 21, [], [23]),
+      42: new Folder(
+        42,
+        "test_folder",
+        undefined,
+        "home/user/",
+        [1337],
+        [1337, 21]
+      ),
+      1337: new Folder(
+        1337,
+        "test_folder1",
+        42,
+        "home/user/test_folder/",
+        [],
+        [22]
+      ),
+      21: new Folder(
+        21,
+        "another_test_folder",
+        undefined,
+        "home/user/",
+        [7331],
+        [12]
+      ),
+      7331: new Folder(
+        7331,
+        "test_folder2",
+        21,
+        "home/user/another_test_folder/",
+        [],
+        [23]
+      ),
     });
   });
 });

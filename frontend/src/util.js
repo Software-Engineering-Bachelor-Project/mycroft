@@ -56,6 +56,7 @@ export function parseFolders(folderResponse) {
       f.id,
       f.name,
       f.parent ? f.parent : undefined,
+      f.path,
       [],
       f.clip_set
     );
@@ -85,7 +86,7 @@ export function parseDatetimeString(dateStr) {
  * @return {string} The Date converted to a string.
  */
 export function parseDateToString(date) {
-  return date.toISOString()
+  return date.toISOString();
 }
 
 export function getDistance(origin, destination) {

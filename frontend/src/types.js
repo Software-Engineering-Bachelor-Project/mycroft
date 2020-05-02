@@ -115,12 +115,20 @@ export class Folder {
    * @param {Array[int]} children ID:s to children folders.
    * @param {Array[int]} clips ID:s to clips in the folder.
    */
-  constructor(id, name, parent = undefined, children = [], clips = []) {
+  constructor(
+    id,
+    name,
+    parent = undefined,
+    absolutePath = undefined,
+    children = [],
+    clips = []
+  ) {
     this.id = id;
     this.name = name;
     this.parent = parent;
     this.children = children;
     this.clips = clips;
+    this.absolutePath = absolutePath;
   }
 
   /**

@@ -33,6 +33,7 @@ FILTER = 'filter'
 CAMERA_IDS = 'camera_ids'
 CLIP_IDS = 'clip_ids'
 AREA_IDS = 'area_ids'
+FOLDER_IDS = 'folder_ids'
 
 INCLUDED_CLIP_IDS = "included_clip_ids"
 

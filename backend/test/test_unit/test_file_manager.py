@@ -16,6 +16,7 @@ class GetSourceFolders(TestCase):
         """
         self.rf = Folder.objects.create(path='home/user/', name='test_folder')
         self.sf = Folder.objects.create(path='home/user/test_folder/', name='test_subfolder')
+        self.p = Project.objects.create(name="test_project")
 
     @patch('backend.file_manager.get_subfolders_to_entries')
     def test_basic_call(self, mock_get_subfolders_to_entries):
@@ -23,10 +24,11 @@ class GetSourceFolders(TestCase):
         Test simple call.
         """
         mock_get_subfolders_to_entries.return_value = [self.sf]
-        code, res = get_source_folders(data={})
+        code, res = get_source_folders(data={PROJECT_ID: self.p.id})
         mock_get_subfolders_to_entries.assert_called_once()
         self.assertEqual(code, 200)
-        self.assertEqual(len(res), 1)
+        self.assertEqual(len(res[FOLDERS]), 1)
+        self.assertEqual(len(res[FOLDER_IDS]), 0)
 
 
 class GetFoldersTest(TestCase):
@@ -85,15 +87,16 @@ class GetFoldersTest(TestCase):
 
 class AddFoldersTest(TestCase):
 
+    @patch('backend.file_manager.get_source_folders')
     @patch('backend.file_manager.add_folder_to_project')
-    def test_simple_call(self, mock_add_folder_to_project):
+    def test_simple_call(self, mock_add_folder_to_project, mock_get_source_folders):
         """
         Test adding a folder to a project.
         """
-        code, res = add_folder({PROJECT_ID: 42, FOLDER_ID: 1337})
+        res = add_folder({PROJECT_ID: 42, FOLDER_ID: 1337})
         mock_add_folder_to_project.assert_called_once_with(fid=1337, pid=42)
-        self.assertEqual(code, 200)
-        self.assertEqual(res, {})
+        mock_get_source_folders.assert_called_once_with(data={PROJECT_ID: 42, FOLDER_ID: 1337})
+        self.assertEqual(res, mock_get_source_folders.return_value)
 
     def test_missing_parameter(self):
         """
@@ -106,15 +109,16 @@ class AddFoldersTest(TestCase):
 
 class RemoveFoldersTest(TestCase):
 
+    @patch('backend.file_manager.get_source_folders')
     @patch('backend.file_manager.delete_folder_from_project')
-    def test_simple_call(self, mock_delete_folder_from_project):
+    def test_simple_call(self, mock_delete_folder_from_project, mock_get_source_folders):
         """
         Test removing a folder to a project.
         """
-        code, res = remove_folder({PROJECT_ID: 42, FOLDER_ID: 1337})
+        res = remove_folder({PROJECT_ID: 42, FOLDER_ID: 1337})
         mock_delete_folder_from_project.assert_called_once_with(fid=1337, pid=42)
-        self.assertEqual(code, 200)
-        self.assertEqual(res, {})
+        mock_get_source_folders.assert_called_once_with(data={PROJECT_ID: 42, FOLDER_ID: 1337})
+        self.assertEqual(res, mock_get_source_folders.return_value)
 
     def test_missing_parameter(self):
         """

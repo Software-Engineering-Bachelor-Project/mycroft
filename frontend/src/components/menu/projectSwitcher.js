@@ -208,9 +208,9 @@ class ProjectSwitcher extends Component {
           {proj.id == this.props.projectID ? <i> OPENED</i> : ""}
           <span className={styles.projectSubtext}>
             <br />
-            Created: {new Date(proj.created).toDateString()}
+            Created: {proj.created.toDateString()}
             <br />
-            Last Modified: {new Date(proj.lastUpdated).toDateString()}
+            Last Modified: {proj.lastUpdated.toDateString()}
           </span>
 
           {/* Delete button */}

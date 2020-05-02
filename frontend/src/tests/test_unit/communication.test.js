@@ -357,6 +357,8 @@ describe("Communication reducer", () => {
   });
 
   it("should handle GET_PROJECTS", () => {
+    let tempDateString = "2018-09-06T16:45:59+02:00";
+    let tempDate = new Date(tempDateString);
     // Set up variables
     var data1 = {
       projects: [
@@ -364,16 +366,16 @@ describe("Communication reducer", () => {
           id: 4,
           filter_set: [1337],
           name: "test proj 1",
-          created: "datetime1",
-          last_updated: "datetime2",
+          created: tempDateString,
+          last_updated: tempDateString,
           folders: [5, 7, 8],
         },
         {
           id: 69,
           filter_set: [42],
           name: "test proj 2",
-          created: "datetime3",
-          last_updated: "datetime4",
+          created: tempDateString,
+          last_updated: tempDateString,
           folders: [],
         },
       ],
@@ -385,31 +387,24 @@ describe("Communication reducer", () => {
           id: 1337,
           filter_set: [39],
           name: "test proj 3",
-          created: "datetime5",
-          last_updated: "datetime6",
+          created: tempDateString,
+          last_updated: tempDateString,
           folders: [500, 725, 1016],
         },
       ],
     };
 
     var dict1 = {
-      4: new Project(
-        4,
-        "test proj 1",
-        "datetime1",
-        "datetime2",
-        [5, 7, 8],
-        1337
-      ),
-      69: new Project(69, "test proj 2", "datetime3", "datetime4", [], 42),
+      4: new Project(4, "test proj 1", tempDate, tempDate, [5, 7, 8], 1337),
+      69: new Project(69, "test proj 2", tempDate, tempDate, [], 42),
     };
 
     var dict2 = {
       1337: new Project(
         1337,
         "test proj 3",
-        "datetime5",
-        "datetime6",
+        tempDate,
+        tempDate,
         [500, 725, 1016],
         39
       ),

@@ -504,8 +504,8 @@ function handleResponse(state, reqType, status, data) {
             newList[p.id] = new Project(
               p.id,
               p.name,
-              p.created,
-              p.last_updated,
+              parseDatetimeString(p.created),
+              parseDatetimeString(p.last_updated),
               p.folders,
               p.filter_set[0]
             );

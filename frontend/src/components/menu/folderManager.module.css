@@ -1,0 +1,22 @@
+.folderList {
+  height: 30em;
+  overflow-y: scroll;
+}
+
+.folderItemName {
+  position: relative;
+  float: left;
+  max-width: 80%;
+}
+
+.folderPath {
+  font-size: small;
+  margin: 0;
+}
+
+.folderItemButton {
+  position: relative;
+  float: right;
+  margin-top: 0.5em;
+  width: 6em;
+}

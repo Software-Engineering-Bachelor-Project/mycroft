@@ -9,6 +9,8 @@ import {
   toggleShowObjectDetection,
   TOGGLE_PROJECT_SWITCHER,
   toggleShowProjectSwitcher,
+  TOGGLE_FOLDER_MANAGER,
+  toggleShowFolderManager,
 } from "../../state/stateMenu";
 
 describe("Menu reducer", () => {
@@ -85,6 +87,42 @@ describe("Menu reducer", () => {
     ).toEqual({
       ...initialState,
       showProjectSwitcher: false,
+    });
+  });
+
+  it("should handle TOGGLE_FOLDER_MANAGER", () => {
+    // Action constant
+    expect(TOGGLE_FOLDER_MANAGER).toEqual("TOGGLE_FOLDER_MANAGER");
+
+    // Action creator
+    expect(toggleShowFolderManager()).toEqual({
+      type: TOGGLE_FOLDER_MANAGER,
+    });
+
+    // Toggle from false to true
+    expect(
+      reducer(
+        { ...initialState, showFolderManager: false },
+        {
+          type: TOGGLE_FOLDER_MANAGER,
+        }
+      )
+    ).toEqual({
+      ...initialState,
+      showFolderManager: true,
+    });
+
+    // Toggle from true to false
+    expect(
+      reducer(
+        { ...initialState, showFolderManager: true },
+        {
+          type: TOGGLE_FOLDER_MANAGER,
+        }
+      )
+    ).toEqual({
+      ...initialState,
+      showFolderManager: false,
     });
   });
 });

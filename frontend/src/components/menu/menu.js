@@ -9,9 +9,11 @@ import DropdownButton from "react-bootstrap/DropdownButton";
 import {
   toggleShowObjectDetection,
   toggleShowProjectSwitcher,
+  toggleShowFolderManager,
 } from "../../state/stateMenu";
 import ObjectDetector from "./objectDetector";
 import ProjectSwitcher from "./projectSwitcher";
+import FolderManager from "./folderManager";
 
 /* -- Menu -- */
 class Menu extends Component {
@@ -20,7 +22,7 @@ class Menu extends Component {
   }
 
   manageSources() {
-    console.log("Manage Sources was clicked.");
+    this.props.toggleShowFolderManager();
   }
 
   exportJSON() {
@@ -73,6 +75,10 @@ class Menu extends Component {
           show={this.props.showProjectSwitcher}
           toggleShow={this.props.toggleShowProjectSwitcher}
         />
+        <FolderManager
+          show={this.props.showFolderManager}
+          toggleShow={this.props.toggleShowFolderManager}
+        />
       </div>
     );
   }
@@ -83,6 +89,7 @@ const mapStateToProps = (state) => {
   return {
     showObjectDetection: state.menu.showObjectDetection,
     showProjectSwitcher: state.menu.showProjectSwitcher,
+    showFolderManager: state.menu.showFolderManager,
   };
 };
 
@@ -91,6 +98,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     toggleShowObjectDetection: () => dispatch(toggleShowObjectDetection()),
     toggleShowProjectSwitcher: () => dispatch(toggleShowProjectSwitcher()),
+    toggleShowFolderManager: () => dispatch(toggleShowFolderManager()),
   };
 };
 

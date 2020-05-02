@@ -72,7 +72,7 @@ describe("Clip class", () => {
 describe("Folder class", () => {
   // Create folders
   var f1 = new Folder(1, "root");
-  var f2 = new Folder(2, "test1", 1, [], [1]);
+  var f2 = new Folder(2, "test1", 1, "test_path", [], [1]);
   var f3 = new Folder(3, "test2", 1);
   f1.children = [2, 3];
   var f4 = new Folder(4, "test3", 3);
@@ -84,12 +84,14 @@ describe("Folder class", () => {
     expect(f1.id).toEqual(1);
     expect(f1.name).toEqual("root");
     expect(f1.parent).toEqual(undefined);
+    expect(f1.absolutePath).toEqual(undefined);
     expect(f1.clips).toEqual([]);
 
     // Folder 2
     expect(f2.id).toEqual(2);
     expect(f2.name).toEqual("test1");
     expect(f2.parent).toEqual(1);
+    expect(f2.absolutePath).toEqual("test_path");
     expect(f2.children).toEqual([]);
     expect(f2.clips).toEqual([1]);
   });

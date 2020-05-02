@@ -19,12 +19,19 @@ VIDEO_FORMATS = ["mkv", "flv", "vob", "ogv", "ogg",
 
 def get_source_folders(data: dict) -> (int, dict):
     """
-    Gets all folders in the database that has a parent who is an entry.
+    Gets all folders in the database that has a parent who is an entry and a list of ids of folders in the project.
 
-    :return: Status code, all folders in the database with an entry parent.
+    :param data: Project id.
+    :return: Status code, all folders in the database with an entry parent and a list of ids of folders in the project.
     """
     folders = get_subfolders_to_entries()
-    return 200, os_aware({FOLDERS: serialize(folders)})
+    current_folders = []
+
+    pid = data.get(PROJECT_ID)
+    if pid != None:
+        p = get_project_by_id(pid=pid)
+        current_folders = [f.id for f in folders if f in p.folders.all()]
+    return 200, os_aware({FOLDERS: serialize(folders), FOLDER_IDS: current_folders})
 
 
 def get_folders(data: dict) -> (int, dict):
@@ -69,7 +76,7 @@ def add_folder(data: dict) -> (int, dict):
     except AssertionError:
         return 204, {}  # No content
 
-    return 200, {}
+    return get_source_folders(data=data)
 
 
 def remove_folder(data: dict) -> (int, dict):
@@ -90,7 +97,7 @@ def remove_folder(data: dict) -> (int, dict):
     except AssertionError:
         return 204, {}  # No content
 
-    return 200, {}
+    return get_source_folders(data=data)
 
 
 def build_file_structure(file_path: str) -> None:

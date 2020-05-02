@@ -8,6 +8,7 @@ import {
 
 // Types
 import { Project, Folder, Clip, Camera, Area, Resolution } from "../types";
+import { TARGET } from "./stateObjectDetector";
 
 /*
  * This file defines the state, reducers, and actions
@@ -931,9 +932,13 @@ const communicationReducer = (state = initialState, action) => {
       break;
 
     case DETECT_OBJECTS:
-      // TODO: Add clip_ids based on target. Needs information from filter.
+      let clipIDs =
+        action.target === TARGET.FILTER
+          ? state.filter.clips
+          : Object.keys(state.clips);
       url = URL_DETECT_OBJECTS;
-      body = { clip_ids: [], rate: action.rate };
+      console.log("CLIP_IDS", clipIDs);
+      body = { clip_ids: clipIDs, rate: action.rate };
       break;
 
     case GET_OD_PROGRESS:

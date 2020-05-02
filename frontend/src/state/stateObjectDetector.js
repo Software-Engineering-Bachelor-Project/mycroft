@@ -1,6 +1,6 @@
 export const TARGET = {
   PROJECT: "projects",
-  CLIPS: "clips",
+  FILTER: "filter",
 };
 
 /* -- ACTIONS -- */
@@ -11,7 +11,7 @@ export const TOGGLE_IS_RUNNING = "TOGGLE_IS_RUNNING";
 /* -- INITIAL STATE -- */
 export const initialState = {
   rate: 5,
-  target: TARGET.CLIPS,
+  target: TARGET.FILTER,
   isRunning: false,
 };
 

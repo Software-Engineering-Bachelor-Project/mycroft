@@ -56,6 +56,7 @@ export function parseFolders(folderResponse) {
       f.id,
       f.name,
       f.parent ? f.parent : undefined,
+      f.path,
       [],
       f.clip_set
     );

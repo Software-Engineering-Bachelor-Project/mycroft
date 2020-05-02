@@ -98,6 +98,7 @@ export const initialState = {
   sourceFolders: {},
   cameras: {},
   clips: {},
+  currentSourceFolders: [],
   filter: {
     filterID: -1,
 
@@ -760,7 +761,14 @@ function handleResponse(state, reqType, status, data) {
           return {
             ...state,
             sourceFolders: parseFolders(data.folders),
+            currentSourceFolders: data.folder_ids,
           };
+        case 204:
+          e = "no project with specified ID";
+          break;
+        case 400:
+          e = "'project_id' parameter was missing from request";
+          break;
         default:
           e = "unknown reason";
       }
@@ -771,7 +779,11 @@ function handleResponse(state, reqType, status, data) {
     case REMOVE_FOLDER:
       switch (status) {
         case 200:
-          return state;
+          return {
+            ...state,
+            sourceFolders: parseFolders(data.folders),
+            currentSourceFolders: data.folder_ids,
+          };
         case 204:
           e = "no project with specified ID";
           break;
@@ -1011,6 +1023,7 @@ const communicationReducer = (state = initialState, action) => {
     case GET_SOURCE_FOLDERS:
       url = URL_GET_SOURCE_FOLDERS;
       body = {};
+      if (state.projectID != -1) body["project_id"] = state.projectID;
       break;
 
     case ADD_FOLDER:
@@ -1034,7 +1047,6 @@ const communicationReducer = (state = initialState, action) => {
           ? state.filter.clips
           : Object.keys(state.clips);
       url = URL_DETECT_OBJECTS;
-      console.log("CLIP_IDS", clipIDs);
       body = { clip_ids: clipIDs, rate: action.rate };
       break;
 

@@ -92,7 +92,7 @@ describe("Object detector reducer", () => {
     expect(
       reducer(initialState, {
         type: SET_TARGET,
-        payload: TARGET.CLIPS,
+        payload: TARGET.FILTER,
       })
     ).toEqual(initialState);
   });

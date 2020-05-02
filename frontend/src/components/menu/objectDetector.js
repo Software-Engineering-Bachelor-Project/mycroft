@@ -6,6 +6,11 @@ import {
   toggleIsRunning,
   TARGET,
 } from "../../state/stateObjectDetector";
+import {
+  detectObjects,
+  getODProgress,
+  deleteODProgress,
+} from "../../state/stateCommunication";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
@@ -21,6 +26,7 @@ class ObjectDetector extends Component {
     this.handleRateChange = this.handleRateChange.bind(this);
     this.handleTargetChange = this.handleTargetChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleFinished = this.handleFinished.bind(this);
   }
 
   handleRateChange(event) {
@@ -32,33 +38,39 @@ class ObjectDetector extends Component {
   }
 
   handleSubmit(event) {
+    // Make detection request.
     this.props.toggleIsRunning();
+    this.props.detectObjects(this.props.rate, this.props.target);
 
-    console.log(this.props);
-
-    /*
-    Temp 
-    TODO: 
-        Make object detection request.
-        Do progress requests.
-        Close modal when progress is 100%.
-    */
-
-    // Close modal
-    setTimeout(() => {
-      this.props.toggleShow();
-      this.props.toggleIsRunning();
+    // Update progress bar until detection is finished.
+    let id = setInterval(() => {
+      this.props.getODProgress();
+      this.handleFinished(id);
     }, 1000);
+  }
+
+  handleFinished(intervalID) {
+    if (this.props.currentProgress >= 100) {
+      // Stop requesting progress
+      clearInterval(intervalID);
+
+      // Close modal
+      this.props.deleteODProgress();
+      this.props.toggleShow();
+      setTimeout(() => this.props.toggleIsRunning(), 500);
+    }
   }
 
   render() {
     return (
       <Modal
         show={this.props.show}
-        onHide={() => this.props.toggleShow()}
+        onHide={() =>
+          this.props.isRunning ? () => {} : this.props.toggleShow()
+        }
         centered
       >
-        <Modal.Header closeButton>
+        <Modal.Header closeButton={!this.props.isRunning}>
           {" "}
           <Modal.Title>Object detection</Modal.Title>{" "}
         </Modal.Header>
@@ -73,6 +85,7 @@ class ObjectDetector extends Component {
                 type="number"
                 defaultValue={this.props.rate}
                 onChange={this.handleRateChange}
+                disabled={this.props.isRunning}
               />
               <Form.Text className="text-muted">
                 Seconds between analyzed frames.
@@ -85,13 +98,21 @@ class ObjectDetector extends Component {
             <ToggleButtonGroup
               name="target"
               type="radio"
-              defaultValue={TARGET.CLIPS}
+              defaultValue={this.props.target}
               onChange={this.handleTargetChange}
             >
-              <ToggleButton variant="light" value={TARGET.CLIPS}>
+              <ToggleButton
+                variant="light"
+                value={TARGET.FILTER}
+                disabled={this.props.isRunning}
+              >
                 All clips in filter
               </ToggleButton>
-              <ToggleButton variant="light" value={TARGET.PROJECT}>
+              <ToggleButton
+                variant="light"
+                value={TARGET.PROJECT}
+                disabled={this.props.isRunning}
+              >
                 All clips in project
               </ToggleButton>
             </ToggleButtonGroup>
@@ -135,6 +156,9 @@ const mapDispatchToProps = (dispatch) => {
     setRate: (newRate) => dispatch(setRate(newRate)),
     setTarget: (newTarget) => dispatch(setTarget(newTarget)),
     toggleIsRunning: () => dispatch(toggleIsRunning()),
+    detectObjects: (rate, target) => dispatch(detectObjects(rate, target)),
+    getODProgress: () => dispatch(getODProgress()),
+    deleteODProgress: () => dispatch(deleteODProgress()),
   };
 };
 

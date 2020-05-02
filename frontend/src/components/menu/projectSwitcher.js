@@ -260,10 +260,9 @@ class ProjectSwitcher extends Component {
     return (
       <Modal
         show={this.props.show}
-        onHide={this.props.toggleShow}
+        onHide={this.hasOpenProject() ? this.props.toggleShow : () => {}}
         onShow={this.props.getProjects}
         centered
-        backdrop={this.hasOpenProject() ? true : "static"}
       >
         <Modal.Header closeButton={this.hasOpenProject()}>
           {" "}

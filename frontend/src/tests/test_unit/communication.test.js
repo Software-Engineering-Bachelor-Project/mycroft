@@ -815,7 +815,6 @@ describe("Communication reducer", () => {
       filter: { ...initialState.filter, resolutions: { 1: tempResolution } },
     };
 
-
     let tempStartDate = new Date("2018-09-06T16:45:59+02:00");
     let tempEndDate = new Date("2018-09-06T16:46:50+02:00");
 

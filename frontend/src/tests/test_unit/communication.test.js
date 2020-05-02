@@ -832,7 +832,14 @@ describe("Communication reducer", () => {
     ).toEqual({
       ...testState,
       folders: {
-        42: new Folder(42, "test_folder", undefined, [], [1337, 21]),
+        42: new Folder(
+          42,
+          "test_folder",
+          undefined,
+          "home/user/",
+          [],
+          [1337, 21]
+        ),
       },
     });
 
@@ -875,13 +882,22 @@ describe("Communication reducer", () => {
               parent: null,
             },
           ],
+          folder_ids: [42],
         })
       )
     ).toEqual({
       ...initialState,
       sourceFolders: {
-        42: new Folder(42, "test_folder", undefined, [], [1337, 21]),
+        42: new Folder(
+          42,
+          "test_folder",
+          undefined,
+          "home/user/",
+          [],
+          [1337, 21]
+        ),
       },
+      currentSourceFolders: [42],
     });
 
     // 404
@@ -901,8 +917,35 @@ describe("Communication reducer", () => {
 
     // Add folder
     expect(
-      reducer(initialState, requestResponse(ADD_FOLDER, 200, { folder_id: 42 }))
-    ).toEqual(initialState);
+      reducer(
+        initialState,
+        requestResponse(ADD_FOLDER, 200, {
+          folders: [
+            {
+              id: 42,
+              clip_set: [1337, 21],
+              path: "home/user/",
+              name: "test_folder",
+              parent: null,
+            },
+          ],
+          folder_ids: [42],
+        })
+      )
+    ).toEqual({
+      ...initialState,
+      sourceFolders: {
+        42: new Folder(
+          42,
+          "test_folder",
+          undefined,
+          "home/user/",
+          [],
+          [1337, 21]
+        ),
+      },
+      currentSourceFolders: [42],
+    });
 
     // 204
     expect(
@@ -933,9 +976,33 @@ describe("Communication reducer", () => {
     expect(
       reducer(
         initialState,
-        requestResponse(REMOVE_FOLDER, 200, { folder_id: 42 })
+        requestResponse(REMOVE_FOLDER, 200, {
+          folders: [
+            {
+              id: 42,
+              clip_set: [1337, 21],
+              path: "home/user/",
+              name: "test_folder",
+              parent: null,
+            },
+          ],
+          folder_ids: [42],
+        })
       )
-    ).toEqual(initialState);
+    ).toEqual({
+      ...initialState,
+      sourceFolders: {
+        42: new Folder(
+          42,
+          "test_folder",
+          undefined,
+          "home/user/",
+          [],
+          [1337, 21]
+        ),
+      },
+      currentSourceFolders: [42],
+    });
 
     // 204
     expect(

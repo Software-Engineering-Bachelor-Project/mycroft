@@ -15,14 +15,17 @@ class GetSourceFolders(TestCase):
         self.sid1 = create_subfolder(parent_fid=self.rid, name='test_subfolder')
         self.sid2 = create_subfolder(parent_fid=self.rid, name='another_test_subfolder')
         self.sid3 = create_subfolder(parent_fid=self.sid1, name='third_test_subfolder')
+        self.pid = create_project(name="test_project")
+        add_folder_to_project(self.sid1, self.pid)
 
     def test_basic_call(self):
         """
         Test simple call.
         """
-        code, res = get_source_folders(data={})
+        code, res = get_source_folders(data={PROJECT_ID: self.pid})
         self.assertEqual(code, 200)
         self.assertEqual(len(res[FOLDERS]), 2)
+        self.assertEqual(len(res[FOLDER_IDS]), 1)
 
 
 class GetFoldersTest(TestCase):
@@ -70,7 +73,7 @@ class AddFoldersTest(TestCase):
         """
         code, res = add_folder({PROJECT_ID: self.pid, FOLDER_ID: self.fid})
         self.assertEqual(code, 200)
-        self.assertEqual(res, {})
+        self.assertEqual(res, {FOLDERS: [], FOLDER_IDS: []})
 
     def test_bad_file_path(self):
         """
@@ -112,7 +115,7 @@ class RemoveFoldersTest(TestCase):
         """
         code, res = remove_folder({PROJECT_ID: self.pid, FOLDER_ID: self.fid})
         self.assertEqual(code, 200)
-        self.assertEqual(res, {})
+        self.assertEqual(res, {FOLDERS: [], FOLDER_IDS: []})
 
     def test_bad_file_path(self):
         """

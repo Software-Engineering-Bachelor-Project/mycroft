@@ -1,7 +1,16 @@
 /* -- THIS FILE TESTS THE UTIL FILE .. */
 
 import { Folder } from "../../types";
-import { parseFolders } from "../../util";
+import {
+  parseFolders,
+  START_TIME,
+  END_TIME,
+  MIN_FRAME_RATE,
+  WHITELISTED_RESOLUTIONS,
+  INCLUDED_CLIP_IDS,
+  EXCLUDED_CLIP_IDS,
+  OBJECTS,
+} from "../../util";
 
 describe("parseFolders", () => {
   it("should handle single folder", () => {
@@ -99,5 +108,17 @@ describe("parseFolders", () => {
       21: new Folder(21, "another_test_folder", undefined, [7331], [12]),
       7331: new Folder(7331, "test_folder2", 21, [], [23]),
     });
+  });
+});
+
+describe("filter constants", () => {
+  it("should have all filter constants correctly set", () => {
+    expect(START_TIME).toEqual("start_time");
+    expect(END_TIME).toEqual("end_time");
+    expect(MIN_FRAME_RATE).toEqual("min_framerate");
+    expect(WHITELISTED_RESOLUTIONS).toEqual("whitelisted_resolutions");
+    expect(INCLUDED_CLIP_IDS).toEqual("included_clip_ids");
+    expect(EXCLUDED_CLIP_IDS).toEqual("excluded_clip_ids");
+    expect(OBJECTS).toEqual("classes");
   });
 });

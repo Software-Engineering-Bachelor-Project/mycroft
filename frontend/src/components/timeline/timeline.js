@@ -268,6 +268,7 @@ class Timeline extends Component {
    */
   renderSliderContent() {
     if (this.props.viewportMode) {
+      // Map-mode
       return (
         <div
           className={styles.slider}
@@ -287,7 +288,7 @@ class Timeline extends Component {
         </div>
       );
     }
-    // TODO:: draw the content of slider when in Player-mode.
+    // Player-mode
     return (
       <div
         className={styles.slider}

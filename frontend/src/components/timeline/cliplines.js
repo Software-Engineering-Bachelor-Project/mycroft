@@ -54,6 +54,9 @@ class Cliplines extends Component {
     this.getLeftPosition = this.getLeftPosition.bind(this);
     this.getWidthOfClip = this.getWidthOfClip.bind(this);
     this.handleClipSelection = this.handleClipSelection.bind(this);
+
+    // Updates scale when switching to Player-mode
+    this.props.zoom(undefined, this.props.viewportMode);
   }
 
   /**
@@ -91,14 +94,6 @@ class Cliplines extends Component {
       ((end - clipStartTime.getTime()) / (60 * 60 * 1000) / this.props.scale) *
       100
     );
-  }
-
-  /**
-   * This function is called before render().
-   * It updates scale when switching to Player-mode.
-   */
-  componentWillMount() {
-    this.props.zoom(undefined, this.props.viewportMode);
   }
 
   /**

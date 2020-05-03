@@ -13,9 +13,6 @@ import {
   INSPECTOR_MODE_CLIP,
 } from "../../state/stateBrowser";
 
-// import class
-//import { Camera, Clip } from "../../types";
-
 // Color list for clips
 const COLOR_LIST = [
   /*"#62b8d9", //blue [light]
@@ -96,12 +93,21 @@ class Cliplines extends Component {
     );
   }
 
-  // Update scale when switching to Player-mode
+  /**
+   * This function is called before render().
+   * It updates scale when switching to Player-mode.
+   */
   componentWillMount() {
     this.props.zoom(undefined, this.props.viewportMode);
   }
 
-  // Play clip callback
+  /**
+   * This function handles the onClick event on each clipline.
+   * The clip will be played, also the right tab will be selected
+   * in the browser, with the inspector of the clip open.
+   *
+   * @param {int} id
+   */
   handleClipSelection(id) {
     this.props.playClip(id);
     setTimeout(() => this.props.play(), 100);

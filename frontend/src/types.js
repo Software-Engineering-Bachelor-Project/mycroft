@@ -9,7 +9,7 @@ export class Project {
    * @param {string} name The name of this project.
    * @param {Date} created A Date object representing when this project was created.
    * @param {Date} lastUpdated A Date object representing when this project was last updated.
-   * @param {dict[int: Folder]} folders The source folders of this project, mapped in a dictionary by their own IDs.
+   * @param {Array} folders The id:s of the source folders of this project.
    * @param {int} filter The filter's id.
    */
   constructor(id, name, created, lastUpdated, folders, filter) {
@@ -19,16 +19,6 @@ export class Project {
     this.lastUpdated = lastUpdated;
     this.folders = folders;
     this.filter = filter;
-  }
-
-  /**
-   *
-   * Returns whether or not this camera contains any clips.
-   *
-   * @return {boolean} True if this camera does not contain any clips.
-   */
-  isEmpty() {
-    return Object.keys(this.clips).length == 0;
   }
 }
 
@@ -148,7 +138,7 @@ export class Folder {
   /**
    * Checks whether or not this folder is a source folder.
    * Should be true if the parent is not contained in the supplied project set.
-   * 
+   *
    * @param {Object[int, Folder]} folders The set of folders in the current project.
    * @return {boolean} true if this folder is a source folder.
    */

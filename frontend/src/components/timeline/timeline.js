@@ -167,6 +167,7 @@ class Timeline extends Component {
     this.renderContentOfTopbar = this.renderContentOfTopbar.bind(this);
     this.renderSliderContent = this.renderSliderContent.bind(this);
     this.renderTimemarker = this.renderTimemarker.bind(this);
+    this.getCursorPos = this.getCursorPos.bind(this);
   }
 
   /**
@@ -322,11 +323,13 @@ class Timeline extends Component {
    * Render timemarker
    */
   renderTimemarker() {
+    console.log(this.props.position);
     return (
       <div
         className={styles.timemarker}
         style={{
-          left: "50%",
+          left: this.getCursorPos() + "%",
+          //left: "50%",
         }}
       >
         {/* icon */}
@@ -341,6 +344,27 @@ class Timeline extends Component {
         {/* timemarker */}
         <div className={styles.linemarker}></div>
       </div>
+    );
+  }
+
+  /**
+   * Calculates the cursor position for timemarker.
+   * Returns the result in percents.
+   */
+  getCursorPos() {
+    if (!this.props.clipID) return 0;
+
+    if (!(this.props.clipID in this.props.clips)) return 0;
+
+    var clip = this.props.clips[this.props.clipID];
+    var timeOfClip = clip.startTime.getTime() + this.props.position * 1000;
+
+    if (timeOfClip < this.props.gbStartTime.getTime()) return 0;
+
+    return (
+      ((timeOfClip - this.props.gbStartTime.getTime()) /
+        this.props.gbTimeSpan) *
+      100
     );
   }
 
@@ -387,6 +411,12 @@ const mapStateToProps = (state) => {
     gbTimeSpan: state.timeline.glassbox.timeSpan,
 
     viewportMode: state.viewport.mode,
+
+    //Player
+    clipID: state.player.clipID,
+    position: state.player.position,
+
+    clips: state.com.clips,
   };
 };
 

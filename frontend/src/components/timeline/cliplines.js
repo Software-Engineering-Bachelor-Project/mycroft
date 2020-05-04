@@ -140,7 +140,7 @@ class Cliplines extends Component {
                     left:
                       this.getLeftPosition(this.props.clips[clipID].startTime) +
                       "%",
-                    top: 15 + (15 + 12) * i + "px",
+                    top: 25 + (15 + 12) * i + "px",
                   }}
                   onClick={() => this.handleClipSelection(clipID)}
                 ></div>

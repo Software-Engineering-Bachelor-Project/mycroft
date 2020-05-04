@@ -135,6 +135,7 @@ class GetCamerasTest(TestCase):
         self.et = timezone.datetime(2020, 1, 18, tzinfo=pytz.timezone(settings.TIME_ZONE))
         self.rid = create_root_folder(path="/home/user/", name="test_folder")
         self.sid = create_subfolder(parent_fid=self.rid, name="test_subfolder")
+
         mock_create_hash_sum.return_value = '1234'
         create_clip(fid=self.rid, clip_name="test_clip1", video_format="tvf", start_time=self.st,
                     end_time=self.et, latitude=self.lat, longitude=self.lon, width=256, height=240,
@@ -143,6 +144,7 @@ class GetCamerasTest(TestCase):
         create_clip(fid=self.sid, clip_name="test_clip2", video_format="tvf", start_time=self.st,
                     end_time=self.et, latitude=self.lat, longitude=self.lon, width=256, height=240,
                     frame_rate=42.0, camera_name=self.cm_name1)
+        mock_create_hash_sum.return_value = '123456'
         create_clip(fid=self.sid, clip_name="test_clip3", video_format="tvf", start_time=self.st,
                     end_time=self.et, latitude=self.lon, longitude=self.lat, width=256, height=240,
                     frame_rate=42.0, camera_name=self.cm_name2)
@@ -155,6 +157,38 @@ class GetCamerasTest(TestCase):
         code, res = get_cameras(data={PROJECT_ID: self.pid})
         self.assertEqual(code, 200)
         self.assertEqual(len(res[CAMERAS]), 2)
+
+    @patch('backend.database_wrapper.create_hash_sum')
+    def test_camera_has_only_clips_in_project(self, mock_create_hash_sum):
+        """
+        Tests that camera only contains clip that is in current project.
+        """
+        pid2 = create_project(name="test_project2")
+        rid2 = create_root_folder(path="/home/user/", name="test_folder2")
+
+        mock_create_hash_sum.return_value = '1234567'
+        create_clip(fid=rid2, clip_name="test_clip4", video_format="tvf", start_time=self.st,
+                    end_time=self.et, latitude=self.lat, longitude=self.lon, width=256, height=240,
+                    frame_rate=42.0, camera_name=self.cm_name1)
+        mock_create_hash_sum.return_value = '12345678'
+        create_clip(fid=rid2, clip_name="test_clip5", video_format="tvf", start_time=self.st,
+                    end_time=self.et, latitude=self.lat, longitude=self.lon, width=256, height=240,
+                    frame_rate=42.0, camera_name=self.cm_name2)
+        mock_create_hash_sum.return_value = '123456789'
+        create_clip(fid=rid2, clip_name="test_clip6", video_format="tvf", start_time=self.st,
+                    end_time=self.et, latitude=self.lat, longitude=self.lon, width=256, height=240,
+                    frame_rate=42.0, camera_name=self.cm_name2)
+        add_folder_to_project(fid=rid2, pid=pid2)
+
+        code, res = get_cameras(data={PROJECT_ID: pid2})
+        self.assertEqual(len(res[CAMERAS]), 2)
+        self.assertEqual(len(res[CAMERAS][0]['clip_set']), 1)
+        self.assertEqual(len(res[CAMERAS][1]['clip_set']), 2)
+
+        code, res = get_cameras(data={PROJECT_ID: self.pid})
+        self.assertEqual(len(res[CAMERAS]), 2)
+        self.assertEqual(len(res[CAMERAS][0]['clip_set']), 2)
+        self.assertEqual(len(res[CAMERAS][1]['clip_set']), 1)
 
     def test_non_existing_project(self):
         """

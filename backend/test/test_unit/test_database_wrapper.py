@@ -1292,6 +1292,7 @@ class GetAllCamerasInProject(BaseTestCases.ClipTest):
     def setUp(self) -> None:
         super().setUp()
         self.pid = create_project(name="test_project")
+
         add_folder_to_project(self.fid, self.pid)
 
     def test_one_clip(self):

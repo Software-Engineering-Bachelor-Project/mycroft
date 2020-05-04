@@ -215,7 +215,6 @@ def get_filter(data: dict) -> (int, dict):
     except KeyError:
         return 400, {}  # Bad request
 
-
     found_filter = dbw.get_filter_by_id(fid)
     if not found_filter:
         return 204, {}  # No content
@@ -226,4 +225,23 @@ def get_filter(data: dict) -> (int, dict):
     if found_filter.end_time == timezone.datetime.max.replace(tzinfo=utc):
         found_filter.end_time = None
 
-    return 200, os_aware({FILTER: serialize(found_filter)})
+    res = modify_objects_in_classes({FILTER: serialize(found_filter)})
+
+    return 200, os_aware(res)
+
+
+def modify_objects_in_classes(data: dict) -> dict:
+    """
+    Modifies the classes list from containing id:s to object class (str).
+
+    :param data: dict with filter.
+    :return: dict with updated filter classes.
+    """
+    classes = []
+    for ocid in data[FILTER]['classes']:
+        oc = dbw.get_object_class_by_id(ocid=ocid)
+        classes.append(oc.object_class)
+
+    data[FILTER]['classes'] = classes
+
+    return data

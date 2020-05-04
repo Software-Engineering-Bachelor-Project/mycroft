@@ -76,6 +76,13 @@ class BaseTestCases:
             self.st = timezone.now() - timezone.timedelta(hours=1)
             self.et = timezone.now()
 
+    class ObjectClassTest(TestCase):
+        """
+        Create an object class.
+        """
+        def setUp(self) -> None:
+            self.ocid = ObjectClass.objects.get_or_create(object_class='car')[0].id
+
     class ObjectDetectionTest(TestCase):
         @patch('backend.database_wrapper.create_hash_sum')
         def setUp(self, mock_create_hash_sum) -> None:
@@ -1069,6 +1076,22 @@ class ModifyFilterTest(BaseTestCases.FilterTest):
         modify_filter(fid=self.fid)
         new = get_project_by_id(self.pid).last_updated
         self.assertNotEqual(old, new)
+
+
+class GetObjectClassByIdTest(BaseTestCases.ObjectClassTest):
+    def test_existing_ocid(self):
+        """
+        Test getting an object class by id.
+        """
+        oc = get_object_class_by_id(ocid=self.ocid)
+        self.assertEqual(oc.id, self.ocid)
+        self.assertEqual(oc.object_class, 'car')
+
+    def test_nonexistent_ocid(self):
+        """
+        Make sure that get function return None for object classes that doesn't exist.
+        """
+        self.assertIsNone(get_object_class_by_id(ocid=42))
 
 
 class GetObjectsInCameraTest(BaseTestCases.ObjectDetectionTest):

@@ -29,7 +29,6 @@ import {
 } from "../state/stateCommunication";
 
 import { playClip, jump, play, pause } from "../state/statePlayer";
-import { switchMode } from "../state/stateViewport";
 import { changeMode, INSPECTOR_MODE_CAMERA } from "../state/stateBrowser";
 
 /* -- Evoker -- */
@@ -256,14 +255,6 @@ class Evoker extends Component {
 
           <Dropdown.Item
             onClick={() => {
-              return this.props.switchMode();
-            }}
-          >
-            {" "}
-            switchMode{" "}
-          </Dropdown.Item>
-          <Dropdown.Item
-            onClick={() => {
               return this.props.play();
             }}
           >
@@ -346,7 +337,6 @@ const mapDispatchToProps = (dispatch) => {
     getODProgress: () => dispatch(getODProgress()),
     deleteODProgress: () => dispatch(deleteODProgress()),
     playClip: (x) => dispatch(playClip(x)),
-    switchMode: () => dispatch(switchMode()),
     play: () => dispatch(play()),
     pause: () => dispatch(pause()),
     jump: (x) => dispatch(jump(x)),

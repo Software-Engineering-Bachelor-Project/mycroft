@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import Button from "react-bootstrap/Button";
 
 // CSS
 import styles from "./viewport.module.css";
@@ -8,6 +9,9 @@ import styles from "./viewport.module.css";
 import Player from "../player/player";
 import Map from "../map/map";
 
+//import functions
+import { switchMode } from "../../state/stateViewport";
+
 /* -- Viewport -- */
 class Viewport extends Component {
   render() {
@@ -15,6 +19,17 @@ class Viewport extends Component {
       <div className={styles.viewport}>
         {/* viewportMode decides which component Viewport should render */}
         {this.props.viewportMode ? <Map /> : <Player />}
+
+        {/* Button for switching viewport mode */}
+        <Button
+          onClick={() => {
+            return this.props.switchMode();
+          }}
+          className={styles.switchButton}
+          variant="primary"
+        >
+          Switch mode
+        </Button>
       </div>
     );
   }
@@ -29,7 +44,9 @@ const mapStateToProps = (state) => {
 
 // Forward Redux's dispatch function to React props
 const mapDispatchToProps = (dispatch) => {
-  return {};
+  return {
+    switchMode: () => dispatch(switchMode()),
+  };
 };
 
 // Connect Redux with React

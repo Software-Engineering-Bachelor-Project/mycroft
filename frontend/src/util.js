@@ -4,9 +4,9 @@
  */
 
 import { Folder } from "./types";
-import { requestsInProgress } from "./state/stateCommunication";
 import store from "./state/state";
 import {
+  requestsInProgress,
   getFolders,
   getClips,
   getCameras,
@@ -54,7 +54,7 @@ export function makePOST(url, opts = {}, onResponse) {
 }
 
 /**
- * Syncs a project by calling requests.
+ * Syncs a project by making requests.
  */
 export function syncProject() {
   store.dispatch(getFolders());

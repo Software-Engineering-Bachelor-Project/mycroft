@@ -622,7 +622,7 @@ function handleResponse(state, reqType, status, data) {
 
           // Update filterID
           let newFilterID = state.filter.filterID;
-          if (state.projectID != -1)
+          if (newList[state.projectID])
             newFilterID = newList[state.projectID].filter;
 
           return {

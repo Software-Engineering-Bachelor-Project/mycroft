@@ -20,6 +20,8 @@ import {
   renameProject,
 } from "../../state/stateCommunication";
 
+import { doActionsInOrder } from "../../util";
+
 /* -- Object detector -- */
 class ProjectSwitcher extends Component {
   constructor(props) {
@@ -53,34 +55,32 @@ class ProjectSwitcher extends Component {
 
   // Call this method to delete a project
   deleteProject(id) {
-    this.props.deleteProject(id);
-    // TODO: Wait for deleteProject to finish
-    setTimeout(() => this.props.getProjects(), 1000);
+    doActionsInOrder([
+      () => this.props.deleteProject(id),
+      () => this.props.getProjects(),
+    ]);
   }
 
   // Call this method to rename a project
   renameProject(id, name) {
     if (name.length <= 0) return;
 
-    this.props.renameProject(id, name);
-    // TODO: Wait for renameProject to finish
-    setTimeout(() => {
-      this.props.getProjects();
-      this.toggle(id);
-    }, 1000);
+    doActionsInOrder([
+      () => this.props.renameProject(id, name),
+      () => this.props.getProjects(),
+      () => this.toggle(id),
+    ]);
   }
 
   // Call this method to create a new project
   newProject(name) {
     if (name.length <= 0) return;
 
-    this.props.newProject(name);
-
-    // TODO: Wait for newProject to finish
-    setTimeout(() => {
-      this.props.getProjects();
-      this.props.toggleShow();
-    }, 1000);
+    doActionsInOrder([
+      () => this.props.newProject(name),
+      () => this.props.getProjects(),
+      () => this.props.toggleShow(),
+    ]);
   }
 
   // This method decides what characters are allowed in project names

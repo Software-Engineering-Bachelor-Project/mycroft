@@ -8,6 +8,7 @@ import DropdownButton from "react-bootstrap/DropdownButton";
 import markerIcon from "../../images/timemarker.png";
 
 import { zoom } from "../../state/stateTimeline";
+import { jump } from "../../state/statePlayer";
 
 import styles from "./timeline.module.css";
 
@@ -167,7 +168,19 @@ class Timeline extends Component {
     this.renderContentOfTopbar = this.renderContentOfTopbar.bind(this);
     this.renderSliderContent = this.renderSliderContent.bind(this);
     this.renderTimemarker = this.renderTimemarker.bind(this);
-    this.getCursorPos = this.getCursorPos.bind(this);
+    this.getTimemarkerPos = this.getTimemarkerPos.bind(this);
+    this.setTimemarker = this.setTimemarker.bind(this);
+    this.grabTimemarker = this.grabTimemarker.bind(this);
+    this.moveTimemarker = this.moveTimemarker.bind(this);
+    this.updateTimemarker = this.updateTimemarker.bind(this);
+    this.updateTimemarker = this.updateTimemarker.bind(this);
+
+    // state variables
+    this.state = {
+      mouseDownXPos: 0,
+      mouseDownActive: false,
+      mouseMoveXPos: 0,
+    };
   }
 
   /**
@@ -297,11 +310,15 @@ class Timeline extends Component {
     // Player-mode
     return (
       <div
+        id="playerSliderDIV"
         className={styles.slider}
         style={{
           opacity: "0.7",
           width: this.getWidthOfTimeline() + "%",
         }}
+        onMouseMove={this.moveTimemarker}
+        onMouseUp={this.updateTimemarker}
+        onMouseLeave={this.updateTimemarker}
       >
         {/* Creates a line for each timestamp and draws out hours*/}
         {this.renderTimestamps(
@@ -323,37 +340,103 @@ class Timeline extends Component {
    * Render timemarker
    */
   renderTimemarker() {
-    console.log(this.props.position);
     return (
       <div
+        id="timemarkerDIV"
         className={styles.timemarker}
         style={{
-          left: this.getCursorPos() + "%",
-          //left: "50%",
+          left: this.getTimemarkerPos() + "%",
         }}
       >
         {/* icon */}
-        <div>
+        <div id="iconDIV">
           <img
             className={styles.markerIcon}
             src={markerIcon}
             alt="markerIcon"
+            draggable="false"
+            onMouseDown={this.grabTimemarker}
           />
         </div>
 
-        {/* timemarker */}
-        <div className={styles.linemarker}></div>
+        {/* linemarker */}
+        <div id="linemarkerDIV" className={styles.linemarker}></div>
       </div>
     );
   }
 
   /**
-   * Calculates the cursor position for timemarker.
-   * Returns the result in percents.
+   * Timemarker:
+   * Handle timemarker moving (mouse move).
+   * Update local state variables.
+   *
+   * @param {event} e mouse event
    */
-  getCursorPos() {
-    if (!this.props.clipID) return 0;
+  moveTimemarker(e) {
+    if (this.state.mouseDownActive) {
+      this.setState({ mouseMoveXPos: e.clientX });
+    }
+  }
 
+  /**
+   * Timemarker:
+   * Handle timemarker release (mouse up).
+   * Update local state variables.
+   *
+   * @param {event} e mouse event
+   */
+  updateTimemarker(e) {
+    if (this.state.mouseDownActive) {
+      this.setTimemarker(e);
+      this.setState({
+        mouseDownActive: false,
+        mouseMoveXPos: 0,
+      });
+    }
+  }
+
+  /**
+   * Timemarker:
+   * Handle timemarker click (mouse down).
+   * Update local state variables.
+   *
+   * @param {event} e mouse event
+   */
+  grabTimemarker(e) {
+    this.setState({
+      mouseDownXPos: e.clientX,
+      mouseMoveXPos: e.clientX,
+      mouseDownActive: true,
+    });
+  }
+
+  /**
+   * Moves the timemarker when updateTimemarker is called.
+   * Calls the jump function in statePlayer.js to change position in clip.
+   *
+   * @param {event} e mouse event
+   */
+  setTimemarker(e) {
+    var mouseUpXPos = e.clientX;
+    var totalWidth = playerSliderDIV.clientWidth;
+
+    var deltaPos = mouseUpXPos - this.state.mouseDownXPos;
+    var deltaPercent = deltaPos / totalWidth;
+
+    var timeDeltaSeconds = deltaPercent * (this.props.gbTimeSpan / 1000);
+    this.props.jump(timeDeltaSeconds);
+  }
+
+  /**
+   * Calculates the position for timemarker.
+   * Returns the result in percents.
+   *
+   * Handles moving timemarker. Updates position for timemarker continuously.
+   *
+   * @param {int} returns a position left (in percents) for timemarker
+   */
+  getTimemarkerPos() {
+    if (!this.props.clipID) return 0;
     if (!(this.props.clipID in this.props.clips)) return 0;
 
     var clip = this.props.clips[this.props.clipID];
@@ -361,11 +444,24 @@ class Timeline extends Component {
 
     if (timeOfClip < this.props.gbStartTime.getTime()) return 0;
 
-    return (
-      ((timeOfClip - this.props.gbStartTime.getTime()) /
-        this.props.gbTimeSpan) *
-      100
-    );
+    // User is moving the timemarker
+    if (this.state.mouseDownActive && this.state.mouseMoveXPos > 0) {
+      var deltaPos = this.state.mouseMoveXPos - this.state.mouseDownXPos;
+      var deltaPercent = deltaPos / playerSliderDIV.clientWidth;
+      var timeDelta = deltaPercent * this.props.gbTimeSpan;
+
+      return (
+        ((timeDelta + timeOfClip - this.props.gbStartTime.getTime()) /
+          this.props.gbTimeSpan) *
+        100
+      );
+    } else {
+      return (
+        ((timeOfClip - this.props.gbStartTime.getTime()) /
+          this.props.gbTimeSpan) *
+        100
+      );
+    }
   }
 
   /**
@@ -424,6 +520,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     zoom: (hrs, viewportMode) => dispatch(zoom(hrs, viewportMode)),
+    jump: (timeDelta) => dispatch(jump(timeDelta)),
   };
 };
 

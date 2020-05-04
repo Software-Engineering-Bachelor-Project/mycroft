@@ -128,6 +128,8 @@ def traverse_subfolders(path: str, parent_id: int) -> None:
                     create_clip(**get_clip_info(file_path=file_path, folder_id=parent_id, name=name,
                                                 video_format=suffix))
                 except ValueError:
+                    logging.info(msg="Invalid metadata found for: " + file_path)
+                except FileNotFoundError:
                     logging.info(msg="No metadata found for: " + file_path)
 
 

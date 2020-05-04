@@ -16,3 +16,11 @@
   right: 0;
   z-index: 1;
 }
+
+.switchButton {
+  position: absolute;
+  bottom: 0;
+  z-index: 2;
+  margin-bottom: 8px;
+  right: 10.4vw;
+}

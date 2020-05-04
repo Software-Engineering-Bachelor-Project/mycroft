@@ -405,7 +405,6 @@ class GetFilterParametersTest(TestCase):
 
 
 class GetFilterTest(TestCase):
-
     def setUp(self) -> None:
         self.pid = dbw.create_project(name="test_project")
         self.fid = dbw.create_filter(pid=self.pid)
@@ -424,3 +423,13 @@ class GetFilterTest(TestCase):
         """
         data = {FILTER_ID: 42}
         self.assertEqual(get_filter(data), (204, {}))
+
+    def test_returns_string_in_classes(self):
+        """
+        Tests that classes returns string instead of id.
+        """
+        dbw.modify_filter(fid=self.fid, classes=['person', 'bicycle', 'car'])
+        data = {FILTER_ID: self.fid}
+        code, res = get_filter(data)
+        self.assertEqual(code, 200)
+        self.assertEqual(res[FILTER]['classes'], ['person', 'bicycle', 'car'])

@@ -155,14 +155,22 @@ class GetFilterParametersTest(TestCase):
 
 class GetFilterTest(TestCase):
 
+    @patch('backend.filter_module.os_aware')
+    @patch('backend.filter_module.modify_objects_in_classes')
     @patch('backend.filter_module.dbw')
-    def test_simple(self, mock_dbw):
+    def test_simple(self, mock_dbw, mock_modify_objects_in_classes, mock_os_aware):
         """
         Makes a simple call to the function
         """
+        mock_modify_objects_in_classes.return_value = 'RETURNED CLASSES LIST'
+        mock_os_aware.return_value = 'RETURNED FROM OS AWARE'
+
         data = {FILTER_ID: 1}
         code, response = get_filter(data)
+
         mock_dbw.get_filter_by_id.assert_called_once_with(1)
+        mock_modify_objects_in_classes.assert_called_once()
+        mock_os_aware.assert_called_once_with('RETURNED CLASSES LIST')
         self.assertEqual(code, 200)
 
     def test_missing_parameter(self):

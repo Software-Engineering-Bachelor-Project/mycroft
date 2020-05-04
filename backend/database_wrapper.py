@@ -718,6 +718,21 @@ def get_all_classes_in_filter(fid: int) -> List[ObjectClass]:
     return f.classes.all()[::1]
 
 
+# --- Object class ---
+
+def get_object_class_by_id(ocid: int) -> Optional[ObjectClass]:
+    """
+    Gets an object class by id.
+
+    :param ocid: The object class's id.
+    :return: An object class or None.
+    """
+    try:
+        return ObjectClass.objects.get(id=ocid)
+    except ObjectClass.DoesNotExist:
+        return None
+
+
 # --- Object Detection ---
 
 def create_object_detection(cid: int, sample_rate: float, start_time: timezone.datetime, end_time: timezone.datetime,

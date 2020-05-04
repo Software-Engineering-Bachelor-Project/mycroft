@@ -38,6 +38,8 @@ class InspectorBrowser extends Component {
     this.isEmpty = this.isEmpty.bind(this);
     this.renderCameraContent = this.renderCameraContent.bind(this);
     this.fetchValidClips = this.fetchValidClips.bind(this);
+    this.fetchSelectedClip = this.fetchSelectedClip.bind(this);
+    this.findValidKeyObject = this.findValidKeyObject.bind(this);
   }
 
   /* Checks if an object in empty */
@@ -178,7 +180,7 @@ class InspectorBrowser extends Component {
               variant="secondary"
               className={styles.inspectHeader}
               onClick={() => {
-                this.props.changeMode(INSPECTOR_MODE_CLIP);
+                this.props.changeMode(INSPECTOR_MODE_CLIP, clip.id);
               }}
             >
               i
@@ -189,13 +191,109 @@ class InspectorBrowser extends Component {
     );
   }
 
+  /* 
+  Fetch selected clip based on the chosen clip.id.
+  */
+
+  fetchSelectedClip(clipId) {
+    if (this.props.inspector.id == undefined) {
+      return "";
+    }
+
+    if (!this.props.clips[clipId]) {
+      console.warn("Id ", clipID, " does match with a clip");
+      return "";
+    } else {
+      return this.props.clips[clipId];
+    }
+  }
+
+  findValidKeyObject(dict, clipId, type) {
+    console.log("dict: ", Object.values(dict));
+    console.log("clip_ ", clipId);
+    if (dict != undefined && clipId != undefined) {
+      let object = "";
+      Object.values(dict).map((obj) => {
+        console.log("obj: ", obj.id);
+        console.log(Object.is(obj.id, clipId));
+        if (Object.is(obj.id, clipId)) {
+          console.log("object founded: ", obj);
+          object = obj;
+        }
+      });
+      return object[type];
+    } else {
+      //risk för crash här..
+      return "";
+    }
+  }
+
   /* Render the clip mode displayed in inspector */
   renderClip() {
-    return (
-      <div>
-        <h3 className={styles.browserInspectorHeader}>Clip</h3>
-      </div>
-    );
+    if (this.props.inspector != undefined && this.props.clips != undefined) {
+      let clip = this.fetchSelectedClip(this.props.inspector.id);
+      console.log("Camera: ", this.props.cameras);
+      console.log("FOlders: ", this.props.folders);
+      console.log("CLIP: ", clip);
+      return (
+        <div>
+          <p className={styles.browserInspectorHeader}>Clip</p>
+          <p className={styles.browserInspectorHeader}>{clip.name}</p>
+          <Table striped bordered hover size="sm">
+            <thead>
+              <tr>
+                <th>Category</th>
+                <th>Info</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Camera</td>
+                <td>
+                  {this.findValidKeyObject(this.props.cameras, clip.id, "name")}
+                </td>
+              </tr>
+              <tr>
+                <td>Folder</td>
+                <td>
+                  {this.findValidKeyObject(
+                    this.props.folders,
+                    clip.id,
+                    "absolutePath"
+                  )}
+                </td>
+              </tr>
+              <tr>
+                <td>Format</td>
+                <td>{clip.format}</td>
+              </tr>
+              <tr>
+                <td>Resolution</td>
+                <td>{clip.resolution}</td>
+              </tr>
+              <tr>
+                <td>Start Date</td>
+                <td>{clip.startTime.toDateString()}</td>
+              </tr>
+              <tr>
+                <td>Start Time</td>
+                <td>{clip.startTime.toTimeString().slice(0, 7)}</td>
+              </tr>
+              <tr>
+                <td>End Date</td>
+                <td>{clip.endTime.toDateString()}</td>
+              </tr>
+              <tr>
+                <td>End Time</td>
+                <td>{clip.endTime.toTimeString().slice(0, 7)}</td>
+              </tr>
+            </tbody>
+          </Table>
+        </div>
+      );
+    } else {
+      return "";
+    }
   }
 
   /* Render the excluded and included mode displayed in inspector */
@@ -234,6 +332,7 @@ const mapStateToProps = (state) => {
     clips: state.com.clips,
     excList: state.browser.excList,
     incList: state.browser.incList,
+    folders: state.com.folders,
   };
 };
 

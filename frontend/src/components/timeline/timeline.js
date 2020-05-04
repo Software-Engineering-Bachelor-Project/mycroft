@@ -3,6 +3,10 @@ import { connect } from "react-redux";
 
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
+
+//import icon
+import markerIcon from "../../images/timemarker.png";
+
 import { zoom } from "../../state/stateTimeline";
 
 import styles from "./timeline.module.css";
@@ -162,6 +166,7 @@ class Timeline extends Component {
     this.getWidthOfTimeline = this.getWidthOfTimeline.bind(this);
     this.renderContentOfTopbar = this.renderContentOfTopbar.bind(this);
     this.renderSliderContent = this.renderSliderContent.bind(this);
+    this.renderTimemarker = this.renderTimemarker.bind(this);
   }
 
   /**
@@ -306,6 +311,35 @@ class Timeline extends Component {
 
         {/* Clipline component */}
         <Cliplines />
+
+        {/* Timemarker */}
+        {this.renderTimemarker()}
+      </div>
+    );
+  }
+
+  /**
+   * Render timemarker
+   */
+  renderTimemarker() {
+    return (
+      <div
+        className={styles.timemarker}
+        style={{
+          left: "50%",
+        }}
+      >
+        {/* icon */}
+        <div>
+          <img
+            className={styles.markerIcon}
+            src={markerIcon}
+            alt="markerIcon"
+          />
+        </div>
+
+        {/* timemarker */}
+        <div className={styles.linemarker}></div>
       </div>
     );
   }

@@ -103,3 +103,28 @@
 .cliplines:hover {
   opacity: 0.85;
 }
+
+.timemarker {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  height: 100%;
+}
+
+.linemarker {
+  position: absolute;
+  margin-top: 20px;
+  height: 83%;
+  width: 4px;
+  background-color: rgb(0, 107, 194);
+  border-radius: 5px;
+  border: 1.4px solid rgba(0, 64, 116, 0.829);
+}
+
+.markerIcon {
+  position: absolute;
+  width: 80px;
+  height: 40px;
+  top: -10px;
+  left: -37.5px;
+}

@@ -20,7 +20,7 @@ import {
   renameProject,
 } from "../../state/stateCommunication";
 
-import { doActionsInOrder } from "../../util";
+import { doActionsInOrder, syncProject } from "../../util";
 
 /* -- Object detector -- */
 class ProjectSwitcher extends Component {
@@ -51,6 +51,7 @@ class ProjectSwitcher extends Component {
     this.props.openProject(id);
     this.toggle(id);
     this.props.toggleShow();
+    syncProject();
   }
 
   // Call this method to delete a project
@@ -79,7 +80,10 @@ class ProjectSwitcher extends Component {
     doActionsInOrder([
       () => this.props.newProject(name),
       () => this.props.getProjects(),
-      () => this.props.toggleShow(),
+      () => {
+        this.props.toggleShow();
+        syncProject();
+      },
     ]);
   }
 

@@ -5,6 +5,16 @@
 
 import { Folder } from "./types";
 import { requestsInProgress } from "./state/stateCommunication";
+import store from "./state/state";
+import {
+  getFolders,
+  getClips,
+  getCameras,
+  getFilter,
+  getAreasInFilter,
+  getClipsMatchingFilter,
+  getFilterParams,
+} from "./state/stateCommunication";
 
 /**
  *
@@ -41,6 +51,19 @@ export function makePOST(url, opts = {}, onResponse) {
       onResponse(r.status, undefined);
     }
   });
+}
+
+/**
+ * Syncs a project by calling requests.
+ */
+export function syncProject() {
+  store.dispatch(getFolders());
+  store.dispatch(getClips());
+  store.dispatch(getCameras());
+  store.dispatch(getFilter());
+  store.dispatch(getAreasInFilter());
+  store.dispatch(getClipsMatchingFilter());
+  store.dispatch(getFilterParams());
 }
 
 /**

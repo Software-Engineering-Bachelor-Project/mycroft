@@ -77,7 +77,31 @@ def get_cameras(data: dict) -> (int, dict):
     except AssertionError:
         return 204, {}  # No content
 
-    return 200, os_aware({CAMERAS: serialize(cameras)})
+    res = remove_clip_not_in_project_from_camera({CAMERAS: serialize(cameras)}, pid=pid)
+
+    return 200, os_aware(res)
+
+
+def remove_clip_not_in_project_from_camera(data: dict, pid: int) -> dict:
+    """
+    Removes clips in camera that is not in project.
+
+    :param data: dict with cameras.
+    :param pid: project id.
+    :return: dict with cameras with updated clip_set.
+    """
+    for cm in data[CAMERAS]:
+        cid_not_in_project = []
+
+        for cid in cm['clip_set']:
+            clip = get_clip_by_id(cid=cid)
+            if clip not in get_all_clips_in_project(pid=pid):
+                cid_not_in_project.append(cid)
+
+        for cid in cid_not_in_project:
+            cm['clip_set'].remove(cid)
+
+    return data
 
 
 def get_video_stream(request: WSGIRequest, cid: int) -> FileResponse:

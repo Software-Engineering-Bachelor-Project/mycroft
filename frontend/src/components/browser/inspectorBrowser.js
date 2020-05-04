@@ -39,7 +39,9 @@ class InspectorBrowser extends Component {
     this.renderCameraContent = this.renderCameraContent.bind(this);
     this.fetchValidClips = this.fetchValidClips.bind(this);
     this.fetchSelectedClip = this.fetchSelectedClip.bind(this);
-    this.findValidKeyObject = this.findValidKeyObject.bind(this);
+    this.fetchObjectInDict = this.fetchObjectInDict.bind(this);
+    this.fetchClipPropertyValue = this.fetchClipPropertyValue.bind(this);
+    this.fetchClipTimeValue = this.fetchClipTimeValue.bind(this);
   }
 
   /* Checks if an object in empty */
@@ -128,17 +130,20 @@ class InspectorBrowser extends Component {
       to the specific camera.
   */
   fetchValidClips() {
-    if (this.props.cameras[this.props.inspector.id] == undefined) {
+    if (
+      this.props.cameras[this.props.inspector.id] != undefined ||
+      this.props.clips != undefined
+    ) {
+      let clips = [];
+      this.props.cameras[this.props.inspector.id].clips.map((clipId) => {
+        if (this.props.clips.hasOwnProperty(clipId)) {
+          clips.push(this.props.clips[clipId]);
+        }
+      });
+      return clips;
+    } else {
       return "";
     }
-    let clips = this.props.cameras[this.props.inspector.id].clips.map(
-      (clipId) => {
-        if (this.props.clips.hasOwnProperty(clipId)) {
-          return this.props.clips[clipId];
-        }
-      }
-    );
-    return clips;
   }
 
   /* Render content for the camera mode display in inspector */
@@ -194,7 +199,6 @@ class InspectorBrowser extends Component {
   /* 
   Fetch selected clip based on the chosen clip.id.
   */
-
   fetchSelectedClip(clipId) {
     if (this.props.inspector.id == undefined) {
       return "";
@@ -208,23 +212,65 @@ class InspectorBrowser extends Component {
     }
   }
 
-  findValidKeyObject(dict, clipId, type) {
-    console.log("dict: ", Object.values(dict));
-    console.log("clip_ ", clipId);
-    if (dict != undefined && clipId != undefined) {
-      let object = "";
+  /**
+   * @param {Object[int, list]} dict A list of objects. 
+   * @param {int} objectId The id for the asked object.
+   * @param {string} key The key for which value should be returned. 
+
+   Fetch a specific value based on the key. First finds the matching object
+   with the objectId. Afterwords returning the value of the key. 
+   */
+  fetchObjectInDict(dict, objectId, key) {
+    if (dict != undefined && objectId != undefined && key != undefined) {
+      let res = "";
       Object.values(dict).map((obj) => {
-        console.log("obj: ", obj.id);
-        console.log(Object.is(obj.id, clipId));
-        if (Object.is(obj.id, clipId)) {
-          console.log("object founded: ", obj);
-          object = obj;
+        if (Object.is(obj.id, objectId)) {
+          res = obj;
         }
       });
-      return object[type];
+      return res[key];
     } else {
-      //risk för crash här..
       return "";
+    }
+  }
+
+  fetchClipPropertyValue(clip, property) {
+    if (clip[property] || property != undefined) {
+      switch (property) {
+        case "playable":
+          return clip[property] ? "Yes" : "No";
+        default:
+          return clip[property];
+      }
+    } else {
+      return "Cant find " + property;
+    }
+  }
+
+  fetchClipTimeValue(clip, property, timeType) {
+    if (
+      timeType != undefined &&
+      clip[property] != undefined &&
+      property != undefined
+    ) {
+      switch (timeType) {
+        case "date":
+          if (clip[property].toDateString() != undefined) {
+            return clip[property].toDateString();
+          } else {
+            return "Cant find " + timeType;
+          }
+        case "time":
+          if (clip[property].toTimeString() != undefined) {
+            return clip[property].toTimeString().slice(0, 8);
+          } else {
+            return "Cant find " + timeType;
+          }
+        default:
+          return "Cant find " + timeType;
+      }
+    } else {
+      return "Cant find " + timeType;
     }
   }
 
@@ -232,13 +278,12 @@ class InspectorBrowser extends Component {
   renderClip() {
     if (this.props.inspector != undefined && this.props.clips != undefined) {
       let clip = this.fetchSelectedClip(this.props.inspector.id);
-      console.log("Camera: ", this.props.cameras);
-      console.log("FOlders: ", this.props.folders);
-      console.log("CLIP: ", clip);
       return (
         <div>
+          {/* Displays heading for the clip mode and selected clip*/}
           <p className={styles.browserInspectorHeader}>Clip</p>
           <p className={styles.browserInspectorHeader}>{clip.name}</p>
+          {/* Displays info of the seleceted clip*/}
           <Table striped bordered hover size="sm">
             <thead>
               <tr>
@@ -250,42 +295,54 @@ class InspectorBrowser extends Component {
               <tr>
                 <td>Camera</td>
                 <td>
-                  {this.findValidKeyObject(this.props.cameras, clip.id, "name")}
+                  {this.fetchObjectInDict(
+                    this.props.cameras,
+                    clip.camera,
+                    "name"
+                  )}
                 </td>
               </tr>
               <tr>
                 <td>Folder</td>
                 <td>
-                  {this.findValidKeyObject(
+                  {this.fetchObjectInDict(
                     this.props.folders,
-                    clip.id,
-                    "absolutePath"
+                    clip.folder,
+                    "name"
                   )}
                 </td>
               </tr>
               <tr>
                 <td>Format</td>
-                <td>{clip.format}</td>
+                <td>{this.fetchClipPropertyValue(clip, "format")}</td>
               </tr>
               <tr>
                 <td>Resolution</td>
-                <td>{clip.resolution}</td>
+                <td>{this.fetchClipPropertyValue(clip, "resolution")}</td>
+              </tr>
+              <tr>
+                <td>Framerate</td>
+                <td>{this.fetchClipPropertyValue(clip, "frame_rate")}</td>
+              </tr>
+              <tr>
+                <td>Playable</td>
+                <td>{this.fetchClipPropertyValue(clip, "playable")}</td>
               </tr>
               <tr>
                 <td>Start Date</td>
-                <td>{clip.startTime.toDateString()}</td>
+                <td>{this.fetchClipTimeValue(clip, "startTime", "date")}</td>
               </tr>
               <tr>
                 <td>Start Time</td>
-                <td>{clip.startTime.toTimeString().slice(0, 7)}</td>
+                <td>{this.fetchClipTimeValue(clip, "startTime", "time")}</td>
               </tr>
               <tr>
                 <td>End Date</td>
-                <td>{clip.endTime.toDateString()}</td>
+                <td>{this.fetchClipTimeValue(clip, "endTime", "date")}</td>
               </tr>
               <tr>
                 <td>End Time</td>
-                <td>{clip.endTime.toTimeString().slice(0, 7)}</td>
+                <td>{this.fetchClipTimeValue(clip, "endTime", "time")}</td>
               </tr>
             </tbody>
           </Table>

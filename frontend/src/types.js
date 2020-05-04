@@ -64,8 +64,13 @@ export class Clip {
    * @param {string} format The file format of this clip, 'wav' etc.
    * @param {Date} startTime The point in time when the clip starts.
    * @param {Date} endTime The point in time when the clip ends.
+   * @param {Number} resolution The value of the resolution of this clip.
    * @param {Array[int]} duplicates List of id's of duplicated clips.
    * @param {Array[int]} overlapping List of id's of overlapping clips.
+   * @param {Number} framerate The value of the framerate of this clip.
+   * @param {string} hash_sum The value of the hash_sum of this clip.
+   * @param {boolean} playable The bool value if clip is playable.
+
    */
   constructor(
     id,
@@ -77,7 +82,10 @@ export class Clip {
     endTime,
     resolution,
     duplicates = [],
-    overlapping = []
+    overlapping = [],
+    frame_rate,
+    hash_sum,
+    playable
   ) {
     this.id = id;
     this.name = name;
@@ -89,6 +97,9 @@ export class Clip {
     this.resolution = resolution;
     this.duplicates = duplicates;
     this.overlapping = overlapping;
+    this.frame_rate = frame_rate;
+    this.hash_sum = hash_sum;
+    this.playable = playable;
   }
 
   /**

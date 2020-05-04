@@ -90,6 +90,8 @@ export const URL_DELETE_OD_PROGRESS = "/object_detection/delete_progress";
 // Response
 export const REQUEST_RESPONSE = "REQUEST_RESPONSE";
 
+export let requestsInProgress = 0;
+
 /* -- INITIAL STATE -- */
 export const initialState = {
   projectID: -1,
@@ -421,6 +423,8 @@ export function requestResponse(reqType, status, data) {
  * @return {Object} The new Redux state.
  */
 function handleResponse(state, reqType, status, data) {
+  --requestsInProgress;
+
   // Used for error handling
   var e = "";
 
@@ -1063,6 +1067,8 @@ const communicationReducer = (state = initialState, action) => {
     default:
       return state;
   }
+
+  ++requestsInProgress;
 
   // Make request
   makePOST(url, body, (status, data) => {

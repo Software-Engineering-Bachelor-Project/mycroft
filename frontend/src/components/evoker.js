@@ -30,6 +30,7 @@ import {
 
 import { playClip, jump, play, pause } from "../state/statePlayer";
 import { changeMode, INSPECTOR_MODE_CAMERA } from "../state/stateBrowser";
+import { syncProject } from "../util";
 
 /* -- Evoker -- */
 class Evoker extends Component {
@@ -287,6 +288,8 @@ class Evoker extends Component {
             {" "}
             playClip{" "}
           </Dropdown.Item>
+
+          {/* Miscellaneous */}
           <Dropdown.Item
             onClick={() => {
               var id = window.prompt("ID: ");
@@ -295,6 +298,15 @@ class Evoker extends Component {
           >
             {" "}
             changeMode (camera){" "}
+          </Dropdown.Item>
+
+          <Dropdown.Item
+            onClick={() => {
+              syncProject();
+            }}
+          >
+            {" "}
+            syncProject{" "}
           </Dropdown.Item>
         </DropdownButton>
 

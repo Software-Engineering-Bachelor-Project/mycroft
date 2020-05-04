@@ -4,6 +4,7 @@
  */
 
 import { Folder } from "./types";
+import { requestsInProgress } from "./state/stateCommunication";
 
 /**
  *
@@ -119,3 +120,29 @@ export const WHITELISTED_RESOLUTIONS = "whitelisted_resolutions";
 export const INCLUDED_CLIP_IDS = "included_clip_ids";
 export const EXCLUDED_CLIP_IDS = "excluded_clip_ids";
 export const OBJECTS = "classes";
+
+/**
+ * Does busy waiting until all requests are processed then performs given actions in order.
+ * @param {Array} actions List of actions to be performed.
+ */
+export function doActionsInOrder(actions) {
+  let id = setInterval(() => {
+    stopWaitingWhenFinished(id, actions);
+  }, 100);
+}
+
+/**
+ * Stops the waiting if all requests are processed and then executes next.
+ * @param {Number} id interval id.
+ * @param {Array} actions List of actions to be performed.
+ */
+function stopWaitingWhenFinished(id, actions) {
+  if (requestsInProgress <= 0) {
+    clearInterval(id);
+    if (actions.length > 0) {
+      actions[0]();
+      actions.shift();
+      doActionsInOrder(actions);
+    }
+  }
+}

@@ -57,13 +57,13 @@ export function makePOST(url, opts = {}, onResponse) {
  * Syncs a project by making requests.
  */
 export function syncProject() {
+  store.dispatch(getFilterParams());
   store.dispatch(getFolders());
-  store.dispatch(getClips());
   store.dispatch(getCameras());
   store.dispatch(getFilter());
   store.dispatch(getAreasInFilter());
   store.dispatch(getClipsMatchingFilter());
-  store.dispatch(getFilterParams());
+  store.dispatch(getClips());
 }
 
 /**

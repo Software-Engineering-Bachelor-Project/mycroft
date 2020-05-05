@@ -1,15 +1,18 @@
 import store from "./state";
+import { NEW_PROJECT } from "./stateCommunication";
 
 /* -- ACTIONS -- */
 export const TOGGLE_OBJECT_DETECTION = "TOGGLE_OBJECT_DETECTION";
 export const TOGGLE_PROJECT_SWITCHER = "TOGGLE_PROJECT_SWITCHER";
 export const TOGGLE_FOLDER_MANAGER = "TOGGLE_FOLDER_MANAGER";
+export const SET_NEW_PROJECT = "SET_NEW_PROJECT";
 
 /* -- INITIAL STATE -- */
 export const initialState = {
   showObjectDetection: false,
   showProjectSwitcher: true,
   showFolderManager: false,
+  newProject: false,
 };
 
 /* -- ACTION CREATORS -- */
@@ -41,6 +44,16 @@ export function toggleShowFolderManager() {
   };
 }
 
+/**
+ * Sets new project flag.
+ */
+export function setNewProject(newProject) {
+  return {
+    type: SET_NEW_PROJECT,
+    payload: newProject,
+  };
+}
+
 /* -- REDUX REDUCER -- */
 const menuReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -58,6 +71,11 @@ const menuReducer = (state = initialState, action) => {
       return {
         ...state,
         showFolderManager: !state.showFolderManager,
+      };
+    case SET_NEW_PROJECT:
+      return {
+        ...state,
+        newProject: action.payload,
       };
     default:
       return state;

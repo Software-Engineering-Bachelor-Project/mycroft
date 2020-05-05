@@ -231,7 +231,7 @@ class InspectorBrowser extends Component {
           <p className={styles.browserInspectorHeader}>Clip</p>
           <p className={styles.browserInspectorHeader}>{clip.name}</p>
           {/* Displays info of the seleceted clip*/}
-          <Table striped bordered hover size="sm">
+          <Table striped bordered size="sm">
             <thead>
               <tr>
                 <th>Category</th>
@@ -283,12 +283,8 @@ class InspectorBrowser extends Component {
                 <td>{clip.overlapping != [] ? "Yes" : "No"}</td>
               </tr>
               <tr>
-                <td>Nr. of duplicates</td>
-                <td>
-                  {clip.duplicates
-                    ? clip.duplicates.length
-                    : "Can't find duplicates"}
-                </td>
+                <td>Duplicates</td>
+                <td>{clip.duplicates != [] ? "Yes" : "No"}</td>
               </tr>
               <tr>
                 <td>Start Date</td>

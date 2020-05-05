@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import ReactDOM from "react-dom";
 import { connect } from "react-redux";
 
 import Dropdown from "react-bootstrap/Dropdown";
@@ -26,105 +27,8 @@ import Cliplines from "./cliplines";
 
 import { START_TIME, END_TIME, doActionsInOrder } from "../../util";
 
-/**
- * This function returns a list of line placements in percents.
- * Example: ["20%", "40%", "60%", "80%"]
- *
- * @param {Date} startTime The start date of timeline
- * @param {int} timeSpan The time span from startTime to endTime.
- * @return {Array} List of line placements.
- */
-export function getLinePlacements(startTime, timeSpan) {
-  var totalHrs = timeSpan / (60 * 60 * 1000);
-  var step = 100 / totalHrs;
-  var mintuesOffset = startTime.getMinutes();
-  var secondOffset = startTime.getSeconds();
-  var hrsOffset = (mintuesOffset * 60 + secondOffset) / (60 * 60);
-  var percentOffset = (hrsOffset / totalHrs) * 100;
-
-  if (totalHrs <= 1) {
-    return [];
-  }
-  var list_ = new Array();
-  for (var j = 1; j < totalHrs + hrsOffset; j++) {
-    list_.push(step * j - percentOffset + "%");
-  }
-  return list_;
-}
-
-/**
- * This function returns all information needed to draw out dates to days
- *
- * @param {Date} startTime The start date of timeline
- * @param {Date} endTime The end date of timeline
- * @param {int} timeSpan The time span from startTime to endTime
- * @return {Array[Array]} List of Lists containing width, position and date of a given day
- */
-export function getDayPlacements(startTime, endTime, timeSpan) {
-  //Constants:
-  const dayInSec = 60 * 60 * 24;
-
-  //Create convenient constants for different units of timeSpan
-  const totalSec = timeSpan / 1000;
-  const totalDays = totalSec / dayInSec;
-
-  //Create list
-  var list_ = new Array();
-
-  //Date variable to increment
-  var currentDate = new Date(startTime.getTime());
-
-  //Variable to decrement in loop
-  var secLeft = totalSec;
-
-  //Edge case if startTime and endTime are within the same day
-  if (totalDays <= 1 && startTime.getDay() == endTime.getDay()) {
-    list_.push(["100%", "0%", getDateString(currentDate)]);
-    return list_;
-  }
-
-  //Get length of first day in seconds
-  var firstDay =
-    dayInSec -
-    (startTime.getHours() * 60 * 60 +
-      startTime.getMinutes() * 60 +
-      startTime.getSeconds());
-
-  //Get length of last day in seconds
-  var lastDay =
-    endTime.getHours() * 60 * 60 +
-    endTime.getMinutes() * 60 +
-    endTime.getSeconds();
-
-  if (lastDay == 0) {
-    lastDay = 24 * 60 * 60;
-  }
-
-  //Get sizes in percentages
-  var firstDaySize = (100 * firstDay) / totalSec;
-  var lastDaySize = (100 * lastDay) / totalSec;
-  var daySize = (100 * dayInSec) / totalSec;
-
-  //Add width, position and date string of first day to list
-  list_.push([firstDaySize + "%", "0%", getDateString(currentDate)]);
-  secLeft = secLeft - firstDay;
-
-  //Set currentDate to next day
-  currentDate.setDate(currentDate.getDate() + 1);
-  var pos = firstDaySize;
-
-  //Add width, position and date string to all days between first and last
-  while (secLeft > dayInSec) {
-    list_.push([daySize + "%", pos + "%", getDateString(currentDate)]);
-    currentDate.setDate(currentDate.getDate() + 1);
-    pos = pos + daySize;
-    secLeft = secLeft - dayInSec;
-  }
-
-  //Add width, position and date string of last day
-  list_.push([lastDaySize + "%", pos + "%", getDateString(currentDate)]);
-  return list_;
-}
+// Date indicator margin in pixels
+const DATE_MARGIN = 5;
 
 /**
  * This function takes a date and returns a string version of it
@@ -238,6 +142,18 @@ class Timeline extends Component {
     this.minToDate = this.minToDate.bind(this);
     this.handlePlayPause = this.handlePlayPause.bind(this);
     this.jumpInClip = this.jumpInClip.bind(this);
+    this.handleScroll = this.handleScroll.bind(this);
+    this.scrollGlassboxIntoView = this.scrollGlassboxIntoView.bind(this);
+    this.calculateTimestampOffset = this.calculateTimestampOffset.bind(this);
+    this.handleZoom = this.handleZoom.bind(this);
+    this.renderDateBoxes = this.renderDateBoxes.bind(this);
+    this.calculateDateBoxOffset = this.calculateDateBoxOffset.bind(this);
+    this.getWidthOfdateBox = this.getWidthOfdateBox.bind(this);
+    this.calculateTimestampProperties = this.calculateTimestampProperties.bind(
+      this
+    );
+    this.calculateDateProperties = this.calculateDateProperties.bind(this);
+    this.getOffsetFromPrevDay = this.getOffsetFromPrevDay.bind(this);
 
     // state variables
     this.state = {
@@ -248,20 +164,50 @@ class Timeline extends Component {
   }
 
   /**
+   * Updates the scaling of timeline.
+   *
+   * @param {int} hrs is the new value for timeline scale.
+   */
+  handleZoom(hrs) {
+    this.props.zoom(hrs, this.props.viewportMode);
+    this.scrollGlassboxIntoView();
+  }
+
+  /**
+   * Scroll glassbox into view
+   */
+  scrollGlassboxIntoView() {
+    if (this.glassboxRef)
+      ReactDOM.findDOMNode(this.glassboxRef).scrollIntoView({
+        behaviour: "smooth",
+        block: "nearest",
+        inline: "nearest",
+      });
+  }
+
+  /**
+   * This function is called once
+   */
+  componentDidMount() {
+    this.handleScroll(this.sliderBoxRef.scrollLeft);
+    this.scrollGlassboxIntoView();
+  }
+
+  /**
    * This will render the dropdown menu which contains the scaling options for timeline.
    * The contents of SCALE_LIST is a preset of options to scale with.
    */
   renderScaleList() {
     return (
       <div className={styles.dropdown}>
-        <DropdownButton alignRight title={this.props.scale + " Hours"}>
+        <DropdownButton
+          alignRight
+          title={parseFloat(this.props.scale.toFixed(2)) + " Hours"}
+        >
           {/* Create dropdown items for every scaling option */}
           {SCALE_LIST.map((hrs) => {
             return (
-              <Dropdown.Item
-                onClick={(a) => this.props.zoom(hrs, this.props.viewportMode)}
-                key={hrs}
-              >
+              <Dropdown.Item onClick={(a) => this.handleZoom(hrs)} key={hrs}>
                 {hrs + " Hours"}
               </Dropdown.Item>
             );
@@ -275,55 +221,27 @@ class Timeline extends Component {
    * This will render the lines and timestamps on timeline.
    * Shows an hour-stamp beside every line and in the top it shows which day.
    */
-  renderTimestamps(startTime, endTime, timeSpan) {
-    return (
-      <div>
-        {getLinePlacements(startTime, timeSpan).map((p, i) => {
-          let hour = (startTime.getHours() + i + 1) % 24;
-          if (hour < 10) {
-            var hourStr = "0" + hour;
-          } else {
-            var hourStr = "" + hour;
-          }
-          return (
-            <div
-              style={{
-                position: "absolute",
-                left: p,
-                top: "0",
-                height: "100%",
-              }}
-              key={p}
-            >
-              <div className={styles.line}> </div>
-              <div className={styles.hour}> {hourStr} </div>
-            </div>
-          );
-        })}
+  renderTimestamps() {
+    let arr = [];
 
-        {/*Creates days a box for each day and draws dates in them*/}
-        {getDayPlacements(startTime, endTime, timeSpan).map(([w, p, d], i) => {
-          //Makes it so every other day is slightly darker
-          let color = "rgba(185, 185, 185, 0.3)";
-          if (i % 2) {
-            color = "rgba(0, 0, 0, 0)";
-          }
-          return (
-            <div
-              className={styles.day}
-              style={{
-                backgroundColor: color,
-                left: p,
-                width: w,
-              }}
-              key={p}
-            >
-              <div className={styles.date}> {d} </div>
-            </div>
-          );
-        })}
-      </div>
-    );
+    // For each timestamp, create divs for line, hour
+    for (let i = 0; i <= this.props.scale; i++)
+      arr.push(
+        <div
+          className={styles.timestamp}
+          style={{
+            left: (i * 100) / this.props.scale + "%",
+          }}
+          key={i}
+          id={"timestamp" + i}
+        >
+          <div className={styles.line}> </div>
+          <div id={"hour" + i} className={styles.hour}>
+            {0}
+          </div>
+        </div>
+      );
+    return arr;
   }
 
   /**
@@ -377,6 +295,39 @@ class Timeline extends Component {
     );
   }
 
+  componentDidUpdate() {
+    this.handleScroll(this.sliderBoxRef.scrollLeft);
+    this.scrollGlassboxIntoView();
+  }
+
+  /**
+   * Render dateBoxes
+   */
+  renderDateBoxes() {
+    let nrOfBoxes = Math.ceil(this.props.scale / 24) + 1;
+    var itemsToDraw = [];
+
+    // Go through each dateBox and create divs with date
+    for (let i = 0; i < nrOfBoxes; i++) {
+      itemsToDraw.push(
+        <div
+          id={"dateBox" + i}
+          key={i}
+          className={styles.dateBox}
+          style={{
+            left: 200 * i + "px",
+          }}
+        >
+          <div id={"date" + i} className={styles.date}>
+            {" "}
+            {"datum"}{" "}
+          </div>
+        </div>
+      );
+    }
+    return <div> {itemsToDraw} </div>;
+  }
+
   /**
    * Calls jump-function in statePlayer to jump number of frames.
    *
@@ -417,20 +368,34 @@ class Timeline extends Component {
       // Map-mode
       return (
         <div
+          id="sliderContentDIV"
           className={styles.slider}
           style={{
             width: this.getWidthOfTimeline() + "%",
           }}
         >
           {/* Creates a line for each timestamp and draws out hours*/}
-          {this.renderTimestamps(
-            this.props.startTime,
-            this.props.endTime,
-            this.props.timeSpan
-          )}
+          <div
+            ref={(c) => (this.timestampsRef = c)}
+            className={styles.timestampBox}
+            style={{
+              width: (100 / this.getWidthOfTimeline()) * 100 + "%",
+            }}
+          >
+            {this.renderTimestamps()}
+          </div>
+
+          {/* Div containing all date boxes */}
+          <div
+            id="dateBoxDIV"
+            ref={(c) => (this.dateBoxRef = c)}
+            className={styles.dateBoxContainer}
+          >
+            {this.renderDateBoxes()}
+          </div>
 
           {/* Glassbox component */}
-          <Glassbox />
+          <Glassbox childRef={(c) => (this.glassboxRef = c)} />
         </div>
       );
     }
@@ -448,11 +413,24 @@ class Timeline extends Component {
         onMouseLeave={this.updateTimemarker}
       >
         {/* Creates a line for each timestamp and draws out hours*/}
-        {this.renderTimestamps(
-          this.props.glassbox.startTime,
-          this.props.glassbox.endTime,
-          this.props.glassbox.timeSpan
-        )}
+        <div
+          ref={(c) => (this.timestampsRef = c)}
+          className={styles.timestampBox}
+          style={{
+            width: (100 / this.getWidthOfTimeline()) * 100 + "%",
+          }}
+        >
+          {this.renderTimestamps()}
+        </div>
+
+        {/* Div containing all date boxes */}
+        <div
+          id="dateBoxDIV"
+          ref={(c) => (this.dateBoxRef = c)}
+          className={styles.dateBoxContainer}
+        >
+          {this.renderDateBoxes()}
+        </div>
 
         {/* Clipline component */}
         <Cliplines />
@@ -620,6 +598,7 @@ class Timeline extends Component {
           <Popover.Title as="h3"> Start Time </Popover.Title>
           <Popover.Content>
             <Calendar
+              defaultActiveStartDate={this.props.glassbox.startTime}
               minDate={this.props.startTime}
               maxDate={this.props.glassbox.endTime}
               onChange={(date) =>
@@ -637,6 +616,7 @@ class Timeline extends Component {
         <Popover.Title as="h3"> End Time </Popover.Title>
         <Popover.Content>
           <Calendar
+            defaultActiveStartDate={this.props.glassbox.endTime}
             minDate={this.props.glassbox.startTime}
             maxDate={this.props.endTime}
             onChange={(date) =>
@@ -938,6 +918,7 @@ class Timeline extends Component {
 
   /**
    * Calculates the width of timeline.
+   * Calculates the width of timeline depending on viewportmode.
    * Returns the result in percents.
    */
   getWidthOfTimeline() {
@@ -950,8 +931,173 @@ class Timeline extends Component {
   }
 
   /**
-   * Main render function
+   * Calculate the width of the box with number nr.
+   * The last box should have a shorter width
+   *
+   * @param {int} nr the number of the box
+   * @param {int} left position of the box
+   * @param {int} hourWidth width of one hour in pixels
+   * @param {int} nrOfBoxes total number of dateBoxes
    */
+  getWidthOfdateBox(nr, left, hourWidth, nrOfBoxes) {
+    // Last box, with shorter width
+    if (nr == nrOfBoxes - 1) {
+      let widthOfTimeline =
+        (this.timestampsRef.clientWidth * this.getWidthOfTimeline()) / 100;
+
+      // Return the shortes of either width of client or the width thats left of timeline
+      return Math.min(this.timestampsRef.clientWidth, widthOfTimeline - left);
+    }
+    return hourWidth * 24;
+  }
+
+  /**
+   * Updates the position, width and content of all divs that needs to update
+   * when scrolling in the timeline.
+   *
+   * @param {int} scrollLeft is the amount of pixels scrolled left
+   */
+  handleScroll(scrollLeft) {
+    //variables
+    let hourWidth = this.timestampsRef.clientWidth / this.props.scale;
+    let hrsOffset =
+      (this.props.startTime.getMinutes() * 60 +
+        this.props.startTime.getSeconds()) /
+      (60 * 60);
+    let nrOfBoxes = Math.ceil(this.props.scale / 24) + 1;
+
+    // Timestamps
+    this.timestampsRef.style.left =
+      this.calculateTimestampOffset(scrollLeft, hourWidth, hrsOffset) + "px";
+    this.calculateTimestampProperties(scrollLeft, hourWidth, hrsOffset);
+
+    // DateboxDiv
+    let left =
+      this.calculateDateBoxOffset(scrollLeft, hourWidth) -
+      this.getOffsetFromPrevDay(this.props.startTime, hourWidth);
+    this.dateBoxRef.style.left = left + "px";
+
+    // Dateboxes in DateboxDiv: set width, left, color, date
+    this.calculateDateProperties(scrollLeft, left, hourWidth, nrOfBoxes);
+  }
+
+  /**
+   * Set date, width, left and color for each dateBox.
+   * Updates children properties. The children are the divs containing the date.
+   *
+   * @param {int} scrollLeft pixels scrolled left in parent (Big dateBox)
+   * @param {int} origin left position of parent
+   * @param {int} hourWidth width of one hour in pixels
+   * @param {int} nrOfBoxes total number of dateBoxes
+   */
+  calculateDateProperties(scrollLeft, origin, hourWidth, nrOfBoxes) {
+    let dayWidth = 24 * hourWidth;
+    let relOffset = scrollLeft - origin;
+
+    // Go through all dateBoxes
+    for (let i = 0; i < nrOfBoxes; i++) {
+      let dateBox = document.getElementById("dateBox" + i);
+
+      // Get day offset in pixels for each dateBox
+      let dayOffset =
+        Math.floor(
+          (scrollLeft +
+            this.getOffsetFromPrevDay(this.props.startTime, hourWidth)) /
+            dayWidth
+        ) + i;
+
+      // Calculate dateBox css
+      dateBox.style.left = dayWidth * i + "px";
+      dateBox.style.width =
+        this.getWidthOfdateBox(i, dayWidth * i, hourWidth, nrOfBoxes) + "px";
+
+      // Set background color for each dateBox
+      let color = "rgba(185, 185, 185, 0.3)";
+      if (dayOffset % 2) {
+        color = "rgba(0, 0, 0, 0)";
+      }
+      dateBox.style.backgroundColor = color;
+
+      // Set position for date in dateBox
+      let date = dateBox.firstChild;
+      date.style.left =
+        Math.min(
+          Math.max(0, relOffset - dayWidth * i) + DATE_MARGIN,
+          dayWidth - dateBox.firstChild.clientWidth
+        ) + "px";
+
+      // Set the date
+      let newDate = new Date(this.props.startTime);
+      newDate.setDate(newDate.getDate() + dayOffset);
+      date.innerHTML = getDateString(newDate);
+    }
+  }
+
+  /**
+   * Get width as number of pixels from previous day.
+   * Ex. Time: 20.00 then it calculates the time from 00.00 til 20.00,
+   * which is 20 hours and converts it to pixels.
+   *
+   * @param {Date} date The date
+   * @param {int} hourWidth number of pixels a one hour span is
+   */
+  getOffsetFromPrevDay(date, hourWidth) {
+    let hour = date.getHours();
+    let minutes = date.getMinutes();
+    let seconds = date.getSeconds();
+
+    let totTimeInHours = hour + minutes / 60 + seconds / (60 * 60);
+    let totWidth = totTimeInHours * hourWidth;
+    return totWidth;
+  }
+
+  /**
+   * Update hour on timestamps depending on scrollLeft,
+   * and set left position for each timestamp.
+   *
+   * @param {int} scrollLeft is the amount of pixels scrolled left
+   * @param {int} hourWidth width of one hour in pixels
+   * @param {int} hrsOffset hour offset from startTime of timeline
+   */
+  calculateTimestampProperties(scrollLeft, hourWidth, hrsOffset) {
+    // Go through each timestamp and update hour
+    for (let i = 0; i <= this.props.scale; i++) {
+      let hour =
+        (this.props.startTime.getHours() +
+          Math.floor(scrollLeft / hourWidth) +
+          1 +
+          i) %
+        24;
+      var hourStr = hour < 10 ? "0" + hour : "" + hour;
+      // Set hour on timestamp-divs
+      document.getElementById("hour" + i).innerHTML = hourStr;
+    }
+  }
+
+  /**
+   * Calculate the position for the dateBox-div depending on scrollLeft.
+   *
+   * @param {int} scrollLeft is given in pixels
+   * @param {int} hourWidth width of one hour in pixels
+   * @return {int} returns the left position for the dateBox-div in pixels
+   */
+  calculateDateBoxOffset(scrollLeft, hourWidth) {
+    // Add offset from previous day
+    scrollLeft += this.getOffsetFromPrevDay(this.props.startTime, hourWidth);
+    return scrollLeft - (scrollLeft % (24 * hourWidth));
+  }
+
+  /**
+   * Calculate the position for the Timestamp-div depending on scrollLeft.
+   *
+   * @param {int} scrollLeft is given in pixels
+   * @param {int} hourWidth width of one hour in pixels
+   * @return {int} returns the left position for the Timestamp-div in pixels
+   */
+  calculateTimestampOffset(scrollLeft, hourWidth, hrsOffset) {
+    return scrollLeft - (scrollLeft % hourWidth) + hourWidth * (1 - hrsOffset);
+  }
+
   render() {
     return (
       <div className={styles.main}>
@@ -962,7 +1108,12 @@ class Timeline extends Component {
         </div>
 
         {/* This is the box containing all the timestamps, which is affected by scaling */}
-        <div className={styles.sliderbox}>
+        <div
+          id="sliderBoxDIV"
+          className={styles.sliderbox}
+          ref={(c) => (this.sliderBoxRef = c)}
+          onScroll={(e) => this.handleScroll(e.target.scrollLeft)}
+        >
           {/* This renders the content of slider */}
           {this.renderSliderContent()}
         </div>

@@ -15,6 +15,16 @@ class Glassbox extends Component {
     super(props);
   }
 
+  componentDidMount() {
+    const { childRef } = this.props;
+    childRef(this);
+  }
+
+  componentWillUnmount() {
+    const { childRef } = this.props;
+    childRef(undefined);
+  }
+
   render() {
     return (
       <div

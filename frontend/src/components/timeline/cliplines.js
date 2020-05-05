@@ -90,10 +90,9 @@ class Cliplines extends Component {
       );
       return 0;
     }
-    return (
-      ((end - clipStartTime.getTime()) / (60 * 60 * 1000) / this.props.scale) *
-      100
-    );
+    let timeWidth =
+      end - Math.max(clipStartTime.getTime(), this.props.gbStartTime.getTime());
+    return (timeWidth / this.props.gbTimeSpan) * 100;
   }
 
   /**
@@ -104,50 +103,65 @@ class Cliplines extends Component {
    * @param {int} id
    */
   handleClipSelection(id) {
-    this.props.playClip(id);
-    setTimeout(() => this.props.play(), 100);
     this.props.changeMode(INSPECTOR_MODE_CLIP, id);
     this.props.changeBrowserTab();
+
+    if (!this.props.clips[id].playable) return;
+    this.props.playClip(id);
+    setTimeout(() => this.props.play(), 100);
   }
 
   render() {
     return (
       <div>
-        {/* Iterate through cameras */}
-        {Object.values(this.props.cameras).map((camera, i) => (
-          <div key={camera.id}>
-            {/* Iterate through the clips of the current camera */}
-            {camera.clips.map((clipID) => {
-              if (!(clipID in this.props.clips)) {
-                console.warn(
-                  "Clip with id ",
-                  clipID,
-                  " does not exist in current project"
+        {/* Iterate through cameras in filter */}
+        {this.props.filterCameras.map((cameraID, i) => {
+          /* Check if camera exists */
+          if (!(cameraID in this.props.cameras)) return "";
+          return (
+            <div key={cameraID}>
+              {/* Iterate through the clips of the current camera */}
+              {this.props.cameras[cameraID].clips.map((clipID) => {
+                /* Check if clip exists in filter */
+                if (!this.props.filterClips.includes(clipID)) return "";
+                /* Check if cllip exists */
+                if (!(clipID in this.props.clips)) {
+                  console.warn(
+                    "Clip with id ",
+                    clipID,
+                    " does not exist in current project"
+                  );
+                  return "";
+                }
+                return (
+                  <div
+                    key={clipID}
+                    className={styles.cliplines}
+                    style={{
+                      backgroundColor: this.props.clips[clipID].playable
+                        ? COLOR_LIST[i % COLOR_LIST.length]
+                        : "#6c757d",
+                      width:
+                        this.getWidthOfClip(
+                          this.props.clips[clipID].startTime,
+                          this.props.clips[clipID].endTime
+                        ) + "%",
+                      left:
+                        this.getLeftPosition(
+                          this.props.clips[clipID].startTime
+                        ) + "%",
+                      top: 25 + (15 + 12) * i + "px",
+                      cursor: this.props.clips[clipID].playable
+                        ? "pointer"
+                        : "not-allowed",
+                    }}
+                    onClick={() => this.handleClipSelection(clipID)}
+                  ></div>
                 );
-                return;
-              }
-              return (
-                <div
-                  key={clipID}
-                  className={styles.cliplines}
-                  style={{
-                    backgroundColor: COLOR_LIST[i % COLOR_LIST.length],
-                    width:
-                      this.getWidthOfClip(
-                        this.props.clips[clipID].startTime,
-                        this.props.clips[clipID].endTime
-                      ) + "%",
-                    left:
-                      this.getLeftPosition(this.props.clips[clipID].startTime) +
-                      "%",
-                    top: 25 + (15 + 12) * i + "px",
-                  }}
-                  onClick={() => this.handleClipSelection(clipID)}
-                ></div>
-              );
-            })}
-          </div>
-        ))}
+              })}
+            </div>
+          );
+        })}
       </div>
     );
   }
@@ -165,6 +179,8 @@ const mapStateToProps = (state) => {
 
     cameras: state.com.cameras,
     clips: state.com.clips,
+    filterCameras: state.com.filter.cameras,
+    filterClips: state.com.filter.clips,
   };
 };
 

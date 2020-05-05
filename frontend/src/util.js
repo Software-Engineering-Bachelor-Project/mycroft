@@ -14,6 +14,7 @@ import {
   getClipsMatchingFilter,
   getFilterParams,
 } from "./state/stateCommunication";
+import { setTimeLimits, gbSetTimeLimits } from "./state/stateTimeline";
 
 /**
  *
@@ -53,15 +54,59 @@ export function makePOST(url, opts = {}, onResponse) {
 }
 
 /**
+ * Set timeline bounds subject to current project clips.
+ */
+function setTimelineBounds() {
+  // Find global start and end date
+  let start, end;
+  for (let c in store.getState().com.clips) {
+    let clip = store.getState().com.clips[c];
+
+    // Initial assignment
+    if (start == undefined || end == undefined) {
+      start = clip.startTime;
+      end = clip.endTime;
+      continue;
+    }
+
+    // Expand timeline bounds if applicable
+    if (clip.startTime.getTime() < start.getTime()) start = clip.startTime;
+    if (clip.endTime.getTime() > end.getTime()) end = clip.endTime;
+  }
+
+  // If start, end is undefined, don't set timeline bounds.
+  if (!start || !end) return;
+
+  // Get bounds for glassbox in timeline from filter
+  let gbStartTime = store.getState().com.filter.startTime;
+  let gbEndTime = store.getState().com.filter.endTime;
+
+  // Set bounds for timeline
+  store.dispatch(
+    setTimeLimits(
+      start,
+      end,
+      gbStartTime ? gbStartTime : start,
+      gbEndTime ? gbEndTime : end
+    )
+  );
+}
+
+/**
  * Syncs a project by making requests.
  */
 export function syncProject() {
-  store.dispatch(getFilterParams());
-  store.dispatch(getFiles());
-  store.dispatch(getCameras());
-  store.dispatch(getFilter());
-  store.dispatch(getAreasInFilter());
-  store.dispatch(getClipsMatchingFilter());
+  doActionsInOrder([
+    () => {
+      store.dispatch(getFilterParams());
+      store.dispatch(getFiles());
+      store.dispatch(getCameras());
+      store.dispatch(getFilter());
+      store.dispatch(getAreasInFilter());
+      store.dispatch(getClipsMatchingFilter());
+    },
+    setTimelineBounds,
+  ]);
 }
 
 /**

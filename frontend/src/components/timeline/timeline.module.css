@@ -28,7 +28,6 @@
 
 .dropdown {
   position: absolute;
-  /*top: 5px;*/
   right: 5px;
 }
 
@@ -45,7 +44,6 @@
 .slider {
   position: relative;
   height: 100%;
-  /*border: 1px solid;*/
   background-color: rgb(244, 247, 248);
 }
 
@@ -65,7 +63,7 @@
   margin: 5px;
   left: 5px;
   top: 5px;
-  width: fit-content;
+  width: max-content;
   font-size: 11pt;
   border-radius: 3px;
   background-color: #28a745;
@@ -84,7 +82,7 @@
   z-index: 2;
   background-color: rgba(57, 192, 255, 0.329);
   border-radius: 10px;
-  border: 3px solid rgba(0, 107, 194, 0.87);
+  border: 2px solid rgba(0, 107, 194, 0.87);
   top: 2%;
   height: 96%;
 }
@@ -143,4 +141,10 @@
 
 .markerIcon:active {
   cursor: grabbing;
+}
+
+.filter {
+  position: relative;
+  display: flex;
+  padding-left: 5px;
 }

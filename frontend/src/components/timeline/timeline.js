@@ -13,11 +13,18 @@ import markerIcon from "../../images/timemarker.png";
 
 import { zoom, gbSetTimeLimits } from "../../state/stateTimeline";
 import { jump } from "../../state/statePlayer";
+import {
+  modifyFilter,
+  getClipsMatchingFilter,
+  getFilter,
+} from "../../state/stateCommunication";
 
 import styles from "./timeline.module.css";
 
 import Glassbox from "./glassbox";
 import Cliplines from "./cliplines";
+
+import { START_TIME, END_TIME, doActionsInOrder } from "../../util";
 
 /**
  * This function returns a list of line placements in percents.
@@ -159,6 +166,47 @@ export function getDateString(date) {
 
 // Scaling options for the dropdown menu
 const SCALE_LIST = [1, 5, 12, 24, 36, 48];
+//Options for time filtering menus
+const HOUR_LIST = [
+  "00",
+  "01",
+  "02",
+  "03",
+  "04",
+  "05",
+  "06",
+  "07",
+  "08",
+  "09",
+  "10",
+  "11",
+  "12",
+  "13",
+  "14",
+  "15",
+  "16",
+  "17",
+  "18",
+  "19",
+  "20",
+  "21",
+  "22",
+  "23",
+];
+const MIN_LIST = [
+  "00",
+  "05",
+  "10",
+  "15",
+  "20",
+  "25",
+  "30",
+  "35",
+  "40",
+  "45",
+  "50",
+  "55",
+];
 
 /**
  * This class respresents the timeline react-component.
@@ -179,13 +227,15 @@ class Timeline extends Component {
     this.updateTimemarker = this.updateTimemarker.bind(this);
     this.updateTimemarker = this.updateTimemarker.bind(this);
     this.renderFilterPrompts = this.renderFilterPrompts.bind(this);
-    this.renderTimeList = this.renderTimeList.bind(this);
     this.getFullDate = this.getFullDate.bind(this);
     this.renderCalendar = this.renderCalendar.bind(this);
     this.renderFilterPrompts = this.renderFilterPrompts.bind(this);
-    this.renderTimeList = this.renderTimeList.bind(this);
+    this.renderHourList = this.renderHourList.bind(this);
+    this.renderMinList = this.renderMinList.bind(this);
     this.intervalChanged = this.intervalChanged.bind(this);
     this.handleGlassboxInput = this.handleGlassboxInput.bind(this);
+    this.hourToDate = this.hourToDate.bind(this);
+    this.minToDate = this.minToDate.bind(this);
 
     // state variables
     this.state = {
@@ -334,9 +384,9 @@ class Timeline extends Component {
       >
         {/* Creates a line for each timestamp and draws out hours*/}
         {this.renderTimestamps(
-          this.props.gbStartTime,
-          this.props.gbEndTime,
-          this.props.gbTimeSpan
+          this.props.glassbox.startTime,
+          this.props.glassbox.endTime,
+          this.props.glassbox.timeSpan
         )}
 
         {/* Clipline component */}
@@ -377,14 +427,51 @@ class Timeline extends Component {
     );
   }
 
-  renderTimeList() {
+  /**
+   * Renders lists of hours for filter input
+   * @param {boolean} start Flag that tells the function if it's start or end time
+   */
+  renderHourList(start) {
+    //Do this for start time
+    if (start) {
+      var hour = this.props.glassbox.startTime.getHours();
+      hour = HOUR_LIST[hour];
+      return (
+        <div style={{}}>
+          <DropdownButton alignRight title={hour}>
+            {/* Create dropdown items for every start time filter hour */}
+            {HOUR_LIST.map((h) => {
+              return (
+                <Dropdown.Item
+                  onClick={(a) =>
+                    this.intervalChanged(this.hourToDate(h, true), undefined)
+                  }
+                  key={h}
+                >
+                  {h}
+                </Dropdown.Item>
+              );
+            })}
+          </DropdownButton>
+        </div>
+      );
+    }
+
+    //Do this for end time
+    var hour = this.props.glassbox.endTime.getHours();
+    hour = HOUR_LIST[hour];
     return (
-      <div style={{}}>
-        <DropdownButton alignRight title={"Time"}>
-          {/* Create dropdown items for every scaling option */}
-          {["12:00", "12:30"].map((h) => {
+      <div>
+        <DropdownButton alignRight title={hour}>
+          {/* Create dropdown items for every end time filter hour */}
+          {HOUR_LIST.map((h) => {
             return (
-              <Dropdown.Item /*onClick={(a) => this.props.zoom(h)}*/ key={h}>
+              <Dropdown.Item
+                onClick={(a) =>
+                  this.intervalChanged(undefined, this.hourToDate(h, false))
+                }
+                key={h}
+              >
                 {h}
               </Dropdown.Item>
             );
@@ -395,35 +482,100 @@ class Timeline extends Component {
   }
 
   /**
-   * TODO: Write this function header
-   * @param {*} title
+   * Renders lists of hours for filter input
+   * @param {boolean} start Flag that tells the function if it's start or end time
+   */
+  renderMinList(start) {
+    //Do this for start time
+    if (start) {
+      var min = this.props.glassbox.startTime.getMinutes();
+      if (min < 10) {
+        var min = "0" + min;
+      }
+      return (
+        <div>
+          <DropdownButton alignRight title={min}>
+            {/* Create dropdown items for every start time filter minute */}
+            {MIN_LIST.map((minute) => {
+              return (
+                <Dropdown.Item
+                  onClick={(a) =>
+                    this.intervalChanged(
+                      this.minToDate(minute, true),
+                      undefined
+                    )
+                  }
+                  key={minute}
+                >
+                  {minute}
+                </Dropdown.Item>
+              );
+            })}
+          </DropdownButton>
+        </div>
+      );
+    }
+
+    //Do this for end time
+    var min = this.props.glassbox.endTime.getMinutes();
+    if (min < 10) {
+      var min = "0" + min;
+    }
+    return (
+      <div>
+        <DropdownButton alignRight title={min}>
+          {/* Create dropdown items for every end time filter minute */}
+          {MIN_LIST.map((minute) => {
+            return (
+              <Dropdown.Item
+                onClick={(a) =>
+                  this.intervalChanged(undefined, this.minToDate(minute, false))
+                }
+                key={minute}
+              >
+                {minute}
+              </Dropdown.Item>
+            );
+          })}
+        </DropdownButton>
+      </div>
+    );
+  }
+
+  /**
+   * Render calendar for filter input
+   * @param {String} title Flag that decides whether to render calendar for
+   * start or end time
    */
   renderCalendar(title) {
-    if (title == "Start Time") {
+    //Do this for start time
+    if (title == "start") {
       return (
         <Popover id="popover-basic">
-          <Popover.Title as="h3"> {title} </Popover.Title>
+          <Popover.Title as="h3"> Start Time </Popover.Title>
           <Popover.Content>
             <Calendar
               minDate={this.props.startTime}
               maxDate={this.props.glassbox.endTime}
               onChange={(date) =>
-                this.intervalChanged(this.getFullDate(date, title), undefined)
+                this.intervalChanged(this.getFullDate(date, true), undefined)
               }
             />
           </Popover.Content>
         </Popover>
       );
     }
+
+    //Do this for end time
     return (
       <Popover id="popover-basic">
-        <Popover.Title as="h3"> {title} </Popover.Title>
+        <Popover.Title as="h3"> End Time </Popover.Title>
         <Popover.Content>
           <Calendar
             minDate={this.props.glassbox.startTime}
             maxDate={this.props.endTime}
             onChange={(date) =>
-              this.intervalChanged(undefined, this.getFullDate(date, title))
+              this.intervalChanged(undefined, this.getFullDate(date, false))
             }
           />
         </Popover.Content>
@@ -432,46 +584,67 @@ class Timeline extends Component {
   }
 
   /**
-   * TODO: Write this function header
+   * Render all the buttons that deal with filter input
    */
   renderFilterPrompts() {
     return (
       <div style={{ position: "relative", display: "flex" }}>
         {/*Start time filter button*/}
-        <div style={{ position: "relative", top: "12px" }}> Filter Start: </div>
-        <div style={{ margin: "5px" }}>
-          <OverlayTrigger
-            trigger="click"
-            placement="top"
-            overlay={this.renderCalendar("Start Time")}
-          >
-            <Button variant="success">
-              {" "}
-              {this.props.glassbox.startTime.toDateString()}{" "}
-            </Button>
-          </OverlayTrigger>
+        <div className={styles.filter} style={{ marginRight: "5px" }}>
+          <div style={{ position: "relative", top: "9px", fontSize: "14pt" }}>
+            {" "}
+            Filter Start:{" "}
+          </div>
+          <div style={{ margin: "5px" }}>
+            <OverlayTrigger
+              trigger="click"
+              placement="top"
+              rootClose
+              overlay={this.renderCalendar("start")}
+            >
+              <Button variant="success">
+                {" "}
+                {this.props.glassbox.startTime.toDateString()}{" "}
+              </Button>
+            </OverlayTrigger>
+          </div>
+          <div style={{ margin: "5px" }}> {this.renderHourList(true)} </div>
+          <div style={{ position: "relative", top: "12px" }}>:</div>
+          <div style={{ margin: "5px" }}> {this.renderMinList(true)} </div>
         </div>
-        <div style={{ margin: "5px" }}> {this.renderTimeList()} </div>
 
         {/*End time filter button*/}
-        <div style={{ position: "relative", top: "12px" }}> Filter End: </div>
-        <div style={{ margin: "5px" }}>
-          <OverlayTrigger
-            trigger="click"
-            placement="top"
-            overlay={this.renderCalendar("End Time")}
-          >
-            <Button variant="success">
-              {" "}
-              {this.props.glassbox.endTime.toDateString()}{" "}
-            </Button>
-          </OverlayTrigger>
+        <div className={styles.filter} style={{ marginLeft: "5px" }}>
+          <div style={{ position: "relative", top: "9px", fontSize: "14pt" }}>
+            Filter End:
+          </div>
+          <div style={{ margin: "5px" }}>
+            <OverlayTrigger
+              trigger="click"
+              placement="top"
+              rootClose
+              overlay={this.renderCalendar("end")}
+            >
+              <Button variant="success">
+                {" "}
+                {this.props.glassbox.endTime.toDateString()}{" "}
+              </Button>
+            </OverlayTrigger>
+          </div>
+          <div style={{ margin: "5px" }}> {this.renderHourList(false)} </div>
+          <div style={{ position: "relative", top: "12px" }}>:</div>
+          <div style={{ margin: "5px" }}> {this.renderMinList(false)} </div>
         </div>
-        <div style={{ margin: "5px" }}> {this.renderTimeList()} </div>
       </div>
     );
   }
 
+  /**
+   * Makes sure start and end time of glassbox is defined. If not it returns the
+   * already existing start and end time
+   * @param {Date} start Start time
+   * @param {Date} end End time
+   */
   handleGlassboxInput(start, end) {
     if (start == undefined && end == undefined) {
       return [this.props.glassbox.startTime, this.props.glassbox.endTime];
@@ -542,7 +715,7 @@ class Timeline extends Component {
     var deltaPos = mouseUpXPos - this.state.mouseDownXPos;
     var deltaPercent = deltaPos / totalWidth;
 
-    var timeDeltaSeconds = deltaPercent * (this.props.gbTimeSpan / 1000);
+    var timeDeltaSeconds = deltaPercent * (this.props.glassbox.timeSpan / 1000);
     this.props.jump(timeDeltaSeconds);
   }
 
@@ -561,53 +734,62 @@ class Timeline extends Component {
     var clip = this.props.clips[this.props.clipID];
     var timeOfClip = clip.startTime.getTime() + this.props.position * 1000;
 
-    if (timeOfClip < this.props.gbStartTime.getTime()) return 0;
+    if (timeOfClip < this.props.glassbox.startTime.getTime()) return 0;
 
     // User is moving the timemarker
     if (this.state.mouseDownActive && this.state.mouseMoveXPos > 0) {
       var deltaPos = this.state.mouseMoveXPos - this.state.mouseDownXPos;
       var deltaPercent = deltaPos / playerSliderDIV.clientWidth;
-      var timeDelta = deltaPercent * this.props.gbTimeSpan;
+      var timeDelta = deltaPercent * this.props.glassbox.timeSpan;
 
       return (
-        ((timeDelta + timeOfClip - this.props.gbStartTime.getTime()) /
-          this.props.gbTimeSpan) *
+        ((timeDelta + timeOfClip - this.props.glassbox.startTime.getTime()) /
+          this.props.glassbox.timeSpan) *
         100
       );
     } else {
       return (
-        ((timeOfClip - this.props.gbStartTime.getTime()) /
-          this.props.gbTimeSpan) *
+        ((timeOfClip - this.props.glassbox.startTime.getTime()) /
+          this.props.glassbox.timeSpan) *
         100
       );
     }
   }
 
   /**
-   * TODO: Write this function header
-   * @param {*} start
-   * @param {*} end
+   * Changes the start and end time of glassbox. Also checks so that start and end
+   * time is within their allowed intervals
+   * @param {Date} start Start time
+   * @param {Date} end End time
    */
   intervalChanged(start, end) {
     //TODO: dispatch modifyFilter action using start and end time
     let startTime, endTime;
     [startTime, endTime] = this.handleGlassboxInput(start, end);
     if (
-      startTime.getTime() <= endTime.getTime() &&
-      startTime.getTime() >= this.props.startTime.getTime() &&
-      endTime.getTime() <= this.props.endTime.getTime()
-    ) {
-      this.props.gbSetTimeLimits(startTime, endTime);
-    }
+      startTime.getTime() > endTime.getTime() ||
+      startTime.getTime() < this.props.startTime.getTime() ||
+      endTime.getTime() > this.props.endTime.getTime()
+    )
+      return;
+    this.props.gbSetTimeLimits(startTime, endTime);
+
+    // Send filter updates to server
+    doActionsInOrder([
+      () => this.props.modifyTimeFilter(startTime, endTime),
+      () => this.props.updateFilter(),
+    ]);
   }
 
   /**
-   * TODO: Write this function header
-   * @param {*} date
-   * @param {*} title
+   * Takes a date object, adds the hours, minutes and seconds of either
+   * start or end time of glassbox and returns it
+   * @param {Date} date Date without any hours, minutes or seconds
+   * @param {boolean} start True if the date should be based on glassbox's
+   * start time, false if end time
    */
-  getFullDate(date, title) {
-    if (title == "Start Time") {
+  getFullDate(date, start) {
+    if (start) {
       let newDate = new Date(
         date.getFullYear(),
         date.getMonth(),
@@ -630,6 +812,66 @@ class Timeline extends Component {
   }
 
   /**
+   * Create and return a new date object that has the same date properties as
+   * either glassbox's start or end time but with the hour set to something new
+   * @param {String} hour Hour to set new date to
+   * @param {boolean} start True if the date should be based on glassbox's
+   * start time, false if end time
+   */
+  hourToDate(hour, start) {
+    if (start) {
+      let newDate = new Date(
+        this.props.glassbox.startTime.getFullYear(),
+        this.props.glassbox.startTime.getMonth(),
+        this.props.glassbox.startTime.getDate(),
+        parseInt(hour),
+        this.props.glassbox.startTime.getMinutes(),
+        this.props.glassbox.startTime.getSeconds()
+      );
+      return newDate;
+    }
+    let newDate = new Date(
+      this.props.glassbox.endTime.getFullYear(),
+      this.props.glassbox.endTime.getMonth(),
+      this.props.glassbox.endTime.getDate(),
+      parseInt(hour),
+      this.props.glassbox.endTime.getMinutes(),
+      this.props.glassbox.endTime.getSeconds()
+    );
+    return newDate;
+  }
+
+  /**
+   * Create and return a new date object that has the same date properties as
+   * either glassbox's start or end time but with the minute set to something new
+   * @param {String} minute Minute to set new date to
+   * @param {boolean} start True if the date should be based on glassbox's
+   * start time, false if end time
+   */
+  minToDate(minute, start) {
+    if (start) {
+      let newDate = new Date(
+        this.props.glassbox.startTime.getFullYear(),
+        this.props.glassbox.startTime.getMonth(),
+        this.props.glassbox.startTime.getDate(),
+        this.props.glassbox.startTime.getHours(),
+        parseInt(minute),
+        this.props.glassbox.startTime.getSeconds()
+      );
+      return newDate;
+    }
+    let newDate = new Date(
+      this.props.glassbox.endTime.getFullYear(),
+      this.props.glassbox.endTime.getMonth(),
+      this.props.glassbox.endTime.getDate(),
+      this.props.glassbox.endTime.getHours(),
+      parseInt(minute),
+      this.props.glassbox.endTime.getSeconds()
+    );
+    return newDate;
+  }
+
+  /**
    * Calculates the width of timeline.
    * Returns the result in percents.
    */
@@ -637,9 +879,14 @@ class Timeline extends Component {
     if (this.props.viewportMode) {
       return (this.props.timeSpan / (60 * 60 * 1000) / this.props.scale) * 100;
     }
-    return (this.props.gbTimeSpan / (60 * 60 * 1000) / this.props.scale) * 100;
+    return (
+      (this.props.glassbox.timeSpan / (60 * 60 * 1000) / this.props.scale) * 100
+    );
   }
 
+  /**
+   * Main render function
+   */
   render() {
     return (
       <div className={styles.main}>
@@ -669,9 +916,6 @@ const mapStateToProps = (state) => {
     scale: state.timeline.scale,
 
     glassbox: state.timeline.glassbox,
-    gbStartTime: state.timeline.glassbox.startTime,
-    gbEndTime: state.timeline.glassbox.endTime,
-    gbTimeSpan: state.timeline.glassbox.timeSpan,
 
     viewportMode: state.viewport.mode,
 
@@ -690,6 +934,12 @@ const mapDispatchToProps = (dispatch) => {
     jump: (timeDelta) => dispatch(jump(timeDelta)),
     gbSetTimeLimits: (startDate, endDate) =>
       dispatch(gbSetTimeLimits(startDate, endDate)),
+    modifyTimeFilter: (s, e) =>
+      dispatch(modifyFilter({ [START_TIME]: s, [END_TIME]: e })),
+    updateFilter: () => {
+      dispatch(getFilter());
+      dispatch(getClipsMatchingFilter());
+    },
   };
 };
 

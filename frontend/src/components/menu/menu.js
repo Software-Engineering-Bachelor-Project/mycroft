@@ -74,10 +74,12 @@ class Menu extends Component {
         <ProjectSwitcher
           show={this.props.showProjectSwitcher}
           toggleShow={this.props.toggleShowProjectSwitcher}
+          showFolderManager={this.props.toggleShowFolderManager}
         />
         <FolderManager
           show={this.props.showFolderManager}
           toggleShow={this.props.toggleShowFolderManager}
+          showObjectDetector={this.props.toggleShowObjectDetection}
         />
       </div>
     );

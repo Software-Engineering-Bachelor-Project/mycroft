@@ -11,6 +11,7 @@ import {
   getODProgress,
   deleteODProgress,
 } from "../../state/stateCommunication";
+import { setNewProject } from "../../state/stateMenu";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
@@ -27,6 +28,8 @@ class ObjectDetector extends Component {
     this.handleTargetChange = this.handleTargetChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleFinished = this.handleFinished.bind(this);
+    this.handleClose = this.handleClose.bind(this);
+    this.renderTargetButtons = this.renderTargetButtons.bind(this);
   }
 
   handleRateChange(event) {
@@ -40,7 +43,10 @@ class ObjectDetector extends Component {
   handleSubmit(event) {
     // Make detection request.
     this.props.toggleIsRunning();
-    this.props.detectObjects(this.props.rate, this.props.target);
+    this.props.detectObjects(
+      this.props.rate,
+      this.props.newProject ? TARGET.PROJECT : this.props.target
+    );
 
     // Update progress bar until detection is finished.
     let id = setInterval(() => {
@@ -56,18 +62,52 @@ class ObjectDetector extends Component {
 
       // Close modal
       this.props.deleteODProgress();
-      this.props.toggleShow();
+      this.handleClose();
       setTimeout(() => this.props.toggleIsRunning(), 500);
     }
+  }
+
+  handleClose() {
+    this.props.toggleShow();
+    this.props.setNewProject(false);
+  }
+
+  renderTargetButtons() {
+    return (
+      <>
+        {/* Choose target buttons */}
+        <Form.Label>Target</Form.Label>
+        <br />
+        <ToggleButtonGroup
+          name="target"
+          type="radio"
+          defaultValue={this.props.target}
+          onChange={this.handleTargetChange}
+        >
+          <ToggleButton
+            variant="light"
+            value={TARGET.FILTER}
+            disabled={this.props.isRunning}
+          >
+            All clips in filter
+          </ToggleButton>
+          <ToggleButton
+            variant="light"
+            value={TARGET.PROJECT}
+            disabled={this.props.isRunning}
+          >
+            All clips in project
+          </ToggleButton>
+        </ToggleButtonGroup>
+      </>
+    );
   }
 
   render() {
     return (
       <Modal
         show={this.props.show}
-        onHide={() =>
-          this.props.isRunning ? () => {} : this.props.toggleShow()
-        }
+        onHide={() => (this.props.isRunning ? () => {} : this.handleClose())}
         centered
       >
         <Modal.Header closeButton={!this.props.isRunning}>
@@ -92,34 +132,22 @@ class ObjectDetector extends Component {
               </Form.Text>
             </Form.Group>
 
-            {/* Choose target buttons */}
-            <Form.Label>Target</Form.Label>
-            <br />
-            <ToggleButtonGroup
-              name="target"
-              type="radio"
-              defaultValue={this.props.target}
-              onChange={this.handleTargetChange}
-            >
-              <ToggleButton
-                variant="light"
-                value={TARGET.FILTER}
-                disabled={this.props.isRunning}
-              >
-                All clips in filter
-              </ToggleButton>
-              <ToggleButton
-                variant="light"
-                value={TARGET.PROJECT}
-                disabled={this.props.isRunning}
-              >
-                All clips in project
-              </ToggleButton>
-            </ToggleButtonGroup>
+            {!this.props.newProject ? this.renderTargetButtons() : ""}
           </Form>
         </Modal.Body>
 
         <Modal.Footer>
+          {this.props.newProject ? (
+            <Button
+              variant="secondary"
+              onClick={this.handleClose}
+              disabled={this.props.isRunning}
+            >
+              Skip
+            </Button>
+          ) : (
+            ""
+          )}
           <Button
             variant="primary"
             type="submit"
@@ -147,6 +175,7 @@ const mapStateToProps = (state) => {
     target: state.od.target,
     isRunning: state.od.isRunning,
     currentProgress: state.com.od.currentProgress,
+    newProject: state.menu.newProject,
   };
 };
 
@@ -159,6 +188,7 @@ const mapDispatchToProps = (dispatch) => {
     detectObjects: (rate, target) => dispatch(detectObjects(rate, target)),
     getODProgress: () => dispatch(getODProgress()),
     deleteODProgress: () => dispatch(deleteODProgress()),
+    setNewProject: (b) => dispatch(setNewProject(b)),
   };
 };
 

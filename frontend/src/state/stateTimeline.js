@@ -1,5 +1,7 @@
 import store from "./state";
 
+import { MAP_MODE } from "../state/stateViewport";
+
 /* -- ACTIONS -- */
 export const ZOOM = "ZOOM";
 export const SET_START_TIME = "SET_START_TIME";
@@ -71,17 +73,21 @@ export function setEndTime(date) {
 }
 
 /**
- * Updates the startTime and endTime of timeline.
+ * Updates the startTime and endTime of both timeline and glassbox.
  * Updates timeSpan accordingly.
  *
- * @param {Date} startDate
- * @param {Date} endDate
+ * @param {Date} startDate Timeline startTime
+ * @param {Date} endDate Timeline endTime
+ * @param {Date} gbStartDate Glassbox startTime
+ * @param {Date} gbEndDate Glassbox endTime
  */
-export function setTimeLimits(startDate, endDate) {
+export function setTimeLimits(startDate, endDate, gbStartDate, gbEndDate) {
   return {
     type: SET_TIME_LIMITS,
     start: startDate,
     end: endDate,
+    gbStart: gbStartDate,
+    gbEnd: gbEndDate,
   };
 }
 
@@ -100,8 +106,8 @@ export function setTimeLimits(startDate, endDate) {
 export function gbSetTimeLimits(startDate, endDate) {
   return {
     type: GB_SET_TIME_LIMITS,
-    start: startDate,
-    end: endDate,
+    gbStart: startDate,
+    gbEnd: endDate,
   };
 }
 
@@ -153,12 +159,12 @@ function handleGlassboxInput(start, end, state) {
  */
 function checkGlassboxTimeSpan(start, end, state) {
   if (
-    state.startTime.getTime() < start.getTime() &&
+    state.startTime.getTime() <= start.getTime() &&
     start.getTime() < state.endTime.getTime()
   ) {
     if (
       state.startTime.getTime() < end.getTime() &&
-      end.getTime() < state.endTime.getTime()
+      end.getTime() <= state.endTime.getTime()
     ) {
       if (start.getTime() < end.getTime()) {
         return; // this is the expected behaviour
@@ -192,12 +198,30 @@ const timelineReducer = (state = initialState, action) => {
         timeSpan: action.date.getTime() - state.startTime.getTime(),
       };
     case SET_TIME_LIMITS:
+      //Timeline
       checkTimeSpan(action.start, action.end);
-      return {
+      state = {
         ...state,
         startTime: action.start,
         endTime: action.end,
         timeSpan: action.end.getTime() - action.start.getTime(),
+      };
+    case GB_SET_TIME_LIMITS:
+      var gbStartT, gbEndT;
+      [gbStartT, gbEndT] = handleGlassboxInput(
+        action.gbStart,
+        action.gbEnd,
+        state
+      );
+      checkGlassboxTimeSpan(gbStartT, gbEndT, state);
+      return {
+        ...state,
+        glassbox: {
+          ...state.glassbox,
+          startTime: gbStartT,
+          endTime: gbEndT,
+          timeSpan: gbEndT.getTime() - gbStartT.getTime(),
+        },
       };
     case ZOOM:
       //if action.hrs is undefiend, then use state.scale
@@ -207,22 +231,11 @@ const timelineReducer = (state = initialState, action) => {
 
         // Compares with timeSpan or glassbox timeSpan depending on mode;
         // if action.hrs is bigger than timeSpan,
-        // then timeSpan is the max value for scale.
-        scale: action.viewportMode
-          ? Math.min(hours, state.timeSpan / (60 * 60 * 1000))
-          : Math.min(hours, state.glassbox.timeSpan / (60 * 60 * 1000)),
-      };
-    case GB_SET_TIME_LIMITS:
-      var startT, endT;
-      [startT, endT] = handleGlassboxInput(action.start, action.end, state);
-      checkGlassboxTimeSpan(startT, endT, state);
-      return {
-        ...state,
-        glassbox: {
-          startTime: action.start,
-          endTime: action.end,
-          timeSpan: action.end.getTime() - action.start.getTime(),
-        },
+        // then timeSpan is the max value for scale. Round it to 2 decimals
+        scale:
+          action.viewportMode == MAP_MODE
+            ? Math.min(hours, state.timeSpan / (60 * 60 * 1000))
+            : Math.min(hours, state.glassbox.timeSpan / (60 * 60 * 1000)),
       };
     default:
       return state;

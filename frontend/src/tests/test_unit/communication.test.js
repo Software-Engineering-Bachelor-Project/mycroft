@@ -1059,6 +1059,8 @@ describe("Communication reducer", () => {
               resolution: 1,
               duplicates: [6],
               overlap: [4, 5],
+              frame_rate: 69,
+              playable: false,
             },
           ],
         })
@@ -1074,9 +1076,11 @@ describe("Communication reducer", () => {
           "avi",
           tempStartDate,
           tempEndDate,
-          tempResolution,
+          1,
           [6],
-          [4, 5]
+          [4, 5],
+          69,
+          false
         ),
       },
     });

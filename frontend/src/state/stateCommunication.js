@@ -156,7 +156,7 @@ export function getClipsMatchingFilter() {
  * @param {Object} newValues All values to be modified where key is parameter (as named in request) and value is the new value.
  *
  * Example of usage:
- * this.props.modifyFilter({START_TIME: Date, END_TIME: Date, MIN_FRAME_RATE: x});
+ * this.props.modifyFilter({[START_TIME]: Date, [END_TIME]: Date, [MIN_FRAME_RATE]: x});
  * This will modify the fields startTime, endTime and minFrameRate in state.com.filter.
  */
 export function modifyFilter(newValues) {

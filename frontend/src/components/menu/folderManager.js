@@ -12,13 +12,18 @@ import {
   getSourceFolders,
 } from "../../state/stateCommunication";
 
+import { syncProject, doActionsInOrder } from "../../util";
+
 class FolderManager extends Component {
   constructor(props) {
     super(props);
 
+    this.state = { modified: false };
+
     this.hasFolders = this.hasFolders.bind(this);
     this.isChosen = this.isChosen.bind(this);
     this.toggleFolder = this.toggleFolder.bind(this);
+    this.handleFinished = this.handleFinished.bind(this);
   }
 
   hasFolders() {
@@ -30,15 +35,27 @@ class FolderManager extends Component {
   }
 
   toggleFolder(id) {
-    if (this.isChosen(id)) this.props.removeFolder(id);
-    else this.props.addFolder(id);
+    doActionsInOrder([
+      () => {
+        if (this.isChosen(id)) this.props.removeFolder(id);
+        else this.props.addFolder(id);
+      },
+      syncProject,
+    ]);
+    this.setState({ modified: true });
+  }
+
+  handleFinished() {
+    this.props.toggleShow();
+    if (this.state.modified) this.props.showObjectDetector();
+    this.setState({ modified: false });
   }
 
   render() {
     return (
       <Modal
         show={this.props.show}
-        onHide={this.hasFolders() ? this.props.toggleShow : () => {}}
+        onHide={this.hasFolders() ? this.handleFinished : () => {}}
         onShow={this.props.getSourceFolders}
         centered
       >
@@ -69,7 +86,7 @@ class FolderManager extends Component {
           ))}
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={this.props.toggleShow} disabled={!this.hasFolders()}>
+          <Button onClick={this.handleFinished} disabled={!this.hasFolders()}>
             Continue
           </Button>
         </Modal.Footer>

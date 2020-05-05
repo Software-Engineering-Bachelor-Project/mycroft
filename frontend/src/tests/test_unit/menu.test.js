@@ -11,6 +11,8 @@ import {
   toggleShowProjectSwitcher,
   TOGGLE_FOLDER_MANAGER,
   toggleShowFolderManager,
+  SET_NEW_PROJECT,
+  setNewProject,
 } from "../../state/stateMenu";
 
 describe("Menu reducer", () => {
@@ -123,6 +125,44 @@ describe("Menu reducer", () => {
     ).toEqual({
       ...initialState,
       showFolderManager: false,
+    });
+  });
+
+  it("should handle SET_NEW_PROJECT", () => {
+    // Action constant
+    expect(SET_NEW_PROJECT).toEqual("SET_NEW_PROJECT");
+
+    // Action creator
+    expect(setNewProject()).toEqual({
+      type: SET_NEW_PROJECT,
+    });
+
+    // Set to true
+    expect(
+      reducer(
+        { ...initialState, newProject: false },
+        {
+          type: SET_NEW_PROJECT,
+          payload: true,
+        }
+      )
+    ).toEqual({
+      ...initialState,
+      newProject: true,
+    });
+
+    // Set to false
+    expect(
+      reducer(
+        { ...initialState, newProject: true },
+        {
+          type: SET_NEW_PROJECT,
+          payload: false,
+        }
+      )
+    ).toEqual({
+      ...initialState,
+      newProject: false,
     });
   });
 });

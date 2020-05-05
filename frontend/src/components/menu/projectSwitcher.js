@@ -19,7 +19,7 @@ import {
   newProject,
   renameProject,
 } from "../../state/stateCommunication";
-
+import { setNewProject } from "../../state/stateMenu";
 import { doActionsInOrder, syncProject } from "../../util";
 
 /* -- Object detector -- */
@@ -58,7 +58,7 @@ class ProjectSwitcher extends Component {
   deleteProject(id) {
     doActionsInOrder([
       () => this.props.deleteProject(id),
-      () => this.props.getProjects(),
+      this.props.getProjects,
     ]);
   }
 
@@ -68,7 +68,7 @@ class ProjectSwitcher extends Component {
 
     doActionsInOrder([
       () => this.props.renameProject(id, name),
-      () => this.props.getProjects(),
+      this.props.getProjects,
       () => this.toggle(id),
     ]);
   }
@@ -79,12 +79,14 @@ class ProjectSwitcher extends Component {
 
     doActionsInOrder([
       () => this.props.newProject(name),
-      () => this.props.getProjects(),
+      this.props.getProjects,
       () => {
         this.props.toggleShow();
-        syncProject();
+        this.props.showFolderManager();
       },
     ]);
+
+    this.props.setNewProject(true);
   }
 
   // This method decides what characters are allowed in project names
@@ -328,6 +330,7 @@ const mapDispatchToProps = (dispatch) => {
     deleteProject: (id) => dispatch(deleteProject(id)),
     newProject: (name) => dispatch(newProject(name)),
     renameProject: (id, name) => dispatch(renameProject(id, name)),
+    setNewProject: (b) => dispatch(setNewProject(b)),
   };
 };
 

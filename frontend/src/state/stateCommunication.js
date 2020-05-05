@@ -805,7 +805,6 @@ function handleResponse(state, reqType, status, data) {
         case 200:
           let newClips = {};
           for (const c of data.clips) {
-            console.log("c: ", c);
             newClips[c.id] = new Clip(
               c.id,
               c.name,
@@ -815,11 +814,9 @@ function handleResponse(state, reqType, status, data) {
               parseDatetimeString(c.start_time),
               parseDatetimeString(c.end_time),
               c.resolution,
-              // state.filter.resolutions[c.resolution],
               c.duplicates,
               c.overlap,
               c.frame_rate,
-              c.hash_sum,
               c.playable
             );
           }

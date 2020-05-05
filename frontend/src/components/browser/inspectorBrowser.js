@@ -38,10 +38,6 @@ class InspectorBrowser extends Component {
     this.isEmpty = this.isEmpty.bind(this);
     this.renderCameraContent = this.renderCameraContent.bind(this);
     this.fetchValidClips = this.fetchValidClips.bind(this);
-    this.fetchSelectedClip = this.fetchSelectedClip.bind(this);
-    this.fetchObjectInDict = this.fetchObjectInDict.bind(this);
-    this.fetchClipPropertyValue = this.fetchClipPropertyValue.bind(this);
-    this.fetchClipTimeValue = this.fetchClipTimeValue.bind(this);
   }
 
   /* Checks if an object in empty */
@@ -130,20 +126,18 @@ class InspectorBrowser extends Component {
       to the specific camera.
   */
   fetchValidClips() {
+    let clips = [];
     if (
-      this.props.cameras[this.props.inspector.id] != undefined ||
+      this.props.cameras[this.props.inspector.id] != undefined &&
       this.props.clips != undefined
     ) {
-      let clips = [];
       this.props.cameras[this.props.inspector.id].clips.map((clipId) => {
         if (this.props.clips.hasOwnProperty(clipId)) {
           clips.push(this.props.clips[clipId]);
         }
       });
-      return clips;
-    } else {
-      return "";
     }
+    return clips;
   }
 
   /* Render content for the camera mode display in inspector */
@@ -217,60 +211,13 @@ class InspectorBrowser extends Component {
    * @param {int} objectId The id for the asked object.
    * @param {string} key The key for which value should be returned. 
 
-   Fetch a specific value based on the key. First finds the matching object
-   with the objectId. Afterwords returning the value of the key. 
+   Fetch a specific value based on the key. 
    */
   fetchObjectInDict(dict, objectId, key) {
     if (dict != undefined && objectId != undefined && key != undefined) {
-      let res = "";
-      Object.values(dict).map((obj) => {
-        if (Object.is(obj.id, objectId)) {
-          res = obj;
-        }
-      });
-      return res[key];
+      return dict[objectId][key];
     } else {
       return "";
-    }
-  }
-
-  fetchClipPropertyValue(clip, property) {
-    if (clip[property] || property != undefined) {
-      switch (property) {
-        case "playable":
-          return clip[property] ? "Yes" : "No";
-        default:
-          return clip[property];
-      }
-    } else {
-      return "Cant find " + property;
-    }
-  }
-
-  fetchClipTimeValue(clip, property, timeType) {
-    if (
-      timeType != undefined &&
-      clip[property] != undefined &&
-      property != undefined
-    ) {
-      switch (timeType) {
-        case "date":
-          if (clip[property].toDateString() != undefined) {
-            return clip[property].toDateString();
-          } else {
-            return "Cant find " + timeType;
-          }
-        case "time":
-          if (clip[property].toTimeString() != undefined) {
-            return clip[property].toTimeString().slice(0, 8);
-          } else {
-            return "Cant find " + timeType;
-          }
-        default:
-          return "Cant find " + timeType;
-      }
-    } else {
-      return "Cant find " + timeType;
     }
   }
 
@@ -304,45 +251,76 @@ class InspectorBrowser extends Component {
               </tr>
               <tr>
                 <td>Folder</td>
-                <td>
-                  {this.fetchObjectInDict(
-                    this.props.folders,
-                    clip.folder,
-                    "name"
-                  )}
-                </td>
+                <td>{clip.getPath(this.props.folders)}</td>
               </tr>
               <tr>
                 <td>Format</td>
-                <td>{this.fetchClipPropertyValue(clip, "format")}</td>
+                <td>{clip.format ? clip.format : "Can't find format"}</td>
               </tr>
+              {/* Fetch the resolution object from filter based on the clip:s resolution id.*/}
               <tr>
                 <td>Resolution</td>
-                <td>{this.fetchClipPropertyValue(clip, "resolution")}</td>
+                <td>
+                  {this.props.filter[clip.resolution]
+                    ? this.props.filter[clip.resolution].height +
+                      " x " +
+                      this.props.filter[clip.resolution].width
+                    : "Can't find resoluton"}
+                </td>
               </tr>
               <tr>
-                <td>Framerate</td>
-                <td>{this.fetchClipPropertyValue(clip, "frame_rate")}</td>
+                <td>Frame rate</td>
+                <td>
+                  {clip.frame_rate ? clip.frame_rate : "Can't find frame rate"}
+                </td>
               </tr>
               <tr>
                 <td>Playable</td>
-                <td>{this.fetchClipPropertyValue(clip, "playable")}</td>
+                <td>{clip.playable ? "Yes" : "No"}</td>
+              </tr>
+              <tr>
+                <td>Overlapping</td>
+                <td>{clip.overlapping != [] ? "Yes" : "No"}</td>
+              </tr>
+              <tr>
+                <td>Nr. of duplicates</td>
+                <td>
+                  {clip.duplicates
+                    ? clip.duplicates.length
+                    : "Can't find duplicates"}
+                </td>
               </tr>
               <tr>
                 <td>Start Date</td>
-                <td>{this.fetchClipTimeValue(clip, "startTime", "date")}</td>
+                <td>
+                  {clip.startTime.toDateString()
+                    ? clip.startTime.toDateString()
+                    : "Can't find date"}
+                </td>
               </tr>
               <tr>
                 <td>Start Time</td>
-                <td>{this.fetchClipTimeValue(clip, "startTime", "time")}</td>
+                <td>
+                  {clip.startTime.toTimeString().slice(0, 8)
+                    ? clip.startTime.toTimeString().slice(0, 8)
+                    : "Can't find time"}
+                </td>
               </tr>
               <tr>
                 <td>End Date</td>
-                <td>{this.fetchClipTimeValue(clip, "endTime", "date")}</td>
+                <td>
+                  {clip.endTime.toDateString()
+                    ? clip.endTime.toDateString()
+                    : "Can't find date"}
+                </td>
               </tr>
               <tr>
                 <td>End Time</td>
-                <td>{this.fetchClipTimeValue(clip, "endTime", "time")}</td>
+                <td>
+                  {clip.endTime.toTimeString().slice(0, 8)
+                    ? clip.endTime.toTimeString().slice(0, 8)
+                    : "Can't find time"}
+                </td>
               </tr>
             </tbody>
           </Table>
@@ -385,6 +363,7 @@ class InspectorBrowser extends Component {
 const mapStateToProps = (state) => {
   return {
     inspector: state.browser.inspector,
+    filter: state.com.filter.resolutions,
     cameras: state.com.cameras,
     clips: state.com.clips,
     excList: state.browser.excList,

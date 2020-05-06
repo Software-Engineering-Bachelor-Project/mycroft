@@ -137,7 +137,7 @@ class ObjectDetector extends Component {
         </Modal.Body>
 
         <Modal.Footer>
-          {this.props.newProject ? (
+          {this.props.fromFolderManager ? (
             <Button
               variant="secondary"
               onClick={this.handleClose}
@@ -176,6 +176,7 @@ const mapStateToProps = (state) => {
     isRunning: state.od.isRunning,
     currentProgress: state.com.od.currentProgress,
     newProject: state.menu.newProject,
+    fromFolderManager: state.menu.fromFolderManager,
   };
 };
 

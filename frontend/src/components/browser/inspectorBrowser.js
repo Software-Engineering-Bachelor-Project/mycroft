@@ -7,10 +7,9 @@ import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
 import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
-
 import ListGroup from "react-bootstrap/ListGroup";
 
-// Import relevant components
+// Import CSS
 import styles from "./browser.module.css";
 
 // Import state
@@ -22,7 +21,18 @@ import {
   INSPECTOR_MODE_CAMERA,
   INSPECTOR_MODE_EXLUDED_INCLUDED,
 } from "../../state/stateBrowser";
-import { modifyFilter } from "../../state/stateCommunication";
+import {
+  modifyFilter,
+  getFilter,
+  getClipsMatchingFilter,
+} from "../../state/stateCommunication";
+
+// Import utility
+import {
+  INCLUDED_CLIP_IDS,
+  EXCLUDED_CLIP_IDS,
+  doActionsInOrder,
+} from "../../util";
 
 /* -- Browser -- */
 class InspectorBrowser extends Component {
@@ -38,6 +48,7 @@ class InspectorBrowser extends Component {
     this.isEmpty = this.isEmpty.bind(this);
     this.renderCameraContent = this.renderCameraContent.bind(this);
     this.fetchValidClips = this.fetchValidClips.bind(this);
+    this.updateFilterList = this.updateFilterList.bind(this);
   }
 
   /* Checks if an object in empty */
@@ -61,10 +72,10 @@ class InspectorBrowser extends Component {
           return this.renderExcludedIncluded();
         case INSPECTOR_MODE_AREA:
           return this.renderArea();
-        default:
-          return "";
       }
     }
+
+    return "";
   }
 
   /* checks */
@@ -140,6 +151,21 @@ class InspectorBrowser extends Component {
     return clips;
   }
 
+  /* Call to add or remove items from the include/exclude lists */
+  updateFilterList(include, id) {
+    // Update local lists
+    if (include) this.props.updateInc(id);
+    else this.props.updateExc(id);
+
+    // Send lists to server
+    doActionsInOrder([
+      // Modify filter on server
+      () => this.props.modifyFilter(this.props.incList, this.props.excList),
+      // Fetch filter changes from server
+      () => this.props.fetchFilter(),
+    ]);
+  }
+
   /* Render content for the camera mode display in inspector */
   renderCameraContent(clip) {
     return (
@@ -155,7 +181,7 @@ class InspectorBrowser extends Component {
             name="included"
             id={clip.id}
             checked={this.checkCheckbox(true, Number(clip.id))}
-            onChange={(e) => this.props.updateInc(Number(clip.id))}
+            onChange={() => this.updateFilterList(true, Number(clip.id))}
           ></input>
         </Col>
 
@@ -167,7 +193,7 @@ class InspectorBrowser extends Component {
             name="excluded"
             id={clip.id}
             checked={this.checkCheckbox(false, Number(clip.id))}
-            onChange={(e) => this.props.updateExc(Number(clip.id))}
+            onChange={() => this.updateFilterList(false, Number(clip.id))}
           ></input>
         </Col>
 
@@ -374,6 +400,14 @@ const mapDispatchToProps = (dispatch) => {
     changeMode: (mode, clipId) => dispatch(changeMode(mode, clipId)), //place selector
     updateExc: (clipId) => dispatch(updateList(false, clipId)),
     updateInc: (clipId) => dispatch(updateList(true, clipId)),
+    modifyFilter: (il, el) =>
+      dispatch(
+        modifyFilter({ [INCLUDED_CLIP_IDS]: il, [EXCLUDED_CLIP_IDS]: el })
+      ),
+    fetchFilter: () => {
+      dispatch(getFilter());
+      dispatch(getClipsMatchingFilter());
+    },
   };
 };
 

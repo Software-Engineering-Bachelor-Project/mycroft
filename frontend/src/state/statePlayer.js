@@ -1,5 +1,4 @@
 import store from "./state";
-import { ADD_CAMERA } from "./stateMap";
 
 /* -- ACTIONS -- */
 export const PLAY_CLIP = "PLAY_CLIP";

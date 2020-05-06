@@ -79,7 +79,7 @@ class Menu extends Component {
         <FolderManager
           show={this.props.showFolderManager}
           toggleShow={this.props.toggleShowFolderManager}
-          showObjectDetector={this.props.toggleShowObjectDetection}
+          showObjectDetector={(b) => this.props.toggleShowObjectDetection(b)}
         />
       </div>
     );
@@ -98,7 +98,8 @@ const mapStateToProps = (state) => {
 // Forward Redux's dispatch function to React props
 const mapDispatchToProps = (dispatch) => {
   return {
-    toggleShowObjectDetection: () => dispatch(toggleShowObjectDetection()),
+    toggleShowObjectDetection: (b = false) =>
+      dispatch(toggleShowObjectDetection(b)),
     toggleShowProjectSwitcher: () => dispatch(toggleShowProjectSwitcher()),
     toggleShowFolderManager: () => dispatch(toggleShowFolderManager()),
   };

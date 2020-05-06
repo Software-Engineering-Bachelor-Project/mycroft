@@ -14,7 +14,7 @@ describe("Camera class", () => {
     expect(cam.id).toEqual(2);
     expect(cam.name).toEqual("Test Name");
     expect(cam.pos).toEqual({ latitude: "0.1337", longitude: "42.0" });
-    expect(cam.isEmpty()).toEqual(true);
+    expect(cam.countCommonClips([1])).toEqual(0);
     expect(cam.selected).toEqual(true);
   });
 
@@ -25,7 +25,7 @@ describe("Camera class", () => {
       { latitude: "0.1337", longitude: "42.0" },
       [1]
     );
-    expect(cam.isEmpty()).toEqual(false);
+    expect(cam.countCommonClips([1])).toEqual(1);
     expect(cam.selected).toEqual(false);
   });
 });

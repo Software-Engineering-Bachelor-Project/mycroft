@@ -1,6 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
+// Import relevant types
+import { Camera, Clip } from "../../types";
+import { doActionsInOrder } from "../../util";
+
 // Leaflet
 import {
   Map as LMap,
@@ -21,11 +25,13 @@ import iconEmptySelectedUrl from "../../images/marker-icon-empty-selected.png";
 import shadowUrl from "../../images/marker-shadow.png";
 import iconAreaUrl from "../../images/area-icon.png";
 
-// Import relevant types
-import { Camera, Clip } from "../../types";
-
 // Import actions
-import { createArea, deleteArea } from "../../state/stateCommunication";
+import {
+  createArea,
+  deleteArea,
+  getClipsMatchingFilter,
+  getFilter,
+} from "../../state/stateCommunication";
 import { getDistance } from "../../util";
 import {
   changeMode,
@@ -113,6 +119,30 @@ class Map extends Component {
     this.renderAreas = this.renderAreas.bind(this);
     this.renderAreaCreation = this.renderAreaCreation.bind(this);
     this.renderCameras = this.renderCameras.bind(this);
+    this.getCameraIcon = this.getCameraIcon.bind(this);
+  }
+
+  getCameraIcon(id, camera) {
+    var selected =
+      this.props.browserTab === "inspectorBrowser" &&
+      this.props.inspectorMode === INSPECTOR_MODE_CAMERA &&
+      (this.props.selectedCamera === id ||
+        this.props.selectedCamera === parseInt(id));
+    var empty = camera.countCommonClips(this.props.filter.clips) === 0;
+
+    if (selected) {
+      if (empty) {
+        return this.iconES;
+      } else {
+        return this.iconS;
+      }
+    } else {
+      if (empty) {
+        return this.iconE;
+      } else {
+        return this.icon;
+      }
+    }
   }
 
   // -------------------- OnClick Actions ----------------------------
@@ -121,7 +151,36 @@ class Map extends Component {
    * When a camera marker is right clicked, add it to the filter by creating an area with radius 0
    */
   onCameraMarkerContextClick(cam, e) {
-    this.props.createArea(cam.pos.latitude, cam.pos.longitude, 0);
+    for (const [id, area] of Object.entries(this.props.filter.areas)) {
+      const maxError = 0.00000001; // Account for float rounding error
+
+      console.log(
+        area.radius === 0 &&
+          Math.abs(cam.pos.latitude - area.latitude) < maxError &&
+          Math.abs(cam.pos.longitude - area.longitude) < maxError
+      );
+      if (
+        area.radius === 0 &&
+        Math.abs(cam.pos.latitude - area.latitude) < maxError &&
+        Math.abs(cam.pos.longitude - area.longitude) < maxError
+      ) {
+        doActionsInOrder([
+          () => this.props.deleteArea(id),
+          () => {
+            this.props.getClipsMatchingFilter();
+            this.props.getFilter();
+          },
+        ]);
+        return;
+      }
+    }
+    doActionsInOrder([
+      () => this.props.createArea(cam.pos.latitude, cam.pos.longitude, 0),
+      () => {
+        this.props.getClipsMatchingFilter();
+        this.props.getFilter();
+      },
+    ]);
   }
 
   /**
@@ -136,7 +195,13 @@ class Map extends Component {
    * When a area marker is left clicked, delete it
    */
   onAreaMarkerContextClick(areaID, e) {
-    this.props.deleteArea(areaID);
+    doActionsInOrder([
+      () => this.props.deleteArea(areaID),
+      () => {
+        this.props.getClipsMatchingFilter();
+        this.props.getFilter();
+      },
+    ]);
   }
 
   /**
@@ -172,7 +237,18 @@ class Map extends Component {
       if (this.state.rad === 0) {
         this.setState({ areaToolTip: "The radius of the area can not be 0, " });
       } else {
-        this.props.createArea(this.state.lat, this.state.lon, this.state.rad);
+        //create copies
+        var lat = this.state.lat.valueOf();
+        var lon = this.state.lon.valueOf();
+        var rad = this.state.rad.valueOf();
+
+        doActionsInOrder([
+          () => this.props.createArea(lat, lon, rad),
+          () => {
+            this.props.getClipsMatchingFilter();
+            this.props.getFilter();
+          },
+        ]);
         this.setState(this.baseState);
       }
     }
@@ -198,6 +274,7 @@ class Map extends Component {
       return "";
     }
   }
+
   /**
    * Render all cameras
    */
@@ -209,25 +286,8 @@ class Map extends Component {
         onClick={(e) => this.onCameraMarkerClick(id, e)}
         onContextmenu={(e) => this.onCameraMarkerContextClick(cam, e)}
         clickable={true}
-        icon={
-          cam.isEmpty()
-            ? cam.selected
-              ? this.iconES
-              : this.iconE
-            : cam.selected
-            ? this.iconS
-            : this.icon
-        }
-      >
-        <Popup>
-          <label>
-            {cam.name} (id: {id})
-          </label>
-          <p>
-            Position: [{cam.pos.latitude}, {cam.pos.longitude}]
-          </p>
-        </Popup>
-      </Marker>
+        icon={this.getCameraIcon(id, cam)}
+      ></Marker>
     ));
   }
 
@@ -302,6 +362,9 @@ const mapStateToProps = (state) => {
   return {
     cameras: state.com.cameras,
     filter: state.com.filter,
+    selectedCamera: state.browser.inspector.id,
+    browserTab: state.browser.currentTab,
+    inspectorMode: state.browser.inspector.mode,
   };
 };
 
@@ -312,6 +375,8 @@ const mapDispatchToProps = (dispatch) => {
     deleteArea: (id) => dispatch(deleteArea(id)),
     changeMode: (mode, id) => dispatch(changeMode(mode, id)),
     changeBrowserTab: (tab) => dispatch(changeBrowserTab(tab)),
+    getClipsMatchingFilter: () => dispatch(getClipsMatchingFilter()),
+    getFilter: () => dispatch(getFilter()),
   };
 };
 

@@ -42,13 +42,14 @@ export class Camera {
   }
 
   /**
-   *
-   * Returns whether or not this camera contains any clips.
-   *
-   * @return {boolean} True if this camera does not contain any clips.
+   * Return the number of clips that both the camera and the list have in common
+   * @param {Array<int>} clips
+   * @return {int} number of clips
    */
-  isEmpty() {
-    return this.clips.length == 0;
+  countCommonClips(clips) {
+    var commonClips = clips.filter((value) => this.clips.includes(value));
+
+    return commonClips.length;
   }
 }
 

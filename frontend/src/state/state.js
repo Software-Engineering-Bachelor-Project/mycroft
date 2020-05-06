@@ -1,7 +1,6 @@
 import { createStore, combineReducers } from "redux";
 import communicationReducer from "./stateCommunication";
 import playerReducer from "./statePlayer";
-import mapReducer from "./stateMap";
 import menuReducer from "./stateMenu";
 import viewportReducer from "./stateViewport";
 import timelineReducer from "./stateTimeline";
@@ -20,7 +19,6 @@ import objectDetectorReducer from "./stateObjectDetector";
 const rootReducer = combineReducers({
   com: communicationReducer,
   player: playerReducer,
-  map: mapReducer,
   menu: menuReducer,
   viewport: viewportReducer,
   timeline: timelineReducer,

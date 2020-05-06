@@ -13,6 +13,7 @@ export const initialState = {
   showProjectSwitcher: true,
   showFolderManager: false,
   newProject: false,
+  fromFolderManager: false,
 };
 
 /* -- ACTION CREATORS -- */
@@ -20,9 +21,10 @@ export const initialState = {
 /**
  * Open/closes object detection pop up.
  */
-export function toggleShowObjectDetection() {
+export function toggleShowObjectDetection(fromShowManager = false) {
   return {
     type: TOGGLE_OBJECT_DETECTION,
+    payload: fromShowManager,
   };
 }
 
@@ -61,6 +63,7 @@ const menuReducer = (state = initialState, action) => {
       return {
         ...state,
         showObjectDetection: !state.showObjectDetection,
+        fromFolderManager: action.payload,
       };
     case TOGGLE_PROJECT_SWITCHER:
       return {

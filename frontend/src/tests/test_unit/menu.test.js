@@ -24,9 +24,16 @@ describe("Menu reducer", () => {
     // Action constant
     expect(TOGGLE_OBJECT_DETECTION).toEqual("TOGGLE_OBJECT_DETECTION");
 
-    // Action creator
+    // Action creator without argument
     expect(toggleShowObjectDetection()).toEqual({
       type: TOGGLE_OBJECT_DETECTION,
+      payload: false,
+    });
+
+    // Action creator with argument
+    expect(toggleShowObjectDetection(true)).toEqual({
+      type: TOGGLE_OBJECT_DETECTION,
+      payload: true,
     });
 
     // Toggle from false to true
@@ -35,6 +42,7 @@ describe("Menu reducer", () => {
         { ...initialState, showObjectDetection: false },
         {
           type: TOGGLE_OBJECT_DETECTION,
+          payload: false,
         }
       )
     ).toEqual({
@@ -48,11 +56,27 @@ describe("Menu reducer", () => {
         { ...initialState, showObjectDetection: true },
         {
           type: TOGGLE_OBJECT_DETECTION,
+          payload: false,
         }
       )
     ).toEqual({
       ...initialState,
       showObjectDetection: false,
+    });
+
+    // Toggle from false to true and set payload
+    expect(
+      reducer(
+        { ...initialState, showObjectDetection: false },
+        {
+          type: TOGGLE_OBJECT_DETECTION,
+          payload: true,
+        }
+      )
+    ).toEqual({
+      ...initialState,
+      showObjectDetection: true,
+      fromFolderManager: true,
     });
   });
 

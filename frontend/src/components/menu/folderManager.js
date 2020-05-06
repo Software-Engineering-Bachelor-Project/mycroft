@@ -38,16 +38,18 @@ class FolderManager extends Component {
     doActionsInOrder([
       () => {
         if (this.isChosen(id)) this.props.removeFolder(id);
-        else this.props.addFolder(id);
+        else {
+          this.setState({ modified: true });
+          this.props.addFolder(id);
+        }
       },
       syncProject,
     ]);
-    this.setState({ modified: true });
   }
 
   handleFinished() {
     this.props.toggleShow();
-    if (this.state.modified) this.props.showObjectDetector();
+    if (this.state.modified) this.props.showObjectDetector(true);
     this.setState({ modified: false });
   }
 

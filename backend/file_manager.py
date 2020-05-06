@@ -109,6 +109,10 @@ def build_file_structure(file_path: str) -> None:
     # Divide folder path in name and path.
     path, name = split_file_path(file_path=file_path)
 
+    # If path is D:, change it to D:/
+    if not path[-1] == '/':
+        path += '/'
+
     # Create root and set parent id.
     parent_id = create_root_folder(path=path, name=name)
 

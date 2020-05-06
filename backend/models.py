@@ -390,4 +390,4 @@ def distance(lon1: Decimal, lat1: Decimal, lon2: Decimal, lat2: Decimal) -> Deci
     :param lat2: latitude of point 2
     :return: whether timespan 1 overlaps timespan 2
     """
-    return Decimal.sqrt((lon1 - lon2) ** 2 + (lat1 - lat2) ** 2)
+    return Decimal.sqrt((Decimal(57475)*(lon1 - lon2)) ** 2 + (Decimal(111395)*(lat1 - lat2)) ** 2)

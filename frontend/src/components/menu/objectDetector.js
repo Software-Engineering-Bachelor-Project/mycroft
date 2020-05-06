@@ -33,7 +33,12 @@ class ObjectDetector extends Component {
   }
 
   handleRateChange(event) {
-    this.props.setRate(parseInt(event.target.value));
+    let newRate = parseInt(event.target.value);
+
+    // Prevent negative ratio.
+    if (newRate < 0) event.target.value = "0";
+
+    this.props.setRate(newRate);
   }
 
   handleTargetChange(event) {

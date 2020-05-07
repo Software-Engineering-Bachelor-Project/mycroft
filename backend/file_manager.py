@@ -2,6 +2,7 @@ import re, logging
 import pytz
 from django.conf import settings
 import cv2
+import os
 
 from .database_wrapper import *
 from .communication_utils import *
@@ -106,12 +107,19 @@ def build_file_structure(file_path: str) -> None:
 
     :param file_path: Absolute path to folder in file system.
     """
-    # Divide folder path in name and path.
-    path, name = split_file_path(file_path=file_path)
 
-    # If path is D:, change it to D:/
-    if not path[-1] == '/':
-        path += '/'
+    # Get absolute path
+    abspath = os.path.abspath(file_path)
+    
+    print("Adding {} as entry folder...".format(abspath))
+
+    # Check that path leads to a folder
+    if not os.path.isdir(file_path):
+        raise ValueError("Not a folder!")
+    
+    # Divide folder path in name and path.
+    path = os.path.dirname(abspath) + "/"
+    name = os.path.basename(abspath)
 
     # Create root and set parent id.
     parent_id = create_root_folder(path=path, name=name)
@@ -270,21 +278,3 @@ def get_clip_details(file_path: str) -> (int, float, int, int):
     width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
     return int(frames / fps), fps, width, height
-
-
-def split_file_path(file_path: str) -> (str, str):
-    """
-    Splits a file path for path and name.
-
-    E.g. home/user/folder -> (home/user/, folder)
-
-    :param file_path: A file path.
-    :return: The path and the name in the given file path as a tuple.
-    """
-    split = file_path.rsplit(sep=os.path.sep, maxsplit=1)
-    if len(split) != 2:
-        raise ValueError("Given file path is not valid.")
-    path = os.path.join(split[0], '')  # Add delimiter to path
-    name = split[-1]
-
-    return path, name

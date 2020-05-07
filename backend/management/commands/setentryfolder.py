@@ -10,5 +10,9 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         folder = kwargs['folder']
-        build_file_structure(file_path=folder)
-        self.stdout.write("Added {} as entry folder.".format(folder))
+        try:
+            build_file_structure(file_path=folder)
+            self.stdout.write("Successfully added entry folder.")
+        except ValueError as e:
+            self.stdout.write(str(e))
+            self.stderr.write("Failed to add entry folder.")

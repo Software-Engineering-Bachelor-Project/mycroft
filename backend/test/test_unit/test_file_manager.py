@@ -179,17 +179,21 @@ class BuildFileStructureTest(TestCase):
 
     @patch('backend.file_manager.create_root_folder')
     @patch('backend.file_manager.traverse_subfolders')
-    @patch('backend.file_manager.split_file_path')
-    def test_function(self, mock_split_file_path, mock_traverse_subfolders, mock_create_root_folder):
+    @patch('backend.file_manager.os.path.isdir')
+    @patch('backend.file_manager.os.path.dirname')
+    @patch('backend.file_manager.os.path.basename')
+    def test_function(self, mock_basename, mock_dirname, mock_isdir, mock_traverse_subfolders, mock_create_root_folder):
         """
         Test that a function for create_root_folder and traverse_folder is called with appropriate arguments.
         """
-        mock_split_file_path.return_value = 'home/user/', 'test_folder'
+        mock_basename.return_value = 'test_folder'
+        mock_dirname.return_value = 'home/user'
+        mock_isdir.return_value = True
         mock_traverse_subfolders.return_value = None
         mock_create_root_folder.return_value = 1337
 
         build_file_structure('home/user/test_folder')
-        mock_split_file_path.assert_called_once_with(file_path='home/user/test_folder')
+        mock_isdir.assert_called_once_with('home/user/test_folder')
         mock_create_root_folder.assert_called_once_with(path='home/user/', name='test_folder')
         mock_traverse_subfolders.assert_called_once_with(path='home/user/test_folder', parent_id=1337)
 
@@ -366,21 +370,3 @@ class GetClipDetailsTest(TestCase):
         Test calling function with non existing clip.
         """
         self.assertRaises(FileNotFoundError, get_clip_details, file_path='home/user/test_folder/no_clip.avi')
-
-
-class SplitFilePathTest(TestCase):
-
-    @patch('os.path')
-    def test_valid_path(self, mock_os_path):
-        """
-        Test with a valid path.
-        """
-        mock_os_path.sep = '/'
-        mock_os_path.join.return_value = 'home/user/'
-        self.assertEqual(split_file_path('home/user/test_folder'), ('home/user/', 'test_folder'))
-
-    def test_no_path(self):
-        """
-        Test giving function a clip without path. Should give ValueError.
-        """
-        self.assertRaises(ValueError, split_file_path, file_path='test_clip.avi')

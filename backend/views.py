@@ -213,6 +213,7 @@ def file_remove_folder(request):
     data = file_manager.remove_folder(request.data)
     return Response(data[1], data[0])
 
+
 @api_view(['POST'])
 def file_get_clips(request):
     """
@@ -220,6 +221,16 @@ def file_get_clips(request):
     :return: A response from the File Manager.
     """
     data = file_manager.get_clips(request.data)
+    return Response(data[1], data[0])
+
+
+@api_view(['POST'])
+def file_get_files(request):
+    """
+    Delegates a 'get files' request to the File Manager.
+    :return: A response from the File Manager.
+    """
+    data = file_manager.get_files(request.data)
     return Response(data[1], data[0])
 
 

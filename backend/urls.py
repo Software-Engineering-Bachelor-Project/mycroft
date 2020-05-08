@@ -35,6 +35,7 @@ urlpatterns = [
     path('file/add_folder', views.file_add_folder, name='file add folder'),
     path('file/remove_folder', views.file_remove_folder, name='file remove folder'),
     path('file/get_clips', views.file_get_clips, name='file get clips'),
+    path('file/get_files', views.file_get_files, name='file get files'),
 
     path('object_detection/detect_objects', views.detect_objects, name='detect objects'),
     path('object_detection/get_progress', views.get_progress, name='get progress'),

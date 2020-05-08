@@ -12,7 +12,7 @@ import Button from "react-bootstrap/Button";
 import markerIcon from "../../images/timemarker.png";
 
 import { zoom, gbSetTimeLimits } from "../../state/stateTimeline";
-import { jump } from "../../state/statePlayer";
+import { jump, pause, play } from "../../state/statePlayer";
 import {
   modifyFilter,
   getClipsMatchingFilter,
@@ -236,6 +236,7 @@ class Timeline extends Component {
     this.handleGlassboxInput = this.handleGlassboxInput.bind(this);
     this.hourToDate = this.hourToDate.bind(this);
     this.minToDate = this.minToDate.bind(this);
+    this.handlePlayPause = this.handlePlayPause.bind(this);
 
     // state variables
     this.state = {
@@ -331,17 +332,63 @@ class Timeline extends Component {
     if (this.props.viewportMode) {
       // TODO:: draw the content of topbar when in Map-mode.
       return (
-        <div style={{ left: "5px", top: "12px", position: "absolute" }}>
-          Topbar: Map-mode
+        <div>
+          {this.renderFilterPrompts()}
+          <div style={{ left: "5px", top: "0px", position: "absolute" }}>
+            Topbar: Map-mode
+          </div>
         </div>
       );
     }
-    // TODO:: draw the content of topbar when in Player-mode.
     return (
-      <div style={{ left: "5px", top: "12px", position: "absolute" }}>
-        Topbar: Player-mode
+      // This div contains Buttons for playing/pausing and jumping in a video
+      <div
+        style={{
+          left: "calc(50% / width)",
+          top: "5px",
+          position: "absolute",
+        }}
+      >
+        <Button
+          key={"jumpBackwards"}
+          onClick={(a) => this.props.jump(-10)}
+          variant="success"
+          style={{ marginRight: "10px" }}
+        >
+          Jump Backwards
+        </Button>
+        <Button
+          key={"playPause"}
+          ref={(c) => (this.playPauseRef = c)}
+          onClick={this.handlePlayPause}
+          variant="success"
+        >
+          Play
+        </Button>
+        <Button
+          key={"jumpForward"}
+          onClick={(a) => this.props.jump(10)}
+          variant="success"
+          style={{ marginLeft: "10px" }}
+        >
+          Jump Forward
+        </Button>
       </div>
     );
+  }
+
+  /**
+   * Handles playing and pausing a video.
+   * Toggles "Play", "Pause" -text in playPause-Button.
+   */
+  handlePlayPause() {
+    if (!this.props.playing) {
+      this.playPauseRef.innerHTML = "Pause";
+      this.props.play();
+    } else {
+      this.playPauseRef.innerHTML = "Play";
+      this.props.pause();
+    }
   }
 
   /**
@@ -894,7 +941,6 @@ class Timeline extends Component {
         <div className={styles.topbar}>
           {this.renderContentOfTopbar()}
           {this.renderScaleList()}
-          {this.renderFilterPrompts()}
         </div>
 
         {/* This is the box containing all the timestamps, which is affected by scaling */}
@@ -924,6 +970,7 @@ const mapStateToProps = (state) => {
     //Player
     clipID: state.player.clipID,
     position: state.player.position,
+    playing: state.player.playing,
   };
 };
 
@@ -932,6 +979,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     zoom: (hrs, viewportMode) => dispatch(zoom(hrs, viewportMode)),
     jump: (timeDelta) => dispatch(jump(timeDelta)),
+    play: () => dispatch(play()),
+    pause: () => dispatch(pause()),
+
     gbSetTimeLimits: (startDate, endDate) =>
       dispatch(gbSetTimeLimits(startDate, endDate)),
     modifyTimeFilter: (s, e) =>

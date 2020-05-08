@@ -41,6 +41,7 @@ import {
 import { ADD_FOLDER, addFolder } from "../../state/stateCommunication";
 import { REMOVE_FOLDER, removeFolder } from "../../state/stateCommunication";
 import { GET_CLIPS, getClips } from "../../state/stateCommunication";
+import { GET_FILES, getFiles } from "../../state/stateCommunication";
 import { GET_CAMERAS, getCameras } from "../../state/stateCommunication";
 import {
   GET_SEQUENTIAL_CLIP,
@@ -1098,6 +1099,106 @@ describe("Communication reducer", () => {
     // 404
     expect(
       reducer(initialState, requestResponse(GET_CLIPS, 404, undefined))
+    ).toEqual(initialState);
+  });
+
+  it("should handle GET_FILES", () => {
+    // Declare variables
+    let tempResolution = new Resolution(1920, 1080);
+    let testState = {
+      ...initialState,
+      projectID: 42,
+      filter: { ...initialState.filter, resolutions: { 1: tempResolution } },
+    };
+
+    let tempStartDate = new Date("2018-09-06T16:45:59+02:00");
+    let tempEndDate = new Date("2018-09-06T16:46:50+02:00");
+
+    // Action constant
+    expect(GET_FILES).toEqual("GET_FILES");
+
+    // Action creator
+    expect(getFiles()).toEqual({
+      type: GET_FILES,
+    });
+
+    // Get clips
+    expect(
+      reducer(
+        testState,
+        requestResponse(GET_FILES, 200, {
+          folders: [
+            {
+              id: 42,
+              clip_set: [1337, 21],
+              path: "home/user/",
+              name: "test_folder",
+              parent: null,
+            },
+          ],
+          clips: [
+            {
+              id: 42,
+              name: "test_clip",
+              video_format: "avi",
+              start_time: "2018-09-06T16:45:59+02:00",
+              end_time: "2018-09-06T16:46:50+02:00",
+              frame_rate: 24.0,
+              hash_sum: null,
+              folder: 1,
+              camera: 1,
+              resolution: 1,
+              duplicates: [6],
+              overlap: [4, 5],
+              frame_rate: 69,
+              playable: false,
+            },
+          ],
+        })
+      )
+    ).toEqual({
+      ...testState,
+      folders: {
+        42: new Folder(
+          42,
+          "test_folder",
+          undefined,
+          "home/user/",
+          [],
+          [1337, 21]
+        ),
+      },
+      clips: {
+        42: new Clip(
+          42,
+          "test_clip",
+          1,
+          1,
+          "avi",
+          tempStartDate,
+          tempEndDate,
+          1,
+          [6],
+          [4, 5],
+          69,
+          false
+        ),
+      },
+    });
+
+    // 204
+    expect(
+      reducer(initialState, requestResponse(GET_FILES, 204, undefined))
+    ).toEqual(initialState);
+
+    // 400
+    expect(
+      reducer(initialState, requestResponse(GET_FILES, 400, undefined))
+    ).toEqual(initialState);
+
+    // 404
+    expect(
+      reducer(initialState, requestResponse(GET_FILES, 404, undefined))
     ).toEqual(initialState);
   });
 

@@ -175,6 +175,20 @@ class GetClipsTest(TestCase):
         self.assertEqual(res, {})
 
 
+class GetFilesTest(TestCase):
+    @patch('backend.file_manager.get_clips')
+    @patch('backend.file_manager.get_folders')
+    def test_basic_call(self, mock_get_folders, mock_get_clips):
+        """
+        Test that get_folders and get_clips are called.
+        """
+        mock_get_folders.return_value = (200, {})
+        mock_get_clips.return_value = (200, {})
+        get_files(data={PROJECT_ID: 42})
+        mock_get_folders.assert_called_once_with(data={PROJECT_ID: 42})
+        mock_get_clips.assert_called_once_with(data={PROJECT_ID: 42})
+
+
 class BuildFileStructureTest(TestCase):
 
     @patch('backend.file_manager.create_root_folder')

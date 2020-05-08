@@ -3,6 +3,9 @@ import { connect } from "react-redux";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
+import Accordion from "react-bootstrap/Accordion";
+import Container from "react-bootstrap/Container";
+import ListGroup from "react-bootstrap/ListGroup";
 
 import styles from "./folderManager.module.css";
 
@@ -12,18 +15,27 @@ import {
   getSourceFolders,
 } from "../../state/stateCommunication";
 
-import { syncProject, doActionsInOrder } from "../../util";
+import {
+  syncProject,
+  doActionsInOrder,
+  getDuplicates,
+  getOverlapping,
+} from "../../util";
 
 class FolderManager extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { modified: false };
+    this.state = {
+      modified: false,
+      showingWarnings: false,
+    };
 
     this.hasFolders = this.hasFolders.bind(this);
     this.isChosen = this.isChosen.bind(this);
     this.toggleFolder = this.toggleFolder.bind(this);
     this.handleFinished = this.handleFinished.bind(this);
+    this.renderWarnings = this.renderWarnings.bind(this);
   }
 
   hasFolders() {
@@ -50,7 +62,83 @@ class FolderManager extends Component {
   handleFinished() {
     this.props.toggleShow();
     if (this.state.modified) this.props.showObjectDetector(true);
-    this.setState({ modified: false });
+    this.setState({ modified: false, showingWarnings: false });
+  }
+
+  renderWarnings() {
+    const duplicates = getDuplicates(this.props.clips);
+    const overlapping = getOverlapping(this.props.clips);
+
+    // Don't show button if there are no  warnings.
+    if (duplicates.length === 0 && overlapping.length === 0) {
+      return "";
+    }
+
+    return (
+      <Accordion>
+        <Card>
+          {/* Warnings */}
+          <Accordion.Collapse eventKey="0" in={this.state.showingWarnings}>
+            <Card.Body>
+              <Container>
+                {/* Duplicates */}
+                {duplicates.length > 0 ? (
+                  <>
+                    <strong>Duplicates</strong>
+                    <ListGroup>
+                      {duplicates.map((d, index) => (
+                        <ListGroup.Item key={index}>
+                          {d.map((c) => (
+                            <div key={c.id}>
+                              {c.getPath(this.props.folders)}
+                              <br />
+                            </div>
+                          ))}
+                        </ListGroup.Item>
+                      ))}
+                    </ListGroup>
+                  </>
+                ) : (
+                  ""
+                )}
+
+                {/* Overlapping */}
+                {overlapping.length > 0 ? (
+                  <div style={{ marginTop: 10 }}>
+                    <strong>Overlapping</strong>
+                    <ListGroup>
+                      {overlapping.map((o, index) => (
+                        <ListGroup.Item key={index}>
+                          {o.map((c) => (
+                            <div key={c.id}>
+                              {c.getPath(this.props.folders)}
+                              <br />
+                            </div>
+                          ))}
+                        </ListGroup.Item>
+                      ))}
+                    </ListGroup>
+                  </div>
+                ) : (
+                  ""
+                )}
+              </Container>
+            </Card.Body>
+          </Accordion.Collapse>
+          {/* Button */}
+          <Accordion.Toggle
+            as={Button}
+            variant="warning"
+            eventKey="0"
+            onClick={() =>
+              this.setState({ showingWarnings: !this.state.showingWarnings })
+            }
+          >
+            {this.state.showingWarnings ? "Hide warnings" : "Show warnings"}
+          </Accordion.Toggle>
+        </Card>
+      </Accordion>
+    );
   }
 
   render() {
@@ -87,6 +175,9 @@ class FolderManager extends Component {
             </Card>
           ))}
         </Modal.Body>
+
+        {this.renderWarnings()}
+
         <Modal.Footer>
           <Button onClick={this.handleFinished} disabled={!this.hasFolders()}>
             Continue
@@ -102,6 +193,8 @@ const mapStateToProps = (state) => {
   return {
     sourceFolders: state.com.sourceFolders,
     selectedFolders: state.com.currentSourceFolders,
+    clips: state.com.clips,
+    folders: state.com.folders,
   };
 };
 

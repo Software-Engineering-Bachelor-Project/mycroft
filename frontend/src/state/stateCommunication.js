@@ -2,6 +2,7 @@ import store from "./state";
 import {
   makePOST,
   parseFolders,
+  parseClips,
   parseDatetimeString,
   parseDateToString,
   START_TIME,
@@ -71,12 +72,14 @@ export const GET_SOURCE_FOLDERS = "GET_SOURCE_FOLDERS";
 export const ADD_FOLDER = "ADD_FOLDER";
 export const REMOVE_FOLDER = "REMOVE_FOLDER";
 export const GET_CLIPS = "GET_CLIPS";
+export const GET_FILES = "GET_FILES";
 
 export const URL_GET_FOLDERS = "/file/get_folders";
 export const URL_GET_SOURCE_FOLDERS = "/file/get_source_folders";
 export const URL_ADD_FOLDER = "/file/add_folder";
 export const URL_REMOVE_FOLDER = "/file/remove_folder";
 export const URL_GET_CLIPS = "/file/get_clips";
+export const URL_GET_FILES = "/file/get_files";
 
 // Object Detector requests
 export const DETECT_OBJECTS = "DETECT_OBJECTS";
@@ -358,6 +361,15 @@ export function removeFolder(fid) {
 export function getClips() {
   return {
     type: GET_CLIPS,
+  };
+}
+
+/**
+ * This action is used to get all folders and clips in the current project.
+ */
+export function getFiles() {
+  return {
+    type: GET_FILES,
   };
 }
 
@@ -803,26 +815,29 @@ function handleResponse(state, reqType, status, data) {
     case GET_CLIPS:
       switch (status) {
         case 200:
-          let newClips = {};
-          for (const c of data.clips) {
-            newClips[c.id] = new Clip(
-              c.id,
-              c.name,
-              c.folder,
-              c.camera,
-              c.video_format,
-              parseDatetimeString(c.start_time),
-              parseDatetimeString(c.end_time),
-              c.resolution,
-              c.duplicates,
-              c.overlap,
-              c.frame_rate,
-              c.playable
-            );
-          }
           return {
             ...state,
-            clips: newClips,
+            clips: parseClips(data.clips),
+          };
+        case 204:
+          e = "no project with specified ID";
+          break;
+        case 400:
+          e = "'project_id' parameter was missing from request";
+          break;
+        default:
+          e = "unknown reason";
+      }
+
+      break;
+
+    case GET_FILES:
+      switch (status) {
+        case 200:
+          return {
+            ...state,
+            folders: parseFolders(data.folders),
+            clips: parseClips(data.clips),
           };
         case 204:
           e = "no project with specified ID";
@@ -1045,6 +1060,11 @@ const communicationReducer = (state = initialState, action) => {
 
     case GET_CLIPS:
       url = URL_GET_CLIPS;
+      body = { project_id: state.projectID };
+      break;
+
+    case GET_FILES:
+      url = URL_GET_FILES;
       body = { project_id: state.projectID };
       break;
 

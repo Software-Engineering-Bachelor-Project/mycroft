@@ -1,6 +1,6 @@
 /* -- THIS FILE TESTS THE UTIL FILE .. */
 
-import { Folder } from "../../types";
+import { Folder, Clip } from "../../types";
 import {
   parseFolders,
   START_TIME,
@@ -10,6 +10,10 @@ import {
   INCLUDED_CLIP_IDS,
   EXCLUDED_CLIP_IDS,
   OBJECTS,
+  getDuplicates,
+  getOverlapping,
+  getDuplicatesTo,
+  getOverlappingTo,
 } from "../../util";
 
 describe("parseFolders", () => {
@@ -183,5 +187,211 @@ describe("filter constants", () => {
     expect(INCLUDED_CLIP_IDS).toEqual("included_clip_ids");
     expect(EXCLUDED_CLIP_IDS).toEqual("excluded_clip_ids");
     expect(OBJECTS).toEqual("classes");
+  });
+});
+
+describe("duplicates", () => {
+  const c1 = new Clip(
+    1,
+    "c1",
+    1,
+    undefined,
+    "x",
+    undefined,
+    undefined,
+    undefined,
+    [2, 3],
+    [],
+    undefined,
+    undefined
+  );
+  const c2 = new Clip(
+    2,
+    "c2",
+    1,
+    undefined,
+    "x",
+    undefined,
+    undefined,
+    undefined,
+    [1, 3],
+    [],
+    undefined,
+    undefined
+  );
+  const c3 = new Clip(
+    3,
+    "c3",
+    1,
+    undefined,
+    "x",
+    undefined,
+    undefined,
+    undefined,
+    [1, 2],
+    [],
+    undefined,
+    undefined
+  );
+  const c4 = new Clip(
+    4,
+    "c4",
+    1,
+    undefined,
+    "x",
+    undefined,
+    undefined,
+    undefined,
+    [5],
+    [],
+    undefined,
+    undefined
+  );
+  const c5 = new Clip(
+    5,
+    "c5",
+    1,
+    undefined,
+    "x",
+    undefined,
+    undefined,
+    undefined,
+    [4],
+    [],
+    undefined,
+    undefined
+  );
+
+  it("should find all duplicates", () => {
+    expect(getDuplicates({ 1: c1, 2: c2 })).toEqual([[c2, c1]]);
+    expect(getDuplicates({ 1: c1, 2: c2, 3: c3 })).toEqual([[c2, c3, c1]]);
+    expect(getDuplicates({ 4: c4, 5: c5, 3: c3 })).toEqual([[c5, c4]]);
+    expect(getDuplicates({ 1: c1, 2: c2, 3: c3, 4: c4, 5: c5 })).toEqual([
+      [c2, c3, c1],
+      [c5, c4],
+    ]);
+  });
+
+  it("should find all duplicates to a clip", () => {
+    expect(getDuplicatesTo(c1, { 1: c1, 2: c2, 4: c4 })).toEqual([c2]);
+    expect(getDuplicatesTo(c1, { 1: c1, 2: c2, 3: c3, 4: c4 })).toEqual([
+      c2,
+      c3,
+    ]);
+    expect(getDuplicatesTo(c1, { 1: c1, 3: c3, 4: c4 })).toEqual([c3]);
+  });
+});
+
+describe("getOverlapping", () => {
+  const c1 = new Clip(
+    1,
+    "c1",
+    1,
+    undefined,
+    "x",
+    undefined,
+    undefined,
+    undefined,
+    [],
+    [2],
+    undefined,
+    undefined
+  );
+  const c2 = new Clip(
+    2,
+    "c2",
+    1,
+    undefined,
+    "x",
+    undefined,
+    undefined,
+    undefined,
+    [],
+    [1, 3],
+    undefined,
+    undefined
+  );
+  const c3 = new Clip(
+    3,
+    "c3",
+    1,
+    undefined,
+    "x",
+    undefined,
+    undefined,
+    undefined,
+    [],
+    [2],
+    undefined,
+    undefined
+  );
+  const c4 = new Clip(
+    4,
+    "c4",
+    1,
+    undefined,
+    "x",
+    undefined,
+    undefined,
+    undefined,
+    [],
+    [5, 6],
+    undefined,
+    undefined
+  );
+  const c5 = new Clip(
+    5,
+    "c5",
+    1,
+    undefined,
+    "x",
+    undefined,
+    undefined,
+    undefined,
+    [],
+    [4, 6],
+    undefined,
+    undefined
+  );
+  const c6 = new Clip(
+    6,
+    "c6",
+    1,
+    undefined,
+    "x",
+    undefined,
+    undefined,
+    undefined,
+    [],
+    [4, 5],
+    undefined,
+    undefined
+  );
+
+  it("should find overlapping", () => {
+    expect(getOverlapping({ 1: c1, 2: c2 })).toEqual([[c1, c2]]);
+    expect(getOverlapping({ 1: c1, 2: c2, 3: c3 })).toEqual([
+      [c1, c2],
+      [c2, c3],
+    ]);
+    expect(getOverlapping({ 4: c4, 5: c5, 3: c3 })).toEqual([[c4, c5]]);
+    expect(getOverlapping({ 4: c4, 5: c5, 6: c6 })).toEqual([
+      [c4, c5],
+      [c4, c6],
+      [c5, c6],
+    ]);
+    expect(getOverlapping({ 1: c1, 2: c2, 3: c3, 4: c4, 5: c5 })).toEqual([
+      [c1, c2],
+      [c2, c3],
+      [c4, c5],
+    ]);
+  });
+
+  it("should find all overlapping clips to a given clip", () => {
+    expect(getOverlappingTo(c1, { 1: c1, 2: c2 })).toEqual([c2]);
+    expect(getOverlappingTo(c1, { 1: c1, 2: c2, 3: c3 })).toEqual([c2]);
+    expect(
+      getOverlappingTo(c4, { 1: c1, 2: c2, 3: c3, 4: c4, 5: c5, 6: c6 })
+    ).toEqual([c5, c6]);
   });
 });

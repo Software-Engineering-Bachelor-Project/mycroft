@@ -131,6 +131,12 @@ class ClipBrowser extends Component {
                               right: "1em",
                             }}
                             onClick={() => this.playClip(clipID)}
+                            disabled={!this.props.clips[clipID].playable}
+                            variant={
+                              this.props.clips[clipID].playable
+                                ? "primary"
+                                : "secondary"
+                            }
                           >
                             Play
                           </Button>

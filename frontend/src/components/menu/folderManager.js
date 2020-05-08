@@ -68,6 +68,9 @@ class FolderManager extends Component {
   renderWarnings() {
     const duplicates = getDuplicates(this.props.clips);
     const overlapping = getOverlapping(this.props.clips);
+    const unplayable = Object.values(this.props.clips).filter(
+      (c) => !c.playable
+    );
 
     // Don't show button if there are no  warnings.
     if (duplicates.length === 0 && overlapping.length === 0) {
@@ -119,6 +122,22 @@ class FolderManager extends Component {
                       ))}
                     </ListGroup>
                   </div>
+                ) : (
+                  ""
+                )}
+
+                {/* Unplayable clips */}
+                {unplayable.length > 0 ? (
+                  <>
+                    <strong>Unplayable</strong>
+                    <ListGroup>
+                      {unplayable.map((c) => (
+                        <ListGroup.Item key={c.id}>
+                          {c.getPath(this.props.folders)}
+                        </ListGroup.Item>
+                      ))}
+                    </ListGroup>
+                  </>
                 ) : (
                   ""
                 )}

@@ -190,6 +190,25 @@ def get_clips(data: dict) -> (int, dict):
     return 200, os_aware({CLIPS: serialize(clips_in_project)})
 
 
+def get_files(data: dict) -> (int, dict):
+    """
+    Gets all folders and clips in a project.
+
+    :param data: Project id.
+    :return: Status code, all folders and clips in project in JSON.
+    """
+
+    folders_code, folders = get_folders(data=data)
+    clips_code, clips = get_clips(data=data)
+
+    if folders_code == 400 or clips_code == 400:
+        return 400, {}  # Bad request
+    if folders_code == 204 or clips_code == 204:
+        return 204, {}  # No content
+
+    return 200, {**folders, **clips}
+
+
 def get_clip_info(file_path: str, folder_id: int, name: str, video_format: str) -> dict:
     """
     Finds all information related to the clip and returns a dictionary that can be used as input to the

@@ -199,6 +199,16 @@ class UrlsTest(TestCase):
         resolver = resolve(url)
         self.assertEqual(resolver.func, file_get_clips)
 
+    def test_file_get_files(self):
+        '''
+        Test that the url for the file_get_files module is correctly mapped to the view
+        :return: None
+        '''
+
+        url = reverse('backend:file get files')
+        resolver = resolve(url)
+        self.assertEqual(resolver.func, file_get_files)
+
     def test_object_detection(self):
         '''
         Test that the url for the object_detection module is correctly mapped to the view

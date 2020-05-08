@@ -3,12 +3,11 @@
  * used throughout Mycroft.
  */
 
-import { Folder } from "./types";
+import { Folder, Clip } from "./types";
 import store from "./state/state";
 import {
   requestsInProgress,
-  getFolders,
-  getClips,
+  getFiles,
   getCameras,
   getFilter,
   getAreasInFilter,
@@ -58,12 +57,11 @@ export function makePOST(url, opts = {}, onResponse) {
  */
 export function syncProject() {
   store.dispatch(getFilterParams());
-  store.dispatch(getFolders());
+  store.dispatch(getFiles());
   store.dispatch(getCameras());
   store.dispatch(getFilter());
   store.dispatch(getAreasInFilter());
   store.dispatch(getClipsMatchingFilter());
-  store.dispatch(getClips());
 }
 
 /**
@@ -90,6 +88,29 @@ export function parseFolders(folderResponse) {
   // Assign all subfolders to their parent.
   for (const sub of Object.values(res)) {
     if (sub.parent in res) res[sub.parent].children.push(sub.id);
+  }
+
+  return res;
+}
+
+export function parseClips(clipResponse) {
+  let res = {};
+
+  for (const c of clipResponse) {
+    res[c.id] = new Clip(
+      c.id,
+      c.name,
+      c.folder,
+      c.camera,
+      c.video_format,
+      parseDatetimeString(c.start_time),
+      parseDatetimeString(c.end_time),
+      c.resolution,
+      c.duplicates,
+      c.overlap,
+      c.frame_rate,
+      c.playable
+    );
   }
 
   return res;
@@ -168,4 +189,90 @@ function stopWaitingWhenFinished(id, actions) {
       doActionsInOrder(actions);
     }
   }
+}
+
+/**
+ * Finds all duplicates.
+ * @param {Object[id: Clip]} clips Clips to look for duplicates of.
+ * @return {Array[Array[Clips]]} List of duplicates.
+ */
+export function getDuplicates(clips) {
+  let res = [];
+  let processed = [];
+
+  for (const clip of Object.values(clips)) {
+    if (processed.includes(clip.id)) continue;
+
+    let d = [];
+    for (const id of clip.duplicates) {
+      if (clips.hasOwnProperty(id)) {
+        d.push(clips[id]);
+        processed.push(id);
+      }
+    }
+
+    if (d.length >= 1) {
+      d.push(clip);
+      res.push(d);
+    }
+  }
+
+  return res;
+}
+
+/**
+ * Finds all overlapping clips.
+ * @param {Object[id: Clip]} clips Clips to look for overlapping clips of.
+ * @return {Array[Array[Clips]]} List of overlapping.
+ */
+export function getOverlapping(clips) {
+  let res = [];
+  let vals = {};
+
+  // Copy important info
+  for (const clip of Object.values(clips))
+    vals[clip.id] = clip.overlapping.filter((id) => clips.hasOwnProperty(id));
+
+  for (let id in vals) {
+    for (let overlap of vals[id]) {
+      // Add overlapping pair
+      res.push([clips[id], clips[overlap]]);
+      // Remove from other overlapping list
+      vals[overlap].splice(vals[overlap].indexOf(parseInt(id)), 1);
+    }
+  }
+
+  return res;
+}
+
+/**
+ * Gets duplicates of given clip.
+ * @param {Clip} clip Clip to find duplicates to.
+ * @param {Object[id: Clip]} clips Clips to look for duplicates of.
+ * @return {Array[Clip]} Duplicates to given clip.
+ */
+export function getDuplicatesTo(clip, clips) {
+  let res = [];
+  for (const id of clip.duplicates) {
+    if (clips.hasOwnProperty(id)) {
+      res.push(clips[id]);
+    }
+  }
+  return res;
+}
+
+/**
+ * Gets overlapping clips to given clip.
+ * @param {Clip} clip Clip to find overlapping clips to.
+ * @param {Object[id: Clip]} clips Clips to look for overlapping clips of.
+ * @return {Array[Clip]} Overlapping clips to given clip.
+ */
+export function getOverlappingTo(clip, clips) {
+  let res = [];
+  for (const id of clip.overlapping) {
+    if (clips.hasOwnProperty(id)) {
+      res.push(clips[id]);
+    }
+  }
+  return res;
 }

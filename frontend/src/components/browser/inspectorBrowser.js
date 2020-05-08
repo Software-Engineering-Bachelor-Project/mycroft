@@ -2,8 +2,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 
 //React Bootstrap components
-import Tooltip from "react-bootstrap/Tooltip";
-import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
 import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
@@ -32,6 +30,8 @@ import {
   INCLUDED_CLIP_IDS,
   EXCLUDED_CLIP_IDS,
   doActionsInOrder,
+  getDuplicatesTo,
+  getOverlappingTo,
 } from "../../util";
 
 /* -- Browser -- */
@@ -306,11 +306,19 @@ class InspectorBrowser extends Component {
               </tr>
               <tr>
                 <td>Overlapping</td>
-                <td>{clip.overlapping != [] ? "Yes" : "No"}</td>
+                <td>
+                  {getOverlappingTo(clip, this.props.clips).length > 0
+                    ? "Yes"
+                    : "No"}
+                </td>
               </tr>
               <tr>
                 <td>Duplicates</td>
-                <td>{clip.duplicates != [] ? "Yes" : "No"}</td>
+                <td>
+                  {getDuplicatesTo(clip, this.props.clips).length > 0
+                    ? "Yes"
+                    : "No"}
+                </td>
               </tr>
               <tr>
                 <td>Start Date</td>

@@ -60,9 +60,9 @@ export function pause() {
 
 /**
  *
- * Creates an action used for pausing the clip currently playing
+ * Creates an action used for playing the clip currently selected
  *
- * @return {action} Action for pausing a clip.
+ * @return {action} Action for playing a clip.
  */
 export function play() {
   return {
@@ -72,7 +72,7 @@ export function play() {
 
 /**
  *
- * Creates an action used for setting the player that plays the clip the clip
+ * Creates an action used for setting the player that plays the clip
  * NOTE!: Should only be used by the player component
  *
  * @param {Player} player, the position in the clip currently playing
@@ -116,19 +116,21 @@ const playerReducer = (state = initialState, action) => {
     case PLAY:
       if (state.player != null) {
         state.player.play();
+        return {
+          ...state,
+          playing: true,
+        };
       }
-      return {
-        ...state,
-        playing: true,
-      };
+      return state;
     case PAUSE:
       if (state.player != null) {
         state.player.pause();
+        return {
+          ...state,
+          playing: false,
+        };
       }
-      return {
-        ...state,
-        playing: false,
-      };
+      return state;
     case SET_PLAYER:
       return {
         ...state,

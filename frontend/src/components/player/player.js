@@ -56,11 +56,7 @@ class Player extends Component {
           width="100%"
           height="100%"
         >
-          <source
-            src={
-              "http://127.0.0.1:8000/video/stream/" + this.props.clipID + "/"
-            }
-          />
+          <source src={"/video/stream/" + this.props.clipID + "/"} />
           <ControlBar>
             <ReplayControl seconds={10} order={1.1} />
             <ForwardControl seconds={30} order={1.2} />

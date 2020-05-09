@@ -75,7 +75,7 @@ export function play() {
  * Creates an action used for setting the player that plays the clip
  * NOTE!: Should only be used by the player component
  *
- * @param {Player} player, the position in the clip currently playing
+ * @param {Player} player the player
  * @return {action} Action for setting the player
  */
 export function setPlayer(player) {

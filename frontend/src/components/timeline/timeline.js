@@ -237,6 +237,7 @@ class Timeline extends Component {
     this.hourToDate = this.hourToDate.bind(this);
     this.minToDate = this.minToDate.bind(this);
     this.handlePlayPause = this.handlePlayPause.bind(this);
+    this.updateTextPlayPauseButton = this.updateTextPlayPauseButton.bind(this);
 
     // state variables
     this.state = {
@@ -383,12 +384,21 @@ class Timeline extends Component {
    */
   handlePlayPause() {
     if (!this.props.playing) {
-      this.playPauseRef.innerHTML = "Pause";
+      this.updateTextPlayPauseButton("Pause");
       this.props.play();
     } else {
-      this.playPauseRef.innerHTML = "Play";
+      this.updateTextPlayPauseButton("Play");
       this.props.pause();
     }
+  }
+
+  /**
+   * Update text for playPause-Button.
+   *
+   * @param {string} textString
+   */
+  updateTextPlayPauseButton(textString) {
+    this.playPauseRef.innerHTML = textString;
   }
 
   /**
@@ -437,7 +447,7 @@ class Timeline extends Component {
         )}
 
         {/* Clipline component */}
-        <Cliplines />
+        <Cliplines updateTextPlayPauseButton={this.updateTextPlayPauseButton} />
 
         {/* Timemarker */}
         {this.renderTimemarker()}

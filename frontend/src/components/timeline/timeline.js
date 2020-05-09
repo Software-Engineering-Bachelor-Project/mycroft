@@ -238,6 +238,7 @@ class Timeline extends Component {
     this.minToDate = this.minToDate.bind(this);
     this.handlePlayPause = this.handlePlayPause.bind(this);
     this.updateTextPlayPauseButton = this.updateTextPlayPauseButton.bind(this);
+    this.jumpInClip = this.jumpInClip.bind(this);
 
     // state variables
     this.state = {
@@ -352,11 +353,11 @@ class Timeline extends Component {
       >
         <Button
           key={"jumpBackwards"}
-          onClick={(a) => this.props.jump(-10)}
+          onClick={(a) => this.jumpInClip(-1)}
           variant="success"
           style={{ marginRight: "10px" }}
         >
-          Jump Backwards
+          Jump Back 1 Frame
         </Button>
         <Button
           key={"playPause"}
@@ -368,14 +369,34 @@ class Timeline extends Component {
         </Button>
         <Button
           key={"jumpForward"}
-          onClick={(a) => this.props.jump(10)}
+          onClick={(a) => this.jumpInClip(1)}
           variant="success"
           style={{ marginLeft: "10px" }}
         >
-          Jump Forward
+          Jump Forward 1 Frame
         </Button>
       </div>
     );
+  }
+
+  /**
+   * Calls jump-function in statePlayer to jump number of frames.
+   *
+   * @param {int} frames number of frames to jump in clip
+   */
+  jumpInClip(frames) {
+    if (this.props.clipID) {
+      if (!(this.props.clipID in this.props.clips)) {
+        console.warn(
+          "In timeline.js, jumpInClip(frames): ",
+          "Clip with id ",
+          clipID,
+          " does not exist in current project"
+        );
+        return;
+      }
+      this.props.jump(frames / this.props.clips[this.props.clipID].frame_rate);
+    }
   }
 
   /**

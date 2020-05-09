@@ -59,7 +59,7 @@ describe("Player reducer", () => {
     // Next state
     var nextState = {
       ...initialState,
-      playing: true,
+      playing: false, //player is not set, therefore playing is false
     };
 
     // Action constant

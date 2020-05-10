@@ -39,6 +39,7 @@ import {
   INSPECTOR_MODE_CAMERA,
   changeBrowserTab,
 } from "../../state/stateBrowser";
+import { Button, ListGroup } from "react-bootstrap";
 
 /* -- Map -- */
 class Map extends Component {
@@ -120,6 +121,9 @@ class Map extends Component {
     this.renderAreaCreation = this.renderAreaCreation.bind(this);
     this.renderCameras = this.renderCameras.bind(this);
     this.getCameraIcon = this.getCameraIcon.bind(this);
+    this.renderMultipleCamerasPopup = this.renderMultipleCamerasPopup.bind(
+      this
+    );
   }
 
   getCameraIcon(id, camera) {
@@ -153,12 +157,6 @@ class Map extends Component {
   onCameraMarkerContextClick(cam, e) {
     for (const [id, area] of Object.entries(this.props.filter.areas)) {
       const maxError = 0.00000001; // Account for float rounding error
-
-      console.log(
-        area.radius === 0 &&
-          Math.abs(cam.pos.latitude - area.latitude) < maxError &&
-          Math.abs(cam.pos.longitude - area.longitude) < maxError
-      );
       if (
         area.radius === 0 &&
         Math.abs(cam.pos.latitude - area.latitude) < maxError &&
@@ -186,7 +184,19 @@ class Map extends Component {
   /**
    * When a camera marker is left clicked, open it in the inspector
    */
-  onCameraMarkerClick(camID, e) {
+  onCameraMarkerClick(camID, cam, e) {
+    if (
+      Object.entries(this.props.cameras).filter(([id, camera]) => {
+        return (
+          camID !== id &&
+          cam.pos.latitude === camera.pos.latitude &&
+          cam.pos.longitude === camera.pos.longitude
+        );
+      }).length > 0
+    ) {
+      return;
+    }
+
     this.props.changeMode(INSPECTOR_MODE_CAMERA, camID);
     this.props.changeBrowserTab("inspectorBrowser");
   }
@@ -257,6 +267,50 @@ class Map extends Component {
   // ---------------- Render functions -------------------------------
 
   /**
+   * Render a popup if multiple cameras has the same location
+   */
+  renderMultipleCamerasPopup(props) {
+    // Get all cameras that have the same location as the given one
+    var camerasAtSamePos = Object.entries(this.props.cameras).filter(
+      ([id2, camera]) => {
+        return (
+          props.camera.pos.latitude === camera.pos.latitude &&
+          props.camera.pos.longitude === camera.pos.longitude
+        );
+      }
+    );
+
+    //Check that there are other cameras at this location
+    if (camerasAtSamePos.length <= 1) {
+      return "";
+    }
+
+    return (
+      <Popup>
+        <label>
+          <p>There are multiple cameras in this location:</p>
+          <ListGroup>
+            {/*Create Button for every camera at the location*/}
+            {camerasAtSamePos.map(([id, cam]) => (
+              <ListGroup.Item key={id}>
+                <Button
+                  size="sm"
+                  onClick={() => {
+                    this.props.changeMode(INSPECTOR_MODE_CAMERA, id);
+                    this.props.changeBrowserTab("inspectorBrowser");
+                  }}
+                >
+                  {cam.name}
+                </Button>
+              </ListGroup.Item>
+            ))}
+          </ListGroup>
+        </label>
+      </Popup>
+    );
+  }
+
+  /**
    * Render the area currently being created
    */
   renderAreaCreation(props) {
@@ -283,11 +337,13 @@ class Map extends Component {
       <Marker
         key={id}
         position={[cam.pos.latitude, cam.pos.longitude]}
-        onClick={(e) => this.onCameraMarkerClick(id, e)}
+        onClick={(e) => this.onCameraMarkerClick(id, cam, e)}
         onContextmenu={(e) => this.onCameraMarkerContextClick(cam, e)}
         clickable={true}
         icon={this.getCameraIcon(id, cam)}
-      ></Marker>
+      >
+        <this.renderMultipleCamerasPopup camera={cam} id={id} />
+      </Marker>
     ));
   }
 

@@ -1,5 +1,5 @@
 from django.test import TestCase
-from django.http import QueryDict
+from django.http import QueryDict, HttpResponse
 from rest_framework.test import APIRequestFactory
 import unittest.mock as mock
 
@@ -242,14 +242,14 @@ class ExportFilterTest(TestCase):
         :return: None
         '''
         # Set up mock
-        mock_mod.export_filter.return_value = (200, {})
+        mock_mod.export_filter.return_value = HttpResponse()
 
         # Test function
-        req = APIRequestFactory().post('', {'test': 'data'})
-        response = views.export_filter(req)
+        req = APIRequestFactory().get('', {'test': 'data'})
+        response = views.export_filter(req, 42)
 
         # Did we propagate properly?
-        mock_mod.export_filter.assert_called_with(QueryDict('test=data'))
+        mock_mod.export_filter.assert_called_with(42)
 
 
 class ExportClipsTest(TestCase):
@@ -314,7 +314,7 @@ class VideoGetCamerasTest(TestCase):
     @mock.patch('backend.views.video_manager')
     def test_propagation(self, mock_mod):
         '''
-        Tests propagation of the 'get clip stream' request.
+        Tests propagation of the 'get cameras' request.
         :return: None
         '''
         # Set up mock

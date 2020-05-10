@@ -23,7 +23,7 @@ urlpatterns = [
     path('project/delete', views.project_delete, name='project delete'),
     path('project/rename', views.project_rename, name='project rename'),
 
-    path('export/filter', views.export_filter, name='export filter'),
+    path('export/filter/<int:fid>/', views.export_filter, name='export filter'),
     path('export/clips', views.export_clips, name='export clips'),
 
     path('video/get_info', views.video_get_info, name='video info'),

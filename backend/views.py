@@ -135,14 +135,14 @@ def export_filter(request, fid):
     return response
 
 
-@api_view(['POST'])
-def export_clips(request):
+@api_view(['GET'])
+def export_clips(request, fid):
     """
     Delegates a 'clips' request to the Exporter.
     :return: A response from the Exporter.
     """
-    data = exporter.export_clips(request.data)
-    return Response(data[1], data[0])
+    response = exporter.export_clips(fid)
+    return response
 
 
 @api_view(['POST'])

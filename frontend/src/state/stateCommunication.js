@@ -52,11 +52,6 @@ export const URL_NEW_PROJECT = "/project/new";
 export const URL_DELETE_PROJECT = "/project/delete";
 export const URL_RENAME_PROJECT = "/project/rename";
 
-// Exporter requests
-export const EXPORT_CLIPS = "EXPORT_CLIPS";
-
-export const URL_EXPORT_CLIPS = "/export/clips";
-
 // Video Manager requests
 export const GET_CAMERAS = "GET_CAMERAS";
 export const GET_SEQUENTIAL_CLIP = "GET_SEQUENTIAL_CLIP";
@@ -269,15 +264,6 @@ export function renameProject(id, name) {
     type: RENAME_PROJECT,
     id: id,
     name: name,
-  };
-}
-
-/**
- * TODO: Add doc-comment
- */
-export function exportClips() {
-  return {
-    type: EXPORT_CLIPS,
   };
 }
 
@@ -685,9 +671,6 @@ function handleResponse(state, reqType, status, data) {
 
       break;
 
-    case EXPORT_CLIPS:
-      return state;
-
     case GET_CAMERAS:
       switch (status) {
         case 200:
@@ -1000,11 +983,6 @@ const communicationReducer = (state = initialState, action) => {
         project_id: action.id,
         project_name: action.name,
       };
-      break;
-
-    case EXPORT_CLIPS:
-      url = URL_EXPORT_CLIPS;
-      body = {};
       break;
 
     case GET_CAMERAS:

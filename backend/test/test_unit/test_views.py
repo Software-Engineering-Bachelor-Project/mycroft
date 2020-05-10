@@ -261,14 +261,14 @@ class ExportClipsTest(TestCase):
         :return: None
         '''
         # Set up mock
-        mock_mod.export_clips.return_value = (200, {})
+        mock_mod.export_clips.return_value = HttpResponse()
 
         # Test function
-        req = APIRequestFactory().post('', {'test': 'data'})
-        response = views.export_clips(req)
+        req = APIRequestFactory().get('', {'test': 'data'})
+        response = views.export_clips(req, 42)
 
         # Did we propagate properly?
-        mock_mod.export_clips.assert_called_with(QueryDict('test=data'))
+        mock_mod.export_clips.assert_called_with(42)
 
 
 class VideoGetInfoTest(TestCase):

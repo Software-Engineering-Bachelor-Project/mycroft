@@ -25,10 +25,6 @@ class Menu extends Component {
     this.props.toggleShowFolderManager();
   }
 
-  exportJSON() {
-    console.log("Export JSON was clicked.");
-  }
-
   exportClips() {
     console.log("Export Clips was clicked.");
   }
@@ -53,7 +49,11 @@ class Menu extends Component {
             {" "}
             Manage Sources{" "}
           </Dropdown.Item>
-          <Dropdown.Item onClick={() => this.exportJSON()}>
+          <Dropdown.Item
+            onClick={() => console.log("Exporting JSON.")}
+            href={"/export/filter/" + this.props.filterID + "/"}
+            download
+          >
             {" "}
             Export JSON{" "}
           </Dropdown.Item>
@@ -92,6 +92,7 @@ const mapStateToProps = (state) => {
     showObjectDetection: state.menu.showObjectDetection,
     showProjectSwitcher: state.menu.showProjectSwitcher,
     showFolderManager: state.menu.showFolderManager,
+    filterID: state.com.filter.filterID,
   };
 };
 

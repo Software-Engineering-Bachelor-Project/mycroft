@@ -115,7 +115,7 @@ class UrlsTest(TestCase):
         :return: None
         '''
 
-        url = reverse('backend:export clips')
+        url = reverse('backend:export clips', args=(42,))
         resolver = resolve(url)
         self.assertEqual(resolver.func, export_clips)
 

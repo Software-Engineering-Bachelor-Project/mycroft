@@ -124,14 +124,15 @@ def project_rename(request):
     return Response(data[1], data[0])
 
 
-@api_view(['POST'])
-def export_filter(request):
+@api_view(['GET'])
+def export_filter(request, fid):
     """
     Delegates a 'filter' request to the Exporter.
+    :param fid: Filter id.
     :return: A response from the Exporter.
     """
-    data = exporter.export_filter(request.data)
-    return Response(data[1], data[0])
+    response = exporter.export_filter(fid)
+    return response
 
 
 @api_view(['POST'])
@@ -267,8 +268,8 @@ def delete_progress(request):
 @api_view(['GET'])
 def get_clip_stream(request, cid):
     """
-    Delegates a 'get video stream' request to the vide manager.
-    :return: A response from the Object Detector.
+    Delegates a 'get video stream' request to the video manager.
+    :return: A response from the Video Manager.
     """
     response = video_manager.get_video_stream(request, cid)
     return response

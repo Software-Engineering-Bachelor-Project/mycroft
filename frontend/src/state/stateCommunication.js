@@ -52,10 +52,8 @@ export const URL_DELETE_PROJECT = "/project/delete";
 export const URL_RENAME_PROJECT = "/project/rename";
 
 // Exporter requests
-export const EXPORT_FILTER = "EXPORT_FILTER";
 export const EXPORT_CLIPS = "EXPORT_CLIPS";
 
-export const URL_EXPORT_FILTER = "/export/filter";
 export const URL_EXPORT_CLIPS = "/export/clips";
 
 // Video Manager requests
@@ -268,16 +266,6 @@ export function renameProject(id, name) {
     type: RENAME_PROJECT,
     id: id,
     name: name,
-  };
-}
-
-// Exporter requests
-/**
- * TODO: Add doc-comment
- */
-export function exportFilter() {
-  return {
-    type: EXPORT_FILTER,
   };
 }
 
@@ -685,9 +673,6 @@ function handleResponse(state, reqType, status, data) {
 
       break;
 
-    case EXPORT_FILTER:
-      return state;
-
     case EXPORT_CLIPS:
       return state;
 
@@ -1000,11 +985,6 @@ const communicationReducer = (state = initialState, action) => {
         project_id: action.id,
         project_name: action.name,
       };
-      break;
-
-    case EXPORT_FILTER:
-      url = URL_EXPORT_FILTER;
-      body = {};
       break;
 
     case EXPORT_CLIPS:

@@ -33,6 +33,7 @@ import {
   getDuplicatesTo,
   getOverlappingTo,
 } from "../../util";
+import { setLocation } from "../../state/stateMap";
 
 /* -- Browser -- */
 class InspectorBrowser extends Component {
@@ -76,6 +77,46 @@ class InspectorBrowser extends Component {
     }
 
     return "";
+  }
+
+  // Move map if a new Camera, Clip or Area was selected
+  componentDidUpdate(prevProps, prevState) {
+    // Check if the object in inspector has changed
+    if (
+      this.props.inspector.mode !== prevProps.inspector.mode ||
+      this.props.inspector.id !== prevProps.inspector.id
+    ) {
+      switch (this.props.inspector.mode) {
+        case INSPECTOR_MODE_CAMERA:
+          var cam = this.props.cameras[this.props.inspector.id];
+          this.props.setMapLocation(
+            cam.pos.latitude,
+            cam.pos.longitude,
+            this.props.mapZoom
+          );
+          return;
+        case INSPECTOR_MODE_CLIP:
+          var clip = this.props.clips[this.props.inspector.id];
+          var cam = this.props.cameras[clip.camera];
+          this.props.setMapLocation(
+            cam.pos.latitude,
+            cam.pos.longitude,
+            this.props.mapZoom
+          );
+          return;
+        case INSPECTOR_MODE_EXLUDED_INCLUDED:
+          return;
+
+        case INSPECTOR_MODE_AREA:
+          var area = this.props.areas[this.props.inspector.id];
+          this.props.setMapLocation(
+            area.latitude,
+            area.longitude,
+            this.props.mapZoom
+          );
+          return;
+      }
+    }
   }
 
   /* checks */
@@ -399,12 +440,15 @@ const mapStateToProps = (state) => {
     excList: state.browser.excList,
     incList: state.browser.incList,
     folders: state.com.folders,
+    mapZoom: state.map.zoom,
+    areas: state.com.filter.areas,
   };
 };
 
 // Forward Redux's dispatch function to React props
 const mapDispatchToProps = (dispatch) => {
   return {
+    setMapLocation: (lat, long, zoom) => dispatch(setLocation(lat, long, zoom)),
     changeMode: (mode, clipId) => dispatch(changeMode(mode, clipId)), //place selector
     updateExc: (clipId) => dispatch(updateList(false, clipId)),
     updateInc: (clipId) => dispatch(updateList(true, clipId)),

@@ -67,5 +67,18 @@ class ExportFilterTest(TestCase):
 
 
 class ExportClipsTest(TestCase):
-    # TODO: Create integration tests
-    pass
+
+    def test_empty_project(self):
+        pid = create_project(name="test_project")
+        fid = create_filter(pid=pid)
+        res = export_clips(fid=fid)
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(res['Content-Type'], 'application/x-zip-compressed')
+        self.assertEqual(res['Content-Disposition'], 'attachment; filename=test_project_clips.zip')
+
+    def test_non_existing_filter(self):
+        """
+        Test with a project id that doesn't exist.
+        """
+        res = export_clips(fid=42)
+        self.assertEqual(res.status_code, 204)

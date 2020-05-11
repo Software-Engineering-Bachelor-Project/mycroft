@@ -58,8 +58,10 @@ def export_clips(fid: int) -> HttpResponse:
     buffer = io.BytesIO()
     res = ZipFile(buffer, 'w')
 
-    # TODO: Add clips and metadata
-    res.write('LICENSE')
+    clips = get_all_clips_matching_filter(fid=fid)
+    for clip in clips:
+        res.write(str(clip), arcname=get_project_path(clip=clip))  # clip
+        res.write(str(clip) + ".txt", arcname=get_project_path(clip=clip) + ".txt")  # metadata
 
     res.close()
 

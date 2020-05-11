@@ -108,9 +108,6 @@ class Cliplines extends Component {
     setTimeout(() => this.props.play(), 100);
     this.props.changeMode(INSPECTOR_MODE_CLIP, id);
     this.props.changeBrowserTab();
-
-    // Call timeline updateTextPlayPauseButton to update Play/Pause Button-text
-    this.props.updateTextPlayPauseButton("Pause");
   }
 
   render() {

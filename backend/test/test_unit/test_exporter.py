@@ -1,7 +1,7 @@
 import pytz
 from django.conf import settings
 from django.test import TestCase
-from unittest.mock import patch
+from unittest.mock import patch, call
 
 # Import module
 from backend.exporter import *
@@ -34,8 +34,54 @@ class ExportFilterTest(TestCase):
 
 class ExportClipsTest(TestCase):
 
-    def test_basic(self):
+    @patch('backend.database_wrapper.create_hash_sum')
+    def setUp(self, mock_create_hash_sum) -> None:
+        """
+        Setup a test project.
+        """
+        mock_create_hash_sum.return_value = '1234'
+        self.cam_name = 'test_camera'
+        self.lat = Decimal(value="13.37")
+        self.lon = Decimal(value="0.42")
+        self.st = timezone.datetime(2020, 1, 17, tzinfo=pytz.timezone(settings.TIME_ZONE))
+        self.et = timezone.datetime(2020, 1, 18, tzinfo=pytz.timezone(settings.TIME_ZONE))
+
+        self.pid = create_project(name="test_project")
+        self.rid = create_root_folder(path='home/user/', name='test_folder')
+        self.sid1 = create_subfolder(parent_fid=self.rid, name='test_subfolder')
+        self.sid2 = create_subfolder(parent_fid=self.rid, name='another_test_subfolder')
+        self.sid3 = create_subfolder(parent_fid=self.sid1, name='third_test_subfolder')
+        self.cid1 = create_clip(fid=self.rid, clip_name="test_clip1", video_format="tvf", start_time=self.st,
+                                end_time=self.et, latitude=self.lat, longitude=self.lon, width=256, height=240,
+                                frame_rate=42.0, camera_name=self.cam_name)
+        self.cid2 = create_clip(fid=self.sid1, clip_name="test_clip2", video_format="tvf", start_time=self.st,
+                                end_time=self.et, latitude=self.lat, longitude=self.lon, width=256, height=240,
+                                frame_rate=42.0, camera_name=self.cam_name)
+        self.cid3 = create_clip(fid=self.sid3, clip_name="test_clip3", video_format="tvf", start_time=self.st,
+                                end_time=self.et, latitude=self.lat, longitude=self.lon, width=256, height=240,
+                                frame_rate=42.0, camera_name=self.cam_name)
+        add_folder_to_project(fid=self.rid, pid=self.pid)
+        self.fid = create_filter(pid=self.pid)
+
+    @patch.object(ZipFile, 'write', return_value=None)
+    def test_basic(self, mock_write):
         """
         Makes a simple call.
         """
-        pass
+        export_clips(fid=self.fid)
+        self.assertEqual(mock_write.call_count, 6)
+        mock_write.assert_has_calls([
+            call('home/user/test_folder/test_clip1.tvf',
+                 arcname=replace_sep('test_folder/test_clip1.tvf')),
+            call('home/user/test_folder/test_clip1.tvf.txt',
+                 arcname=replace_sep('test_folder/test_clip1.tvf.txt')),
+            call('home/user/test_folder/test_subfolder/test_clip2.tvf',
+                 arcname=replace_sep('test_folder/test_subfolder/test_clip2.tvf')),
+            call('home/user/test_folder/test_subfolder/test_clip2.tvf.txt',
+                 arcname=replace_sep('test_folder/test_subfolder/test_clip2.tvf.txt')),
+            call('home/user/test_folder/test_subfolder/third_test_subfolder/test_clip3.tvf',
+                 arcname=replace_sep('test_folder/test_subfolder/third_test_subfolder'
+                                     '/test_clip3.tvf')),
+            call('home/user/test_folder/test_subfolder/third_test_subfolder/test_clip3.tvf.txt',
+                 arcname=replace_sep('test_folder/test_subfolder/third_test_subfolder'
+                                     '/test_clip3.tvf.txt'))])

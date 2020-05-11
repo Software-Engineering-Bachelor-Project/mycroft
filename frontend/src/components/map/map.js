@@ -39,6 +39,8 @@ import {
   INSPECTOR_MODE_CAMERA,
   changeBrowserTab,
 } from "../../state/stateBrowser";
+import { setLocation } from "../../state/stateMap";
+
 import { Button, ListGroup } from "react-bootstrap";
 
 /* -- Map -- */
@@ -391,9 +393,15 @@ class Map extends Component {
       <React.Fragment>
         <LMap
           onContextmenu={this.onMapContextClick}
-          center={[58.411, 15.621]}
-          zoom={14}
-          on
+          center={[this.props.lat, this.props.long]}
+          zoom={this.props.zoom}
+          onViewportChanged={(viewport) => {
+            this.props.setLocation(
+              viewport.center[0],
+              viewport.center[1],
+              viewport.zoom
+            );
+          }}
         >
           <TileLayer
             attribution='&copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
@@ -421,12 +429,16 @@ const mapStateToProps = (state) => {
     selectedCamera: state.browser.inspector.id,
     browserTab: state.browser.currentTab,
     inspectorMode: state.browser.inspector.mode,
+    lat: state.map.lat,
+    long: state.map.long,
+    zoom: state.map.zoom,
   };
 };
 
 // Forward Redux's dispatch function to React props
 const mapDispatchToProps = (dispatch) => {
   return {
+    setLocation: (lat, long, zoom) => dispatch(setLocation(lat, long, zoom)),
     createArea: (lat, lon, rad) => dispatch(createArea(lat, lon, rad)),
     deleteArea: (id) => dispatch(deleteArea(id)),
     changeMode: (mode, id) => dispatch(changeMode(mode, id)),

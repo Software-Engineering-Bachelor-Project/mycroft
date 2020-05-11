@@ -38,6 +38,7 @@ import {
   INSPECTOR_MODE_AREA,
   INSPECTOR_MODE_CAMERA,
   changeBrowserTab,
+  INSPECTOR_MODE_CLIP,
 } from "../../state/stateBrowser";
 import { setLocation } from "../../state/stateMap";
 
@@ -129,11 +130,25 @@ class Map extends Component {
   }
 
   getCameraIcon(id, camera) {
-    var selected =
+    var selected = false;
+
+    if (
       this.props.browserTab === "inspectorBrowser" &&
-      this.props.inspectorMode === INSPECTOR_MODE_CAMERA &&
-      (this.props.selectedCamera === id ||
-        this.props.selectedCamera === parseInt(id));
+      this.props.inspectorMode === INSPECTOR_MODE_CAMERA
+    ) {
+      // Check if this Camera is selected
+      selected =
+        this.props.selectedID === id || this.props.selectedID === parseInt(id);
+    } else if (
+      this.props.browserTab === "inspectorBrowser" &&
+      this.props.inspectorMode === INSPECTOR_MODE_CLIP
+    ) {
+      // Check if a clip in this camera is selected
+      selected =
+        this.props.clips[this.props.selectedID].camera === id ||
+        this.props.clips[this.props.selectedID].camera === parseInt(id);
+    }
+
     var empty = camera.countCommonClips(this.props.filter.clips) === 0;
 
     if (selected) {
@@ -374,15 +389,7 @@ class Map extends Component {
             }}
             clickable={true}
             icon={this.iconA}
-          >
-            <Popup>
-              <label>Area ID: {id}</label>
-              <p>
-                Position(lat, long, rad): {area.latitude}, {area.longitude} ,{" "}
-                {area.radius}]
-              </p>
-            </Popup>
-          </Marker>
+          ></Marker>
         )}
       </Circle>
     ));
@@ -425,8 +432,9 @@ class Map extends Component {
 const mapStateToProps = (state) => {
   return {
     cameras: state.com.cameras,
+    clips: state.com.clips,
     filter: state.com.filter,
-    selectedCamera: state.browser.inspector.id,
+    selectedID: state.browser.inspector.id,
     browserTab: state.browser.currentTab,
     inspectorMode: state.browser.inspector.mode,
     lat: state.map.lat,

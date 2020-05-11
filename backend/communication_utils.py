@@ -1,6 +1,7 @@
 import os
 from typing import Optional
 from django.utils import timezone
+from .models import Clip
 
 # --- ID:s ---
 from django.utils.dateparse import parse_datetime
@@ -106,6 +107,20 @@ def replace_sep(val):
     if isinstance(val, str):
         val = val.replace(opp_sep, os.path.sep)
     return val
+
+
+def get_project_path(clip: Clip):
+    """
+    Gets the path from a root folder to a clip.
+    :param clip: The clip.
+    :return: Project path to clip.
+    """
+    res = os.path.join(clip.folder.name, clip.name + '.' + clip.video_format)
+    curr = clip.folder
+    while curr.parent is not None:
+        res = os.path.join(curr.parent.name, res)
+        curr = curr.parent
+    return res
 
 
 def date_str_to_datetime(date_str: Optional[str]) -> timezone.datetime:

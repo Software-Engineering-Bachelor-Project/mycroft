@@ -237,7 +237,6 @@ class Timeline extends Component {
     this.hourToDate = this.hourToDate.bind(this);
     this.minToDate = this.minToDate.bind(this);
     this.handlePlayPause = this.handlePlayPause.bind(this);
-    this.updateTextPlayPauseButton = this.updateTextPlayPauseButton.bind(this);
     this.jumpInClip = this.jumpInClip.bind(this);
 
     // state variables
@@ -361,11 +360,10 @@ class Timeline extends Component {
         </Button>
         <Button
           key={"playPause"}
-          ref={(c) => (this.playPauseRef = c)}
           onClick={this.handlePlayPause}
           variant="success"
         >
-          Play
+          {this.props.playing ? "Pause" : "Play"}
         </Button>
         <Button
           key={"jumpForward"}
@@ -405,21 +403,10 @@ class Timeline extends Component {
    */
   handlePlayPause() {
     if (!this.props.playing) {
-      this.updateTextPlayPauseButton("Pause");
       this.props.play();
     } else {
-      this.updateTextPlayPauseButton("Play");
       this.props.pause();
     }
-  }
-
-  /**
-   * Update text for playPause-Button.
-   *
-   * @param {string} textString
-   */
-  updateTextPlayPauseButton(textString) {
-    this.playPauseRef.innerHTML = textString;
   }
 
   /**
@@ -468,7 +455,7 @@ class Timeline extends Component {
         )}
 
         {/* Clipline component */}
-        <Cliplines updateTextPlayPauseButton={this.updateTextPlayPauseButton} />
+        <Cliplines />
 
         {/* Timemarker */}
         {this.renderTimemarker()}

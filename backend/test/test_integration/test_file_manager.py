@@ -205,6 +205,24 @@ class GetClipsTest(TestCase):
         self.assertEqual(code, 400)
         self.assertEqual(res, {})
 
+    def test_object_detection_set(self):
+        """
+        Test right objectdetection_set is returned.
+        """
+        create_object_detection(cid=self.cid1, sample_rate=60, start_time=self.st, end_time=self.et,
+                                objects=[("car", self.st)])
+        create_object_detection(cid=self.cid1, sample_rate=50, start_time=self.st, end_time=self.et,
+                                objects=[("car", self.st), ("bicycle", self.st)])
+        create_object_detection(cid=self.cid1, sample_rate=60, start_time=self.st, end_time=self.et,
+                                objects=[("bicycle", self.st)])
+        create_object_detection(cid=self.cid2, sample_rate=10, start_time=self.st, end_time=self.et,
+                                objects=[("person", self.st), ("person", self.st)])
+        code, res = get_clips(data={PROJECT_ID: self.pid})
+        self.assertEqual(code, 200)
+        self.assertEqual(res[CLIPS][0]['objectdetection_set'], {'rate': 50, 'objects': {'car': 1, 'bicycle': 1}})
+        self.assertEqual(res[CLIPS][1]['objectdetection_set'], {'rate': 10, 'objects': {'person': 2}})
+        self.assertEqual(res[CLIPS][2]['objectdetection_set'], None)
+
 
 class GetFilesTest(TestCase):
     @patch('backend.database_wrapper.create_hash_sum')

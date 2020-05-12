@@ -148,3 +148,15 @@
   display: flex;
   padding-left: 5px;
 }
+
+.playerButton {
+  position: relative;
+  height: 40px;
+  width: 40px;
+}
+
+.playerIcon {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+}

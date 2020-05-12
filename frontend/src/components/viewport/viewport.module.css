@@ -24,3 +24,7 @@
   margin-bottom: 8px;
   right: 10.4vw;
 }
+
+.switchIcon {
+  transform: rotate(-45deg);
+}

@@ -1310,6 +1310,38 @@ class GetAllMatchingClipsInFilter(BaseTestCases.FilterTest):
         clips = get_all_clips_matching_filter(self.filter)
         self.assertEqual(clips, [])
 
+    def test_lower_than_min_frame_rate(self):
+        """
+        Test getting clips where frame rate is lower than minimum frame rate.
+        """
+        modify_filter(self.filter, min_frame_rate=100)
+        clips = get_all_clips_matching_filter(self.filter)
+        self.assertEqual(clips, [])
+
+    def test_higher_than_min_frame_rate(self):
+        """
+        Test getting clips where frame rate is higher than minimum frame rate.
+        """
+        modify_filter(self.filter, min_frame_rate=20)
+        clips = get_all_clips_matching_filter(self.filter)
+        self.assertEqual(clips[0].id, self.cid)
+
+    def test_equal_min_frame_rate(self):
+        """
+        Test getting clips where frame rate is equal to minimum frame rate.
+        """
+        modify_filter(self.filter, min_frame_rate=42)
+        clips = get_all_clips_matching_filter(self.filter)
+        self.assertEqual(clips[0].id, self.cid)
+
+    def test_without_min_frame_rate(self):
+        """
+        Test getting clips where minimum frame rate is not given.
+        """
+        modify_filter(self.filter)
+        clips = get_all_clips_matching_filter(self.filter)
+        self.assertEqual(clips[0].id, self.cid)
+
 
 class GetAllCamerasInProject(BaseTestCases.ClipTest):
     def setUp(self) -> None:

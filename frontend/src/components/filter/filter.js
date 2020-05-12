@@ -12,7 +12,7 @@ import {
   Form,
   Tooltip,
 } from "react-bootstrap";
-import filterUrl from "../../images/filter_list-24px.png";
+import filterUrl from "../../images/baseline_filter_list_white_18dp.png";
 import {
   modifyFilter,
   getClipsMatchingFilter,

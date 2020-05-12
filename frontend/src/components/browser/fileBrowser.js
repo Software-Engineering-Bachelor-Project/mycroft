@@ -3,6 +3,13 @@ import { connect } from "react-redux";
 import styles from "./browser.module.css";
 
 import Tree from "react-animated-tree";
+import {
+  changeMode,
+  INSPECTOR_MODE_CLIP,
+  changeBrowserTab,
+} from "../../state/stateBrowser";
+import inspectImg from "../../images/baseline_info_black_18dp.png";
+import Image from "react-bootstrap/Image";
 
 /* -- FileBrowser -- */
 class FileBrowser extends Component {
@@ -19,6 +26,8 @@ class FileBrowser extends Component {
    */
   expandFolder(folder) {
     if (folder == undefined) return "";
+    console.log("renders");
+
     return (
       <Tree content={folder.name} key={"f" + folder.id}>
         {folder.children.map((folderID) =>
@@ -27,7 +36,20 @@ class FileBrowser extends Component {
         {folder.clips.map((clipID) => {
           if (this.props.clips[clipID] == undefined) return "";
           return (
-            <Tree content={this.props.clips[clipID].name} key={"c" + clipID} />
+            <Tree
+              content={this.props.clips[clipID].name}
+              key={"c" + clipID}
+              type={
+                <Image
+                  className={styles.inspectButton}
+                  src={inspectImg}
+                  onClick={() => {
+                    this.props.inspectClip(clipID);
+                    this.props.openInspector();
+                  }}
+                />
+              }
+            />
           );
         })}
       </Tree>
@@ -57,7 +79,10 @@ const mapStateToProps = (state) => {
 
 // Forward Redux's dispatch function to React props
 const mapDispatchToProps = (dispatch) => {
-  return {};
+  return {
+    inspectClip: (id) => dispatch(changeMode(INSPECTOR_MODE_CLIP, id)),
+    openInspector: () => dispatch(changeBrowserTab("inspectorBrowser")),
+  };
 };
 
 // Connect Redux with React

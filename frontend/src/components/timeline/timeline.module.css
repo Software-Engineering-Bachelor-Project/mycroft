@@ -80,6 +80,19 @@
   pointer-events: none;
 }
 
+.mapModeClip {
+  position: absolute;
+  opacity: 0.8;
+  cursor: pointer;
+  pointer-events: auto;
+  border-radius: 2px;
+  z-index: 4;
+}
+
+.mapModeClip:hover {
+  opacity: 1.0;
+}
+
 .dateBoxContainer {
   position: absolute;
   left: 0;

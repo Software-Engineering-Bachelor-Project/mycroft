@@ -256,13 +256,17 @@ class Filter(models.Model):
                                                                   clip.resolution.height == resolution.height and clip.resolution.width == resolution.width]:
             return False
 
+        # Check if the clip has higher than or equal minimum frame rate
+        if self.min_frame_rate > clip.frame_rate:
+            return False
+
         # Check if clip is in the right location
         if self.areas.all()[::1] != [] and not [area for area in self.areas.all() if
                                                 area.is_within(clip.camera.longitude, clip.camera.latitude)]:
             return False
 
         # Check if clip contains the correct objects
-        if self.classes.all()[::1] != []:
+        if self.classes.all()[::1]:
             classes = set()
 
             # All object detections where at least one object was detected that is in the filter

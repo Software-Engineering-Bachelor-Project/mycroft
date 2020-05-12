@@ -187,7 +187,60 @@ def get_clips(data: dict) -> (int, dict):
     except AssertionError:
         return 204, {}  # No content
 
-    return 200, os_aware({CLIPS: serialize(clips_in_project)})
+    res = modify_clip_objectdetection_set({CLIPS: serialize(clips_in_project)})
+
+    return 200, os_aware(res)
+
+
+def modify_clip_objectdetection_set(data: dict) -> dict:
+    """
+    Modifies all clips objectdetection_set.
+
+    :param data: dict with clips.
+    :return: dict with modified objectdetection_set
+    """
+    for clip in data[CLIPS]:
+        lowest_rate = None
+        obj_det = None
+        obj_set = {}
+
+        # find the object detection with lowest rate
+        for odid in clip['objectdetection_set']:
+            od = get_object_detection_by_id(odid=odid)
+            if obj_det is None and lowest_rate is None:
+                obj_det = od
+                lowest_rate = od.sample_rate
+            if od.sample_rate < lowest_rate:
+                obj_det = od
+                lowest_rate = od.sample_rate
+
+        if obj_det is None:
+            clip['objectdetection_set'] = None
+        else:
+            # find all objects, their class, and amount of that class
+            car_count = 0
+            person_count = 0
+            bicycle_count = 0
+
+            for obj in get_objects_in_detection(odid=obj_det.id):
+                oc = obj.object_class.object_class
+                if oc == 'car':
+                    car_count += 1
+                elif oc == 'person':
+                    person_count += 1
+                elif oc == 'bicycle':
+                    bicycle_count += 1
+
+            if car_count > 0:
+                obj_set['car'] = car_count
+            if person_count > 0:
+                obj_set['person'] = person_count
+            if bicycle_count > 0:
+                obj_set['bicycle'] = bicycle_count
+
+            clip['objectdetection_set'] = {'rate': lowest_rate, 'objects': obj_set}
+
+    return data
 
 
 def get_files(data: dict) -> (int, dict):

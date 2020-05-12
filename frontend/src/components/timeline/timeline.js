@@ -7,9 +7,14 @@ import Popover from "react-bootstrap/Popover";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Calendar from "react-calendar";
 import Button from "react-bootstrap/Button";
+import Image from "react-bootstrap/Image";
 
-//import icon
+//import icons
 import markerIcon from "../../images/timemarker.png";
+import playIcon from "../../images/baseline_play_arrow_white_18dp.png";
+import pauseIcon from "../../images/baseline_pause_white_18dp.png";
+import skipPrevIcon from "../../images/baseline_skip_previous_white_18dp.png";
+import skipNextIcon from "../../images/baseline_skip_next_white_18dp.png";
 
 import { zoom, gbSetTimeLimits } from "../../state/stateTimeline";
 import { jump, pause, play } from "../../state/statePlayer";
@@ -355,23 +360,29 @@ class Timeline extends Component {
           onClick={(a) => this.jumpInClip(-1)}
           variant="success"
           style={{ marginRight: "10px" }}
+          className={styles.playerButton}
         >
-          Jump Back 1 Frame
+          <Image src={skipPrevIcon} className={styles.playerIcon} />
         </Button>
         <Button
           key={"playPause"}
           onClick={this.handlePlayPause}
           variant="success"
+          className={styles.playerButton}
         >
-          {this.props.playing ? "Pause" : "Play"}
+          <Image
+            src={this.props.playing ? pauseIcon : playIcon}
+            className={styles.playerIcon}
+          />
         </Button>
         <Button
           key={"jumpForward"}
           onClick={(a) => this.jumpInClip(1)}
           variant="success"
           style={{ marginLeft: "10px" }}
+          className={styles.playerButton}
         >
-          Jump Forward 1 Frame
+          <Image src={skipNextIcon} className={styles.playerIcon} />
         </Button>
       </div>
     );

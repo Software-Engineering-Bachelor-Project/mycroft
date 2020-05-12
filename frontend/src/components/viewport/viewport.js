@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import Button from "react-bootstrap/Button";
+import Image from "react-bootstrap/Image";
 
 // CSS
 import styles from "./viewport.module.css";
@@ -11,6 +12,9 @@ import Map from "../map/map";
 
 //import functions
 import { switchMode } from "../../state/stateViewport";
+
+//import icons
+import switchIcon from "../../images/baseline_import_export_white_18dp.png";
 
 /* -- Viewport -- */
 class Viewport extends Component {
@@ -28,7 +32,7 @@ class Viewport extends Component {
           className={styles.switchButton}
           variant="primary"
         >
-          Switch Mode
+          <Image src={switchIcon} className={styles.switchIcon} />
         </Button>
       </div>
     );

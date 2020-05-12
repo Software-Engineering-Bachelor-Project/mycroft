@@ -336,7 +336,7 @@ class InspectorBrowser extends Component {
                 </td>
               </tr>
               <tr>
-                <td>Frame rate</td>
+                <td>Frame Rate</td>
                 <td>
                   {clip.frame_rate ? clip.frame_rate : "Can't find frame rate"}
                 </td>

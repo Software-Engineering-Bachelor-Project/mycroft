@@ -76,6 +76,7 @@ class ObjectSerializer(serializers.ModelSerializer):
 
 class ClipSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField()
+    objectdetection_set = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
 
     class Meta:
         model = Clip

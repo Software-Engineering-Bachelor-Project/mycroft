@@ -13,6 +13,7 @@ import {
   addFolder,
   removeFolder,
   getSourceFolders,
+  getFiles,
 } from "../../state/stateCommunication";
 
 import {
@@ -55,7 +56,7 @@ class FolderManager extends Component {
           this.props.addFolder(id);
         }
       },
-      syncProject,
+      this.props.getFiles,
     ]);
   }
 
@@ -63,6 +64,7 @@ class FolderManager extends Component {
     this.props.toggleShow();
     if (this.state.modified) this.props.showObjectDetector(true);
     this.setState({ modified: false, showingWarnings: false });
+    syncProject();
   }
 
   renderWarnings() {
@@ -165,7 +167,10 @@ class FolderManager extends Component {
       <Modal
         show={this.props.show}
         onHide={this.hasFolders() ? this.handleFinished : () => {}}
-        onShow={this.props.getSourceFolders}
+        onShow={() => {
+          this.props.getSourceFolders();
+          syncProject();
+        }}
         centered
       >
         <Modal.Header closeButton={this.hasFolders()}>
@@ -223,6 +228,7 @@ const mapDispatchToProps = (dispatch) => {
     addFolder: (id) => dispatch(addFolder(id)),
     removeFolder: (id) => dispatch(removeFolder(id)),
     getSourceFolders: () => dispatch(getSourceFolders()),
+    getFiles: () => dispatch(getFiles()),
   };
 };
 

@@ -102,7 +102,7 @@ export const browserReducer = (state = initialState, action) => {
         ...state,
         currentTab: action.key,
       };
-      break;
+
     case UPDATE_LIST:
       if (action.clipId == -1) {
         return state;

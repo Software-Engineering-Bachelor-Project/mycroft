@@ -58,7 +58,6 @@ class ModifyFilterTest(TestCase):
         """
         Test that an nonexistent fid causes the right response to be sent.
         """
-
         data = {FILTER_ID: 10,
                 START_TIME: timezone.datetime(2020, 1, 18, tzinfo=pytz.timezone(settings.TIME_ZONE)).__str__(),
                 END_TIME: timezone.datetime(2020, 1, 18, tzinfo=pytz.timezone(settings.TIME_ZONE)).__str__(),

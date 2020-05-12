@@ -10,8 +10,8 @@ from backend.filter_module import *
 
 class ModifyFilterTest(TestCase):
 
-    @patch('backend.filter_module.dbw.modify_filter')
-    def test_simple_call(self, mock_dbw_modify_filter):
+    @patch('backend.filter_module.dbw')
+    def test_simple_call(self, mock_dbw):
         """
         Makes a simple call to the function.
         """
@@ -25,7 +25,7 @@ class ModifyFilterTest(TestCase):
                 INCLUDED_CLIP_IDS: "inc_clip",
                 }
         res = modify_filter(data)
-        mock_dbw_modify_filter.assert_called_once_with(fid=data[FILTER_ID], start_time=None,
+        mock_dbw.modify_filter.assert_called_once_with(fid=data[FILTER_ID], start_time=None,
                                                        end_time=None, classes=data[CLASSES],
                                                        min_frame_rate=data[MIN_FRAMERATE],
                                                        whitelisted_resolutions=data[WHITELISTED_RESOLUTIONS],
@@ -43,8 +43,9 @@ class ModifyFilterTest(TestCase):
                 }
         self.assertEqual(modify_filter(data), (400, {}))
 
+    @patch('backend.filter_module.dbw.get_filter_by_id')
     @patch('backend.filter_module.dbw.modify_filter', side_effect=AssertionError())
-    def test_database_error(self, mock_dbw_modify_filter):
+    def test_database_error(self, mock_dbw_modify_filter, mock_dbw_get_filter_by_id):
         """
         Tests calling the function with parameters that causes error in database
         """
@@ -57,6 +58,7 @@ class ModifyFilterTest(TestCase):
                 MIN_HEIGHT: "TEST_mh",
                 MIN_FRAMERATE: "TEST_mfr"
                 }
+        mock_dbw_get_filter_by_id.return_value = "TEST_fid"
         self.assertEqual(modify_filter(data), (204, {}))
 
 

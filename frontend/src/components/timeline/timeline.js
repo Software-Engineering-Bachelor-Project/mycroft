@@ -19,6 +19,7 @@ import skipNextIcon from "../../images/baseline_skip_next_white_18dp.png";
 
 import { zoom, gbSetTimeLimits } from "../../state/stateTimeline";
 import { jump, pause, play } from "../../state/statePlayer";
+import { changeBrowserTab, changeMode, INSPECTOR_MODE_CLIP } from "../../state/stateBrowser";
 import {
   modifyFilter,
   getClipsMatchingFilter,
@@ -128,6 +129,7 @@ class Timeline extends Component {
     this.getWidthOfTimeline = this.getWidthOfTimeline.bind(this);
     this.renderContentOfTopbar = this.renderContentOfTopbar.bind(this);
     this.renderSliderContent = this.renderSliderContent.bind(this);
+    this.renderMapModeClips = this.renderMapModeClips.bind(this);
     this.renderTimemarker = this.renderTimemarker.bind(this);
     this.getTimemarkerPos = this.getTimemarkerPos.bind(this);
     this.setTimemarker = this.setTimemarker.bind(this);
@@ -372,6 +374,45 @@ class Timeline extends Component {
     }
   }
 
+  renderMapModeClips() {
+    return <div style={{
+      width: "100%",
+      height: "100%",
+    }}>
+      {Object.values(this.props.cameras).map((cam, i) => {
+        let camCount = Object.values(this.props.cameras).length;
+        /* Render all clips for camera */
+        return (
+          <div key={cam.id}>
+            {cam.clips.map((clipID) => {
+              let clip = this.props.clips[clipID];
+              if (!clip) return "";
+              /* Render single clip */
+              const CLIP_HEIGHT = .08;
+              return (
+                <div
+                  key={clipID}
+                  className={styles.mapModeClip}
+                  style={{
+                    top: ((i + .5) / camCount - CLIP_HEIGHT / 2) * 100 + "%",
+                    height: CLIP_HEIGHT * 100 + "%",
+                    left: (clip.startTime - this.props.startTime)
+                      / this.props.timeSpan * 100 + "%",
+                    width: (clip.endTime - clip.startTime)
+                      / this.props.timeSpan * 100 + "%",
+                    backgroundColor: this.props.filterClips.includes(clipID) ? "#3aa541" : "#6c757d",
+                  }}
+                  onClick={() => this.props.inspectClip(clipID)}
+                ></div>
+              );
+
+            })}
+          </div>
+        );
+      })}
+    </div>
+  }
+
   /**
    * Render slider content, either Map or Player depending on viewport mode
    */
@@ -386,6 +427,10 @@ class Timeline extends Component {
             width: this.getWidthOfTimeline() + "%",
           }}
         >
+
+          {/* Creates a line for each clip */}
+          {this.renderMapModeClips()}
+
           {/* Creates a line for each timestamp and draws out hours*/}
           <div
             ref={(c) => (this.timestampsRef = c)}
@@ -1015,7 +1060,7 @@ class Timeline extends Component {
         Math.floor(
           (scrollLeft +
             this.getOffsetFromPrevDay(this.props.startTime, hourWidth)) /
-            dayWidth
+          dayWidth
         ) + i;
 
       // Calculate dateBox css
@@ -1147,11 +1192,15 @@ const mapStateToProps = (state) => {
     viewportMode: state.viewport.mode,
 
     clips: state.com.clips,
+    cameras: state.com.cameras,
 
     //Player
     clipID: state.player.clipID,
     position: state.player.position,
     playing: state.player.playing,
+
+    // Filter
+    filterClips: state.com.filter.clips,
   };
 };
 
@@ -1170,6 +1219,10 @@ const mapDispatchToProps = (dispatch) => {
     updateFilter: () => {
       dispatch(getFilter());
       dispatch(getClipsMatchingFilter());
+    },
+    inspectClip: (id) => {
+      dispatch(changeMode(INSPECTOR_MODE_CLIP, id));
+      dispatch(changeBrowserTab("inspectorBrowser"));
     },
   };
 };

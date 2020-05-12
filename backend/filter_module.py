@@ -17,11 +17,15 @@ def modify_filter(data: dict) -> (int, dict):
         filter_id, start_time, end_time, add_classes, remove_classes, min_width, min_height, min_frame_rate
     :return: Status code, empty dict.
     """
-    # retrieving necessary parameters.
+    # retrieving necessary parameters
     try:
         params = {"fid": data[FILTER_ID]}
     except KeyError:
         return 400, {}  # Missing parameter(s)
+
+    f: Filter = dbw.get_filter_by_id(data[FILTER_ID])
+    if f is None:
+        return 204, {}  # Bad fid
 
     # Retrieve voluntary parameters, they will be None if the parameter don´t, exist. and their standard value if they
     # have the value None

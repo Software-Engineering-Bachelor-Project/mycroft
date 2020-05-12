@@ -338,7 +338,7 @@ class InspectorBrowser extends Component {
               <tr>
                 <td>Frame Rate</td>
                 <td>
-                  {clip.frame_rate ? clip.frame_rate : "Can't find frame rate"}
+                  {clip.frameRate ? clip.frameRate : "Can't find frame rate"}
                 </td>
               </tr>
               <tr>
@@ -393,7 +393,35 @@ class InspectorBrowser extends Component {
                     : "Can't find time"}
                 </td>
               </tr>
+              {clip.objectDetection ? (
+                <tr>
+                  <td>Detection Rate</td>
+                  <td>{clip.objectDetection.rate + " sec"}</td>
+                </tr>
+              ) : (
+                ""
+              )}
             </tbody>
+            {/* List all detected objects */}
+            <thead>
+              <tr>
+                <th>Class</th>
+                <th>Occurrences</th>
+              </tr>
+              {Object.keys(clip.objectDetection.objects).length !== 0 ? (
+                Object.keys(clip.objectDetection.objects).map((objectClass) => (
+                  <tr key={objectClass}>
+                    <td>{objectClass}</td>
+                    <td>{clip.objectDetection.objects[objectClass]}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <th>-</th>
+                  <th>-</th>
+                </tr>
+              )}
+            </thead>
           </Table>
         </div>
       );

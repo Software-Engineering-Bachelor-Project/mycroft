@@ -48,7 +48,10 @@ describe("Clip class", () => {
     et,
     resolution,
     [1337],
-    [1338]
+    [1338],
+    42,
+    true,
+    { rate: 1337, objects: { monkey: 33 } }
   );
 
   it("should have all members set correctly", () => {
@@ -62,6 +65,12 @@ describe("Clip class", () => {
     expect(clip.resolution).toEqual(resolution);
     expect(clip.duplicates).toEqual([1337]);
     expect(clip.overlapping).toEqual([1338]);
+    expect(clip.frameRate).toEqual(42);
+    expect(clip.playable).toEqual(true);
+    expect(clip.objectDetection).toEqual({
+      rate: 1337,
+      objects: { monkey: 33 },
+    });
   });
 
   it("should produce correct full path", () => {

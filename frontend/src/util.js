@@ -109,7 +109,8 @@ export function parseClips(clipResponse) {
       c.duplicates,
       c.overlap,
       c.frame_rate,
-      c.playable
+      c.playable,
+      c.objectdetection_set == null ? undefined : c.objectdetection_set
     );
   }
 

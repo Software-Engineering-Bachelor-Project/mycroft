@@ -9,11 +9,3 @@
 .leaflet-control-zoom {
   top: 50px;
 }
-
-.leaflet-control-attribution {
-  position: fixed !important;
-  z-index: 5;
-  right: auto !important;
-  left: 0 !important;
-  bottom: 20vh !important;
-}

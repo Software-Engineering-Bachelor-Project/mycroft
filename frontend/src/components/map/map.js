@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-// Import relevant types
-import { Camera, Clip } from "../../types";
 import { doActionsInOrder } from "../../util";
 
 // Leaflet
@@ -13,6 +11,7 @@ import {
   Popup,
   Circle,
   Tooltip,
+  AttributionControl,
 } from "react-leaflet";
 import "./map.css";
 import L from "leaflet";
@@ -402,6 +401,7 @@ class Map extends Component {
           onContextmenu={this.onMapContextClick}
           center={[this.props.lat, this.props.long]}
           zoom={this.props.zoom}
+          attributionControl={false}
           onViewportChanged={(viewport) => {
             this.props.setLocation(
               viewport.center[0],
@@ -414,6 +414,7 @@ class Map extends Component {
             attribution='&copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
+          <AttributionControl position="bottomleft" />
           <this.renderAreaCreation
             rad={this.state.rad}
             lat={this.state.lat}

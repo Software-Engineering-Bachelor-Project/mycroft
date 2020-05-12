@@ -69,121 +69,125 @@ class ClipBrowser extends Component {
     return (
       <div className={styles.browserClip}>
         <ListGroup>
-          {/* Iterate through cameras */}
-          {/* TODO: CHECK IF CAMERAS ARE IN FILTER */}
-          {Object.values(this.props.cameras).map((camera) => (
-            <div key={camera.id}>
-              {/* Camera item */}
-              <ListGroup horizontal>
-                {/* Camera header */}
-                <ListGroup.Item
-                  action
-                  variant="success"
-                  onClick={() => this.toggle(camera.id)}
-                  aria-controls={"cam" + camera.id}
-                  aria-expanded={this.isToggled(camera.id)}
-                >
-                  <Row>
-                    {/*Render Camera name with Tooltip*/}
-                    <OverlayTrigger
-                      placement={"left"}
-                      overlay={
-                        <Tooltip id={`tooltip-name`}>{camera.name}</Tooltip>
-                      }
-                    >
+          {/* Iterate through filter cameras */}
+          {Object.values(this.props.cameras)
+            .filter((c) => this.props.filteredCameras.includes(c.id))
+            .map((camera) => (
+              <div key={camera.id}>
+                {/* Camera item */}
+                <ListGroup horizontal>
+                  {/* Camera header */}
+                  <ListGroup.Item
+                    action
+                    variant="success"
+                    onClick={() => this.toggle(camera.id)}
+                    aria-controls={"cam" + camera.id}
+                    aria-expanded={this.isToggled(camera.id)}
+                  >
+                    <Row>
+                      {/*Render Camera name with Tooltip*/}
+                      <OverlayTrigger
+                        placement={"left"}
+                        overlay={
+                          <Tooltip id={`tooltip-name`}>{camera.name}</Tooltip>
+                        }
+                      >
+                        <p
+                          style={{
+                            margin: "0",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                            whiteSpace: "nowrap",
+                            maxWidth: "calc(100% - 5em)",
+                          }}
+                        >
+                          {camera.name}
+                        </p>
+                      </OverlayTrigger>{" "}
+                      {/*Render clip count*/}
                       <p
                         style={{
                           margin: "0",
-                          overflow: "hidden",
-                          textOverflow: "ellipsis",
-                          whiteSpace: "nowrap",
-                          maxWidth: "calc(100% - 5em)",
+                          right: "1em",
+                          position: "absolute",
                         }}
                       >
-                        {camera.name}
-                      </p>
-                    </OverlayTrigger>{" "}
-                    {/*Render clip count*/}
-                    <p
-                      style={{
-                        margin: "0",
-                        right: "1em",
-                        position: "absolute",
-                      }}
-                    >
-                      {Object.keys(camera.clips).length} clips
+                        {camera.countCommonClips(this.props.filteredClips)} clips
                     </p>
-                  </Row>
+                    </Row>
+                  </ListGroup.Item>
+
+                  {/* Camera inspect button */}
+                  <ListGroup.Item
+                    action
+                    variant="secondary"
+                    className={styles.inspectHeader}
+                    onClick={() => {
+                      this.props.inspectCamera(camera.id);
+                      this.props.changeTab("inspectorBrowser");
+                    }}
+                  >
+                    i
                 </ListGroup.Item>
-
-                {/* Camera inspect button */}
-                <ListGroup.Item
-                  action
-                  variant="secondary"
-                  className={styles.inspectHeader}
-                  onClick={() => {
-                    this.props.inspectCamera(camera.id);
-                    this.props.changeTab("inspectorBrowser");
-                  }}
-                >
-                  i
-                </ListGroup.Item>
-              </ListGroup>
-
-              {/* Expandable list of clips */}
-              <Collapse in={this.isToggled(camera.id)}>
-                <ListGroup id={"cam" + camera.id}>
-                  {/* Iterate through the clips of the current camera */}
-                  {/* TODO: CHECK IF CLIPS ARE IN FILTER */}
-                  {camera.clips.map((clipID) => {
-                    if (this.props.clips[clipID] == undefined) return "";
-                    return (
-                      <ListGroup key={clipID} horizontal>
-                        {/* Clip header */}
-                        <ListGroup.Item
-                          variant="warning"
-                          style={{
-                            width: "100%",
-                          }}
-                        >
-                          {this.props.clips[clipID].name}
-                          <Button
-                            size="sm"
-                            style={{
-                              position: "absolute",
-                              right: "1em",
-                            }}
-                            onClick={() => this.playClip(clipID)}
-                            disabled={!this.props.clips[clipID].playable}
-                            variant={
-                              this.props.clips[clipID].playable
-                                ? "primary"
-                                : "secondary"
-                            }
-                          >
-                            Play
-                          </Button>
-                        </ListGroup.Item>
-
-                        {/* Clip item inspect button */}
-                        <ListGroup.Item
-                          action
-                          variant="secondary"
-                          className={styles.inspectHeader}
-                          onClick={() => {
-                            this.props.inspectClip(clipID);
-                            this.props.changeTab("inspectorBrowser");
-                          }}
-                        >
-                          i
-                        </ListGroup.Item>
-                      </ListGroup>
-                    );
-                  })}
                 </ListGroup>
-              </Collapse>
-            </div>
-          ))}
+                {/* Expandable list of clips */}
+                <Collapse in={this.isToggled(camera.id)}>
+                  <ListGroup id={"cam" + camera.id}>
+                    {/* Iterate through the clips of the current camera */}
+                    {/* TODO: CHECK IF CLIPS ARE IN FILTER */}
+                    {camera.clips
+                      .filter((clipID) =>
+                        this.props.filteredClips.includes(clipID)
+                      )
+                      .map((clipID) => {
+                        if (this.props.clips[clipID] == undefined) return "";
+                        return (
+                          <ListGroup key={clipID} horizontal>
+                            {/* Clip header */}
+                            <ListGroup.Item
+                              variant="warning"
+                              style={{
+                                width: "100%",
+                              }}
+                            >
+                              {this.props.clips[clipID].name}
+                              <Button
+                                size="sm"
+                                style={{
+                                  position: "absolute",
+                                  right: "1em",
+                                }}
+                                onClick={() => this.playClip(clipID)}
+                                disabled={!this.props.clips[clipID].playable}
+                                variant={
+                                  this.props.clips[clipID].playable
+                                    ? "primary"
+                                    : "secondary"
+                                }
+                              >
+                                Play
+                              </Button>
+                            </ListGroup.Item>
+
+                            {/* Clip item inspect button */}
+                            <ListGroup.Item
+                              action
+                              variant="secondary"
+                              className={styles.inspectHeader}
+                              onClick={() => {
+                                this.props.inspectClip(clipID);
+                                this.props.changeTab("inspectorBrowser");
+                              }}
+                            >
+                              i
+                            </ListGroup.Item>
+                          </ListGroup>
+                        );
+                      })}
+                  </ListGroup>
+                </Collapse>
+              </div>
+            ))}
         </ListGroup>
       </div>
     );
@@ -195,6 +199,8 @@ const mapStateToProps = (state) => {
   return {
     cameras: state.com.cameras,
     clips: state.com.clips,
+    filteredCameras: state.com.filter.cameras,
+    filteredClips: state.com.filter.clips,
   };
 };
 

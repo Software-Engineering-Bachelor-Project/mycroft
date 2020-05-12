@@ -28,7 +28,7 @@ class Viewport extends Component {
           className={styles.switchButton}
           variant="primary"
         >
-          Switch mode
+          Switch Mode
         </Button>
       </div>
     );

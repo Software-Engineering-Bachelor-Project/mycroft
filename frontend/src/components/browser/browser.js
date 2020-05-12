@@ -42,7 +42,7 @@ class Browser extends Component {
                   <Nav.Link eventKey="clipBrowser">Clips</Nav.Link>
                 </Nav.Item>
                 <Nav.Item className={styles.browserNav}>
-                  <Nav.Link eventKey="fileBrowser">Filesystem</Nav.Link>
+                  <Nav.Link eventKey="fileBrowser">File System</Nav.Link>
                 </Nav.Item>
                 <Nav.Item className={styles.browserNav}>
                   <Nav.Link eventKey="inspectorBrowser">Inspect</Nav.Link>

@@ -153,7 +153,7 @@ class FolderManager extends Component {
               this.setState({ showingWarnings: !this.state.showingWarnings })
             }
           >
-            {this.state.showingWarnings ? "Hide warnings" : "Show warnings"}
+            {this.state.showingWarnings ? "Hide Warnings" : "Show Warnings"}
           </Accordion.Toggle>
         </Card>
       </Accordion>

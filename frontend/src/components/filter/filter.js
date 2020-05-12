@@ -169,9 +169,9 @@ class Filter extends Component {
               placement={"left"}
               overlay={
                 <Tooltip id={`tooltip-time`}>
-                  Clips between these point in time will be included in the
-                  filter (Set the time in the timeline at the bottom of the
-                  page)
+                  Clips between these points in time will be included in the
+                  filter (set the time in the timeline at the bottom of the
+                  application).
                 </Tooltip>
               }
             >
@@ -187,7 +187,7 @@ class Filter extends Component {
               overlay={
                 <Tooltip id={`tooltip-objects`}>
                   If clips contain these objects they will be included in the
-                  filter (leave empty to allow all)
+                  filter (leave empty to allow all).
                 </Tooltip>
               }
             >
@@ -196,32 +196,32 @@ class Filter extends Component {
               </ListGroup.Item>
             </OverlayTrigger>{" "}
             <OverlayTrigger
-              key={"Whitelisted resolutions"}
+              key={"Whitelisted Resolutions"}
               placement={"left"}
               overlay={
                 <Tooltip id={`tooltip-res`}>
                   If clips have any of these resolutions they will be included
-                  in the filter (leave empty to allow all)
+                  in the filter (leave empty to allow all).
                 </Tooltip>
               }
             >
               <ListGroup.Item>
-                <strong>Whitelisted resolutions:</strong>{" "}
+                <strong>Whitelisted Resolutions:</strong>{" "}
                 {this.renderResolutions()}
               </ListGroup.Item>
             </OverlayTrigger>{" "}
             <OverlayTrigger
-              key={"Minimum Framerate"}
+              key={"Minimum Frame Rate"}
               placement={"left"}
               overlay={
                 <Tooltip id={`tooltip-frameRate`}>
-                  Clips whith a framerate higher than this will be included in
-                  the filter (set to 0 to allow all)
+                  Clips with a frame rate higher than this will be included in
+                  the filter (set to 0 to allow all).
                 </Tooltip>
               }
             >
               <ListGroup.Item>
-                <strong>Minimum framerate:</strong> {this.renderFrameRate()}
+                <strong>Minimum Frame Rate:</strong> {this.renderFrameRate()}
               </ListGroup.Item>
             </OverlayTrigger>{" "}
             <OverlayTrigger
@@ -230,8 +230,8 @@ class Filter extends Component {
               overlay={
                 <Tooltip id={`tooltip-icClips`}>
                   The amount of clips that will be included in the filter even
-                  if they dont match the given Time, Objects, resolutions and
-                  framerate.
+                  if they don't match the given time, objects, resolutions or
+                  frame rates.
                 </Tooltip>
               }
             >
@@ -259,8 +259,8 @@ class Filter extends Component {
               overlay={
                 <Tooltip id={`tooltip-exClips`}>
                   The amount of clips that will be excluded in the filter even
-                  if they match the given Time, Objects, resolutions and
-                  framerate.
+                  if they match the given time, objects, resolutions and frame
+                  rate.
                 </Tooltip>
               }
             >

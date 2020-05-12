@@ -1049,6 +1049,12 @@ describe("Communication reducer", () => {
           clips: [
             {
               id: 42,
+              objectdetection_set: {
+                rate: 5.0,
+                objects: {
+                  person: 1,
+                },
+              },
               name: "test_clip",
               video_format: "avi",
               start_time: "2018-09-06T16:45:59+02:00",
@@ -1081,7 +1087,13 @@ describe("Communication reducer", () => {
           [6],
           [4, 5],
           69,
-          false
+          false,
+          {
+            rate: 5.0,
+            objects: {
+              person: 1,
+            },
+          }
         ),
       },
     });
@@ -1139,6 +1151,12 @@ describe("Communication reducer", () => {
           clips: [
             {
               id: 42,
+              objectdetection_set: {
+                rate: 5.0,
+                objects: {
+                  person: 1,
+                },
+              },
               name: "test_clip",
               video_format: "avi",
               start_time: "2018-09-06T16:45:59+02:00",
@@ -1181,7 +1199,13 @@ describe("Communication reducer", () => {
           [6],
           [4, 5],
           69,
-          false
+          false,
+          {
+            rate: 5,
+            objects: {
+              person: 1,
+            },
+          }
         ),
       },
     });

@@ -68,9 +68,9 @@ export class Clip {
    * @param {Number} resolution The id of the resolution of this clip.
    * @param {Array[int]} duplicates List of id's of duplicated clips.
    * @param {Array[int]} overlapping List of id's of overlapping clips.
-   * @param {Number} framerate The value of the framerate of this clip.
+   * @param {Number} frameRate The value of the framerate of this clip.
    * @param {boolean} playable The bool value if clip is playable.
-
+   * @param {Object[rate: Number, objects: Object[string: number]]} objectDetection An object detection on the clip.
    */
   constructor(
     id,
@@ -83,8 +83,9 @@ export class Clip {
     resolution,
     duplicates = [],
     overlapping = [],
-    frame_rate,
-    playable
+    frameRate,
+    playable,
+    objectDetection = undefined
   ) {
     this.id = id;
     this.name = name;
@@ -96,8 +97,9 @@ export class Clip {
     this.resolution = resolution;
     this.duplicates = duplicates;
     this.overlapping = overlapping;
-    this.frame_rate = frame_rate;
+    this.frameRate = frameRate;
     this.playable = playable;
+    this.objectDetection = objectDetection;
   }
 
   /**

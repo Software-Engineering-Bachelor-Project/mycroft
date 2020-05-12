@@ -404,7 +404,7 @@ class Timeline extends Component {
         );
         return;
       }
-      this.props.jump(frames / this.props.clips[this.props.clipID].frame_rate);
+      this.props.jump(frames / this.props.clips[this.props.clipID].frameRate);
     }
   }
 

@@ -57,7 +57,9 @@ class Menu extends Component {
           <Modal.Title>Export Clips</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <span>You are about to download a large file.</span>
+          <span>You are about to download all filtered clips.</span>
+          <br />
+          <span>This can be a very large file.</span>
           <br />
           <span>Are you sure?</span>
         </Modal.Body>
@@ -116,7 +118,7 @@ class Menu extends Component {
           </Dropdown.Item>
           <Dropdown.Item onClick={() => this.detectObjects()}>
             {" "}
-            Object detection{" "}
+            Object Detection{" "}
           </Dropdown.Item>
         </DropdownButton>
 

@@ -117,7 +117,7 @@ class ObjectDetector extends Component {
       >
         <Modal.Header closeButton={!this.props.isRunning}>
           {" "}
-          <Modal.Title>Object detection</Modal.Title>{" "}
+          <Modal.Title>Object Detection</Modal.Title>{" "}
         </Modal.Header>
 
         <Modal.Body>

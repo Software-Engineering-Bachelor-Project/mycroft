@@ -177,8 +177,8 @@ class Filter extends Component {
             >
               <ListGroup.Item>
                 <strong>Time:</strong>
-                <p>{this.props.startTime.toString()}</p>-
-                <p>{this.props.endTime.toString()}</p>
+                <p>{this.props.startTime.toString().slice(0, 24)}</p>-
+                <p>{this.props.endTime.toString().slice(0, 24)}</p>
               </ListGroup.Item>
             </OverlayTrigger>{" "}
             <OverlayTrigger

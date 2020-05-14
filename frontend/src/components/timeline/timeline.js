@@ -198,6 +198,12 @@ class Timeline extends Component {
     this.scrollGlassboxIntoView();
   }
 
+  componentDidUpdate() {
+    this.handleZoom(this.props.scale);
+    this.handleScroll(this.sliderBoxRef.scrollLeft);
+    this.scrollGlassboxIntoView();
+  }
+
   /**
    * This will render the dropdown menu which contains the scaling options for timeline.
    * The contents of SCALE_LIST is a preset of options to scale with.
@@ -304,11 +310,6 @@ class Timeline extends Component {
         </Button>
       </div>
     );
-  }
-
-  componentDidUpdate() {
-    this.handleScroll(this.sliderBoxRef.scrollLeft);
-    this.scrollGlassboxIntoView();
   }
 
   /**

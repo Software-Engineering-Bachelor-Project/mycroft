@@ -19,6 +19,8 @@ import ToggleButton from "react-bootstrap/ToggleButton";
 import ToggleButtonGroup from "react-bootstrap/ToggleButtonGroup";
 import ProgressBar from "react-bootstrap/ProgressBar";
 
+import { syncProject } from "../../util";
+
 /* -- Object detector -- */
 class ObjectDetector extends Component {
   constructor(props) {
@@ -67,6 +69,7 @@ class ObjectDetector extends Component {
 
       // Close modal
       this.props.deleteODProgress();
+      syncProject();
       this.handleClose();
       setTimeout(() => this.props.toggleIsRunning(), 500);
     }

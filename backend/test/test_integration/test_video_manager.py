@@ -32,7 +32,7 @@ class GetClipInfoTest(TestCase):
                                'end_time': '2020-01-18T00:00:00+01:00', 'resolution': 1,
                                'frame_rate': 42.0, 'folder': 1, 'camera': 1,
                                'file_path': 'home/user/test_folder/test_clip.tvf', 'duplicates': [],
-                               'overlap': [], 'hash_sum': '1234', 'playable': False, 'objectdetection_set': []})
+                               'overlap': [], 'playable': False, 'objectdetection_set': []})
 
 
 class GetSequentialClipTest(TestCase):

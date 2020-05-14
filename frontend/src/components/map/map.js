@@ -140,7 +140,8 @@ class Map extends Component {
         this.props.selectedID === id || this.props.selectedID === parseInt(id);
     } else if (
       this.props.browserTab === "inspectorBrowser" &&
-      this.props.inspectorMode === INSPECTOR_MODE_CLIP
+      this.props.inspectorMode === INSPECTOR_MODE_CLIP &&
+      this.props.clips.hasOwnProperty(this.props.selectedID)
     ) {
       // Check if a clip in this camera is selected
       selected =

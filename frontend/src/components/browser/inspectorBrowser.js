@@ -265,9 +265,9 @@ class InspectorBrowser extends Component {
       return "";
     }
 
-    if (!this.props.clips[clipId]) {
-      console.warn("Id ", clipID, " does match with a clip");
-      return "";
+    if (!this.props.clips.hasOwnProperty(clipId)) {
+      console.warn("Id ", clipId, " does match with a clip");
+      return undefined;
     } else {
       return this.props.clips[clipId];
     }
@@ -290,8 +290,13 @@ class InspectorBrowser extends Component {
 
   /* Render the clip mode displayed in inspector */
   renderClip() {
-    if (this.props.inspector != undefined && this.props.clips != undefined) {
+    if (
+      this.props.inspector != undefined &&
+      this.props.clips != undefined &&
+      this.props.inspector.id != undefined
+    ) {
       let clip = this.fetchSelectedClip(this.props.inspector.id);
+      if (clip == undefined) return "";
       return (
         <div>
           {/* Displays heading for the clip mode and selected clip*/}

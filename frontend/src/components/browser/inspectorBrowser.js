@@ -403,25 +403,31 @@ class InspectorBrowser extends Component {
               )}
             </tbody>
             {/* List all detected objects */}
-            <thead>
-              <tr>
-                <th>Class</th>
-                <th>Occurrences</th>
-              </tr>
-              {Object.keys(clip.objectDetection.objects).length !== 0 ? (
-                Object.keys(clip.objectDetection.objects).map((objectClass) => (
-                  <tr key={objectClass}>
-                    <td>{objectClass}</td>
-                    <td>{clip.objectDetection.objects[objectClass]}</td>
-                  </tr>
-                ))
-              ) : (
+            {clip.objectDetection ? (
+              <thead>
                 <tr>
-                  <th>-</th>
-                  <th>-</th>
+                  <th>Class</th>
+                  <th>Occurrences</th>
                 </tr>
-              )}
-            </thead>
+                {Object.keys(clip.objectDetection.objects).length !== 0 ? (
+                  Object.keys(clip.objectDetection.objects).map(
+                    (objectClass) => (
+                      <tr key={objectClass}>
+                        <td>{objectClass}</td>
+                        <td>{clip.objectDetection.objects[objectClass]}</td>
+                      </tr>
+                    )
+                  )
+                ) : (
+                  <tr>
+                    <th>-</th>
+                    <th>-</th>
+                  </tr>
+                )}
+              </thead>
+            ) : (
+              ""
+            )}
           </Table>
         </div>
       );

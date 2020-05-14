@@ -38,9 +38,11 @@ class SerializeTest(TestCase):
         Test serializing various objects.
         """
         self.assertEqual(serialize(data=self.rf),
-                         {'id': 1, 'path': '/home/user/', 'name': 'test_folder', 'parent': None, 'clip_set': [self.cl.id], 'is_entry': True})
+                         {'id': 1, 'path': '/home/user/', 'name': 'test_folder', 'parent': None,
+                          'clip_set': [self.cl.id]})
         self.assertEqual(serialize(data=self.sf),
-                         {'id': 2, 'path': '/home/user/test_folder/', 'name': 'test_subfolder', 'parent': 1, 'clip_set': [], 'is_entry': False})
+                         {'id': 2, 'path': '/home/user/test_folder/', 'name': 'test_subfolder',
+                          'parent': 1, 'clip_set': []})
         self.assertEqual(serialize(data=self.cm), {'id': 1, 'latitude': '0.00000000', 'longitude': '0.00000000',
                                                    'start_time': '2020-05-17T00:00:00+01:00',
                                                    'end_time': '2020-05-18T00:00:00+01:00', 'clip_set': [self.cl.id],
@@ -49,7 +51,7 @@ class SerializeTest(TestCase):
                                                    'start_time': '2020-05-17T00:00:00+01:00',
                                                    'end_time': '2020-05-18T00:00:00+01:00', 'resolution': 1,
                                                    'frame_rate': 42.0, 'folder': 1, 'camera': 1, 'duplicates': [],
-                                                   'overlap': [], 'hash_sum': None, 'playable': False,
+                                                   'overlap': [], 'playable': False,
                                                    'objectdetection_set': []})
 
     def test_serialize_collection(self):
@@ -59,9 +61,9 @@ class SerializeTest(TestCase):
         self.assertEqual(serialize(data=self.folders),
                          [OrderedDict(
                              [('id', 1), ('clip_set', [self.cl.id]), ('path', '/home/user/'), ('name', 'test_folder'),
-                              ('is_entry', True), ('parent', None)]),
+                              ('parent', None)]),
                           OrderedDict([('id', 2), ('clip_set', []), ('path', '/home/user/test_folder/'),
-                                       ('name', 'test_subfolder'), ('is_entry', False), ('parent', 1)])])
+                                       ('name', 'test_subfolder'), ('parent', 1)])])
 
     def test_serialize_empty_collection(self):
         """

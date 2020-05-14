@@ -303,7 +303,12 @@ class InspectorBrowser extends Component {
           <p className={styles.browserInspectorHeader}>Clip</p>
           <p className={styles.browserInspectorHeader}>{clip.name}</p>
           {/* Displays info of the seleceted clip*/}
-          <Table striped bordered size="sm">
+          <Table
+            striped
+            bordered
+            size="sm"
+            className={styles.browserInspectorTable}
+          >
             <thead>
               <tr>
                 <th>Category</th>
@@ -462,7 +467,7 @@ class InspectorBrowser extends Component {
   /* Render the inspector */
   render() {
     return (
-      <div className={styles.main}>
+      <div className={styles.browserInspector}>
         {this.displayMode(this.props.inspector.mode)}
       </div>
     );

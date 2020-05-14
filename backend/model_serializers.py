@@ -13,7 +13,7 @@ class FolderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Folder
-        fields = '__all__'
+        exclude = ['is_entry']
 
 
 class ResolutionSerializer(serializers.ModelSerializer):
@@ -55,7 +55,7 @@ class FilterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Filter
-        fields = '__all__'
+        exclude = ['project', 'areas']
 
 
 class ObjectDetectionSerializer(serializers.ModelSerializer):
@@ -80,7 +80,7 @@ class ClipSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Clip
-        fields = '__all__'
+        exclude = ['hash_sum']
 
 
 class ProgressSerializer(serializers.ModelSerializer):

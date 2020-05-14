@@ -26,7 +26,6 @@ class FileBrowser extends Component {
    */
   expandFolder(folder) {
     if (folder == undefined) return "";
-    console.log("renders");
 
     return (
       <Tree content={folder.name} key={"f" + folder.id}>

@@ -45,6 +45,18 @@
   overflow-y: scroll;
 }
 
+.browserInspector {
+  position: absolute;
+  width: 100% !important;
+  height: 100% !important;
+  overflow-y: scroll;
+}
+
+.browserInspectorTable {
+  table-layout: fixed;
+  word-wrap: break-word;
+}
+
 .browserInspectorHeader {
   text-align: center !important;
   border: 3px solid #007bff !important;

@@ -55,6 +55,8 @@ class Player extends Component {
           fluid={false}
           width="100%"
           height="100%"
+          onPlay={this.props.play}
+          onPause={this.props.pause}
         >
           <source src={"/video/stream/" + this.props.clipID + "/"} />
           <ControlBar>

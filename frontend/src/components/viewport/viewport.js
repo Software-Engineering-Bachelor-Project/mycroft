@@ -12,6 +12,7 @@ import Map from "../map/map";
 
 //import functions
 import { switchMode } from "../../state/stateViewport";
+import { pause } from "../../state/statePlayer";
 
 //import icons
 import switchIcon from "../../images/baseline_import_export_white_18dp.png";
@@ -27,7 +28,10 @@ class Viewport extends Component {
         {/* Button for switching viewport mode */}
         <Button
           onClick={() => {
-            return this.props.switchMode();
+            this.props.switchMode();
+
+            // The video is paused by the player so the play button must be updated.
+            this.props.pauseVideo();
           }}
           className={styles.switchButton}
           variant="primary"
@@ -50,6 +54,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     switchMode: () => dispatch(switchMode()),
+    pauseVideo: () => dispatch(pause()),
   };
 };
 

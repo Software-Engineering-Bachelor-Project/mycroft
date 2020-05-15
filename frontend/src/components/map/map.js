@@ -126,6 +126,7 @@ class Map extends Component {
     this.renderMultipleCamerasPopup = this.renderMultipleCamerasPopup.bind(
       this
     );
+    this.getZIndexOf = this.getZIndexOf.bind(this);
   }
 
   getCameraIcon(id, camera) {
@@ -163,6 +164,24 @@ class Map extends Component {
       } else {
         return this.icon;
       }
+    }
+  }
+
+  getZIndexOf(icon) {
+    switch (icon) {
+      case this.iconES:
+      case this.iconS:
+        console.log("Selected Z-index");
+        return 3;
+      case this.icon:
+        console.log("Regular Z-index");
+        return 2;
+      case this.iconE:
+        console.log("Empty Z-index");
+        return 1;
+      default:
+        console.log("default Z-index");
+        return 0;
     }
   }
 
@@ -350,6 +369,7 @@ class Map extends Component {
    * Render all cameras
    */
   renderCameras(props) {
+    let currCameraIcon = undefined;
     return Object.entries(props.cameras).map(([id, cam]) => (
       <Marker
         key={id}
@@ -357,7 +377,11 @@ class Map extends Component {
         onClick={(e) => this.onCameraMarkerClick(id, cam, e)}
         onContextmenu={(e) => this.onCameraMarkerContextClick(cam, e)}
         clickable={true}
-        icon={this.getCameraIcon(id, cam)}
+        icon={(() => {
+          currCameraIcon = this.getCameraIcon(id, cam);
+          return currCameraIcon;
+        })()}
+        zIndexOffset={this.getZIndexOf(currCameraIcon)}
       >
         <this.renderMultipleCamerasPopup camera={cam} id={id} />
       </Marker>

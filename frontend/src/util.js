@@ -15,6 +15,7 @@ import {
   getFilterParams,
 } from "./state/stateCommunication";
 import { setTimeLimits, gbSetTimeLimits } from "./state/stateTimeline";
+import { setBrowserExcIncList } from "./state/stateBrowser";
 
 /**
  *
@@ -24,7 +25,7 @@ import { setTimeLimits, gbSetTimeLimits } from "./state/stateTimeline";
  *
  * @param {string} url The sub-URL to send the request to. Will be appended onto the host URL.
  * @param {JSON} opts The JSON data to send through the request.
- * @param {fucntion} onResponse The function to be called upon request response. Expects two parameters: (status: int, data: JSON). If the request failed, 'data' will be undefined.
+ * @param {function} onResponse The function to be called upon request response. Expects two parameters: (status: int, data: JSON). If the request failed, 'data' will be undefined.
  *
  */
 export function makePOST(url, opts = {}, onResponse) {
@@ -106,6 +107,14 @@ export function syncProject() {
       store.dispatch(getClipsMatchingFilter());
     },
     setTimelineBounds,
+    () => {
+      store.dispatch(
+        setBrowserExcIncList(
+          store.getState().com.filter.excludedClips,
+          store.getState().com.filter.includedClips
+        )
+      );
+    },
   ]);
 }
 

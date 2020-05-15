@@ -13,6 +13,7 @@ export const INSPECTOR_MODE_AREA = 3;
 export const CHANGE_MODE = "CHANGE_MODE";
 export const CHANGE_BROWSER_TAB = "CHANGE_BROWSER_TAB";
 export const UPDATE_LIST = "UPDATE_LIST";
+export const SET_BROWSER_EXC_INC_LISTS = "SET_BROWSER_EXC_INC_LISTS";
 
 /* -- INITIAL STATE -- */
 
@@ -27,6 +28,14 @@ export const initialState = {
 };
 
 /* -- ACTION CREATORS -- */
+
+export function setBrowserExcIncList(excList, incList) {
+  return {
+    type: SET_BROWSER_EXC_INC_LISTS,
+    excList: excList,
+    incList: incList,
+  };
+}
 
 /**
  * This action is used to change the current mode in inspector.
@@ -132,6 +141,12 @@ export const browserReducer = (state = initialState, action) => {
           };
         }
       }
+    case SET_BROWSER_EXC_INC_LISTS:
+      return {
+        ...state,
+        incList: [...action.incList],
+        excList: [...action.excList],
+      };
     default:
       return state;
   }

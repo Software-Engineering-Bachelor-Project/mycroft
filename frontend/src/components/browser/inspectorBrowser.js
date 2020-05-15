@@ -2,10 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 
 //React Bootstrap components
-import Table from "react-bootstrap/Table";
-import Form from "react-bootstrap/Form";
-import Col from "react-bootstrap/Col";
-import ListGroup from "react-bootstrap/ListGroup";
+import { Table, Form, Col, ListGroup, Button, Image } from "react-bootstrap";
 
 // Import CSS
 import styles from "./browser.module.css";
@@ -34,6 +31,8 @@ import {
   getOverlappingTo,
 } from "../../util";
 import { setLocation } from "../../state/stateMap";
+import infoIcon from "../../images/info-icon.png";
+import deleteIcon from "../../images/delete-icon.png";
 
 /* -- Browser -- */
 class InspectorBrowser extends Component {
@@ -50,6 +49,7 @@ class InspectorBrowser extends Component {
     this.renderCameraContent = this.renderCameraContent.bind(this);
     this.fetchValidClips = this.fetchValidClips.bind(this);
     this.updateFilterList = this.updateFilterList.bind(this);
+    this.fetchClips = this.fetchClips.bind(this);
   }
 
   /* Checks if an object in empty */
@@ -446,11 +446,83 @@ class InspectorBrowser extends Component {
     }
   }
 
+  /* Fetch clips based on all clip Id:s in included or excluded list */
+  fetchClips(clipIdList) {
+    var clips = [];
+    if (clipIdList.length != 0) {
+      clipIdList.map((clipId) => {
+        if (this.props.clips.hasOwnProperty(clipId)) {
+          Object.values(this.props.clips).map((clip) => {
+            if (clip.id == clipId) {
+              clips.push(clip);
+            }
+          });
+        }
+      });
+    }
+    return clips;
+  }
+
   /* Render the excluded and included mode displayed in inspector */
   renderExcludedIncluded() {
+    var filteredList = [];
+    var include = false;
+    var inspectorHeader = "";
+
+    /* Updates local variables with info about included mode */
+    if (this.props.inspector.id == 0) {
+      filteredList = this.props.incList;
+      include = true;
+      inspectorHeader = "Included clips";
+    } else {
+      /* Updates local variables with info about excluded mode */
+      filteredList = this.props.excList;
+      include = false;
+      inspectorHeader = "Excluded clips";
+    }
+
+    /* Fetch clips based on included or excluded clips */
+    var clips = this.fetchClips(filteredList);
+    /* Render selected mode */
     return (
       <div>
-        <h3 className={styles.browserInspectorHeader}>Selected clips</h3>
+        <ListGroup id={"filtered"}>
+          <p className={styles.browserInspectorHeader}>{inspectorHeader}</p>
+          {Object.values(clips).map((clip) => {
+            return (
+              <ListGroup key={clip.id} horizontal>
+                {/* Render clip name */}
+                <ListGroup.Item
+                  variant="secondary"
+                  className={styles.browserButton}
+                  style={{ width: "100%" }}
+                >
+                  {clip.name}
+                </ListGroup.Item>
+                {/* Render info button */}
+                <ListGroup.Item
+                  variant="info"
+                  action
+                  onClick={() => {
+                    this.props.changeMode(INSPECTOR_MODE_CLIP, clip.id);
+                  }}
+                >
+                  <Image src={infoIcon} fluid />
+                </ListGroup.Item>
+                {/* Render delete button */}
+                <ListGroup.Item
+                  action
+                  variant="danger"
+                  onClick={() => {
+                    this.updateFilterList(include, clip.id);
+                  }}
+                >
+                  <Image src={deleteIcon} fluid />
+                </ListGroup.Item>
+              </ListGroup>
+            );
+          })}
+        </ListGroup>
       </div>
     );
   }
@@ -483,6 +555,7 @@ const mapStateToProps = (state) => {
     clips: state.com.clips,
     excList: state.browser.excList,
     incList: state.browser.incList,
+    filteredClips: state.com.filter,
     folders: state.com.folders,
     mapZoom: state.map.zoom,
     areas: state.com.filter.areas,

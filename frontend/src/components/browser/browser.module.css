@@ -91,3 +91,13 @@
 .inspectButton {
   cursor: pointer;
 }
+
+.browserButton {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.browserButton:hover {
+  overflow: visible;
+}

@@ -113,7 +113,12 @@ class Cliplines extends Component {
 
   render() {
     return (
-      <div>
+      <div
+        className={styles.cliplineContainer}
+        onScroll={() => {
+          this.props.rerenderParentCallback();
+        }}
+      >
         {/* Iterate through cameras in filter */}
         {this.props.filterCameras.map((cameraID, i) => {
           /* Check if camera exists */

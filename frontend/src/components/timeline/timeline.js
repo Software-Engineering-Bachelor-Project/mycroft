@@ -148,7 +148,7 @@ class Timeline extends Component {
     this.handlePlayPause = this.handlePlayPause.bind(this);
     this.jumpInClip = this.jumpInClip.bind(this);
     this.handleScroll = this.handleScroll.bind(this);
-    this.scrollGlassboxIntoView = this.scrollGlassboxIntoView.bind(this);
+    this.scrollIntoView = this.scrollIntoView.bind(this);
     this.calculateTimestampOffset = this.calculateTimestampOffset.bind(this);
     this.handleZoom = this.handleZoom.bind(this);
     this.renderDateBoxes = this.renderDateBoxes.bind(this);
@@ -159,6 +159,7 @@ class Timeline extends Component {
     );
     this.calculateDateProperties = this.calculateDateProperties.bind(this);
     this.getOffsetFromPrevDay = this.getOffsetFromPrevDay.bind(this);
+    this.rerenderParentCallback = this.rerenderParentCallback.bind(this);
 
     // state variables
     this.state = {
@@ -166,6 +167,9 @@ class Timeline extends Component {
       mouseDownActive: false,
       mouseMoveXPos: 0,
     };
+
+    // used to signal if scale has changed
+    this.didZoom = true;
   }
 
   /**
@@ -175,15 +179,23 @@ class Timeline extends Component {
    */
   handleZoom(hrs) {
     this.props.zoom(hrs, this.props.viewportMode);
-    this.scrollGlassboxIntoView();
   }
 
   /**
-   * Scroll glassbox into view
+   * Scroll glassbox or timemarker into view.
    */
-  scrollGlassboxIntoView() {
+  scrollIntoView() {
+    //check if glassbox exists
     if (this.glassboxRef)
       ReactDOM.findDOMNode(this.glassboxRef).scrollIntoView({
+        behaviour: "smooth",
+        block: "nearest",
+        inline: "nearest",
+      });
+
+    //check if timemarker exists
+    if (document.getElementById("timemarkerDIV"))
+      document.getElementById("timemarkerDIV").scrollIntoView({
         behaviour: "smooth",
         block: "nearest",
         inline: "nearest",
@@ -195,13 +207,23 @@ class Timeline extends Component {
    */
   componentDidMount() {
     this.handleScroll(this.sliderBoxRef.scrollLeft);
-    this.scrollGlassboxIntoView();
+
+    // If scale changed, call scrollIntoView
+    if (this.didZoom) {
+      this.scrollIntoView();
+      this.didZoom = false;
+    }
   }
 
   componentDidUpdate() {
     this.handleZoom(this.props.scale);
     this.handleScroll(this.sliderBoxRef.scrollLeft);
-    this.scrollGlassboxIntoView();
+
+    // If scale changed, call scrollIntoView
+    if (this.didZoom) {
+      this.scrollIntoView();
+      this.didZoom = false;
+    }
   }
 
   /**
@@ -218,7 +240,14 @@ class Timeline extends Component {
           {/* Create dropdown items for every scaling option */}
           {SCALE_LIST.map((hrs) => {
             return (
-              <Dropdown.Item onClick={(a) => this.handleZoom(hrs)} key={hrs}>
+              <Dropdown.Item
+                onClick={(a) => {
+                  // Is used to check when to scroll into view
+                  this.didZoom = true;
+                  this.handleZoom(hrs);
+                }}
+                key={hrs}
+              >
                 {hrs + " Hours"}
               </Dropdown.Item>
             );
@@ -445,12 +474,20 @@ class Timeline extends Component {
         </div>
 
         {/* Clipline component */}
-        <Cliplines />
+        <Cliplines rerenderParentCallback={this.rerenderParentCallback} />
 
         {/* Timemarker */}
         {this.renderTimemarker()}
       </div>
     );
+  }
+
+  /**
+   * Force update timeline
+   * Is used by cliplines when scrolling
+   */
+  rerenderParentCallback() {
+    this.forceUpdate();
   }
 
   /**

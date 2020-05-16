@@ -75,7 +75,7 @@ export function getDateString(date) {
 }
 
 // Scaling options for the dropdown menu
-const SCALE_LIST = [1, 5, 12, 24, 36, 48];
+const SCALE_LIST = [1, 2, 4, 6, 12, 24, 36, 48, 60, 72];
 //Options for time filtering menus
 const HOUR_LIST = [
   "00",
@@ -238,6 +238,7 @@ class Timeline extends Component {
         <DropdownButton
           alignRight
           title={parseFloat(this.props.scale.toFixed(2)) + " Hours"}
+          drop={"up"}
         >
           {/* Create dropdown items for every scaling option */}
           {SCALE_LIST.map((hrs) => {
@@ -575,7 +576,7 @@ class Timeline extends Component {
       hour = HOUR_LIST[hour];
       return (
         <div style={{}}>
-          <DropdownButton alignRight title={hour}>
+          <DropdownButton alignRight title={hour} drop={"up"}>
             {/* Create dropdown items for every start time filter hour */}
             {HOUR_LIST.map((h) => {
               return (
@@ -599,7 +600,7 @@ class Timeline extends Component {
     hour = HOUR_LIST[hour];
     return (
       <div>
-        <DropdownButton alignRight title={hour}>
+        <DropdownButton alignRight title={hour} drop={"up"}>
           {/* Create dropdown items for every end time filter hour */}
           {HOUR_LIST.map((h) => {
             return (
@@ -631,7 +632,7 @@ class Timeline extends Component {
       }
       return (
         <div>
-          <DropdownButton alignRight title={min}>
+          <DropdownButton alignRight title={min} drop={"up"}>
             {/* Create dropdown items for every start time filter minute */}
             {MIN_LIST.map((minute) => {
               return (
@@ -660,7 +661,7 @@ class Timeline extends Component {
     }
     return (
       <div>
-        <DropdownButton alignRight title={min}>
+        <DropdownButton alignRight title={min} drop={"up"}>
           {/* Create dropdown items for every end time filter minute */}
           {MIN_LIST.map((minute) => {
             return (

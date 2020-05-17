@@ -124,12 +124,18 @@ class Cliplines extends Component {
           /* Check if camera exists */
           if (!(cameraID in this.props.cameras)) return "";
           return (
-            <div key={cameraID}>
+            <div key={cameraID} className={styles.cliplineCamera} style={{
+              backgroundColor: COLOR_LIST[i % COLOR_LIST.length] +
+                (this.props.cameras[cameraID].clips
+                  .includes(this.props.clipID) ?
+                  "70" : "20"),
+              top: 25 + (15 + 12) * i + "px",
+            }}>
               {/* Iterate through the clips of the current camera */}
               {this.props.cameras[cameraID].clips.map((clipID) => {
                 /* Check if clip exists in filter */
                 if (!this.props.filterClips.includes(clipID)) return "";
-                /* Check if cllip exists */
+                /* Check if clip exists */
                 if (!(clipID in this.props.clips)) {
                   console.warn(
                     "Clip with id ",
@@ -141,7 +147,7 @@ class Cliplines extends Component {
                 return (
                   <div
                     key={clipID}
-                    className={styles.cliplines}
+                    className={styles.cliplineClip}
                     style={{
                       backgroundColor: this.props.clips[clipID].playable
                         ? COLOR_LIST[i % COLOR_LIST.length]
@@ -155,7 +161,6 @@ class Cliplines extends Component {
                         this.getLeftPosition(
                           this.props.clips[clipID].startTime
                         ) + "%",
-                      top: 25 + (15 + 12) * i + "px",
                       cursor: this.props.clips[clipID].playable
                         ? "pointer"
                         : "not-allowed",
@@ -186,6 +191,8 @@ const mapStateToProps = (state) => {
     clips: state.com.clips,
     filterCameras: state.com.filter.cameras,
     filterClips: state.com.filter.clips,
+
+    clipID: state.player.clipID,
   };
 };
 

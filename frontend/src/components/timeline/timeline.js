@@ -18,7 +18,7 @@ import skipPrevIcon from "../../images/baseline_skip_previous_white_18dp.png";
 import skipNextIcon from "../../images/baseline_skip_next_white_18dp.png";
 
 import { zoom, gbSetTimeLimits } from "../../state/stateTimeline";
-import { jump, pause, play } from "../../state/statePlayer";
+import { jump, pause, play, playClip } from "../../state/statePlayer";
 import { changeBrowserTab, changeMode, INSPECTOR_MODE_CLIP } from "../../state/stateBrowser";
 import {
   modifyFilter,
@@ -849,6 +849,8 @@ class Timeline extends Component {
    * @param {event} e mouse event
    */
   setTimemarker(e) {
+
+    // Calculate time
     var mouseUpXPos = e.clientX;
     var totalWidth = playerSliderDIV.clientWidth;
 
@@ -856,7 +858,79 @@ class Timeline extends Component {
     var deltaPercent = deltaPos / totalWidth;
 
     var timeDeltaSeconds = deltaPercent * (this.props.glassbox.timeSpan / 1000);
-    this.props.jump(timeDeltaSeconds);
+
+    // Get current clip and camera
+    if (!(this.props.clipID in this.props.clips)) return;
+    let clip = this.props.clips[this.props.clipID];
+    if (!(clip.camera in this.props.cameras)) return;
+    let camera = this.props.cameras[clip.camera];
+
+    // Calculate release time
+    let time = clip.startTime.getTime() +
+      (this.props.position + timeDeltaSeconds) * 1000;
+
+    // Find closest clip in camera
+    let start = false;
+    let closestClip = undefined;
+    let closestDist = undefined;
+    for (let id of camera.clips) {
+
+      // Check if in filter
+      if (this.props.filterClips.includes(id)) {
+
+        // Get clip
+        if (!(id in this.props.clips)) return;
+        let c = this.props.clips[id];
+
+        // Check for intersection
+        if (c.startTime.getTime() <= time && time <= c.endTime.getTime()) {
+          closestDist = 0;
+          closestClip = c;
+          break;
+        }
+
+        // If no intersection, check if start or end is closest
+        let startDist = Math.abs(time - c.startTime.getTime());
+        let endDist = Math.abs(time - c.endTime.getTime());
+        let tempDist = Math.min(startDist, endDist);
+
+        // Check if closer than previous clip
+        if (closestClip == undefined || tempDist < closestDist) {
+          closestDist = tempDist;
+          closestClip = c;
+          start = startDist <= endDist;
+        }
+      }
+    }
+
+    // Safety check
+    if (closestClip == undefined) return;
+
+    // Should the same clip be played?
+    let sameClip = closestClip.id == this.props.clipID;
+
+    // Change clip if applicable
+    if (!sameClip) {
+      this.props.playClip(closestClip.id);
+    }
+
+    // Jump to correct position in clip
+    if (closestDist > 0) {
+      // Jump to bounds (there was no intersection)
+      if (start)
+        this.props.jump((time - closestClip.startTime.getTime()) / 1000);
+      else
+        this.props.jump((time - closestClip.endTime.getTime()) / 1000);
+    } else if (sameClip) {
+      // Jump in same clip
+      this.props.jump(timeDeltaSeconds);
+    } else {
+      // Jump in other clip
+      setTimeout(() => {
+        this.props.play();
+        this.props.jump((time - closestClip.startTime.getTime()) / 1000);
+      }, 100);
+    }
   }
 
   /**
@@ -1249,6 +1323,7 @@ const mapDispatchToProps = (dispatch) => {
     jump: (timeDelta) => dispatch(jump(timeDelta)),
     play: () => dispatch(play()),
     pause: () => dispatch(pause()),
+    playClip: (id) => dispatch(playClip(id)),
 
     gbSetTimeLimits: (startDate, endDate) =>
       dispatch(gbSetTimeLimits(startDate, endDate)),

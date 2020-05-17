@@ -15,6 +15,7 @@ import { playClip, play } from "../../state/statePlayer";
 import ListGroup from "react-bootstrap/ListGroup";
 import Collapse from "react-bootstrap/Collapse";
 import Button from "react-bootstrap/Button";
+import { OverlayTrigger, Row, Tooltip } from "react-bootstrap";
 
 /* -- Browser -- */
 class ClipBrowser extends Component {
@@ -82,15 +83,37 @@ class ClipBrowser extends Component {
                   aria-controls={"cam" + camera.id}
                   aria-expanded={this.isToggled(camera.id)}
                 >
-                  {camera.name}
-                  <span
-                    style={{
-                      position: "absolute",
-                      right: "1em",
-                    }}
-                  >
-                    {Object.keys(camera.clips).length} clips
-                  </span>
+                  <Row>
+                    {/*Render Camera name with Tooltip*/}
+                    <OverlayTrigger
+                      placement={"left"}
+                      overlay={
+                        <Tooltip id={`tooltip-name`}>{camera.name}</Tooltip>
+                      }
+                    >
+                      <p
+                        style={{
+                          margin: "0",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          whiteSpace: "nowrap",
+                          maxWidth: "calc(100% - 5em)",
+                        }}
+                      >
+                        {camera.name}
+                      </p>
+                    </OverlayTrigger>{" "}
+                    {/*Render clip count*/}
+                    <p
+                      style={{
+                        margin: "0",
+                        right: "1em",
+                        position: "absolute",
+                      }}
+                    >
+                      {Object.keys(camera.clips).length} clips
+                    </p>
+                  </Row>
                 </ListGroup.Item>
 
                 {/* Camera inspect button */}

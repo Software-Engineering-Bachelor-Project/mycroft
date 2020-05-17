@@ -162,6 +162,12 @@
   overflow-x: hidden;
   /*background-color: rgba(0, 107, 194, 0.57);*/
   pointer-events: auto;
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none; /* Firefox */
+}
+
+.cliplineContainer::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
 }
 
 .cliplines {

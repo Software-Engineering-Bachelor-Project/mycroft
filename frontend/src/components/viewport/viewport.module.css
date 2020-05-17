@@ -1,6 +1,6 @@
 .viewport {
   position: absolute;
-  width: 85vw;
+  width: 80vw;
   height: 80vh;
   top: 0;
   left: 0;
@@ -10,8 +10,8 @@
   background-color: rgb(43, 44, 46);
   border-radius: 6px;
   position: absolute;
-  width: 25vw;
-  height: 30vh;
+  width: 20vw;
+  height: 21vh;
   bottom: 0;
   right: 0;
   z-index: 1;
@@ -22,7 +22,7 @@
   bottom: 0;
   z-index: 2;
   margin-bottom: 8px;
-  right: 10.4vw;
+  right: 1vw;
 }
 
 .switchIcon {

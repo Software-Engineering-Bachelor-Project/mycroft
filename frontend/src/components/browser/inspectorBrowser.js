@@ -2,7 +2,17 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 
 //React Bootstrap components
-import { Table, Form, Col, ListGroup, Button, Image } from "react-bootstrap";
+import {
+  OverlayTrigger,
+  Tooltip,
+  ListGroup,
+  Col,
+  Form,
+  Table,
+  Row,
+  Button,
+  Image,
+} from "react-bootstrap";
 
 // Import CSS
 import styles from "./browser.module.css";
@@ -138,36 +148,50 @@ class InspectorBrowser extends Component {
     } else {
       let validClips = this.fetchValidClips();
       return (
-        <div>
-          {/* Displays heading for the camera mode and selected camera*/}
-          <Form>
-            <Form.Label className={styles.browserInspectorHeader}>
-              Camera
-            </Form.Label>
-            <Form.Label className={styles.browserInspectorHeader}>
-              {this.props.cameras[this.props.inspector.id].name}
-            </Form.Label>
-            {/* Displays the headings for the different type of contents*/}
-            <Form.Row>
-              <Col className={styles.browserInspectorItem}>
-                <Form.Label>Name</Form.Label>
-              </Col>
-              <Col className={styles.browserInspectorItem}>
-                <Form.Label>Inc</Form.Label>
-              </Col>
-              <Col className={styles.browserInspectorItem}>
-                <Form.Label>Exc</Form.Label>
-              </Col>
-              <Col className={styles.browserInspectorItem}>
-                <Form.Label></Form.Label>
-              </Col>
-            </Form.Row>
-            {/* Show content for each clip belonging to the camera */}
-            {Object.values(validClips).map((clip) =>
-              this.renderCameraContent(clip)
-            )}
-          </Form>
-        </div>
+        <Form>
+          <Form.Label className={styles.browserInspectorHeader}>
+            Camera
+          </Form.Label>
+          <Form.Label className={styles.browserInspectorHeader}>
+            {this.props.cameras[this.props.inspector.id].name}
+          </Form.Label>
+          {/* Displays the headings for the different type of contents*/}
+          <Row className={styles.inspectorCameraColumnHeader}>
+            {/*Render name header*/}
+            <p className={styles.inspectorCameraNameColumn}>Name</p>
+            {/*Render Include Clip header with tooltip*/}
+            <OverlayTrigger
+              placement={"left"}
+              overlay={
+                <Tooltip id={`tooltip-name`}>
+                  Always <strong>include</strong> the Clip in the filter, it
+                  will always match the Filter no matter the parameters
+                </Tooltip>
+              }
+            >
+              <p className={styles.inspectorCameraInclExclColumn}>Incl</p>
+            </OverlayTrigger>{" "}
+            {/*Render Exclude Clip header with tooltip*/}
+            <OverlayTrigger
+              placement={"left"}
+              overlay={
+                <Tooltip id={`tooltip-name`}>
+                  Always <strong>exclude</strong> the Clip from the filter, it
+                  will never match the Filter no matter the parameters
+                </Tooltip>
+              }
+            >
+              <p className={styles.inspectorCameraInclExclColumn}>Excl</p>
+            </OverlayTrigger>{" "}
+            {/*Render Empty space For Info button, need to be done to position the other headers correctly*/}
+            <p className={styles.inspectorCameraInfoColumn}></p>
+          </Row>
+
+          {/* Show content for each clip belonging to the camera */}
+          {Object.values(validClips).map((clip) =>
+            this.renderCameraContent(clip)
+          )}
+        </Form>
       );
     }
   }
@@ -210,54 +234,71 @@ class InspectorBrowser extends Component {
   /* Render content for the camera mode display in inspector */
   renderCameraContent(clip) {
     return (
-      <Form.Row key={clip.id}>
-        {/* Displays the clip name */}
-        <Col className={styles.browserInspectorItem}>{clip.name}</Col>
-
-        {/* Render checkbox if clip is included */}
-        <Col className={styles.browserInspectorItem}>
-          <input
-            type="checkbox"
-            className={styles.browserInspectorBigCheckbox}
-            name="included"
-            id={clip.id}
+      <ListGroup
+        horizontal
+        key={clip.id}
+        className={[styles.inspectorCameraClipRow].join(" ")}
+      >
+        {/*Render name with tooltip*/}
+        <OverlayTrigger
+          placement={"left"}
+          overlay={<Tooltip id={`tooltip-name`}>{clip.name}</Tooltip>}
+        >
+          <ListGroup.Item
+            className={[
+              styles.inspectorCameraNameColumn,
+              styles.inspectorCameraNameItem,
+            ].join(" ")}
+          >
+            {" "}
+            {clip.name}{" "}
+          </ListGroup.Item>
+        </OverlayTrigger>{" "}
+        {/*Render Include Clip Checkbox*/}
+        <ListGroup.Item
+          className={[
+            styles.inspectorCameraInclExclColumn,
+            styles.inspectorCameraInclExclItem,
+          ].join(" ")}
+        >
+          <Form.Check
+            type={"checkbox"}
             checked={this.checkCheckbox(true, Number(clip.id))}
             onChange={() => this.updateFilterList(true, Number(clip.id))}
-          ></input>
-        </Col>
-
-        {/* render checkbox if clip is excluded */}
-        <Col className={styles.browserInspectorItem}>
-          <input
-            type="checkbox"
-            className={styles.browserInspectorBigCheckbox}
-            name="excluded"
-            id={clip.id}
+          />
+        </ListGroup.Item>
+        {/*Render Exclude Clip Checkbox*/}
+        <ListGroup.Item
+          className={[
+            styles.inspectorCameraInclExclColumn,
+            styles.inspectorCameraInclExclItem,
+          ].join(" ")}
+        >
+          <Form.Check
+            type={"checkbox"}
             checked={this.checkCheckbox(false, Number(clip.id))}
             onChange={() => this.updateFilterList(false, Number(clip.id))}
-          ></input>
-        </Col>
-
-        {/* Render button to inspect the specific clip in INSPECTOR_MODE_CLIP */}
-        <Col className={styles.browserInspectorItem}>
-          <ListGroup>
-            <ListGroup.Item
-              action
-              variant="secondary"
-              className={styles.inspectHeader}
-              onClick={() => {
-                this.props.changeMode(INSPECTOR_MODE_CLIP, clip.id);
-              }}
-            >
-              i
-            </ListGroup.Item>
-          </ListGroup>
-        </Col>
-      </Form.Row>
+          />
+        </ListGroup.Item>
+        {/*Render Info button*/}
+        <ListGroup.Item
+          className={[
+            styles.inspectorCameraInfoColumn,
+            styles.inspectorCameraInfoItem,
+          ].join(" ")}
+          action
+          variant="secondary"
+          onClick={() => {
+            this.props.changeMode(INSPECTOR_MODE_CLIP, clip.id);
+          }}
+        >
+          i
+        </ListGroup.Item>
+      </ListGroup>
     );
   }
 
-  /* 
+  /*
   Fetch selected clip based on the chosen clip.id.
   */
   fetchSelectedClip(clipId) {
@@ -274,11 +315,11 @@ class InspectorBrowser extends Component {
   }
 
   /**
-   * @param {Object[int, list]} dict A list of objects. 
+   * @param {Object[int, list]} dict A list of objects.
    * @param {int} objectId The id for the asked object.
-   * @param {string} key The key for which value should be returned. 
+   * @param {string} key The key for which value should be returned.
 
-   Fetch a specific value based on the key. 
+   Fetch a specific value based on the key.
    */
   fetchObjectInDict(dict, objectId, key) {
     if (dict != undefined && objectId != undefined && key != undefined) {

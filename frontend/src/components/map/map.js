@@ -171,16 +171,12 @@ class Map extends Component {
     switch (icon) {
       case this.iconES:
       case this.iconS:
-        console.log("Selected Z-index");
         return 3;
       case this.icon:
-        console.log("Regular Z-index");
         return 2;
       case this.iconE:
-        console.log("Empty Z-index");
         return 1;
       default:
-        console.log("default Z-index");
         return 0;
     }
   }

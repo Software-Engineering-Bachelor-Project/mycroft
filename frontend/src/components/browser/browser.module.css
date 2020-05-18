@@ -141,3 +141,12 @@ Inspector camera mode
 .browserButton:hover {
   overflow: visible;
 }
+
+.areaTextDelete {
+  margin-top: 3%;
+  margin-left: 2%;
+}
+
+.areaPosLabel {
+  width: 90px !important;
+}

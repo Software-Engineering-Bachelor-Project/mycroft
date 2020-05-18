@@ -19,7 +19,11 @@ import skipNextIcon from "../../images/baseline_skip_next_white_18dp.png";
 
 import { zoom, gbSetTimeLimits } from "../../state/stateTimeline";
 import { jump, pause, play, playClip } from "../../state/statePlayer";
-import { changeBrowserTab, changeMode, INSPECTOR_MODE_CLIP } from "../../state/stateBrowser";
+import {
+  changeBrowserTab,
+  changeMode,
+  INSPECTOR_MODE_CLIP,
+} from "../../state/stateBrowser";
 import {
   modifyFilter,
   getClipsMatchingFilter,
@@ -155,7 +159,6 @@ class Timeline extends Component {
     this.handleZoom = this.handleZoom.bind(this);
     this.renderDateBoxes = this.renderDateBoxes.bind(this);
     this.calculateDateBoxOffset = this.calculateDateBoxOffset.bind(this);
-    this.getWidthOfdateBox = this.getWidthOfdateBox.bind(this);
     this.calculateTimestampProperties = this.calculateTimestampProperties.bind(
       this
     );
@@ -405,42 +408,53 @@ class Timeline extends Component {
   }
 
   renderMapModeClips() {
-    return <div style={{
-      width: "100%",
-      height: "100%",
-    }}>
-      {Object.values(this.props.cameras).map((cam, i) => {
-        let camCount = Object.values(this.props.cameras).length;
-        /* Render all clips for camera */
-        return (
-          <div key={cam.id}>
-            {cam.clips.map((clipID) => {
-              let clip = this.props.clips[clipID];
-              if (!clip) return "";
-              /* Render single clip */
-              const CLIP_HEIGHT = .08;
-              return (
-                <div
-                  key={clipID}
-                  className={styles.mapModeClip}
-                  style={{
-                    top: ((i + .5) / camCount - CLIP_HEIGHT / 2) * 100 + "%",
-                    height: CLIP_HEIGHT * 100 + "%",
-                    left: (clip.startTime - this.props.startTime)
-                      / this.props.timeSpan * 100 + "%",
-                    width: (clip.endTime - clip.startTime)
-                      / this.props.timeSpan * 100 + "%",
-                    backgroundColor: this.props.filterClips.includes(clipID) ? "#3aa541" : "#6c757d",
-                  }}
-                  onClick={() => this.props.inspectClip(clipID)}
-                ></div>
-              );
-
-            })}
-          </div>
-        );
-      })}
-    </div>
+    return (
+      <div
+        style={{
+          width: "100%",
+          height: "100%",
+        }}
+      >
+        {Object.values(this.props.cameras).map((cam, i) => {
+          let camCount = Object.values(this.props.cameras).length;
+          /* Render all clips for camera */
+          return (
+            <div key={cam.id}>
+              {cam.clips.map((clipID) => {
+                let clip = this.props.clips[clipID];
+                if (!clip) return "";
+                /* Render single clip */
+                const CLIP_HEIGHT = 0.08;
+                return (
+                  <div
+                    key={clipID}
+                    className={styles.mapModeClip}
+                    style={{
+                      top: ((i + 0.5) / camCount - CLIP_HEIGHT / 2) * 100 + "%",
+                      height: CLIP_HEIGHT * 100 + "%",
+                      left:
+                        ((clip.startTime - this.props.startTime) /
+                          this.props.timeSpan) *
+                          100 +
+                        "%",
+                      width:
+                        ((clip.endTime - clip.startTime) /
+                          this.props.timeSpan) *
+                          100 +
+                        "%",
+                      backgroundColor: this.props.filterClips.includes(clipID)
+                        ? "#3aa541"
+                        : "#6c757d",
+                    }}
+                    onClick={() => this.props.inspectClip(clipID)}
+                  ></div>
+                );
+              })}
+            </div>
+          );
+        })}
+      </div>
+    );
   }
 
   /**
@@ -457,7 +471,6 @@ class Timeline extends Component {
             width: this.getWidthOfTimeline() + "%",
           }}
         >
-
           {/* Creates a line for each clip */}
           {this.renderMapModeClips()}
 
@@ -849,7 +862,6 @@ class Timeline extends Component {
    * @param {event} e mouse event
    */
   setTimemarker(e) {
-
     // Calculate time
     var mouseUpXPos = e.clientX;
     var totalWidth = playerSliderDIV.clientWidth;
@@ -866,7 +878,8 @@ class Timeline extends Component {
     let camera = this.props.cameras[clip.camera];
 
     // Calculate release time
-    let time = clip.startTime.getTime() +
+    let time =
+      clip.startTime.getTime() +
       (this.props.position + timeDeltaSeconds) * 1000;
 
     // Find closest clip in camera
@@ -874,10 +887,8 @@ class Timeline extends Component {
     let closestClip = undefined;
     let closestDist = undefined;
     for (let id of camera.clips) {
-
       // Check if in filter
       if (this.props.filterClips.includes(id)) {
-
         // Get clip
         if (!(id in this.props.clips)) return;
         let c = this.props.clips[id];
@@ -919,8 +930,7 @@ class Timeline extends Component {
       // Jump to bounds (there was no intersection)
       if (start)
         this.props.jump((time - closestClip.startTime.getTime()) / 1000);
-      else
-        this.props.jump((time - closestClip.endTime.getTime()) / 1000);
+      else this.props.jump((time - closestClip.endTime.getTime()) / 1000);
     } else if (sameClip) {
       // Jump in same clip
       this.props.jump(timeDeltaSeconds);
@@ -1100,27 +1110,6 @@ class Timeline extends Component {
   }
 
   /**
-   * Calculate the width of the box with number nr.
-   * The last box should have a shorter width
-   *
-   * @param {int} nr the number of the box
-   * @param {int} left position of the box
-   * @param {int} hourWidth width of one hour in pixels
-   * @param {int} nrOfBoxes total number of dateBoxes
-   */
-  getWidthOfdateBox(nr, left, hourWidth, nrOfBoxes) {
-    // Last box, with shorter width
-    if (nr == nrOfBoxes - 1) {
-      let widthOfTimeline =
-        (this.timestampsRef.clientWidth * this.getWidthOfTimeline()) / 100;
-
-      // Return the shortes of either width of client or the width thats left of timeline
-      return Math.min(this.timestampsRef.clientWidth, widthOfTimeline - left);
-    }
-    return hourWidth * 24;
-  }
-
-  /**
    * Updates the position, width and content of all divs that needs to update
    * when scrolling in the timeline.
    *
@@ -1145,6 +1134,7 @@ class Timeline extends Component {
       this.calculateDateBoxOffset(scrollLeft, hourWidth) -
       this.getOffsetFromPrevDay(this.props.startTime, hourWidth);
     this.dateBoxRef.style.left = left + "px";
+    this.dateBoxRef.style.width = this.getWidthOfTimeline() + "%";
 
     // Dateboxes in DateboxDiv: set width, left, color, date
     this.calculateDateProperties(scrollLeft, left, hourWidth, nrOfBoxes);
@@ -1172,13 +1162,12 @@ class Timeline extends Component {
         Math.floor(
           (scrollLeft +
             this.getOffsetFromPrevDay(this.props.startTime, hourWidth)) /
-          dayWidth
+            dayWidth
         ) + i;
 
       // Calculate dateBox css
       dateBox.style.left = dayWidth * i + "px";
-      dateBox.style.width =
-        this.getWidthOfdateBox(i, dayWidth * i, hourWidth, nrOfBoxes) + "px";
+      dateBox.style.width = hourWidth * 24 + "px";
 
       // Set background color for each dateBox
       let color = "rgba(185, 185, 185, 0.3)";

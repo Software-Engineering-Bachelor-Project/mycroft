@@ -5,14 +5,16 @@ import { connect } from "react-redux";
 import {
   OverlayTrigger,
   Tooltip,
-  ListGroup,
-  Col,
-  Form,
-  Table,
   Row,
-  Button,
   Image,
 } from "react-bootstrap";
+
+import Table from "react-bootstrap/Table";
+import Form from "react-bootstrap/Form";
+import Col from "react-bootstrap/Col";
+import ListGroup from "react-bootstrap/ListGroup";
+import InputGroup from 'react-bootstrap/InputGroup';
+import Button from "react-bootstrap/Button";
 
 // Import CSS
 import styles from "./browser.module.css";
@@ -30,6 +32,9 @@ import {
   modifyFilter,
   getFilter,
   getClipsMatchingFilter,
+  deleteArea,
+  createArea,
+  getAreasInFilter,
 } from "../../state/stateCommunication";
 import { playClip, play } from "../../state/statePlayer";
 
@@ -61,6 +66,22 @@ class InspectorBrowser extends Component {
     this.fetchValidClips = this.fetchValidClips.bind(this);
     this.updateFilterList = this.updateFilterList.bind(this);
     this.fetchClips = this.fetchClips.bind(this);
+    this.fetchSelectedArea = this.fetchSelectedArea.bind(this);
+    this.lonRef = React.createRef();
+    this.latRef = React.createRef();
+    this.radRef = React.createRef();
+    this.state = {areas: this.props.areas};
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.inspector.mode === INSPECTOR_MODE_AREA) {
+      if (nextProps.areas[nextProps.inspector.id] == undefined && Object.keys(nextProps.areas).length != 0) {
+        let maxId = Math.max(...Object.keys(nextProps.areas).map(Number));
+        nextProps.changeMode(INSPECTOR_MODE_AREA, maxId);
+      }
+      return {areas: nextProps.areas};
+    }
+    return {areas: prevState.areas};
   }
 
   /* Checks if an object in empty */
@@ -122,11 +143,13 @@ class InspectorBrowser extends Component {
 
         case INSPECTOR_MODE_AREA:
           var area = this.props.areas[this.props.inspector.id];
-          this.props.setMapLocation(
-            area.latitude,
-            area.longitude,
-            this.props.mapZoom
-          );
+          if (area) {
+            this.props.setMapLocation(
+                area.latitude,
+                area.longitude,
+                this.props.mapZoom
+            );
+          }
           return;
       }
     }
@@ -601,13 +624,127 @@ class InspectorBrowser extends Component {
     );
   }
 
+  /*
+  Fetch selected area based on the chosen area.id.
+  */
+  fetchSelectedArea(areaId) {
+    if (this.props.inspector.id == undefined) {
+      console.warn("Id is undefined");
+      return undefined;
+    }
+    return this.props.areas[areaId]
+  }
+
+  /*
+  Makes changes to area.
+  */
+  handleInputChange(areaId, area) {
+    let lat = area.latitude;
+    let lon = area.longitude;
+    let rad = area.radius;
+
+    if (this.latRef.current.value) {
+      lat = this.latRef.current.value;
+    }
+    if (this.lonRef.current.value) {
+      lon = this.lonRef.current.value;
+    }
+    if (this.radRef.current.value) {
+      rad = Number.parseFloat(this.radRef.current.value).toFixed();
+      if (rad < 1) {
+        rad = 1;
+      }
+    }
+
+    if (Math.abs(lat - area.latitude) < 0.0001 && Math.abs(lon - area.longitude) < 0.0001 && (rad - area.radius) === 0) {}
+    else {
+      doActionsInOrder([
+        () => this.props.createArea(lat, lon, rad),
+        () => this.props.deleteArea(areaId),
+        () => {this.props.fetchFilter(); this.props.getAreas()}
+      ]);
+    }
+  }
+
   /* Render the area mode displayed in inspector */
   renderArea() {
-    return (
-      <div>
-        <h3 className={styles.browserInspectorHeader}>Area</h3>
-      </div>
-    );
+    let area = this.fetchSelectedArea(this.props.inspector.id);
+    if (area) {
+      return (
+          <div>
+            <h3 className={styles.browserInspectorHeader}>Area</h3>
+            <Table striped bordered size="sm">
+              <tbody>
+              <tr>
+                <td>Latitude</td>
+                <td>
+                  {area.latitude}
+                </td>
+              </tr>
+              <tr>
+                <td>Longitude</td>
+                <td>
+                  {area.longitude}
+                </td>
+              </tr>
+              <tr>
+                <td>Radius</td>
+                <td>
+                  {area.radius}
+                </td>
+              </tr>
+              </tbody>
+            </Table>
+
+            <p className={styles.browserInspectorHeader}>Move Area</p>
+            <InputGroup>
+              <InputGroup.Prepend>
+                <InputGroup.Text className={styles.areaPosLabel}>Latitude</InputGroup.Text>
+              </InputGroup.Prepend>
+              <Form.Control
+                  ref={this.latRef}
+                  type="number"
+                  step="0.1"
+                  placeholder="latitude"/>
+            </InputGroup>
+            <InputGroup>
+              <InputGroup.Prepend>
+                <InputGroup.Text className={styles.areaPosLabel}>Longitude</InputGroup.Text>
+              </InputGroup.Prepend>
+              <Form.Control
+                  ref={this.lonRef}
+                  type="number"
+                  step="0.1"
+                  placeholder="longitude"/>
+            </InputGroup>
+            <InputGroup>
+              <InputGroup.Prepend>
+                <InputGroup.Text className={styles.areaPosLabel}>Radius</InputGroup.Text>
+              </InputGroup.Prepend>
+              <Form.Control
+                  ref={this.radRef}
+                  type="number"
+                  placeholder="radius"/>
+            </InputGroup>
+            <Button
+                onClick={() => {
+                  this.handleInputChange(this.props.inspector.id, area)
+                }}
+            >
+              Move Area
+            </Button>
+            <p className={styles.areaTextDelete}><i>Right click on the area icon in the map to delete the area.</i></p>
+          </div>
+      );
+    }
+    else {
+      return (
+          <div>
+            <h3 className={styles.browserInspectorHeader}>Area</h3>
+            <p className={styles.areaTextDelete}><i>There are no existing areas at the moment.</i></p>
+          </div>
+      );
+    }
   }
 
   /* Render the inspector */
@@ -643,6 +780,9 @@ const mapDispatchToProps = (dispatch) => {
     changeMode: (mode, clipId) => dispatch(changeMode(mode, clipId)), //place selector
     updateExc: (clipId) => dispatch(updateList(false, clipId)),
     updateInc: (clipId) => dispatch(updateList(true, clipId)),
+    createArea: (lat, lon, rad) => dispatch(createArea(lat, lon, rad)),
+    deleteArea: (areaId) => dispatch(deleteArea(areaId)),
+    getAreas: () => dispatch(getAreasInFilter()),
     modifyFilter: (il, el) =>
       dispatch(
         modifyFilter({ [INCLUDED_CLIP_IDS]: il, [EXCLUDED_CLIP_IDS]: el })

@@ -182,12 +182,15 @@ class ObjectDetector:
 
         # Analyze clip frame by frame
         for i in range(end):
-            success, frame = video.read()
-            if not success:
-                break  # Video is over.
+            
 
             # Skip clips according to start and rate.
             if i >= start and i % rate == start % rate:
+
+                success, frame = video.read()
+                if not success:
+                    break  # Video is over.
+
                 # Prepare frame
                 frame = cv2.resize(frame, None, fx=0.4, fy=0.4)
                 height, width, channels = frame.shape

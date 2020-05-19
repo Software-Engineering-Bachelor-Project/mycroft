@@ -443,7 +443,7 @@ class Timeline extends Component {
                           100 +
                         "%",
                       backgroundColor: this.props.filterClips.includes(clipID)
-                        ? "#3aa541"
+                        ? "#ca4f26"
                         : "#6c757d",
                     }}
                     onClick={() => this.props.inspectClip(clipID)}

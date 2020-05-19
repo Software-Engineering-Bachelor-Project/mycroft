@@ -90,7 +90,7 @@
 }
 
 .mapModeClip:hover {
-  opacity: 1.0;
+  opacity: 1;
 }
 
 .dateBoxContainer {
@@ -182,13 +182,13 @@
 
 .cliplineClip {
   opacity: 1;
-  filter: drop-shadow(0 0 .7rem black);
+  box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.2), 0px -5px 5px rgba(0, 0, 0, 0.2);
+  z-index: 3;
   position: absolute;
   top: 0;
   height: 12px;
-  border-radius: 2px;
+  border-radius: 6px;
   border: 1px solid;
-  color: rgba(184, 184, 184, 0.431);
   pointer-events: auto;
 }
 

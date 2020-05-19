@@ -30,6 +30,9 @@ class FolderManager extends Component {
     this.state = {
       modified: false,
       showingWarnings: false,
+
+      // Varibale to know what to display in selectAll-button
+      selectAll: false,
     };
 
     this.hasFolders = this.hasFolders.bind(this);
@@ -37,6 +40,7 @@ class FolderManager extends Component {
     this.toggleFolder = this.toggleFolder.bind(this);
     this.handleFinished = this.handleFinished.bind(this);
     this.renderWarnings = this.renderWarnings.bind(this);
+    this.toggleSelectAll = this.toggleSelectAll.bind(this);
   }
 
   hasFolders() {
@@ -162,6 +166,29 @@ class FolderManager extends Component {
     );
   }
 
+  toggleSelectAll() {
+    // disable button while selecting all folders
+    document.getElementById("selectAll").disabled = true;
+    doActionsInOrder([
+      () => {
+        /* Select/deselect all folders */
+        Object.values(this.props.sourceFolders).forEach((f) => {
+          if (!this.state.selectAll) {
+            if (!this.isChosen(f.id)) this.toggleFolder(f.id);
+          } else {
+            if (this.isChosen(f.id)) this.toggleFolder(f.id);
+          }
+        });
+      },
+      () =>
+        this.state.selectAll
+          ? this.setState({ selectAll: false })
+          : this.setState({ selectAll: true }),
+      /* Enable selectAll-button again */
+      () => (document.getElementById("selectAll").disabled = false),
+    ]);
+  }
+
   render() {
     return (
       <Modal
@@ -203,6 +230,9 @@ class FolderManager extends Component {
         {this.renderWarnings()}
 
         <Modal.Footer>
+          <Button id={"selectAll"} onClick={this.toggleSelectAll}>
+            {!this.state.selectAll ? "Select All" : "Deselect All"}
+          </Button>
           <Button onClick={this.handleFinished} disabled={!this.hasFolders()}>
             Continue
           </Button>

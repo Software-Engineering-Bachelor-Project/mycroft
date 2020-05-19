@@ -31,6 +31,7 @@ import {
   getFilter,
   getClipsMatchingFilter,
 } from "../../state/stateCommunication";
+import { playClip, play } from "../../state/statePlayer";
 
 // Import utility
 import {
@@ -86,6 +87,8 @@ class InspectorBrowser extends Component {
       }
     }
 
+    this.playClip = this.playClip.bind(this);
+
     return "";
   }
 
@@ -137,6 +140,17 @@ class InspectorBrowser extends Component {
     } else {
       return false;
     }
+  }
+
+  /**
+   * This function is the callback for whenever the
+   * play button of a specific clip was clicked.
+   *
+   * @param {Number} id The unique identifier of the clip to be played. Should be an integer.
+   */
+  playClip(id) {
+    this.props.playClip(id);
+    setTimeout(() => this.props.play(), 100);
   }
 
   /* Render the camera mode displayed in inspector */
@@ -343,6 +357,21 @@ class InspectorBrowser extends Component {
           {/* Displays heading for the clip mode and selected clip*/}
           <p className={styles.browserInspectorHeader}>Clip</p>
           <p className={styles.browserInspectorHeader}>{clip.name}</p>
+          <div>
+            <Button
+              className={styles.browserInspectorButton}
+              onClick={() => this.playClip(clip.id)}
+              disabled={!this.props.clips[clip.id].playable}
+              variant={
+                this.props.clips[clip.id].playable ? "primary" : "secondary"
+              }
+            >
+              Play
+            </Button>
+            <Button className={styles.browserInspectorButton}>
+              See Location
+            </Button>
+          </div>
           {/* Displays info of the seleceted clip*/}
           <Table
             striped
@@ -618,6 +647,8 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(getFilter());
       dispatch(getClipsMatchingFilter());
     },
+    playClip: (id) => dispatch(playClip(id)),
+    play: () => dispatch(play()),
   };
 };
 

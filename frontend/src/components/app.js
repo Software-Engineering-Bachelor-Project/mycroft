@@ -12,10 +12,7 @@ import Viewport from "./viewport/viewport";
 import MiniViewport from "./viewport/miniViewport";
 import Timeline from "./timeline/timeline";
 import Browser from "./browser/browser";
-import Filter from "./filter/filter"
-
-// TODO: Remove
-import Evoker from "./evoker";
+import Filter from "./filter/filter";
 
 /*
  * This is the main component of Mycroft.
@@ -31,7 +28,6 @@ class App extends Component {
         <MiniViewport />
         <Browser />
         <Timeline />
-        <Evoker />
         <Filter />
       </div>
     );

@@ -360,16 +360,20 @@ class InspectorBrowser extends Component {
           <div>
             <Button
               className={styles.browserInspectorButton}
+              variant="light"
               onClick={() => this.playClip(clip.id)}
               disabled={!this.props.clips[clip.id].playable}
-              variant={
-                this.props.clips[clip.id].playable ? "primary" : "secondary"
-              }
             >
               Play
             </Button>
-            <Button className={styles.browserInspectorButton}>
-              See Location
+            <Button
+              className={styles.browserInspectorButton}
+              variant="light"
+              onClick={() => {
+                this.props.changeMode(INSPECTOR_MODE_CAMERA, clip.camera);
+              }}
+            >
+              Camera
             </Button>
           </div>
           {/* Displays info of the seleceted clip*/}

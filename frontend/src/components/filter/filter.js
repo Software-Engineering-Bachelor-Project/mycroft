@@ -47,6 +47,9 @@ class Filter extends Component {
           <Form.Control
             type="number"
             defaultValue={this.props.minimumFramerate}
+            onKeyPress={(e) => {
+              e.key === "Enter" && e.preventDefault();
+            }}
             onChange={(e) => {
               var res = parseInt(e.target.value);
               if (res === "") {

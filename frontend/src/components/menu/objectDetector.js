@@ -134,6 +134,9 @@ class ObjectDetector extends Component {
                 defaultValue={this.props.rate}
                 onChange={this.handleRateChange}
                 disabled={this.props.isRunning}
+                onKeyPress={(e) => {
+                  e.key === "Enter" && e.preventDefault();
+                }}
               />
               <Form.Text className="text-muted">
                 Seconds between analyzed frames.
@@ -158,7 +161,7 @@ class ObjectDetector extends Component {
           )}
           <Button
             variant="primary"
-            type="submit"
+            type="button"
             onClick={this.handleSubmit}
             disabled={this.props.isRunning}
           >

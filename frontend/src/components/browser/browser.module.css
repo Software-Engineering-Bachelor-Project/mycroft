@@ -70,6 +70,10 @@
   padding-bottom: 5px !important;
 }
 
+.browserInspectorButton {
+  width: 50% !important;
+}
+
 .inspectButton {
   cursor: pointer;
 }
@@ -78,34 +82,34 @@
 Inspector camera mode
 */
 
-.inspectorCameraNameColumn{
+.inspectorCameraNameColumn {
   width: calc(100% - 9em) !important;
-    margin: 0;
+  margin: 0;
   min-width: 0;
   display: inline-block !important;
 }
 
-.inspectorCameraInclExclColumn{
+.inspectorCameraInclExclColumn {
   margin: 0;
-    width: 3em !important;
-    display: inline-block !important;
-}
-
-.inspectorCameraInfoColumn{
-    margin: 0;
   width: 3em !important;
   display: inline-block !important;
 }
 
-.inspectorCameraColumnHeader{
+.inspectorCameraInfoColumn {
+  margin: 0;
+  width: 3em !important;
+  display: inline-block !important;
+}
+
+.inspectorCameraColumnHeader {
   margin: 0 !important;
-font-weight: bold !important;
+  font-weight: bold !important;
   text-align: center !important;
   width: 100% !important;
   padding-top: 5px !important;
 }
 
-.inspectorCameraNameItem{
+.inspectorCameraNameItem {
   height: 100%;
   overflow: hidden;
   position: center;
@@ -113,16 +117,16 @@ font-weight: bold !important;
   white-space: nowrap;
 }
 
-.inspectorCameraInclExclItem{
-    height: 100%;
+.inspectorCameraInclExclItem {
+  height: 100%;
 }
 
-.inspectorCameraInfoItem{
+.inspectorCameraInfoItem {
   height: 100%;
   cursor: pointer;
 }
 
-.inspectorCameraClipRow{
+.inspectorCameraClipRow {
   max-width: 100%;
   width: 100%;
   max-height: 10%;

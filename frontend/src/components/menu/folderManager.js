@@ -54,8 +54,10 @@ class FolderManager extends Component {
   toggleFolder(id) {
     doActionsInOrder([
       () => {
-        if (this.isChosen(id)) this.props.removeFolder(id);
-        else {
+        if (this.isChosen(id)) {
+          this.props.removeFolder(id);
+          this.setState({ selectAll: false });
+        } else {
           this.setState({ modified: true });
           this.props.addFolder(id);
         }
@@ -174,16 +176,19 @@ class FolderManager extends Component {
         /* Select/deselect all folders */
         Object.values(this.props.sourceFolders).forEach((f) => {
           if (!this.state.selectAll) {
-            if (!this.isChosen(f.id)) this.toggleFolder(f.id);
+            if (!this.isChosen(f.id)) {
+              this.setState({ modified: true });
+              this.props.addFolder(f.id);
+            }
           } else {
-            if (this.isChosen(f.id)) this.toggleFolder(f.id);
+            if (this.isChosen(f.id)) this.props.removeFolder(f.id);
           }
         });
       },
-      () =>
-        this.state.selectAll
-          ? this.setState({ selectAll: false })
-          : this.setState({ selectAll: true }),
+      () => {
+        this.setState({ selectAll: !this.state.selectAll });
+        this.props.getFiles();
+      },
       /* Enable selectAll-button again */
       () => (document.getElementById("selectAll").disabled = false),
     ]);

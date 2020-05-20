@@ -1,6 +1,14 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { setPosition, setPlayer, play, pause } from "../../state/statePlayer";
+import {
+  setPosition,
+  setPlayer,
+  play,
+  pause,
+  playClip,
+} from "../../state/statePlayer";
+import { getSequentialClip } from "../../state/stateCommunication";
+import { doActionsInOrder } from "../../util";
 
 import "../../../node_modules/video-react/dist/video-react.css"; // import css
 import {
@@ -18,6 +26,7 @@ import {
 class Player extends Component {
   constructor(props) {
     super(props);
+    this.playNext = this.playNext.bind(this);
   }
 
   // Load the source of the player if it updates
@@ -45,6 +54,25 @@ class Player extends Component {
     }
   }
 
+  playNext() {
+    doActionsInOrder([
+      () => {
+        if (this.props.clipID != undefined)
+          this.props.getNextClip(this.props.clipID);
+      },
+      () => {
+        if (
+          this.props.nextClip != undefined &&
+          this.props.clips.hasOwnProperty(this.props.nextClip) &&
+          this.props.clips[this.props.nextClip].playable
+        ) {
+          this.props.playClip(this.props.nextClip);
+          setTimeout(() => this.props.play(), 100);
+        }
+      },
+    ]);
+  }
+
   render() {
     return (
       <React.Fragment>
@@ -57,6 +85,7 @@ class Player extends Component {
           height="100%"
           onPlay={this.props.play}
           onPause={this.props.pause}
+          onEnded={this.playNext}
         >
           <source src={"/video/stream/" + this.props.clipID + "/"} />
           <ControlBar>
@@ -77,9 +106,10 @@ class Player extends Component {
 const mapStateToProps = (state) => {
   return {
     clipID: state.player.clipID,
-    time: state.player.clipTime,
     playing: state.player.playing,
     player: state.player.player,
+    nextClip: state.com.player.nextClip,
+    clips: state.com.clips,
   };
 };
 
@@ -90,6 +120,8 @@ const mapDispatchToProps = (dispatch) => {
     setPlayer: (player) => dispatch(setPlayer(player)),
     play: () => dispatch(play()),
     pause: () => dispatch(pause()),
+    getNextClip: (cid) => dispatch(getSequentialClip(cid)),
+    playClip: (id) => dispatch(playClip(id)),
   };
 };
 

@@ -112,8 +112,9 @@ class ClipBrowser extends Component {
                           position: "absolute",
                         }}
                       >
-                        {camera.countCommonClips(this.props.filteredClips)} clips
-                    </p>
+                        {camera.countCommonClips(this.props.filteredClips)}{" "}
+                        clips
+                      </p>
                     </Row>
                   </ListGroup.Item>
 
@@ -128,7 +129,7 @@ class ClipBrowser extends Component {
                     }}
                   >
                     i
-                </ListGroup.Item>
+                  </ListGroup.Item>
                 </ListGroup>
                 {/* Expandable list of clips */}
                 <Collapse in={this.isToggled(camera.id)}>

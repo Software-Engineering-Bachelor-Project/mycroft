@@ -6,7 +6,7 @@ import styles from "./timeline.module.css";
 
 //import actions
 import { zoom } from "../../state/stateTimeline";
-import { playClip, play } from "../../state/statePlayer";
+import { playClip, play, jump } from "../../state/statePlayer";
 import {
   changeMode,
   changeBrowserTab,
@@ -109,6 +109,11 @@ class Cliplines extends Component {
     if (!this.props.clips[id].playable) return;
     this.props.playClip(id);
     setTimeout(() => this.props.play(), 100);
+
+    // Chack if clip is outside glassbox, if so start the clip from startTime of glassbox
+    let clipStart = this.props.clips[id].startTime.getTime();
+    let gbStart = this.props.gbStartTime.getTime();
+    if (clipStart < gbStart) this.props.jump((gbStart - clipStart) / 1000);
   }
 
   render() {
@@ -124,13 +129,20 @@ class Cliplines extends Component {
           /* Check if camera exists */
           if (!(cameraID in this.props.cameras)) return "";
           return (
-            <div key={cameraID} className={styles.cliplineCamera} style={{
-              backgroundColor: COLOR_LIST[i % COLOR_LIST.length] +
-                (this.props.cameras[cameraID].clips
-                  .includes(this.props.clipID) ?
-                  "70" : "20"),
-              top: 25 + (15 + 12) * i + "px",
-            }}>
+            <div
+              key={cameraID}
+              className={styles.cliplineCamera}
+              style={{
+                backgroundColor:
+                  COLOR_LIST[i % COLOR_LIST.length] +
+                  (this.props.cameras[cameraID].clips.includes(
+                    this.props.clipID
+                  )
+                    ? "70"
+                    : "20"),
+                top: 25 + (15 + 12) * i + "px",
+              }}
+            >
               {/* Iterate through the clips of the current camera */}
               {this.props.cameras[cameraID].clips.map((clipID) => {
                 /* Check if clip exists in filter */
@@ -204,6 +216,7 @@ const mapDispatchToProps = (dispatch) => {
     play: () => dispatch(play()),
     changeMode: (mode, id) => dispatch(changeMode(mode, id)),
     changeBrowserTab: () => dispatch(changeBrowserTab("inspectorBrowser")),
+    jump: (timeDelta) => dispatch(jump(timeDelta)),
   };
 };
 

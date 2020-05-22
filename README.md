@@ -41,7 +41,7 @@ First, activate the virtual environment, then run `pip install -r requirements.t
 To use mycroft you will have to create a dedicated folder on your system.
 Once you have this folder you can create subfolders (with arbitrary file hierarchies) in which you add your videos.
 
-**NOTE:** there shall be no videos in the root folder.
+**NOTE:** There shall be no videos in the root folder.
 
 ### Metadata Requirements
 Along with every video you must add a metadata file (in the same folder) with information about the position, start time and camera name for the video.

@@ -2,18 +2,13 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 
 //React Bootstrap components
-import {
-  OverlayTrigger,
-  Tooltip,
-  Row,
-  Image,
-} from "react-bootstrap";
+import { OverlayTrigger, Tooltip, Row, Image } from "react-bootstrap";
 
 import Table from "react-bootstrap/Table";
 import Form from "react-bootstrap/Form";
 import Col from "react-bootstrap/Col";
 import ListGroup from "react-bootstrap/ListGroup";
-import InputGroup from 'react-bootstrap/InputGroup';
+import InputGroup from "react-bootstrap/InputGroup";
 import Button from "react-bootstrap/Button";
 
 // Import CSS
@@ -70,18 +65,22 @@ class InspectorBrowser extends Component {
     this.lonRef = React.createRef();
     this.latRef = React.createRef();
     this.radRef = React.createRef();
-    this.state = {areas: this.props.areas};
+    this.state = { areas: this.props.areas };
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.inspector.mode === INSPECTOR_MODE_AREA) {
-      if (nextProps.areas[nextProps.inspector.id] == undefined && Object.keys(nextProps.areas).length != 0) {
+      if (
+        nextProps.areas[nextProps.inspector.id] == undefined &&
+        Object.keys(nextProps.areas).length != 0
+      ) {
         let maxId = Math.max(...Object.keys(nextProps.areas).map(Number));
         nextProps.changeMode(INSPECTOR_MODE_AREA, maxId);
       }
-      return {areas: nextProps.areas};
+      return { areas: nextProps.areas };
     }
-    return {areas: prevState.areas};
+    return { areas: prevState.areas };
+    this.checkFilteredClip = this.checkFilteredClip.bind(this);
   }
 
   /* Checks if an object in empty */
@@ -145,9 +144,9 @@ class InspectorBrowser extends Component {
           var area = this.props.areas[this.props.inspector.id];
           if (area) {
             this.props.setMapLocation(
-                area.latitude,
-                area.longitude,
-                this.props.mapZoom
+              area.latitude,
+              area.longitude,
+              this.props.mapZoom
             );
           }
           return;
@@ -270,6 +269,7 @@ class InspectorBrowser extends Component {
 
   /* Render content for the camera mode display in inspector */
   renderCameraContent(clip) {
+    var filtered = this.checkFilteredClip(clip) ? "primary" : null;
     return (
       <ListGroup
         horizontal
@@ -282,6 +282,7 @@ class InspectorBrowser extends Component {
           overlay={<Tooltip id={`tooltip-name`}>{clip.name}</Tooltip>}
         >
           <ListGroup.Item
+            variant={filtered}
             className={[
               styles.inspectorCameraNameColumn,
               styles.inspectorCameraNameItem,
@@ -293,6 +294,7 @@ class InspectorBrowser extends Component {
         </OverlayTrigger>{" "}
         {/*Render Include Clip Checkbox*/}
         <ListGroup.Item
+          variant={filtered}
           className={[
             styles.inspectorCameraInclExclColumn,
             styles.inspectorCameraInclExclItem,
@@ -306,6 +308,7 @@ class InspectorBrowser extends Component {
         </ListGroup.Item>
         {/*Render Exclude Clip Checkbox*/}
         <ListGroup.Item
+          variant={filtered}
           className={[
             styles.inspectorCameraInclExclColumn,
             styles.inspectorCameraInclExclItem,
@@ -323,7 +326,6 @@ class InspectorBrowser extends Component {
             styles.inspectorCameraInfoColumn,
             styles.inspectorCameraInfoItem,
           ].join(" ")}
-          action
           variant="secondary"
           onClick={() => {
             this.props.changeMode(INSPECTOR_MODE_CLIP, clip.id);
@@ -333,6 +335,14 @@ class InspectorBrowser extends Component {
         </ListGroup.Item>
       </ListGroup>
     );
+  }
+
+  /* */
+  checkFilteredClip(clip) {
+    /*
+    Checks if clip is filtered
+    */
+    return this.props.filter.clips.includes(clip.id);
   }
 
   /*
@@ -435,10 +445,10 @@ class InspectorBrowser extends Component {
               <tr>
                 <td>Resolution</td>
                 <td>
-                  {this.props.filter[clip.resolution]
-                    ? this.props.filter[clip.resolution].height +
+                  {this.props.resolutionList[clip.resolution]
+                    ? this.props.resolutionList[clip.resolution].height +
                       " x " +
-                      this.props.filter[clip.resolution].width
+                      this.props.resolutionList[clip.resolution].width
                     : "Can't find resoluton"}
                 </td>
               </tr>
@@ -632,7 +642,7 @@ class InspectorBrowser extends Component {
       console.warn("Id is undefined");
       return undefined;
     }
-    return this.props.areas[areaId]
+    return this.props.areas[areaId];
   }
 
   /*
@@ -656,12 +666,19 @@ class InspectorBrowser extends Component {
       }
     }
 
-    if (Math.abs(lat - area.latitude) < 0.0001 && Math.abs(lon - area.longitude) < 0.0001 && (rad - area.radius) === 0) {}
-    else {
+    if (
+      Math.abs(lat - area.latitude) < 0.0001 &&
+      Math.abs(lon - area.longitude) < 0.0001 &&
+      rad - area.radius === 0
+    ) {
+    } else {
       doActionsInOrder([
         () => this.props.createArea(lat, lon, rad),
         () => this.props.deleteArea(areaId),
-        () => {this.props.fetchFilter(); this.props.getAreas()}
+        () => {
+          this.props.fetchFilter();
+          this.props.getAreas();
+        },
       ]);
     }
   }
@@ -671,78 +688,84 @@ class InspectorBrowser extends Component {
     let area = this.fetchSelectedArea(this.props.inspector.id);
     if (area) {
       return (
-          <div>
-            <h3 className={styles.browserInspectorHeader}>Area</h3>
-            <Table striped bordered size="sm">
-              <tbody>
+        <div>
+          <h3 className={styles.browserInspectorHeader}>Area</h3>
+          <Table striped bordered size="sm">
+            <tbody>
               <tr>
                 <td>Latitude</td>
-                <td>
-                  {area.latitude}
-                </td>
+                <td>{area.latitude}</td>
               </tr>
               <tr>
                 <td>Longitude</td>
-                <td>
-                  {area.longitude}
-                </td>
+                <td>{area.longitude}</td>
               </tr>
               <tr>
                 <td>Radius</td>
-                <td>
-                  {area.radius}
-                </td>
+                <td>{area.radius}</td>
               </tr>
-              </tbody>
-            </Table>
+            </tbody>
+          </Table>
 
-            <p className={styles.browserInspectorHeader}>Move Area</p>
-            <InputGroup>
-              <InputGroup.Prepend>
-                <InputGroup.Text className={styles.areaPosLabel}>Latitude</InputGroup.Text>
-              </InputGroup.Prepend>
-              <Form.Control
-                  ref={this.latRef}
-                  type="number"
-                  step="0.1"
-                  placeholder="latitude"/>
-            </InputGroup>
-            <InputGroup>
-              <InputGroup.Prepend>
-                <InputGroup.Text className={styles.areaPosLabel}>Longitude</InputGroup.Text>
-              </InputGroup.Prepend>
-              <Form.Control
-                  ref={this.lonRef}
-                  type="number"
-                  step="0.1"
-                  placeholder="longitude"/>
-            </InputGroup>
-            <InputGroup>
-              <InputGroup.Prepend>
-                <InputGroup.Text className={styles.areaPosLabel}>Radius</InputGroup.Text>
-              </InputGroup.Prepend>
-              <Form.Control
-                  ref={this.radRef}
-                  type="number"
-                  placeholder="radius"/>
-            </InputGroup>
-            <Button
-                onClick={() => {
-                  this.handleInputChange(this.props.inspector.id, area)
-                }}
-            >
-              Move Area
-            </Button>
-            <p className={styles.areaTextDelete}><i>Right click on the area icon in the map to delete the area.</i></p>
-          </div>
+          <p className={styles.browserInspectorHeader}>Move Area</p>
+          <InputGroup>
+            <InputGroup.Prepend>
+              <InputGroup.Text className={styles.areaPosLabel}>
+                Latitude
+              </InputGroup.Text>
+            </InputGroup.Prepend>
+            <Form.Control
+              ref={this.latRef}
+              type="number"
+              step="0.1"
+              placeholder="latitude"
+            />
+          </InputGroup>
+          <InputGroup>
+            <InputGroup.Prepend>
+              <InputGroup.Text className={styles.areaPosLabel}>
+                Longitude
+              </InputGroup.Text>
+            </InputGroup.Prepend>
+            <Form.Control
+              ref={this.lonRef}
+              type="number"
+              step="0.1"
+              placeholder="longitude"
+            />
+          </InputGroup>
+          <InputGroup>
+            <InputGroup.Prepend>
+              <InputGroup.Text className={styles.areaPosLabel}>
+                Radius
+              </InputGroup.Text>
+            </InputGroup.Prepend>
+            <Form.Control
+              ref={this.radRef}
+              type="number"
+              placeholder="radius"
+            />
+          </InputGroup>
+          <Button
+            onClick={() => {
+              this.handleInputChange(this.props.inspector.id, area);
+            }}
+          >
+            Move Area
+          </Button>
+          <p className={styles.areaTextDelete}>
+            <i>Right click on the area icon in the map to delete the area.</i>
+          </p>
+        </div>
       );
-    }
-    else {
+    } else {
       return (
-          <div>
-            <h3 className={styles.browserInspectorHeader}>Area</h3>
-            <p className={styles.areaTextDelete}><i>There are no existing areas at the moment.</i></p>
-          </div>
+        <div>
+          <h3 className={styles.browserInspectorHeader}>Area</h3>
+          <p className={styles.areaTextDelete}>
+            <i>There are no existing areas at the moment.</i>
+          </p>
+        </div>
       );
     }
   }
@@ -761,7 +784,8 @@ class InspectorBrowser extends Component {
 const mapStateToProps = (state) => {
   return {
     inspector: state.browser.inspector,
-    filter: state.com.filter.resolutions,
+    resolutionList: state.com.filter.resolutions,
+    filter: state.com.filter,
     cameras: state.com.cameras,
     clips: state.com.clips,
     excList: state.browser.excList,

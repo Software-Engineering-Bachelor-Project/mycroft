@@ -4416,7 +4416,7 @@ module.exports = exports;
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
-exports.push([module.i, "._176IfE7g8KBTlIdYFRaRw5 {\r\n  position: absolute;\r\n  top: 0;\r\n  right: 0;\r\n  width: 15vw !important;\r\n  height: 70vh !important;\r\n  z-index: 1;\r\n}\r\n\r\n.KDLHbX0qwwc4TU9FrB_xD {\r\n  height: 100%;\r\n  display: flex;\r\n  flex-direction: column;\r\n}\r\n\r\n._2ROTK2tWbgFCqeC7Mrrv4Q {\r\n  width: 7.5vw;\r\n}\r\n\r\n._2CKfZKXUCyXrTJv1BvySpd {\r\n  flex-grow: 1;\r\n}\r\n\r\n.T0xA0_ebLXdJq5w8OZVIe {\r\n  position: relative;\r\n  width: 15vw !important;\r\n  height: 100% !important;\r\n}\r\n\r\n.eIofNSXW3uk3KdVNu_Sjm {\r\n  position: absolute;\r\n  width: 100% !important;\r\n  height: 100% !important;\r\n  overflow-y: scroll;\r\n}\r\n\r\n._1VCQ1IAdGkWaSjLUD3NfNw {\r\n  width: 3em !important;\r\n}\r\n\r\n._2c4rX7sleLXz8xPVik5fnV {\r\n  position: absolute;\r\n  width: 100% !important;\r\n  height: 100% !important;\r\n  overflow-y: scroll;\r\n}\r\n\r\n._3SNKvX3ifgNyZBmsRHXTHs {\r\n  text-align: center !important;\r\n  border: 3px solid #007bff !important;\r\n  background-color: #c3e6cb !important;\r\n  width: 100% !important;\r\n  height: 100% !important;\r\n  position: relative !important;\r\n  margin-bottom: 0 !important;\r\n  font-weight: bold !important;\r\n  padding-top: 5px !important;\r\n  padding-bottom: 5px !important;\r\n}\r\n\r\n._22hrCvTtP_aWwSSvonGaq1 {\r\n  width: 3vw;\r\n  height: 3vh;\r\n}\r\n\r\n._10eTMJcK-tbNkBfpP_fjGM {\r\n  font-weight: bold !important;\r\n  text-align: center;\r\n  width: 25% !important;\r\n  height: 25% !important;\r\n  display: inline-block !important;\r\n}\r\n\r\n._2D2tcdLAipfXt_y7yHwTco {\r\n  width: 25% !important;\r\n  height: 25% !important;\r\n}\r\n\r\n._1lA8Csg55Dt2cbNdp4d4sr {\r\n  cursor: pointer;\r\n}\r\n", ""]);
+exports.push([module.i, "._176IfE7g8KBTlIdYFRaRw5 {\r\n  position: absolute;\r\n  top: 0;\r\n  right: 0;\r\n  width: 20vw !important;\r\n  height: 79vh !important;\r\n  z-index: 1;\r\n}\r\n\r\n.KDLHbX0qwwc4TU9FrB_xD {\r\n  height: 100%;\r\n  display: flex;\r\n  flex-direction: column;\r\n}\r\n\r\n._2ROTK2tWbgFCqeC7Mrrv4Q {\r\n  width: 7.5vw;\r\n}\r\n\r\n._2CKfZKXUCyXrTJv1BvySpd {\r\n  flex-grow: 1;\r\n}\r\n\r\n.T0xA0_ebLXdJq5w8OZVIe {\r\n  position: relative;\r\n  width: 20vw !important;\r\n  height: 100% !important;\r\n}\r\n\r\n.eIofNSXW3uk3KdVNu_Sjm {\r\n  position: absolute;\r\n  width: 100% !important;\r\n  height: 100% !important;\r\n  overflow-y: scroll;\r\n}\r\n\r\n._1VCQ1IAdGkWaSjLUD3NfNw {\r\n  width: 3em !important;\r\n}\r\n\r\n._2c4rX7sleLXz8xPVik5fnV {\r\n  position: absolute;\r\n  width: 100% !important;\r\n  height: 100% !important;\r\n  overflow-y: scroll;\r\n}\r\n\r\n._2g92UHd6qWvEJrsRB8Ahfl {\r\n  position: absolute;\r\n  width: 100% !important;\r\n  height: 100% !important;\r\n  overflow-y: scroll;\r\n}\r\n\r\n._2fcgPxGDbHtVL9e2djCaA2 {\r\n  table-layout: fixed;\r\n  word-wrap: break-word;\r\n}\r\n\r\n._3SNKvX3ifgNyZBmsRHXTHs {\r\n  text-align: center !important;\r\n  border: 3px solid #007bff !important;\r\n  background-color: #c3e6cb !important;\r\n  width: 100% !important;\r\n  height: 100% !important;\r\n  position: relative !important;\r\n  margin-bottom: 0 !important;\r\n  font-weight: bold !important;\r\n  padding-top: 5px !important;\r\n  padding-bottom: 5px !important;\r\n}\r\n\r\n._3IQwxSVVek-uYjPGgzRtKC {\r\n  width: 50%;\r\n}\r\n\r\n._1lA8Csg55Dt2cbNdp4d4sr {\r\n  cursor: pointer;\r\n}\r\n\r\n/*\r\nInspector camera mode\r\n*/\r\n\r\n._3JVCQUWPKCY7M4TyQ8jSe- {\r\n  width: calc(100% - 9em) !important;\r\n  margin: 0;\r\n  min-width: 0;\r\n  display: inline-block !important;\r\n}\r\n\r\n._3AQTzKnYh5f_9xqfE88-dq {\r\n  margin: 0;\r\n  width: 3em !important;\r\n  display: inline-block !important;\r\n}\r\n\r\n.KS5ON6R-kk95yUqP2sv3Z {\r\n  margin: 0;\r\n  width: 3em !important;\r\n  display: inline-block !important;\r\n}\r\n\r\n._2Dyq2LEcNTdx5UeAEcXRdH {\r\n  margin: 0 !important;\r\n  font-weight: bold !important;\r\n  text-align: center !important;\r\n  width: 100% !important;\r\n  padding-top: 5px !important;\r\n}\r\n\r\n.DWTpS0sp39MCeYxxA-Pel {\r\n  height: 100%;\r\n  overflow: hidden;\r\n  position: center;\r\n  text-overflow: ellipsis;\r\n  white-space: nowrap;\r\n}\r\n\r\n._2dhThNVZiMl_9OXPAelxBh {\r\n  height: 100%;\r\n}\r\n\r\n._1WmQ05vVceSuYjXliatZs9 {\r\n  height: 100%;\r\n  cursor: pointer;\r\n}\r\n\r\n._22e1JzafVMvqJygNtsLi7E {\r\n  max-width: 100%;\r\n  width: 100%;\r\n  max-height: 10%;\r\n}\r\n\r\n._1kIAutxmXDt8EXoq7SMiUR {\r\n  white-space: nowrap;\r\n  overflow: hidden;\r\n  text-overflow: ellipsis;\r\n}\r\n\r\n._1kIAutxmXDt8EXoq7SMiUR:hover {\r\n  overflow: visible;\r\n}\r\n\r\n._1VA7maal1ffOCfR-32WRu2 {\r\n  margin-top: 3%;\r\n  margin-left: 2%;\r\n}\r\n\r\n._2-Wq3yvk5WnaaYxRMkhe-x {\r\n  width: 90px !important;\r\n}\r\n", ""]);
 // Exports
 exports.locals = {
 	"main": "_176IfE7g8KBTlIdYFRaRw5",
@@ -4427,11 +4427,22 @@ exports.locals = {
 	"browserClip": "eIofNSXW3uk3KdVNu_Sjm",
 	"inspectHeader": "_1VCQ1IAdGkWaSjLUD3NfNw",
 	"browserFile": "_2c4rX7sleLXz8xPVik5fnV",
+	"browserInspector": "_2g92UHd6qWvEJrsRB8Ahfl",
+	"browserInspectorTable": "_2fcgPxGDbHtVL9e2djCaA2",
 	"browserInspectorHeader": "_3SNKvX3ifgNyZBmsRHXTHs",
-	"browserInspectorBigCheckbox": "_22hrCvTtP_aWwSSvonGaq1",
-	"browserInspectorItem": "_10eTMJcK-tbNkBfpP_fjGM",
-	"browserInspectorCol": "_2D2tcdLAipfXt_y7yHwTco",
-	"inspectButton": "_1lA8Csg55Dt2cbNdp4d4sr"
+	"browserInspectorButton": "_3IQwxSVVek-uYjPGgzRtKC",
+	"inspectButton": "_1lA8Csg55Dt2cbNdp4d4sr",
+	"inspectorCameraNameColumn": "_3JVCQUWPKCY7M4TyQ8jSe-",
+	"inspectorCameraInclExclColumn": "_3AQTzKnYh5f_9xqfE88-dq",
+	"inspectorCameraInfoColumn": "KS5ON6R-kk95yUqP2sv3Z",
+	"inspectorCameraColumnHeader": "_2Dyq2LEcNTdx5UeAEcXRdH",
+	"inspectorCameraNameItem": "DWTpS0sp39MCeYxxA-Pel",
+	"inspectorCameraInclExclItem": "_2dhThNVZiMl_9OXPAelxBh",
+	"inspectorCameraInfoItem": "_1WmQ05vVceSuYjXliatZs9",
+	"inspectorCameraClipRow": "_22e1JzafVMvqJygNtsLi7E",
+	"browserButton": "_1kIAutxmXDt8EXoq7SMiUR",
+	"areaTextDelete": "_1VA7maal1ffOCfR-32WRu2",
+	"areaPosLabel": "_2-Wq3yvk5WnaaYxRMkhe-x"
 };
 module.exports = exports;
 
@@ -4449,7 +4460,7 @@ module.exports = exports;
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
-exports.push([module.i, "\r\n\r\n.UZi8PcrNqCSroVm92u_JN {\r\n  position: absolute;\r\n  top: 1vh;\r\n  right: 16vw;\r\n  z-index: 1;\r\n}\r\n\r\n\r\n._3Uam0PwOr0cd5Hl_YfxIvs{\r\n    position: absolute;\r\n    border: 2px solid;\r\n}\r\n\r\n\r\n._9NGXUYaynrvF5E4AyyLf{\r\n  white-space: pre-wrap;\r\n}\r\n", ""]);
+exports.push([module.i, "\r\n\r\n.UZi8PcrNqCSroVm92u_JN {\r\n  position: absolute;\r\n  top: 1vh;\r\n  right: 21vw;\r\n  z-index: 1;\r\n}\r\n\r\n\r\n._3Uam0PwOr0cd5Hl_YfxIvs{\r\n    position: absolute;\r\n    border: 2px solid;\r\n}\r\n\r\n\r\n._9NGXUYaynrvF5E4AyyLf{\r\n  white-space: pre-wrap;\r\n}\r\n", ""]);
 // Exports
 exports.locals = {
 	"menu": "UZi8PcrNqCSroVm92u_JN",
@@ -4542,7 +4553,7 @@ module.exports = exports;
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
-exports.push([module.i, "._n6QzUzxj6Uoy2ykga-l {\r\n  position: absolute;\r\n  display: flex;\r\n  flex-direction: column;\r\n  padding: 0;\r\n  border: 2px solid;\r\n  border-radius: 6px;\r\n  width: 75vw;\r\n  height: 20vh;\r\n  bottom: 0;\r\n  left: 0;\r\n}\r\n\r\n._10I1JMKob8pkE0RZRoi945 {\r\n  position: relative;\r\n  display: flex;\r\n  justify-content: center;\r\n  align-items: center;\r\n  padding: 5px;\r\n  width: 100%;\r\n  top: 0;\r\n  left: 0;\r\n  height: 50px;\r\n  flex-shrink: 0;\r\n  background-color: rgb(43, 44, 46);\r\n  color: rgb(255, 255, 255); /*text color*/\r\n}\r\n\r\n._2sgl82tdvau2BRFt_sXnfC {\r\n  position: absolute;\r\n  right: 5px;\r\n}\r\n\r\n._2emjKLHpStN4w25i1lnOl_ {\r\n  position: relative;\r\n  bottom: 0;\r\n  flex-grow: 1;\r\n  width: 100%;\r\n  overflow: auto;\r\n  /* TODO:: same color as slider! */\r\n  background-color: rgb(245, 251, 253);\r\n}\r\n\r\n.BuNLDP2lK6oI1EiPVdsm0 {\r\n  position: relative;\r\n  height: 100%;\r\n  /*border: 1px solid;*/\r\n  overflow: hidden;\r\n  background-color: rgb(245, 251, 253);\r\n}\r\n\r\n.Agh962K5jZHJPzHHzcTlj {\r\n  position: absolute;\r\n  left: 0;\r\n  top: 0;\r\n  height: 100%;\r\n}\r\n\r\n._3CpRmyYMZk20NDNLnYRdJA {\r\n  position: absolute;\r\n  left: 0;\r\n  top: 0;\r\n  height: 100%;\r\n}\r\n\r\n._1ippwss_WbizVVAINImxVT {\r\n  position: absolute;\r\n  top: 0;\r\n  left: 0;\r\n  width: 1px;\r\n  height: 100%;\r\n  background-color: rgb(156, 156, 156);\r\n  z-index: 1;\r\n}\r\n\r\n.vC1UW66R1o6OonDbZA9_q {\r\n  position: absolute;\r\n  left: 0;\r\n  top: 0;\r\n  height: 100%;\r\n}\r\n\r\n._3zQjXl2oL_FUFEsDXJJe6E {\r\n  position: absolute;\r\n  top: 0;\r\n  width: 200px;\r\n  height: 100%;\r\n}\r\n\r\n._3eeRd4Yx_aO8xsThSS1uH6 {\r\n  position: absolute;\r\n  padding: 6px;\r\n  left: 5px;\r\n  top: 5px;\r\n  width: max-content;\r\n  font-size: 11pt;\r\n  border-radius: 3px;\r\n  text-align: center;\r\n  background-color: #28a745;\r\n  color: white;\r\n  z-index: 3;\r\n}\r\n\r\n._18vtY8tfzgLtmr0Mv6et8U {\r\n  position: absolute;\r\n  height: 100%;\r\n  background-color: rgba(206, 206, 206, 0);\r\n}\r\n\r\n._3qgovzM93bA3bkMrOCbUm- {\r\n  position: absolute;\r\n  z-index: 2;\r\n  background-color: rgba(57, 192, 255, 0.329);\r\n  border-radius: 10px;\r\n  border: 2px solid rgba(0, 107, 194, 0.87);\r\n  top: 2%;\r\n  height: 96%;\r\n}\r\n\r\n._2VKdXQQ8jVM1vFIU_QPmt2 {\r\n  position: absolute;\r\n  left: 7px;\r\n  bottom: 4%;\r\n  font-size: 11pt;\r\n  width: 1.2em;\r\n  border-radius: 2px;\r\n  color: rgb(27, 27, 27);\r\n  z-index: 3;\r\n}\r\n\r\n._3hlxFHrJB7V6PvcMsCZarD {\r\n  opacity: 1;\r\n  position: absolute;\r\n  height: 12px;\r\n  border-radius: 2px;\r\n  border: 1px solid;\r\n  color: rgba(184, 184, 184, 0.431);\r\n}\r\n\r\n._3hlxFHrJB7V6PvcMsCZarD:hover {\r\n  opacity: 0.85;\r\n}\r\n\r\n._2f974Fy3TjbYeIVXTQpHBi {\r\n  position: absolute;\r\n  top: 0;\r\n  height: 100%;\r\n  width: 80px;\r\n  pointer-events: none;\r\n}\r\n\r\n._386LC1HJC4qkqqRPClzeSR {\r\n  position: absolute;\r\n  left: -2px;\r\n  height: 100%;\r\n  width: 4px;\r\n  background-color: rgb(0, 107, 194);\r\n  border-radius: 4px;\r\n}\r\n\r\n._2hj2MfRnSrb7K-8NfaKmpp {\r\n  position: absolute;\r\n  top: -15px;\r\n  width: 100%;\r\n  left: -40px;\r\n  z-index: 4;\r\n  cursor: grab;\r\n  pointer-events: auto;\r\n}\r\n\r\n._2hj2MfRnSrb7K-8NfaKmpp:active {\r\n  cursor: grabbing;\r\n}\r\n\r\n.KhV7mPFJREla6prPabut3 {\r\n  position: relative;\r\n  display: flex;\r\n  padding-left: 5px;\r\n}\r\n\r\n._3xrsYV7ttp9Fkt94WIF0x0 {\r\n  position: relative;\r\n  height: 40px;\r\n  width: 40px;\r\n}\r\n\r\n._3k8N8EH9sK5dBk3HBnuxU2 {\r\n  position: absolute;\r\n  top: 2px;\r\n  left: 2px;\r\n}\r\n", ""]);
+exports.push([module.i, "._n6QzUzxj6Uoy2ykga-l {\r\n  position: absolute;\r\n  display: flex;\r\n  flex-direction: column;\r\n  padding: 0;\r\n  border: 2px solid;\r\n  border-radius: 6px;\r\n  width: 80vw;\r\n  height: 20vh;\r\n  bottom: 0;\r\n  left: 0;\r\n  pointer-events: none;\r\n}\r\n\r\n._10I1JMKob8pkE0RZRoi945 {\r\n  position: relative;\r\n  display: flex;\r\n  justify-content: center;\r\n  align-items: center;\r\n  padding: 5px;\r\n  width: 100%;\r\n  top: 0;\r\n  left: 0;\r\n  height: 50px;\r\n  flex-shrink: 0;\r\n  background-color: rgb(43, 44, 46);\r\n  color: rgb(255, 255, 255); /*text color*/\r\n}\r\n\r\n._2sgl82tdvau2BRFt_sXnfC {\r\n  position: absolute;\r\n  right: 5px;\r\n  pointer-events: auto;\r\n}\r\n\r\n._2emjKLHpStN4w25i1lnOl_ {\r\n  position: relative;\r\n  bottom: 0;\r\n  flex-grow: 1;\r\n  width: 100%;\r\n  overflow-x: scroll;\r\n  /* TODO:: same color as slider! */\r\n  background-color: rgb(245, 251, 253);\r\n  pointer-events: auto;\r\n}\r\n\r\n.BuNLDP2lK6oI1EiPVdsm0 {\r\n  position: relative;\r\n  height: 100%;\r\n  /*border: 1px solid;*/\r\n  overflow-x: hidden;\r\n  background-color: rgb(245, 251, 253);\r\n  pointer-events: none;\r\n}\r\n\r\n.Agh962K5jZHJPzHHzcTlj {\r\n  position: absolute;\r\n  left: 0;\r\n  top: 0;\r\n  height: 100%;\r\n  pointer-events: none;\r\n}\r\n\r\n._3CpRmyYMZk20NDNLnYRdJA {\r\n  position: absolute;\r\n  left: 0;\r\n  top: 0;\r\n  height: 100%;\r\n  pointer-events: none;\r\n}\r\n\r\n._1ippwss_WbizVVAINImxVT {\r\n  position: absolute;\r\n  top: 0;\r\n  left: 0;\r\n  width: 1px;\r\n  height: 100%;\r\n  background-color: rgb(156, 156, 156);\r\n  z-index: 1;\r\n  pointer-events: none;\r\n}\r\n\r\n.QMMoDJ2QZdtUizSnZg6a9 {\r\n  position: absolute;\r\n  opacity: 0.8;\r\n  cursor: pointer;\r\n  pointer-events: auto;\r\n  border-radius: 2px;\r\n  z-index: 4;\r\n}\r\n\r\n.QMMoDJ2QZdtUizSnZg6a9:hover {\r\n  opacity: 1;\r\n}\r\n\r\n.vC1UW66R1o6OonDbZA9_q {\r\n  position: absolute;\r\n  left: 0;\r\n  top: 0;\r\n  height: 100%;\r\n  pointer-events: none;\r\n}\r\n\r\n._3zQjXl2oL_FUFEsDXJJe6E {\r\n  position: absolute;\r\n  top: 0;\r\n  width: 200px;\r\n  height: 100%;\r\n  pointer-events: none;\r\n}\r\n\r\n._3eeRd4Yx_aO8xsThSS1uH6 {\r\n  position: absolute;\r\n  padding: 6px;\r\n  left: 5px;\r\n  top: 5px;\r\n  width: max-content;\r\n  font-size: 11pt;\r\n  border-radius: 3px;\r\n  text-align: center;\r\n  background-color: #28a745;\r\n  color: white;\r\n  z-index: 3;\r\n  pointer-events: none;\r\n}\r\n\r\n._18vtY8tfzgLtmr0Mv6et8U {\r\n  position: absolute;\r\n  height: 100%;\r\n  background-color: rgba(206, 206, 206, 0);\r\n  pointer-events: none;\r\n}\r\n\r\n._3qgovzM93bA3bkMrOCbUm- {\r\n  position: absolute;\r\n  z-index: 2;\r\n  background-color: rgba(57, 192, 255, 0.329);\r\n  border-radius: 10px;\r\n  border: 2px solid rgba(0, 107, 194, 0.87);\r\n  top: 2%;\r\n  height: 96%;\r\n}\r\n\r\n._2VKdXQQ8jVM1vFIU_QPmt2 {\r\n  position: absolute;\r\n  left: 7px;\r\n  bottom: 4%;\r\n  font-size: 11pt;\r\n  width: 1.2em;\r\n  border-radius: 2px;\r\n  color: rgb(27, 27, 27);\r\n  z-index: 3;\r\n  pointer-events: none;\r\n}\r\n\r\n._3_RcvZmklkJ0RaLYPrSlcO {\r\n  position: absolute;\r\n  top: 15px;\r\n  bottom: 0px;\r\n  width: 100%;\r\n  overflow-y: scroll;\r\n  overflow-x: hidden;\r\n  /*background-color: rgba(0, 107, 194, 0.57);*/\r\n  pointer-events: auto;\r\n  -ms-overflow-style: none; /* Internet Explorer 10+ */\r\n  scrollbar-width: none; /* Firefox */\r\n}\r\n\r\n._3_RcvZmklkJ0RaLYPrSlcO::-webkit-scrollbar {\r\n  display: none; /* Safari and Chrome */\r\n}\r\n\r\n._8KtwcQcddbF8QUYM7rmZA {\r\n  position: absolute;\r\n  width: 100%;\r\n  height: 12px;\r\n}\r\n\r\n._8KtwcQcddbF8QUYM7rmZA:hover {\r\n  cursor: pointer;\r\n}\r\n\r\n._3IgOpVNeyeLWwK5z7llbTi {\r\n  opacity: 1;\r\n  box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.2), 0px -5px 5px rgba(0, 0, 0, 0.2);\r\n  z-index: 3;\r\n  position: absolute;\r\n  top: 0;\r\n  height: 12px;\r\n  border-radius: 6px;\r\n  border: 1px solid;\r\n  pointer-events: auto;\r\n}\r\n\r\n._3IgOpVNeyeLWwK5z7llbTi:hover {\r\n  opacity: 0.85;\r\n  pointer-events: auto;\r\n}\r\n\r\n._2f974Fy3TjbYeIVXTQpHBi {\r\n  position: absolute;\r\n  top: 0;\r\n  height: 100%;\r\n  width: 80px;\r\n  pointer-events: none;\r\n}\r\n\r\n._386LC1HJC4qkqqRPClzeSR {\r\n  position: absolute;\r\n  left: -2px;\r\n  height: 100%;\r\n  width: 4px;\r\n  background-color: rgb(0, 107, 194);\r\n  border-radius: 4px;\r\n  z-index: 4;\r\n  pointer-events: none;\r\n}\r\n\r\n._2hj2MfRnSrb7K-8NfaKmpp {\r\n  position: absolute;\r\n  top: -15px;\r\n  width: 100%;\r\n  left: -40px;\r\n  z-index: 5;\r\n  cursor: grab;\r\n  pointer-events: auto;\r\n}\r\n\r\n._2hj2MfRnSrb7K-8NfaKmpp:active {\r\n  cursor: grabbing;\r\n  pointer-events: auto;\r\n}\r\n\r\n.KhV7mPFJREla6prPabut3 {\r\n  position: relative;\r\n  display: flex;\r\n  padding-left: 5px;\r\n  pointer-events: auto;\r\n}\r\n\r\n._3xrsYV7ttp9Fkt94WIF0x0 {\r\n  position: relative;\r\n  height: 40px;\r\n  width: 40px;\r\n  pointer-events: auto;\r\n}\r\n\r\n._3k8N8EH9sK5dBk3HBnuxU2 {\r\n  position: absolute;\r\n  top: 2px;\r\n  left: 2px;\r\n  pointer-events: auto;\r\n}\r\n", ""]);
 // Exports
 exports.locals = {
 	"main": "_n6QzUzxj6Uoy2ykga-l",
@@ -4553,13 +4564,16 @@ exports.locals = {
 	"timestampBox": "Agh962K5jZHJPzHHzcTlj",
 	"timestamp": "_3CpRmyYMZk20NDNLnYRdJA",
 	"line": "_1ippwss_WbizVVAINImxVT",
+	"mapModeClip": "QMMoDJ2QZdtUizSnZg6a9",
 	"dateBoxContainer": "vC1UW66R1o6OonDbZA9_q",
 	"dateBox": "_3zQjXl2oL_FUFEsDXJJe6E",
 	"date": "_3eeRd4Yx_aO8xsThSS1uH6",
 	"day": "_18vtY8tfzgLtmr0Mv6et8U",
 	"glassbox": "_3qgovzM93bA3bkMrOCbUm-",
 	"hour": "_2VKdXQQ8jVM1vFIU_QPmt2",
-	"cliplines": "_3hlxFHrJB7V6PvcMsCZarD",
+	"cliplineContainer": "_3_RcvZmklkJ0RaLYPrSlcO",
+	"cliplineCamera": "_8KtwcQcddbF8QUYM7rmZA",
+	"cliplineClip": "_3IgOpVNeyeLWwK5z7llbTi",
 	"timemarker": "_2f974Fy3TjbYeIVXTQpHBi",
 	"linemarker": "_386LC1HJC4qkqqRPClzeSR",
 	"markerIcon": "_2hj2MfRnSrb7K-8NfaKmpp",
@@ -4583,7 +4597,7 @@ module.exports = exports;
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
-exports.push([module.i, "._1YnMlhHls4KvvUmG5p9hpF {\r\n  position: absolute;\r\n  width: 85vw;\r\n  height: 80vh;\r\n  top: 0;\r\n  left: 0;\r\n}\r\n\r\n._3KCgJvuwcxTtZEobNwml0V {\r\n  background-color: rgb(43, 44, 46);\r\n  border-radius: 6px;\r\n  position: absolute;\r\n  width: 25vw;\r\n  height: 30vh;\r\n  bottom: 0;\r\n  right: 0;\r\n  z-index: 1;\r\n}\r\n\r\n.VcmIJ7WWOlFRWk4RQTl1U {\r\n  position: absolute;\r\n  bottom: 0;\r\n  z-index: 2;\r\n  margin-bottom: 8px;\r\n  right: 10.4vw;\r\n}\r\n\r\n.vvhr6DpuikbSeJTnMhV_3 {\r\n  transform: rotate(-45deg);\r\n}\r\n", ""]);
+exports.push([module.i, "._1YnMlhHls4KvvUmG5p9hpF {\r\n  position: absolute;\r\n  width: 80vw;\r\n  height: 80vh;\r\n  top: 0;\r\n  left: 0;\r\n}\r\n\r\n._3KCgJvuwcxTtZEobNwml0V {\r\n  background-color: rgb(43, 44, 46);\r\n  border-radius: 6px;\r\n  position: absolute;\r\n  width: 20vw;\r\n  height: 21vh;\r\n  bottom: 0;\r\n  right: 0;\r\n  z-index: 1;\r\n}\r\n\r\n.VcmIJ7WWOlFRWk4RQTl1U {\r\n  position: absolute;\r\n  bottom: 0;\r\n  z-index: 2;\r\n  margin-bottom: 8px;\r\n  right: 1vw;\r\n}\r\n\r\n.vvhr6DpuikbSeJTnMhV_3 {\r\n  transform: rotate(-45deg);\r\n}\r\n", ""]);
 // Exports
 exports.locals = {
 	"viewport": "_1YnMlhHls4KvvUmG5p9hpF",
@@ -78486,7 +78500,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _timeline_timeline__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./timeline/timeline */ "./src/components/timeline/timeline.js");
 /* harmony import */ var _browser_browser__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./browser/browser */ "./src/components/browser/browser.js");
 /* harmony import */ var _filter_filter__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./filter/filter */ "./src/components/filter/filter.js");
-/* harmony import */ var _evoker__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./evoker */ "./src/components/evoker.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -78517,8 +78530,6 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
- // TODO: Remove
-
 
 /*
  * This is the main component of Mycroft.
@@ -78540,7 +78551,7 @@ function (_Component) {
   _createClass(App, [{
     key: "render",
     value: function render() {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_menu_menu__WEBPACK_IMPORTED_MODULE_5__["default"], null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_viewport_viewport__WEBPACK_IMPORTED_MODULE_6__["default"], null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_viewport_miniViewport__WEBPACK_IMPORTED_MODULE_7__["default"], null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_browser_browser__WEBPACK_IMPORTED_MODULE_9__["default"], null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_timeline_timeline__WEBPACK_IMPORTED_MODULE_8__["default"], null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_evoker__WEBPACK_IMPORTED_MODULE_11__["default"], null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_filter_filter__WEBPACK_IMPORTED_MODULE_10__["default"], null));
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_menu_menu__WEBPACK_IMPORTED_MODULE_5__["default"], null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_viewport_viewport__WEBPACK_IMPORTED_MODULE_6__["default"], null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_viewport_miniViewport__WEBPACK_IMPORTED_MODULE_7__["default"], null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_browser_browser__WEBPACK_IMPORTED_MODULE_9__["default"], null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_timeline_timeline__WEBPACK_IMPORTED_MODULE_8__["default"], null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_filter_filter__WEBPACK_IMPORTED_MODULE_10__["default"], null));
     }
   }]);
 
@@ -78749,6 +78760,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_bootstrap_ListGroup__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-bootstrap/ListGroup */ "./node_modules/react-bootstrap/esm/ListGroup.js");
 /* harmony import */ var react_bootstrap_Collapse__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react-bootstrap/Collapse */ "./node_modules/react-bootstrap/esm/Collapse.js");
 /* harmony import */ var react_bootstrap_Button__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react-bootstrap/Button */ "./node_modules/react-bootstrap/esm/Button.js");
+/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/index.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
@@ -78778,6 +78790,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
  // React Bootstrap
+
 
 
 
@@ -78852,7 +78865,9 @@ function (_Component) {
 
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: _browser_module_css__WEBPACK_IMPORTED_MODULE_2___default.a.browserClip
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_ListGroup__WEBPACK_IMPORTED_MODULE_5__["default"], null, Object.values(this.props.cameras).map(function (camera) {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_ListGroup__WEBPACK_IMPORTED_MODULE_5__["default"], null, Object.values(this.props.cameras).filter(function (c) {
+        return _this3.props.filteredCameras.includes(c.id);
+      }).map(function (camera) {
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           key: camera.id
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_ListGroup__WEBPACK_IMPORTED_MODULE_5__["default"], {
@@ -78865,12 +78880,26 @@ function (_Component) {
           },
           "aria-controls": "cam" + camera.id,
           "aria-expanded": _this3.isToggled(camera.id)
-        }, camera.name, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_8__["Row"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_8__["OverlayTrigger"], {
+          placement: "left",
+          overlay: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_8__["Tooltip"], {
+            id: "tooltip-name"
+          }, camera.name)
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
           style: {
-            position: "absolute",
-            right: "1em"
+            margin: "0",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+            maxWidth: "calc(100% - 5em)"
           }
-        }, Object.keys(camera.clips).length, " clips")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_ListGroup__WEBPACK_IMPORTED_MODULE_5__["default"].Item, {
+        }, camera.name)), " ", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
+          style: {
+            margin: "0",
+            right: "1em",
+            position: "absolute"
+          }
+        }, camera.countCommonClips(_this3.props.filteredClips), " ", "clips"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_ListGroup__WEBPACK_IMPORTED_MODULE_5__["default"].Item, {
           action: true,
           variant: "secondary",
           className: _browser_module_css__WEBPACK_IMPORTED_MODULE_2___default.a.inspectHeader,
@@ -78883,7 +78912,9 @@ function (_Component) {
           "in": _this3.isToggled(camera.id)
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_ListGroup__WEBPACK_IMPORTED_MODULE_5__["default"], {
           id: "cam" + camera.id
-        }, camera.clips.map(function (clipID) {
+        }, camera.clips.filter(function (clipID) {
+          return _this3.props.filteredClips.includes(clipID);
+        }).map(function (clipID) {
           if (_this3.props.clips[clipID] == undefined) return "";
           return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_ListGroup__WEBPACK_IMPORTED_MODULE_5__["default"], {
             key: clipID,
@@ -78926,7 +78957,9 @@ function (_Component) {
 var mapStateToProps = function mapStateToProps(state) {
   return {
     cameras: state.com.cameras,
-    clips: state.com.clips
+    clips: state.com.clips,
+    filteredCameras: state.com.filter.cameras,
+    filteredClips: state.com.filter.clips
   };
 }; // Forward Redux's dispatch function to React props
 
@@ -79105,19 +79138,33 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
-/* harmony import */ var react_bootstrap_Table__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-bootstrap/Table */ "./node_modules/react-bootstrap/esm/Table.js");
-/* harmony import */ var react_bootstrap_Form__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-bootstrap/Form */ "./node_modules/react-bootstrap/esm/Form.js");
-/* harmony import */ var react_bootstrap_Col__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-bootstrap/Col */ "./node_modules/react-bootstrap/esm/Col.js");
-/* harmony import */ var react_bootstrap_ListGroup__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-bootstrap/ListGroup */ "./node_modules/react-bootstrap/esm/ListGroup.js");
-/* harmony import */ var _browser_module_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./browser.module.css */ "./src/components/browser/browser.module.css");
-/* harmony import */ var _browser_module_css__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_browser_module_css__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var _state_stateBrowser__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../state/stateBrowser */ "./src/state/stateBrowser.js");
-/* harmony import */ var _state_stateCommunication__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../state/stateCommunication */ "./src/state/stateCommunication.js");
-/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../util */ "./src/util.js");
-/* harmony import */ var _state_stateMap__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../state/stateMap */ "./src/state/stateMap.js");
+/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/index.js");
+/* harmony import */ var react_bootstrap_Table__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-bootstrap/Table */ "./node_modules/react-bootstrap/esm/Table.js");
+/* harmony import */ var react_bootstrap_Form__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-bootstrap/Form */ "./node_modules/react-bootstrap/esm/Form.js");
+/* harmony import */ var react_bootstrap_Col__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-bootstrap/Col */ "./node_modules/react-bootstrap/esm/Col.js");
+/* harmony import */ var react_bootstrap_ListGroup__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react-bootstrap/ListGroup */ "./node_modules/react-bootstrap/esm/ListGroup.js");
+/* harmony import */ var react_bootstrap_InputGroup__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react-bootstrap/InputGroup */ "./node_modules/react-bootstrap/esm/InputGroup.js");
+/* harmony import */ var react_bootstrap_Button__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! react-bootstrap/Button */ "./node_modules/react-bootstrap/esm/Button.js");
+/* harmony import */ var _browser_module_css__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./browser.module.css */ "./src/components/browser/browser.module.css");
+/* harmony import */ var _browser_module_css__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(_browser_module_css__WEBPACK_IMPORTED_MODULE_9__);
+/* harmony import */ var _state_stateBrowser__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../state/stateBrowser */ "./src/state/stateBrowser.js");
+/* harmony import */ var _state_stateCommunication__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../state/stateCommunication */ "./src/state/stateCommunication.js");
+/* harmony import */ var _state_statePlayer__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../state/statePlayer */ "./src/state/statePlayer.js");
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../util */ "./src/util.js");
+/* harmony import */ var _state_stateMap__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../../state/stateMap */ "./src/state/stateMap.js");
+/* harmony import */ var _images_info_icon_png__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../../images/info-icon.png */ "./src/images/info-icon.png");
+/* harmony import */ var _images_delete_icon_png__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../../images/delete-icon.png */ "./src/images/delete-icon.png");
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -79141,12 +79188,18 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
+
+
+
  // Import CSS
 
  // Import state
 
 
+
  // Import utility
+
+
 
 
 
@@ -79173,13 +79226,21 @@ function (_Component) {
     _this.renderCameraContent = _this.renderCameraContent.bind(_assertThisInitialized(_this));
     _this.fetchValidClips = _this.fetchValidClips.bind(_assertThisInitialized(_this));
     _this.updateFilterList = _this.updateFilterList.bind(_assertThisInitialized(_this));
+    _this.fetchClips = _this.fetchClips.bind(_assertThisInitialized(_this));
+    _this.fetchSelectedArea = _this.fetchSelectedArea.bind(_assertThisInitialized(_this));
+    _this.lonRef = react__WEBPACK_IMPORTED_MODULE_0___default.a.createRef();
+    _this.latRef = react__WEBPACK_IMPORTED_MODULE_0___default.a.createRef();
+    _this.radRef = react__WEBPACK_IMPORTED_MODULE_0___default.a.createRef();
+    _this.state = {
+      areas: _this.props.areas
+    };
     return _this;
   }
-  /* Checks if an object in empty */
-
 
   _createClass(InspectorBrowser, [{
     key: "isEmpty",
+
+    /* Checks if an object in empty */
     value: function isEmpty(obj) {
       return Object.keys(obj).length === 0;
     }
@@ -79190,20 +79251,21 @@ function (_Component) {
     value: function displayMode(mode) {
       if (!this.isEmpty(this.props.cameras) && !this.isEmpty(this.props.clips) && this.props.inspector.id != -1) {
         switch (mode) {
-          case _state_stateBrowser__WEBPACK_IMPORTED_MODULE_7__["INSPECTOR_MODE_CAMERA"]:
+          case _state_stateBrowser__WEBPACK_IMPORTED_MODULE_10__["INSPECTOR_MODE_CAMERA"]:
             return this.renderCamera();
 
-          case _state_stateBrowser__WEBPACK_IMPORTED_MODULE_7__["INSPECTOR_MODE_CLIP"]:
+          case _state_stateBrowser__WEBPACK_IMPORTED_MODULE_10__["INSPECTOR_MODE_CLIP"]:
             return this.renderClip();
 
-          case _state_stateBrowser__WEBPACK_IMPORTED_MODULE_7__["INSPECTOR_MODE_EXLUDED_INCLUDED"]:
+          case _state_stateBrowser__WEBPACK_IMPORTED_MODULE_10__["INSPECTOR_MODE_EXLUDED_INCLUDED"]:
             return this.renderExcludedIncluded();
 
-          case _state_stateBrowser__WEBPACK_IMPORTED_MODULE_7__["INSPECTOR_MODE_AREA"]:
+          case _state_stateBrowser__WEBPACK_IMPORTED_MODULE_10__["INSPECTOR_MODE_AREA"]:
             return this.renderArea();
         }
       }
 
+      this.playClip = this.playClip.bind(this);
       return "";
     } // Move map if a new Camera, Clip or Area was selected
 
@@ -79213,23 +79275,27 @@ function (_Component) {
       // Check if the object in inspector has changed
       if (this.props.inspector.mode !== prevProps.inspector.mode || this.props.inspector.id !== prevProps.inspector.id) {
         switch (this.props.inspector.mode) {
-          case _state_stateBrowser__WEBPACK_IMPORTED_MODULE_7__["INSPECTOR_MODE_CAMERA"]:
+          case _state_stateBrowser__WEBPACK_IMPORTED_MODULE_10__["INSPECTOR_MODE_CAMERA"]:
             var cam = this.props.cameras[this.props.inspector.id];
             this.props.setMapLocation(cam.pos.latitude, cam.pos.longitude, this.props.mapZoom);
             return;
 
-          case _state_stateBrowser__WEBPACK_IMPORTED_MODULE_7__["INSPECTOR_MODE_CLIP"]:
+          case _state_stateBrowser__WEBPACK_IMPORTED_MODULE_10__["INSPECTOR_MODE_CLIP"]:
             var clip = this.props.clips[this.props.inspector.id];
             var cam = this.props.cameras[clip.camera];
             this.props.setMapLocation(cam.pos.latitude, cam.pos.longitude, this.props.mapZoom);
             return;
 
-          case _state_stateBrowser__WEBPACK_IMPORTED_MODULE_7__["INSPECTOR_MODE_EXLUDED_INCLUDED"]:
+          case _state_stateBrowser__WEBPACK_IMPORTED_MODULE_10__["INSPECTOR_MODE_EXLUDED_INCLUDED"]:
             return;
 
-          case _state_stateBrowser__WEBPACK_IMPORTED_MODULE_7__["INSPECTOR_MODE_AREA"]:
+          case _state_stateBrowser__WEBPACK_IMPORTED_MODULE_10__["INSPECTOR_MODE_AREA"]:
             var area = this.props.areas[this.props.inspector.id];
-            this.props.setMapLocation(area.latitude, area.longitude, this.props.mapZoom);
+
+            if (area) {
+              this.props.setMapLocation(area.latitude, area.longitude, this.props.mapZoom);
+            }
+
             return;
         }
       }
@@ -79246,12 +79312,29 @@ function (_Component) {
         return false;
       }
     }
+    /**
+     * This function is the callback for whenever the
+     * play button of a specific clip was clicked.
+     *
+     * @param {Number} id The unique identifier of the clip to be played. Should be an integer.
+     */
+
+  }, {
+    key: "playClip",
+    value: function playClip(id) {
+      var _this2 = this;
+
+      this.props.playClip(id);
+      setTimeout(function () {
+        return _this2.props.play();
+      }, 100);
+    }
     /* Render the camera mode displayed in inspector */
 
   }, {
     key: "renderCamera",
     value: function renderCamera() {
-      var _this2 = this;
+      var _this3 = this;
 
       if (this.props.cameras[this.props.inspector.id] == undefined) {
         alert("Invalid camera selected");
@@ -79259,21 +79342,33 @@ function (_Component) {
         return "";
       } else {
         var validClips = this.fetchValidClips();
-        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Form__WEBPACK_IMPORTED_MODULE_3__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Form__WEBPACK_IMPORTED_MODULE_3__["default"].Label, {
-          className: _browser_module_css__WEBPACK_IMPORTED_MODULE_6___default.a.browserInspectorHeader
-        }, "Camera"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Form__WEBPACK_IMPORTED_MODULE_3__["default"].Label, {
-          className: _browser_module_css__WEBPACK_IMPORTED_MODULE_6___default.a.browserInspectorHeader
-        }, this.props.cameras[this.props.inspector.id].name), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Form__WEBPACK_IMPORTED_MODULE_3__["default"].Row, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Col__WEBPACK_IMPORTED_MODULE_4__["default"], {
-          className: _browser_module_css__WEBPACK_IMPORTED_MODULE_6___default.a.browserInspectorItem
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Form__WEBPACK_IMPORTED_MODULE_3__["default"].Label, null, "Name")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Col__WEBPACK_IMPORTED_MODULE_4__["default"], {
-          className: _browser_module_css__WEBPACK_IMPORTED_MODULE_6___default.a.browserInspectorItem
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Form__WEBPACK_IMPORTED_MODULE_3__["default"].Label, null, "Inc")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Col__WEBPACK_IMPORTED_MODULE_4__["default"], {
-          className: _browser_module_css__WEBPACK_IMPORTED_MODULE_6___default.a.browserInspectorItem
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Form__WEBPACK_IMPORTED_MODULE_3__["default"].Label, null, "Exc")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Col__WEBPACK_IMPORTED_MODULE_4__["default"], {
-          className: _browser_module_css__WEBPACK_IMPORTED_MODULE_6___default.a.browserInspectorItem
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Form__WEBPACK_IMPORTED_MODULE_3__["default"].Label, null))), Object.values(validClips).map(function (clip) {
-          return _this2.renderCameraContent(clip);
-        })));
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Form__WEBPACK_IMPORTED_MODULE_4__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Form__WEBPACK_IMPORTED_MODULE_4__["default"].Label, {
+          className: _browser_module_css__WEBPACK_IMPORTED_MODULE_9___default.a.browserInspectorHeader
+        }, "Camera"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Form__WEBPACK_IMPORTED_MODULE_4__["default"].Label, {
+          className: _browser_module_css__WEBPACK_IMPORTED_MODULE_9___default.a.browserInspectorHeader
+        }, this.props.cameras[this.props.inspector.id].name), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Row"], {
+          className: _browser_module_css__WEBPACK_IMPORTED_MODULE_9___default.a.inspectorCameraColumnHeader
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
+          className: _browser_module_css__WEBPACK_IMPORTED_MODULE_9___default.a.inspectorCameraNameColumn
+        }, "Name"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["OverlayTrigger"], {
+          placement: "left",
+          overlay: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Tooltip"], {
+            id: "tooltip-name"
+          }, "Always ", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "include"), " the Clip in the filter, it will always match the Filter no matter the parameters")
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
+          className: _browser_module_css__WEBPACK_IMPORTED_MODULE_9___default.a.inspectorCameraInclExclColumn
+        }, "Incl")), " ", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["OverlayTrigger"], {
+          placement: "left",
+          overlay: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Tooltip"], {
+            id: "tooltip-name"
+          }, "Always ", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "exclude"), " the Clip from the filter, it will never match the Filter no matter the parameters")
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
+          className: _browser_module_css__WEBPACK_IMPORTED_MODULE_9___default.a.inspectorCameraInclExclColumn
+        }, "Excl")), " ", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
+          className: _browser_module_css__WEBPACK_IMPORTED_MODULE_9___default.a.inspectorCameraInfoColumn
+        })), Object.values(validClips).map(function (clip) {
+          return _this3.renderCameraContent(clip);
+        }));
       }
     }
     /* fetch all valid clips based on the selected camera(=inspector.id)
@@ -79285,14 +79380,14 @@ function (_Component) {
   }, {
     key: "fetchValidClips",
     value: function fetchValidClips() {
-      var _this3 = this;
+      var _this4 = this;
 
       var clips = [];
 
       if (this.props.cameras[this.props.inspector.id] != undefined && this.props.clips != undefined) {
         this.props.cameras[this.props.inspector.id].clips.map(function (clipId) {
-          if (_this3.props.clips.hasOwnProperty(clipId)) {
-            clips.push(_this3.props.clips[clipId]);
+          if (_this4.props.clips.hasOwnProperty(clipId)) {
+            clips.push(_this4.props.clips[clipId]);
           }
         });
       }
@@ -79304,17 +79399,17 @@ function (_Component) {
   }, {
     key: "updateFilterList",
     value: function updateFilterList(include, id) {
-      var _this4 = this;
+      var _this5 = this;
 
       // Update local lists
       if (include) this.props.updateInc(id);else this.props.updateExc(id); // Send lists to server
 
-      Object(_util__WEBPACK_IMPORTED_MODULE_9__["doActionsInOrder"])([// Modify filter on server
+      Object(_util__WEBPACK_IMPORTED_MODULE_13__["doActionsInOrder"])([// Modify filter on server
       function () {
-        return _this4.props.modifyFilter(_this4.props.incList, _this4.props.excList);
+        return _this5.props.modifyFilter(_this5.props.incList, _this5.props.excList);
       }, // Fetch filter changes from server
       function () {
-        return _this4.props.fetchFilter();
+        return _this5.props.fetchFilter();
       }]);
     }
     /* Render content for the camera mode display in inspector */
@@ -79322,46 +79417,58 @@ function (_Component) {
   }, {
     key: "renderCameraContent",
     value: function renderCameraContent(clip) {
-      var _this5 = this;
+      var _this6 = this;
 
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Form__WEBPACK_IMPORTED_MODULE_3__["default"].Row, {
-        key: clip.id
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Col__WEBPACK_IMPORTED_MODULE_4__["default"], {
-        className: _browser_module_css__WEBPACK_IMPORTED_MODULE_6___default.a.browserInspectorItem
-      }, clip.name), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Col__WEBPACK_IMPORTED_MODULE_4__["default"], {
-        className: _browser_module_css__WEBPACK_IMPORTED_MODULE_6___default.a.browserInspectorItem
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+      var filtered = this.checkFilteredClip(clip) ? "primary" : null;
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_ListGroup__WEBPACK_IMPORTED_MODULE_6__["default"], {
+        horizontal: true,
+        key: clip.id,
+        className: [_browser_module_css__WEBPACK_IMPORTED_MODULE_9___default.a.inspectorCameraClipRow].join(" ")
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["OverlayTrigger"], {
+        placement: "left",
+        overlay: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Tooltip"], {
+          id: "tooltip-name"
+        }, clip.name)
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_ListGroup__WEBPACK_IMPORTED_MODULE_6__["default"].Item, {
+        variant: filtered,
+        className: [_browser_module_css__WEBPACK_IMPORTED_MODULE_9___default.a.inspectorCameraNameColumn, _browser_module_css__WEBPACK_IMPORTED_MODULE_9___default.a.inspectorCameraNameItem].join(" ")
+      }, " ", clip.name, " ")), " ", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_ListGroup__WEBPACK_IMPORTED_MODULE_6__["default"].Item, {
+        variant: filtered,
+        className: [_browser_module_css__WEBPACK_IMPORTED_MODULE_9___default.a.inspectorCameraInclExclColumn, _browser_module_css__WEBPACK_IMPORTED_MODULE_9___default.a.inspectorCameraInclExclItem].join(" ")
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Form__WEBPACK_IMPORTED_MODULE_4__["default"].Check, {
         type: "checkbox",
-        className: _browser_module_css__WEBPACK_IMPORTED_MODULE_6___default.a.browserInspectorBigCheckbox,
-        name: "included",
-        id: clip.id,
         checked: this.checkCheckbox(true, Number(clip.id)),
         onChange: function onChange() {
-          return _this5.updateFilterList(true, Number(clip.id));
+          return _this6.updateFilterList(true, Number(clip.id));
         }
-      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Col__WEBPACK_IMPORTED_MODULE_4__["default"], {
-        className: _browser_module_css__WEBPACK_IMPORTED_MODULE_6___default.a.browserInspectorItem
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_ListGroup__WEBPACK_IMPORTED_MODULE_6__["default"].Item, {
+        variant: filtered,
+        className: [_browser_module_css__WEBPACK_IMPORTED_MODULE_9___default.a.inspectorCameraInclExclColumn, _browser_module_css__WEBPACK_IMPORTED_MODULE_9___default.a.inspectorCameraInclExclItem].join(" ")
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Form__WEBPACK_IMPORTED_MODULE_4__["default"].Check, {
         type: "checkbox",
-        className: _browser_module_css__WEBPACK_IMPORTED_MODULE_6___default.a.browserInspectorBigCheckbox,
-        name: "excluded",
-        id: clip.id,
         checked: this.checkCheckbox(false, Number(clip.id)),
         onChange: function onChange() {
-          return _this5.updateFilterList(false, Number(clip.id));
+          return _this6.updateFilterList(false, Number(clip.id));
         }
-      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Col__WEBPACK_IMPORTED_MODULE_4__["default"], {
-        className: _browser_module_css__WEBPACK_IMPORTED_MODULE_6___default.a.browserInspectorItem
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_ListGroup__WEBPACK_IMPORTED_MODULE_5__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_ListGroup__WEBPACK_IMPORTED_MODULE_5__["default"].Item, {
-        action: true,
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_ListGroup__WEBPACK_IMPORTED_MODULE_6__["default"].Item, {
+        className: [_browser_module_css__WEBPACK_IMPORTED_MODULE_9___default.a.inspectorCameraInfoColumn, _browser_module_css__WEBPACK_IMPORTED_MODULE_9___default.a.inspectorCameraInfoItem].join(" "),
         variant: "secondary",
-        className: _browser_module_css__WEBPACK_IMPORTED_MODULE_6___default.a.inspectHeader,
         onClick: function onClick() {
-          _this5.props.changeMode(_state_stateBrowser__WEBPACK_IMPORTED_MODULE_7__["INSPECTOR_MODE_CLIP"], clip.id);
+          _this6.props.changeMode(_state_stateBrowser__WEBPACK_IMPORTED_MODULE_10__["INSPECTOR_MODE_CLIP"], clip.id);
         }
-      }, "i"))));
+      }, "i"));
     }
-    /* 
+    /* */
+
+  }, {
+    key: "checkFilteredClip",
+    value: function checkFilteredClip(clip) {
+      /*
+      Checks if clip is filtered
+      */
+      return this.props.filter.clips.includes(clip.id);
+    }
+    /*
     Fetch selected clip based on the chosen clip.id.
     */
 
@@ -79380,10 +79487,10 @@ function (_Component) {
       }
     }
     /**
-     * @param {Object[int, list]} dict A list of objects. 
+     * @param {Object[int, list]} dict A list of objects.
      * @param {int} objectId The id for the asked object.
-     * @param {string} key The key for which value should be returned. 
-       Fetch a specific value based on the key. 
+     * @param {string} key The key for which value should be returned.
+       Fetch a specific value based on the key.
      */
 
   }, {
@@ -79400,18 +79507,34 @@ function (_Component) {
   }, {
     key: "renderClip",
     value: function renderClip() {
+      var _this7 = this;
+
       if (this.props.inspector != undefined && this.props.clips != undefined && this.props.inspector.id != undefined) {
         var clip = this.fetchSelectedClip(this.props.inspector.id);
         if (clip == undefined) return "";
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
-          className: _browser_module_css__WEBPACK_IMPORTED_MODULE_6___default.a.browserInspectorHeader
+          className: _browser_module_css__WEBPACK_IMPORTED_MODULE_9___default.a.browserInspectorHeader
         }, "Clip"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
-          className: _browser_module_css__WEBPACK_IMPORTED_MODULE_6___default.a.browserInspectorHeader
-        }, clip.name), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Table__WEBPACK_IMPORTED_MODULE_2__["default"], {
+          className: _browser_module_css__WEBPACK_IMPORTED_MODULE_9___default.a.browserInspectorHeader
+        }, clip.name), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Button__WEBPACK_IMPORTED_MODULE_8__["default"], {
+          className: _browser_module_css__WEBPACK_IMPORTED_MODULE_9___default.a.browserInspectorButton,
+          variant: "light",
+          onClick: function onClick() {
+            return _this7.playClip(clip.id);
+          },
+          disabled: !this.props.clips[clip.id].playable
+        }, "Play"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Button__WEBPACK_IMPORTED_MODULE_8__["default"], {
+          className: _browser_module_css__WEBPACK_IMPORTED_MODULE_9___default.a.browserInspectorButton,
+          variant: "light",
+          onClick: function onClick() {
+            _this7.props.changeMode(_state_stateBrowser__WEBPACK_IMPORTED_MODULE_10__["INSPECTOR_MODE_CAMERA"], clip.camera);
+          }
+        }, "Camera")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Table__WEBPACK_IMPORTED_MODULE_3__["default"], {
           striped: true,
           bordered: true,
-          size: "sm"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("thead", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Category"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Info"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tbody", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Camera"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, this.fetchObjectInDict(this.props.cameras, clip.camera, "name"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Folder"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, clip.getPath(this.props.folders))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Format"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, clip.format ? clip.format : "Can't find format")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Resolution"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, this.props.filter[clip.resolution] ? this.props.filter[clip.resolution].height + " x " + this.props.filter[clip.resolution].width : "Can't find resoluton")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Frame Rate"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, clip.frameRate ? clip.frameRate : "Can't find frame rate")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Playable"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, clip.playable ? "Yes" : "No")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Overlapping"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, Object(_util__WEBPACK_IMPORTED_MODULE_9__["getOverlappingTo"])(clip, this.props.clips).length > 0 ? "Yes" : "No")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Duplicates"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, Object(_util__WEBPACK_IMPORTED_MODULE_9__["getDuplicatesTo"])(clip, this.props.clips).length > 0 ? "Yes" : "No")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Start Date"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, clip.startTime.toDateString() ? clip.startTime.toDateString() : "Can't find date")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Start Time"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, clip.startTime.toTimeString().slice(0, 8) ? clip.startTime.toTimeString().slice(0, 8) : "Can't find time")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "End Date"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, clip.endTime.toDateString() ? clip.endTime.toDateString() : "Can't find date")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "End Time"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, clip.endTime.toTimeString().slice(0, 8) ? clip.endTime.toTimeString().slice(0, 8) : "Can't find time")), clip.objectDetection ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Detection Rate"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, clip.objectDetection.rate + " sec")) : ""), clip.objectDetection ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("thead", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Class"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Occurrences")), Object.keys(clip.objectDetection.objects).length !== 0 ? Object.keys(clip.objectDetection.objects).map(function (objectClass) {
+          size: "sm",
+          className: _browser_module_css__WEBPACK_IMPORTED_MODULE_9___default.a.browserInspectorTable
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("thead", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Category"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Info"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tbody", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Camera"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, this.fetchObjectInDict(this.props.cameras, clip.camera, "name"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Folder"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, clip.getPath(this.props.folders))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Format"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, clip.format ? clip.format : "Can't find format")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Resolution"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, this.props.resolutionList[clip.resolution] ? this.props.resolutionList[clip.resolution].height + " x " + this.props.resolutionList[clip.resolution].width : "Can't find resoluton")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Frame Rate"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, clip.frameRate ? clip.frameRate : "Can't find frame rate")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Playable"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, clip.playable ? "Yes" : "No")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Overlapping"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, Object(_util__WEBPACK_IMPORTED_MODULE_13__["getOverlappingTo"])(clip, this.props.clips).length > 0 ? "Yes" : "No")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Duplicates"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, Object(_util__WEBPACK_IMPORTED_MODULE_13__["getDuplicatesTo"])(clip, this.props.clips).length > 0 ? "Yes" : "No")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Start Date"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, clip.startTime.toDateString() ? clip.startTime.toDateString() : "Can't find date")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Start Time"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, clip.startTime.toTimeString().slice(0, 8) ? clip.startTime.toTimeString().slice(0, 8) : "Can't find time")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "End Date"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, clip.endTime.toDateString() ? clip.endTime.toDateString() : "Can't find date")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "End Time"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, clip.endTime.toTimeString().slice(0, 8) ? clip.endTime.toTimeString().slice(0, 8) : "Can't find time")), clip.objectDetection ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Detection Rate"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, clip.objectDetection.rate + " sec")) : ""), clip.objectDetection ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("thead", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Class"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Occurrences")), Object.keys(clip.objectDetection.objects).length !== 0 ? Object.keys(clip.objectDetection.objects).map(function (objectClass) {
           return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", {
             key: objectClass
           }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, objectClass), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, clip.objectDetection.objects[objectClass]));
@@ -79420,23 +79543,199 @@ function (_Component) {
         return "";
       }
     }
+    /* Fetch clips based on all clip Id:s in included or excluded list */
+
+  }, {
+    key: "fetchClips",
+    value: function fetchClips(clipIdList) {
+      var _this8 = this;
+
+      var clips = [];
+
+      if (clipIdList.length != 0) {
+        clipIdList.map(function (clipId) {
+          if (_this8.props.clips.hasOwnProperty(clipId)) {
+            Object.values(_this8.props.clips).map(function (clip) {
+              if (clip.id == clipId) {
+                clips.push(clip);
+              }
+            });
+          }
+        });
+      }
+
+      return clips;
+    }
     /* Render the excluded and included mode displayed in inspector */
 
   }, {
     key: "renderExcludedIncluded",
     value: function renderExcludedIncluded() {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", {
-        className: _browser_module_css__WEBPACK_IMPORTED_MODULE_6___default.a.browserInspectorHeader
-      }, "Selected clips"));
+      var _this9 = this;
+
+      var filteredList = [];
+      var include = false;
+      var inspectorHeader = "";
+      /* Updates local variables with info about included mode */
+
+      if (this.props.inspector.id == 0) {
+        filteredList = this.props.incList;
+        include = true;
+        inspectorHeader = "Included clips";
+      } else {
+        /* Updates local variables with info about excluded mode */
+        filteredList = this.props.excList;
+        include = false;
+        inspectorHeader = "Excluded clips";
+      }
+      /* Fetch clips based on included or excluded clips */
+
+
+      var clips = this.fetchClips(filteredList);
+      /* Render selected mode */
+
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_ListGroup__WEBPACK_IMPORTED_MODULE_6__["default"], {
+        id: "filtered"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
+        className: _browser_module_css__WEBPACK_IMPORTED_MODULE_9___default.a.browserInspectorHeader
+      }, inspectorHeader), Object.values(clips).map(function (clip) {
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_ListGroup__WEBPACK_IMPORTED_MODULE_6__["default"], {
+          key: clip.id,
+          horizontal: true
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_ListGroup__WEBPACK_IMPORTED_MODULE_6__["default"].Item, {
+          variant: "secondary",
+          className: _browser_module_css__WEBPACK_IMPORTED_MODULE_9___default.a.browserButton,
+          style: {
+            width: "100%"
+          }
+        }, clip.name), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_ListGroup__WEBPACK_IMPORTED_MODULE_6__["default"].Item, {
+          variant: "info",
+          action: true,
+          onClick: function onClick() {
+            _this9.props.changeMode(_state_stateBrowser__WEBPACK_IMPORTED_MODULE_10__["INSPECTOR_MODE_CLIP"], clip.id);
+          }
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Image"], {
+          src: _images_info_icon_png__WEBPACK_IMPORTED_MODULE_15__["default"],
+          fluid: true
+        })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_ListGroup__WEBPACK_IMPORTED_MODULE_6__["default"].Item, {
+          action: true,
+          variant: "danger",
+          onClick: function onClick() {
+            _this9.updateFilterList(include, clip.id);
+          }
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Image"], {
+          src: _images_delete_icon_png__WEBPACK_IMPORTED_MODULE_16__["default"],
+          fluid: true
+        })));
+      })));
+    }
+    /*
+    Fetch selected area based on the chosen area.id.
+    */
+
+  }, {
+    key: "fetchSelectedArea",
+    value: function fetchSelectedArea(areaId) {
+      if (this.props.inspector.id == undefined) {
+        console.warn("Id is undefined");
+        return undefined;
+      }
+
+      return this.props.areas[areaId];
+    }
+    /*
+    Makes changes to area.
+    */
+
+  }, {
+    key: "handleInputChange",
+    value: function handleInputChange(areaId, area) {
+      var _this10 = this;
+
+      var lat = area.latitude;
+      var lon = area.longitude;
+      var rad = area.radius;
+
+      if (this.latRef.current.value) {
+        lat = this.latRef.current.value;
+      }
+
+      if (this.lonRef.current.value) {
+        lon = this.lonRef.current.value;
+      }
+
+      if (this.radRef.current.value) {
+        rad = Number.parseFloat(this.radRef.current.value).toFixed();
+
+        if (rad < 1) {
+          rad = 1;
+        }
+      }
+
+      if (Math.abs(lat - area.latitude) < 0.0001 && Math.abs(lon - area.longitude) < 0.0001 && rad - area.radius === 0) {} else {
+        Object(_util__WEBPACK_IMPORTED_MODULE_13__["doActionsInOrder"])([function () {
+          return _this10.props.createArea(lat, lon, rad);
+        }, function () {
+          return _this10.props.deleteArea(areaId);
+        }, function () {
+          _this10.props.fetchFilter();
+
+          _this10.props.getAreas();
+        }]);
+      }
     }
     /* Render the area mode displayed in inspector */
 
   }, {
     key: "renderArea",
     value: function renderArea() {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", {
-        className: _browser_module_css__WEBPACK_IMPORTED_MODULE_6___default.a.browserInspectorHeader
-      }, "Area"));
+      var _this11 = this;
+
+      var area = this.fetchSelectedArea(this.props.inspector.id);
+
+      if (area) {
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", {
+          className: _browser_module_css__WEBPACK_IMPORTED_MODULE_9___default.a.browserInspectorHeader
+        }, "Area"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Table__WEBPACK_IMPORTED_MODULE_3__["default"], {
+          striped: true,
+          bordered: true,
+          size: "sm"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tbody", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Latitude"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, area.latitude)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Longitude"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, area.longitude)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "Radius"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, area.radius)))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
+          className: _browser_module_css__WEBPACK_IMPORTED_MODULE_9___default.a.browserInspectorHeader
+        }, "Move Area"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_InputGroup__WEBPACK_IMPORTED_MODULE_7__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_InputGroup__WEBPACK_IMPORTED_MODULE_7__["default"].Prepend, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_InputGroup__WEBPACK_IMPORTED_MODULE_7__["default"].Text, {
+          className: _browser_module_css__WEBPACK_IMPORTED_MODULE_9___default.a.areaPosLabel
+        }, "Latitude")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Form__WEBPACK_IMPORTED_MODULE_4__["default"].Control, {
+          ref: this.latRef,
+          type: "number",
+          step: "0.1",
+          placeholder: "latitude"
+        })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_InputGroup__WEBPACK_IMPORTED_MODULE_7__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_InputGroup__WEBPACK_IMPORTED_MODULE_7__["default"].Prepend, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_InputGroup__WEBPACK_IMPORTED_MODULE_7__["default"].Text, {
+          className: _browser_module_css__WEBPACK_IMPORTED_MODULE_9___default.a.areaPosLabel
+        }, "Longitude")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Form__WEBPACK_IMPORTED_MODULE_4__["default"].Control, {
+          ref: this.lonRef,
+          type: "number",
+          step: "0.1",
+          placeholder: "longitude"
+        })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_InputGroup__WEBPACK_IMPORTED_MODULE_7__["default"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_InputGroup__WEBPACK_IMPORTED_MODULE_7__["default"].Prepend, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_InputGroup__WEBPACK_IMPORTED_MODULE_7__["default"].Text, {
+          className: _browser_module_css__WEBPACK_IMPORTED_MODULE_9___default.a.areaPosLabel
+        }, "Radius")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Form__WEBPACK_IMPORTED_MODULE_4__["default"].Control, {
+          ref: this.radRef,
+          type: "number",
+          placeholder: "radius"
+        })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Button__WEBPACK_IMPORTED_MODULE_8__["default"], {
+          onClick: function onClick() {
+            _this11.handleInputChange(_this11.props.inspector.id, area);
+          }
+        }, "Move Area"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
+          className: _browser_module_css__WEBPACK_IMPORTED_MODULE_9___default.a.areaTextDelete
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", null, "Right click on the area icon in the map to delete the area.")));
+      } else {
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", {
+          className: _browser_module_css__WEBPACK_IMPORTED_MODULE_9___default.a.browserInspectorHeader
+        }, "Area"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
+          className: _browser_module_css__WEBPACK_IMPORTED_MODULE_9___default.a.areaTextDelete
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", null, "There are no existing areas at the moment.")));
+      }
     }
     /* Render the inspector */
 
@@ -79444,8 +79743,27 @@ function (_Component) {
     key: "render",
     value: function render() {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: _browser_module_css__WEBPACK_IMPORTED_MODULE_6___default.a.main
+        className: _browser_module_css__WEBPACK_IMPORTED_MODULE_9___default.a.browserInspector
       }, this.displayMode(this.props.inspector.mode));
+    }
+  }], [{
+    key: "getDerivedStateFromProps",
+    value: function getDerivedStateFromProps(nextProps, prevState) {
+      if (nextProps.inspector.mode === _state_stateBrowser__WEBPACK_IMPORTED_MODULE_10__["INSPECTOR_MODE_AREA"]) {
+        if (nextProps.areas[nextProps.inspector.id] == undefined && Object.keys(nextProps.areas).length != 0) {
+          var maxId = Math.max.apply(Math, _toConsumableArray(Object.keys(nextProps.areas).map(Number)));
+          nextProps.changeMode(_state_stateBrowser__WEBPACK_IMPORTED_MODULE_10__["INSPECTOR_MODE_AREA"], maxId);
+        }
+
+        return {
+          areas: nextProps.areas
+        };
+      }
+
+      return {
+        areas: prevState.areas
+      };
+      this.checkFilteredClip = this.checkFilteredClip.bind(this);
     }
   }]);
 
@@ -79456,11 +79774,13 @@ function (_Component) {
 var mapStateToProps = function mapStateToProps(state) {
   return {
     inspector: state.browser.inspector,
-    filter: state.com.filter.resolutions,
+    resolutionList: state.com.filter.resolutions,
+    filter: state.com.filter,
     cameras: state.com.cameras,
     clips: state.com.clips,
     excList: state.browser.excList,
     incList: state.browser.incList,
+    filteredClips: state.com.filter,
     folders: state.com.folders,
     mapZoom: state.map.zoom,
     areas: state.com.filter.areas
@@ -79471,348 +79791,47 @@ var mapStateToProps = function mapStateToProps(state) {
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return {
     setMapLocation: function setMapLocation(lat, _long, zoom) {
-      return dispatch(Object(_state_stateMap__WEBPACK_IMPORTED_MODULE_10__["setLocation"])(lat, _long, zoom));
+      return dispatch(Object(_state_stateMap__WEBPACK_IMPORTED_MODULE_14__["setLocation"])(lat, _long, zoom));
     },
     changeMode: function changeMode(mode, clipId) {
-      return dispatch(Object(_state_stateBrowser__WEBPACK_IMPORTED_MODULE_7__["changeMode"])(mode, clipId));
+      return dispatch(Object(_state_stateBrowser__WEBPACK_IMPORTED_MODULE_10__["changeMode"])(mode, clipId));
     },
     //place selector
     updateExc: function updateExc(clipId) {
-      return dispatch(Object(_state_stateBrowser__WEBPACK_IMPORTED_MODULE_7__["updateList"])(false, clipId));
+      return dispatch(Object(_state_stateBrowser__WEBPACK_IMPORTED_MODULE_10__["updateList"])(false, clipId));
     },
     updateInc: function updateInc(clipId) {
-      return dispatch(Object(_state_stateBrowser__WEBPACK_IMPORTED_MODULE_7__["updateList"])(true, clipId));
+      return dispatch(Object(_state_stateBrowser__WEBPACK_IMPORTED_MODULE_10__["updateList"])(true, clipId));
+    },
+    createArea: function createArea(lat, lon, rad) {
+      return dispatch(Object(_state_stateCommunication__WEBPACK_IMPORTED_MODULE_11__["createArea"])(lat, lon, rad));
+    },
+    deleteArea: function deleteArea(areaId) {
+      return dispatch(Object(_state_stateCommunication__WEBPACK_IMPORTED_MODULE_11__["deleteArea"])(areaId));
+    },
+    getAreas: function getAreas() {
+      return dispatch(Object(_state_stateCommunication__WEBPACK_IMPORTED_MODULE_11__["getAreasInFilter"])());
     },
     modifyFilter: function modifyFilter(il, el) {
       var _modifyFilter2;
 
-      return dispatch(Object(_state_stateCommunication__WEBPACK_IMPORTED_MODULE_8__["modifyFilter"])((_modifyFilter2 = {}, _defineProperty(_modifyFilter2, _util__WEBPACK_IMPORTED_MODULE_9__["INCLUDED_CLIP_IDS"], il), _defineProperty(_modifyFilter2, _util__WEBPACK_IMPORTED_MODULE_9__["EXCLUDED_CLIP_IDS"], el), _modifyFilter2)));
+      return dispatch(Object(_state_stateCommunication__WEBPACK_IMPORTED_MODULE_11__["modifyFilter"])((_modifyFilter2 = {}, _defineProperty(_modifyFilter2, _util__WEBPACK_IMPORTED_MODULE_13__["INCLUDED_CLIP_IDS"], il), _defineProperty(_modifyFilter2, _util__WEBPACK_IMPORTED_MODULE_13__["EXCLUDED_CLIP_IDS"], el), _modifyFilter2)));
     },
     fetchFilter: function fetchFilter() {
-      dispatch(Object(_state_stateCommunication__WEBPACK_IMPORTED_MODULE_8__["getFilter"])());
-      dispatch(Object(_state_stateCommunication__WEBPACK_IMPORTED_MODULE_8__["getClipsMatchingFilter"])());
+      dispatch(Object(_state_stateCommunication__WEBPACK_IMPORTED_MODULE_11__["getFilter"])());
+      dispatch(Object(_state_stateCommunication__WEBPACK_IMPORTED_MODULE_11__["getClipsMatchingFilter"])());
+    },
+    playClip: function playClip(id) {
+      return dispatch(Object(_state_statePlayer__WEBPACK_IMPORTED_MODULE_12__["playClip"])(id));
+    },
+    play: function play() {
+      return dispatch(Object(_state_statePlayer__WEBPACK_IMPORTED_MODULE_12__["play"])());
     }
   };
 }; // Connect Redux with React
 
 
 /* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["connect"])(mapStateToProps, mapDispatchToProps)(InspectorBrowser));
-
-/***/ }),
-
-/***/ "./src/components/evoker.js":
-/*!**********************************!*\
-  !*** ./src/components/evoker.js ***!
-  \**********************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
-/* harmony import */ var react_bootstrap_Dropdown__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-bootstrap/Dropdown */ "./node_modules/react-bootstrap/esm/Dropdown.js");
-/* harmony import */ var react_bootstrap_DropdownButton__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-bootstrap/DropdownButton */ "./node_modules/react-bootstrap/esm/DropdownButton.js");
-/* harmony import */ var _state_stateCommunication__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../state/stateCommunication */ "./src/state/stateCommunication.js");
-/* harmony import */ var _state_statePlayer__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../state/statePlayer */ "./src/state/statePlayer.js");
-/* harmony import */ var _state_stateBrowser__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../state/stateBrowser */ "./src/state/stateBrowser.js");
-/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../util */ "./src/util.js");
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-
-
-
- // Actions
-
-
-
-
-
-/* -- Evoker -- */
-
-var Evoker =
-/*#__PURE__*/
-function (_Component) {
-  _inherits(Evoker, _Component);
-
-  function Evoker() {
-    _classCallCheck(this, Evoker);
-
-    return _possibleConstructorReturn(this, _getPrototypeOf(Evoker).apply(this, arguments));
-  }
-
-  _createClass(Evoker, [{
-    key: "render",
-    value: function render() {
-      var _this = this;
-
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        style: {
-          position: "absolute",
-          top: "5px",
-          left: "100px",
-          zIndex: 1
-        }
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_DropdownButton__WEBPACK_IMPORTED_MODULE_3__["default"], {
-        alignRight: true,
-        title: "Evoke",
-        id: "dropdown-menu-align-right"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Dropdown__WEBPACK_IMPORTED_MODULE_2__["default"].Item, {
-        onClick: function onClick() {
-          return _this.props.getProjects();
-        }
-      }, " ", "getProjects", " "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Dropdown__WEBPACK_IMPORTED_MODULE_2__["default"].Item, {
-        onClick: function onClick() {
-          var name = window.prompt("Name: ");
-
-          _this.props.newProject(name);
-        }
-      }, " ", "newProject", " "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Dropdown__WEBPACK_IMPORTED_MODULE_2__["default"].Item, {
-        onClick: function onClick() {
-          var id = parseInt(window.prompt("ID: "));
-          return _this.props.deleteProject(id);
-        }
-      }, " ", "deleteProject", " "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Dropdown__WEBPACK_IMPORTED_MODULE_2__["default"].Item, {
-        onClick: function onClick() {
-          var id = parseInt(window.prompt("ID: "));
-          var name = window.prompt("New name: ");
-          return _this.props.renameProject(id, name);
-        }
-      }, " ", "renameProject", " "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Dropdown__WEBPACK_IMPORTED_MODULE_2__["default"].Item, {
-        onClick: function onClick() {
-          return _this.props.getClipsMatchingFilter();
-        }
-      }, " ", "getClipsMatchingFilter", " "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Dropdown__WEBPACK_IMPORTED_MODULE_2__["default"].Item, {
-        onClick: function onClick() {
-          return _this.props.modifyFilter({
-            start_time: new Date("2019-10-11"),
-            end_time: new Date("2019-10-13"),
-            whitelisted_resolutions: [1, 3],
-            min_framerate: 42,
-            included_clip_ids: [1],
-            excluded_clip_ids: [3],
-            classes: ["car"]
-          });
-        }
-      }, " ", "modifyFilter", " "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Dropdown__WEBPACK_IMPORTED_MODULE_2__["default"].Item, {
-        onClick: function onClick() {
-          return _this.props.getAreasInFilter();
-        }
-      }, " ", "getAreasInFilter", " "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Dropdown__WEBPACK_IMPORTED_MODULE_2__["default"].Item, {
-        onClick: function onClick() {
-          var lat = window.prompt("latitude: ");
-          var lon = window.prompt("longitude: ");
-          var rad = parseInt(window.prompt("radius: "));
-          return _this.props.createArea(lat, lon, rad);
-        }
-      }, " ", "createArea", " "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Dropdown__WEBPACK_IMPORTED_MODULE_2__["default"].Item, {
-        onClick: function onClick() {
-          var id = parseInt(window.prompt("ID: "));
-          return _this.props.deleteArea(id);
-        }
-      }, " ", "deleteArea", " "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Dropdown__WEBPACK_IMPORTED_MODULE_2__["default"].Item, {
-        onClick: function onClick() {
-          return _this.props.getFilterParams();
-        }
-      }, " ", "getFilterParams", " "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Dropdown__WEBPACK_IMPORTED_MODULE_2__["default"].Item, {
-        onClick: function onClick() {
-          return _this.props.getFilter();
-        }
-      }, " ", "getFilter", " "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Dropdown__WEBPACK_IMPORTED_MODULE_2__["default"].Item, {
-        onClick: function onClick() {
-          return _this.props.getCameras();
-        }
-      }, " ", "getCameras", " "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Dropdown__WEBPACK_IMPORTED_MODULE_2__["default"].Item, {
-        onClick: function onClick() {
-          var id = parseInt(window.prompt("ID: "));
-          return _this.props.getSequentialClip(id);
-        }
-      }, " ", "getSequentialClip", " "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Dropdown__WEBPACK_IMPORTED_MODULE_2__["default"].Item, {
-        onClick: function onClick() {
-          return _this.props.getFolders();
-        }
-      }, " ", "getFolders", " "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Dropdown__WEBPACK_IMPORTED_MODULE_2__["default"].Item, {
-        onClick: function onClick() {
-          return _this.props.getSourceFolders();
-        }
-      }, " ", "getSourceFolders", " "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Dropdown__WEBPACK_IMPORTED_MODULE_2__["default"].Item, {
-        onClick: function onClick() {
-          var fid = parseInt(window.prompt("FOLDER ID: "));
-          return _this.props.addFolder(fid);
-        }
-      }, " ", "addFolder", " "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Dropdown__WEBPACK_IMPORTED_MODULE_2__["default"].Item, {
-        onClick: function onClick() {
-          var fid = parseInt(window.prompt("FOLDER ID: "));
-          return _this.props.removeFolder(fid);
-        }
-      }, " ", "removeFolder", " "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Dropdown__WEBPACK_IMPORTED_MODULE_2__["default"].Item, {
-        onClick: function onClick() {
-          return _this.props.getClips();
-        }
-      }, " ", "getClips", " "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Dropdown__WEBPACK_IMPORTED_MODULE_2__["default"].Item, {
-        onClick: function onClick() {
-          return _this.props.detectObjects(5, "filter");
-        }
-      }, " ", "detectObjects", " "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Dropdown__WEBPACK_IMPORTED_MODULE_2__["default"].Item, {
-        onClick: function onClick() {
-          return _this.props.getODProgress();
-        }
-      }, " ", "getODProgress", " "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Dropdown__WEBPACK_IMPORTED_MODULE_2__["default"].Item, {
-        onClick: function onClick() {
-          return _this.props.deleteODProgress();
-        }
-      }, " ", "deleteODProgress", " "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Dropdown__WEBPACK_IMPORTED_MODULE_2__["default"].Item, {
-        onClick: function onClick() {
-          return _this.props.play();
-        }
-      }, " ", "play", " "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Dropdown__WEBPACK_IMPORTED_MODULE_2__["default"].Item, {
-        onClick: function onClick() {
-          return _this.props.pause();
-        }
-      }, " ", "pause", " "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Dropdown__WEBPACK_IMPORTED_MODULE_2__["default"].Item, {
-        onClick: function onClick() {
-          var fid = parseInt(window.prompt("Seconds to jump "));
-          return _this.props.jump(fid);
-        }
-      }, " ", "jump", " "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Dropdown__WEBPACK_IMPORTED_MODULE_2__["default"].Item, {
-        onClick: function onClick() {
-          var id = window.prompt("ID: ");
-
-          _this.props.playClip(id);
-        }
-      }, " ", "playClip", " "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Dropdown__WEBPACK_IMPORTED_MODULE_2__["default"].Item, {
-        onClick: function onClick() {
-          var id = window.prompt("ID: ");
-
-          _this.props.changeMode(_state_stateBrowser__WEBPACK_IMPORTED_MODULE_6__["INSPECTOR_MODE_CAMERA"], parseInt(id));
-        }
-      }, " ", "changeMode (camera)", " "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Dropdown__WEBPACK_IMPORTED_MODULE_2__["default"].Item, {
-        onClick: function onClick() {
-          Object(_util__WEBPACK_IMPORTED_MODULE_7__["syncProject"])();
-        }
-      }, " ", "syncProject", " ")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
-        onClick: function onClick() {
-          return _this.props.logState();
-        }
-      }, " Log State "));
-    }
-  }]);
-
-  return Evoker;
-}(react__WEBPACK_IMPORTED_MODULE_0__["Component"]); // Map Redux states to React props
-
-
-var mapStateToProps = function mapStateToProps(state) {
-  return {
-    logState: function logState() {
-      return console.log(state);
-    }
-  };
-}; // Forward Redux's dispatch function to React props
-
-
-var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-  return {
-    getProjects: function getProjects() {
-      return dispatch(Object(_state_stateCommunication__WEBPACK_IMPORTED_MODULE_4__["getProjects"])());
-    },
-    newProject: function newProject(n) {
-      return dispatch(Object(_state_stateCommunication__WEBPACK_IMPORTED_MODULE_4__["newProject"])(n));
-    },
-    deleteProject: function deleteProject(i) {
-      return dispatch(Object(_state_stateCommunication__WEBPACK_IMPORTED_MODULE_4__["deleteProject"])(i));
-    },
-    renameProject: function renameProject(i, n) {
-      return dispatch(Object(_state_stateCommunication__WEBPACK_IMPORTED_MODULE_4__["renameProject"])(i, n));
-    },
-    getClipsMatchingFilter: function getClipsMatchingFilter() {
-      return dispatch(Object(_state_stateCommunication__WEBPACK_IMPORTED_MODULE_4__["getClipsMatchingFilter"])());
-    },
-    modifyFilter: function modifyFilter(obj) {
-      return dispatch(Object(_state_stateCommunication__WEBPACK_IMPORTED_MODULE_4__["modifyFilter"])(obj));
-    },
-    getAreasInFilter: function getAreasInFilter() {
-      return dispatch(Object(_state_stateCommunication__WEBPACK_IMPORTED_MODULE_4__["getAreasInFilter"])());
-    },
-    createArea: function createArea(lat, lon, rad) {
-      return dispatch(Object(_state_stateCommunication__WEBPACK_IMPORTED_MODULE_4__["createArea"])(lat, lon, rad));
-    },
-    deleteArea: function deleteArea(i) {
-      return dispatch(Object(_state_stateCommunication__WEBPACK_IMPORTED_MODULE_4__["deleteArea"])(i));
-    },
-    getFilterParams: function getFilterParams() {
-      return dispatch(Object(_state_stateCommunication__WEBPACK_IMPORTED_MODULE_4__["getFilterParams"])());
-    },
-    getFilter: function getFilter() {
-      return dispatch(Object(_state_stateCommunication__WEBPACK_IMPORTED_MODULE_4__["getFilter"])());
-    },
-    getCameras: function getCameras() {
-      return dispatch(Object(_state_stateCommunication__WEBPACK_IMPORTED_MODULE_4__["getCameras"])());
-    },
-    getSequentialClip: function getSequentialClip(i) {
-      return dispatch(Object(_state_stateCommunication__WEBPACK_IMPORTED_MODULE_4__["getSequentialClip"])(i));
-    },
-    getFolders: function getFolders() {
-      return dispatch(Object(_state_stateCommunication__WEBPACK_IMPORTED_MODULE_4__["getFolders"])());
-    },
-    getSourceFolders: function getSourceFolders() {
-      return dispatch(Object(_state_stateCommunication__WEBPACK_IMPORTED_MODULE_4__["getSourceFolders"])());
-    },
-    addFolder: function addFolder(i) {
-      return dispatch(Object(_state_stateCommunication__WEBPACK_IMPORTED_MODULE_4__["addFolder"])(i));
-    },
-    removeFolder: function removeFolder(i) {
-      return dispatch(Object(_state_stateCommunication__WEBPACK_IMPORTED_MODULE_4__["removeFolder"])(i));
-    },
-    getClips: function getClips() {
-      return dispatch(Object(_state_stateCommunication__WEBPACK_IMPORTED_MODULE_4__["getClips"])());
-    },
-    detectObjects: function detectObjects(rate, target) {
-      return dispatch(Object(_state_stateCommunication__WEBPACK_IMPORTED_MODULE_4__["detectObjects"])(rate, target));
-    },
-    getODProgress: function getODProgress() {
-      return dispatch(Object(_state_stateCommunication__WEBPACK_IMPORTED_MODULE_4__["getODProgress"])());
-    },
-    deleteODProgress: function deleteODProgress() {
-      return dispatch(Object(_state_stateCommunication__WEBPACK_IMPORTED_MODULE_4__["deleteODProgress"])());
-    },
-    playClip: function playClip(x) {
-      return dispatch(Object(_state_statePlayer__WEBPACK_IMPORTED_MODULE_5__["playClip"])(x));
-    },
-    play: function play() {
-      return dispatch(Object(_state_statePlayer__WEBPACK_IMPORTED_MODULE_5__["play"])());
-    },
-    pause: function pause() {
-      return dispatch(Object(_state_statePlayer__WEBPACK_IMPORTED_MODULE_5__["pause"])());
-    },
-    jump: function jump(x) {
-      return dispatch(Object(_state_statePlayer__WEBPACK_IMPORTED_MODULE_5__["jump"])(x));
-    },
-    changeMode: function changeMode(mode, id) {
-      return dispatch(Object(_state_stateBrowser__WEBPACK_IMPORTED_MODULE_6__["changeMode"])(mode, id));
-    }
-  };
-}; // Connect Redux with React
-
-
-/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["connect"])(mapStateToProps, mapDispatchToProps)(Evoker));
 
 /***/ }),
 
@@ -79911,6 +79930,9 @@ function (_Component) {
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["Form"].Control, {
         type: "number",
         defaultValue: this.props.minimumFramerate,
+        onKeyPress: function onKeyPress(e) {
+          e.key === "Enter" && e.preventDefault();
+        },
         onChange: function onChange(e) {
           var res = parseInt(e.target.value);
 
@@ -80411,6 +80433,7 @@ function (_Component) {
     _this.renderCameras = _this.renderCameras.bind(_assertThisInitialized(_this));
     _this.getCameraIcon = _this.getCameraIcon.bind(_assertThisInitialized(_this));
     _this.renderMultipleCamerasPopup = _this.renderMultipleCamerasPopup.bind(_assertThisInitialized(_this));
+    _this.getZIndexOf = _this.getZIndexOf.bind(_assertThisInitialized(_this));
     return _this;
   }
 
@@ -80441,6 +80464,24 @@ function (_Component) {
         } else {
           return this.icon;
         }
+      }
+    }
+  }, {
+    key: "getZIndexOf",
+    value: function getZIndexOf(icon) {
+      switch (icon) {
+        case this.iconES:
+        case this.iconS:
+          return 3;
+
+        case this.icon:
+          return 2;
+
+        case this.iconE:
+          return 1;
+
+        default:
+          return 0;
       }
     } // -------------------- OnClick Actions ----------------------------
 
@@ -80648,6 +80689,7 @@ function (_Component) {
     value: function renderCameras(props) {
       var _this6 = this;
 
+      var currCameraIcon = undefined;
       return Object.entries(props.cameras).map(function (_ref7) {
         var _ref8 = _slicedToArray(_ref7, 2),
             id = _ref8[0],
@@ -80663,7 +80705,11 @@ function (_Component) {
             return _this6.onCameraMarkerContextClick(cam, e);
           },
           clickable: true,
-          icon: _this6.getCameraIcon(id, cam)
+          icon: function () {
+            currCameraIcon = _this6.getCameraIcon(id, cam);
+            return currCameraIcon;
+          }(),
+          zIndexOffset: _this6.getZIndexOf(currCameraIcon)
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_this6.renderMultipleCamerasPopup, {
           camera: cam,
           id: id
@@ -80852,13 +80898,16 @@ function (_Component) {
     _this = _possibleConstructorReturn(this, _getPrototypeOf(FolderManager).call(this, props));
     _this.state = {
       modified: false,
-      showingWarnings: false
+      showingWarnings: false,
+      // Varibale to know what to display in selectAll-button
+      selectAll: false
     };
     _this.hasFolders = _this.hasFolders.bind(_assertThisInitialized(_this));
     _this.isChosen = _this.isChosen.bind(_assertThisInitialized(_this));
     _this.toggleFolder = _this.toggleFolder.bind(_assertThisInitialized(_this));
     _this.handleFinished = _this.handleFinished.bind(_assertThisInitialized(_this));
     _this.renderWarnings = _this.renderWarnings.bind(_assertThisInitialized(_this));
+    _this.toggleSelectAll = _this.toggleSelectAll.bind(_assertThisInitialized(_this));
     return _this;
   }
 
@@ -80878,7 +80927,13 @@ function (_Component) {
       var _this2 = this;
 
       Object(_util__WEBPACK_IMPORTED_MODULE_10__["doActionsInOrder"])([function () {
-        if (_this2.isChosen(id)) _this2.props.removeFolder(id);else {
+        if (_this2.isChosen(id)) {
+          _this2.props.removeFolder(id);
+
+          _this2.setState({
+            selectAll: false
+          });
+        } else {
           _this2.setState({
             modified: true
           });
@@ -80952,15 +81007,49 @@ function (_Component) {
       }, this.state.showingWarnings ? "Hide Warnings" : "Show Warnings")));
     }
   }, {
+    key: "toggleSelectAll",
+    value: function toggleSelectAll() {
+      var _this4 = this;
+
+      // disable button while selecting all folders
+      document.getElementById("selectAll").disabled = true;
+      Object(_util__WEBPACK_IMPORTED_MODULE_10__["doActionsInOrder"])([function () {
+        /* Select/deselect all folders */
+        Object.values(_this4.props.sourceFolders).forEach(function (f) {
+          if (!_this4.state.selectAll) {
+            if (!_this4.isChosen(f.id)) {
+              _this4.setState({
+                modified: true
+              });
+
+              _this4.props.addFolder(f.id);
+            }
+          } else {
+            if (_this4.isChosen(f.id)) _this4.props.removeFolder(f.id);
+          }
+        });
+      }, function () {
+        _this4.setState({
+          selectAll: !_this4.state.selectAll
+        });
+
+        _this4.props.getFiles();
+      },
+      /* Enable selectAll-button again */
+      function () {
+        return document.getElementById("selectAll").disabled = false;
+      }]);
+    }
+  }, {
     key: "render",
     value: function render() {
-      var _this4 = this;
+      var _this5 = this;
 
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Modal__WEBPACK_IMPORTED_MODULE_2__["default"], {
         show: this.props.show,
         onHide: this.hasFolders() ? this.handleFinished : function () {},
         onShow: function onShow() {
-          _this4.props.getSourceFolders();
+          _this5.props.getSourceFolders();
 
           Object(_util__WEBPACK_IMPORTED_MODULE_10__["syncProject"])();
         },
@@ -80981,12 +81070,15 @@ function (_Component) {
           className: _folderManager_module_css__WEBPACK_IMPORTED_MODULE_8___default.a.folderPath
         }, f.absolutePath + f.name))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Button__WEBPACK_IMPORTED_MODULE_3__["default"], {
           onClick: function onClick() {
-            return _this4.toggleFolder(f.id);
+            return _this5.toggleFolder(f.id);
           },
           className: _folderManager_module_css__WEBPACK_IMPORTED_MODULE_8___default.a.folderItemButton,
-          variant: _this4.isChosen(f.id) ? "danger" : "success"
-        }, _this4.isChosen(f.id) ? "Remove" : "Select"));
+          variant: _this5.isChosen(f.id) ? "danger" : "success"
+        }, _this5.isChosen(f.id) ? "Remove" : "Select"));
       })), this.renderWarnings(), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Modal__WEBPACK_IMPORTED_MODULE_2__["default"].Footer, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Button__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        id: "selectAll",
+        onClick: this.toggleSelectAll
+      }, !this.state.selectAll ? "Select All" : "Deselect All"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Button__WEBPACK_IMPORTED_MODULE_3__["default"], {
         onClick: this.handleFinished,
         disabled: !this.hasFolders()
       }, "Continue")));
@@ -81459,7 +81551,10 @@ function (_Component) {
         type: "number",
         defaultValue: this.props.rate,
         onChange: this.handleRateChange,
-        disabled: this.props.isRunning
+        disabled: this.props.isRunning,
+        onKeyPress: function onKeyPress(e) {
+          e.key === "Enter" && e.preventDefault();
+        }
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Form__WEBPACK_IMPORTED_MODULE_7__["default"].Text, {
         className: "text-muted"
       }, "Seconds between analyzed frames.")), !this.props.newProject ? this.renderTargetButtons() : "")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Modal__WEBPACK_IMPORTED_MODULE_5__["default"].Footer, null, this.props.fromFolderManager ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Button__WEBPACK_IMPORTED_MODULE_6__["default"], {
@@ -81468,7 +81563,7 @@ function (_Component) {
         disabled: this.props.isRunning
       }, "Skip") : "", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Button__WEBPACK_IMPORTED_MODULE_6__["default"], {
         variant: "primary",
-        type: "submit",
+        type: "button",
         onClick: this.handleSubmit,
         disabled: this.props.isRunning
       }, "Run")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_ProgressBar__WEBPACK_IMPORTED_MODULE_10__["default"], {
@@ -81931,10 +82026,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 /* harmony import */ var _state_statePlayer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../state/statePlayer */ "./src/state/statePlayer.js");
-/* harmony import */ var _node_modules_video_react_dist_video_react_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../node_modules/video-react/dist/video-react.css */ "./node_modules/video-react/dist/video-react.css");
-/* harmony import */ var _node_modules_video_react_dist_video_react_css__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_node_modules_video_react_dist_video_react_css__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var video_react__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! video-react */ "./node_modules/video-react/lib/index.js");
-/* harmony import */ var video_react__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(video_react__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _state_stateCommunication__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../state/stateCommunication */ "./src/state/stateCommunication.js");
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../util */ "./src/util.js");
+/* harmony import */ var _node_modules_video_react_dist_video_react_css__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../node_modules/video-react/dist/video-react.css */ "./node_modules/video-react/dist/video-react.css");
+/* harmony import */ var _node_modules_video_react_dist_video_react_css__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_node_modules_video_react_dist_video_react_css__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var video_react__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! video-react */ "./node_modules/video-react/lib/index.js");
+/* harmony import */ var video_react__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(video_react__WEBPACK_IMPORTED_MODULE_6__);
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -81945,13 +82042,15 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+
 
 
 
@@ -81967,9 +82066,13 @@ function (_Component) {
   _inherits(Player, _Component);
 
   function Player(props) {
+    var _this;
+
     _classCallCheck(this, Player);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(Player).call(this, props));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Player).call(this, props));
+    _this.playNext = _this.playNext.bind(_assertThisInitialized(_this));
+    return _this;
   } // Load the source of the player if it updates
 
 
@@ -82000,33 +82103,53 @@ function (_Component) {
       }
     }
   }, {
+    key: "playNext",
+    value: function playNext() {
+      var _this2 = this;
+
+      Object(_util__WEBPACK_IMPORTED_MODULE_4__["doActionsInOrder"])([function () {
+        if (_this2.props.clipID != undefined) _this2.props.getNextClip(_this2.props.clipID);
+      }, function () {
+        if (_this2.props.nextClip != undefined && _this2.props.clips.hasOwnProperty(_this2.props.nextClip) && _this2.props.clips[_this2.props.nextClip].playable) {
+          _this2.props.playClip(_this2.props.nextClip);
+
+          setTimeout(function () {
+            return _this2.props.play();
+          }, 100);
+        }
+      }]);
+    }
+  }, {
     key: "render",
     value: function render() {
-      var _this = this;
+      var _this3 = this;
 
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(video_react__WEBPACK_IMPORTED_MODULE_4__["Player"], {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(video_react__WEBPACK_IMPORTED_MODULE_6__["Player"], {
         ref: function ref(player) {
-          _this.player = player;
+          _this3.player = player;
         },
         fluid: false,
         width: "100%",
-        height: "100%"
+        height: "100%",
+        onPlay: this.props.play,
+        onPause: this.props.pause,
+        onEnded: this.playNext
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("source", {
         src: "/video/stream/" + this.props.clipID + "/"
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(video_react__WEBPACK_IMPORTED_MODULE_4__["ControlBar"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(video_react__WEBPACK_IMPORTED_MODULE_4__["ReplayControl"], {
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(video_react__WEBPACK_IMPORTED_MODULE_6__["ControlBar"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(video_react__WEBPACK_IMPORTED_MODULE_6__["ReplayControl"], {
         seconds: 10,
         order: 1.1
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(video_react__WEBPACK_IMPORTED_MODULE_4__["ForwardControl"], {
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(video_react__WEBPACK_IMPORTED_MODULE_6__["ForwardControl"], {
         seconds: 30,
         order: 1.2
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(video_react__WEBPACK_IMPORTED_MODULE_4__["CurrentTimeDisplay"], {
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(video_react__WEBPACK_IMPORTED_MODULE_6__["CurrentTimeDisplay"], {
         order: 4.1
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(video_react__WEBPACK_IMPORTED_MODULE_4__["TimeDivider"], {
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(video_react__WEBPACK_IMPORTED_MODULE_6__["TimeDivider"], {
         order: 4.2
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(video_react__WEBPACK_IMPORTED_MODULE_4__["PlaybackRateMenuButton"], {
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(video_react__WEBPACK_IMPORTED_MODULE_6__["PlaybackRateMenuButton"], {
         rates: [5, 2, 1, 0.5, 0.1],
         order: 7.1
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(video_react__WEBPACK_IMPORTED_MODULE_4__["VolumeMenuButton"], {
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(video_react__WEBPACK_IMPORTED_MODULE_6__["VolumeMenuButton"], {
         disabled: true
       }))));
     }
@@ -82039,9 +82162,10 @@ function (_Component) {
 var mapStateToProps = function mapStateToProps(state) {
   return {
     clipID: state.player.clipID,
-    time: state.player.clipTime,
     playing: state.player.playing,
-    player: state.player.player
+    player: state.player.player,
+    nextClip: state.com.player.nextClip,
+    clips: state.com.clips
   };
 }; // Forward Redux's dispatch function to React props
 
@@ -82059,6 +82183,12 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     },
     pause: function pause() {
       return dispatch(Object(_state_statePlayer__WEBPACK_IMPORTED_MODULE_2__["pause"])());
+    },
+    getNextClip: function getNextClip(cid) {
+      return dispatch(Object(_state_stateCommunication__WEBPACK_IMPORTED_MODULE_3__["getSequentialClip"])(cid));
+    },
+    playClip: function playClip(id) {
+      return dispatch(Object(_state_statePlayer__WEBPACK_IMPORTED_MODULE_2__["playClip"])(id));
     }
   };
 }; // Connect Redux with React
@@ -82218,22 +82348,36 @@ function (_Component) {
       this.props.playClip(id);
       setTimeout(function () {
         return _this2.props.play();
-      }, 100);
+      }, 100); // Chack if clip is outside glassbox, if so start the clip from startTime of glassbox
+
+      var clipStart = this.props.clips[id].startTime.getTime();
+      var gbStart = this.props.gbStartTime.getTime();
+      if (clipStart < gbStart) this.props.jump((gbStart - clipStart) / 1000);
     }
   }, {
     key: "render",
     value: function render() {
       var _this3 = this;
 
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, this.props.filterCameras.map(function (cameraID, i) {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: _timeline_module_css__WEBPACK_IMPORTED_MODULE_2___default.a.cliplineContainer,
+        onScroll: function onScroll() {
+          _this3.props.rerenderParentCallback();
+        }
+      }, this.props.filterCameras.map(function (cameraID, i) {
         /* Check if camera exists */
         if (!(cameraID in _this3.props.cameras)) return "";
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          key: cameraID
+          key: cameraID,
+          className: _timeline_module_css__WEBPACK_IMPORTED_MODULE_2___default.a.cliplineCamera,
+          style: {
+            backgroundColor: COLOR_LIST[i % COLOR_LIST.length] + (_this3.props.cameras[cameraID].clips.includes(_this3.props.clipID) ? "70" : "20"),
+            top: 25 + (15 + 12) * i + "px"
+          }
         }, _this3.props.cameras[cameraID].clips.map(function (clipID) {
           /* Check if clip exists in filter */
           if (!_this3.props.filterClips.includes(clipID)) return "";
-          /* Check if cllip exists */
+          /* Check if clip exists */
 
           if (!(clipID in _this3.props.clips)) {
             console.warn("Clip with id ", clipID, " does not exist in current project");
@@ -82242,12 +82386,11 @@ function (_Component) {
 
           return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
             key: clipID,
-            className: _timeline_module_css__WEBPACK_IMPORTED_MODULE_2___default.a.cliplines,
+            className: _timeline_module_css__WEBPACK_IMPORTED_MODULE_2___default.a.cliplineClip,
             style: {
               backgroundColor: _this3.props.clips[clipID].playable ? COLOR_LIST[i % COLOR_LIST.length] : "#6c757d",
               width: _this3.getWidthOfClip(_this3.props.clips[clipID].startTime, _this3.props.clips[clipID].endTime) + "%",
               left: _this3.getLeftPosition(_this3.props.clips[clipID].startTime) + "%",
-              top: 25 + (15 + 12) * i + "px",
               cursor: _this3.props.clips[clipID].playable ? "pointer" : "not-allowed"
             },
             onClick: function onClick() {
@@ -82273,7 +82416,8 @@ var mapStateToProps = function mapStateToProps(state) {
     cameras: state.com.cameras,
     clips: state.com.clips,
     filterCameras: state.com.filter.cameras,
-    filterClips: state.com.filter.clips
+    filterClips: state.com.filter.clips,
+    clipID: state.player.clipID
   };
 }; //Forward Redux's dispatch function to React props
 
@@ -82294,6 +82438,9 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     },
     changeBrowserTab: function changeBrowserTab() {
       return dispatch(Object(_state_stateBrowser__WEBPACK_IMPORTED_MODULE_5__["changeBrowserTab"])("inspectorBrowser"));
+    },
+    jump: function jump(timeDelta) {
+      return dispatch(Object(_state_statePlayer__WEBPACK_IMPORTED_MODULE_4__["jump"])(timeDelta));
     }
   };
 }; //Connect Redux with React
@@ -82441,12 +82588,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _images_baseline_skip_next_white_18dp_png__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../../images/baseline_skip_next_white_18dp.png */ "./src/images/baseline_skip_next_white_18dp.png");
 /* harmony import */ var _state_stateTimeline__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../../state/stateTimeline */ "./src/state/stateTimeline.js");
 /* harmony import */ var _state_statePlayer__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../../state/statePlayer */ "./src/state/statePlayer.js");
-/* harmony import */ var _state_stateCommunication__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ../../state/stateCommunication */ "./src/state/stateCommunication.js");
-/* harmony import */ var _timeline_module_css__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./timeline.module.css */ "./src/components/timeline/timeline.module.css");
-/* harmony import */ var _timeline_module_css__WEBPACK_IMPORTED_MODULE_18___default = /*#__PURE__*/__webpack_require__.n(_timeline_module_css__WEBPACK_IMPORTED_MODULE_18__);
-/* harmony import */ var _glassbox__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./glassbox */ "./src/components/timeline/glassbox.js");
-/* harmony import */ var _cliplines__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./cliplines */ "./src/components/timeline/cliplines.js");
-/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ../../util */ "./src/util.js");
+/* harmony import */ var _state_stateBrowser__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ../../state/stateBrowser */ "./src/state/stateBrowser.js");
+/* harmony import */ var _state_stateCommunication__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ../../state/stateCommunication */ "./src/state/stateCommunication.js");
+/* harmony import */ var _timeline_module_css__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./timeline.module.css */ "./src/components/timeline/timeline.module.css");
+/* harmony import */ var _timeline_module_css__WEBPACK_IMPORTED_MODULE_19___default = /*#__PURE__*/__webpack_require__.n(_timeline_module_css__WEBPACK_IMPORTED_MODULE_19__);
+/* harmony import */ var _glassbox__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./glassbox */ "./src/components/timeline/glassbox.js");
+/* harmony import */ var _cliplines__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./cliplines */ "./src/components/timeline/cliplines.js");
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ../../util */ "./src/util.js");
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -82485,6 +82633,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
  //import icons
+
 
 
 
@@ -82550,7 +82699,7 @@ function getDateString(date) {
   }
 } // Scaling options for the dropdown menu
 
-var SCALE_LIST = [1, 5, 12, 24, 36, 48]; //Options for time filtering menus
+var SCALE_LIST = [1, 2, 4, 6, 12, 24, 36, 48, 60, 72]; //Options for time filtering menus
 
 var HOUR_LIST = ["00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"];
 var MIN_LIST = ["00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55"];
@@ -82574,6 +82723,7 @@ function (_Component) {
     _this.getWidthOfTimeline = _this.getWidthOfTimeline.bind(_assertThisInitialized(_this));
     _this.renderContentOfTopbar = _this.renderContentOfTopbar.bind(_assertThisInitialized(_this));
     _this.renderSliderContent = _this.renderSliderContent.bind(_assertThisInitialized(_this));
+    _this.renderMapModeClips = _this.renderMapModeClips.bind(_assertThisInitialized(_this));
     _this.renderTimemarker = _this.renderTimemarker.bind(_assertThisInitialized(_this));
     _this.getTimemarkerPos = _this.getTimemarkerPos.bind(_assertThisInitialized(_this));
     _this.setTimemarker = _this.setTimemarker.bind(_assertThisInitialized(_this));
@@ -82594,21 +82744,23 @@ function (_Component) {
     _this.handlePlayPause = _this.handlePlayPause.bind(_assertThisInitialized(_this));
     _this.jumpInClip = _this.jumpInClip.bind(_assertThisInitialized(_this));
     _this.handleScroll = _this.handleScroll.bind(_assertThisInitialized(_this));
-    _this.scrollGlassboxIntoView = _this.scrollGlassboxIntoView.bind(_assertThisInitialized(_this));
+    _this.scrollIntoView = _this.scrollIntoView.bind(_assertThisInitialized(_this));
     _this.calculateTimestampOffset = _this.calculateTimestampOffset.bind(_assertThisInitialized(_this));
     _this.handleZoom = _this.handleZoom.bind(_assertThisInitialized(_this));
     _this.renderDateBoxes = _this.renderDateBoxes.bind(_assertThisInitialized(_this));
     _this.calculateDateBoxOffset = _this.calculateDateBoxOffset.bind(_assertThisInitialized(_this));
-    _this.getWidthOfdateBox = _this.getWidthOfdateBox.bind(_assertThisInitialized(_this));
     _this.calculateTimestampProperties = _this.calculateTimestampProperties.bind(_assertThisInitialized(_this));
     _this.calculateDateProperties = _this.calculateDateProperties.bind(_assertThisInitialized(_this));
-    _this.getOffsetFromPrevDay = _this.getOffsetFromPrevDay.bind(_assertThisInitialized(_this)); // state variables
+    _this.getOffsetFromPrevDay = _this.getOffsetFromPrevDay.bind(_assertThisInitialized(_this));
+    _this.rerenderParentCallback = _this.rerenderParentCallback.bind(_assertThisInitialized(_this)); // state variables
 
     _this.state = {
       mouseDownXPos: 0,
       mouseDownActive: false,
       mouseMoveXPos: 0
-    };
+    }; // used to signal if scale has changed
+
+    _this.didZoom = true;
     return _this;
   }
   /**
@@ -82622,16 +82774,22 @@ function (_Component) {
     key: "handleZoom",
     value: function handleZoom(hrs) {
       this.props.zoom(hrs, this.props.viewportMode);
-      this.scrollGlassboxIntoView();
     }
     /**
-     * Scroll glassbox into view
+     * Scroll glassbox or timemarker into view.
      */
 
   }, {
-    key: "scrollGlassboxIntoView",
-    value: function scrollGlassboxIntoView() {
+    key: "scrollIntoView",
+    value: function scrollIntoView() {
+      //check if glassbox exists
       if (this.glassboxRef) react_dom__WEBPACK_IMPORTED_MODULE_1___default.a.findDOMNode(this.glassboxRef).scrollIntoView({
+        behaviour: "smooth",
+        block: "nearest",
+        inline: "nearest"
+      }); //check if timemarker exists
+
+      if (document.getElementById("timemarkerDIV")) document.getElementById("timemarkerDIV").scrollIntoView({
         behaviour: "smooth",
         block: "nearest",
         inline: "nearest"
@@ -82644,8 +82802,23 @@ function (_Component) {
   }, {
     key: "componentDidMount",
     value: function componentDidMount() {
-      this.handleScroll(this.sliderBoxRef.scrollLeft);
-      this.scrollGlassboxIntoView();
+      this.handleScroll(this.sliderBoxRef.scrollLeft); // If scale changed, call scrollIntoView
+
+      if (this.didZoom) {
+        this.scrollIntoView();
+        this.didZoom = false;
+      }
+    }
+  }, {
+    key: "componentDidUpdate",
+    value: function componentDidUpdate() {
+      this.handleZoom(this.props.scale);
+      this.handleScroll(this.sliderBoxRef.scrollLeft); // If scale changed, call scrollIntoView
+
+      if (this.didZoom) {
+        this.scrollIntoView();
+        this.didZoom = false;
+      }
     }
     /**
      * This will render the dropdown menu which contains the scaling options for timeline.
@@ -82658,14 +82831,18 @@ function (_Component) {
       var _this2 = this;
 
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: _timeline_module_css__WEBPACK_IMPORTED_MODULE_18___default.a.dropdown
+        className: _timeline_module_css__WEBPACK_IMPORTED_MODULE_19___default.a.dropdown
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_DropdownButton__WEBPACK_IMPORTED_MODULE_4__["default"], {
         alignRight: true,
-        title: parseFloat(this.props.scale.toFixed(2)) + " Hours"
+        title: parseFloat(this.props.scale.toFixed(2)) + " Hours",
+        drop: "up"
       }, SCALE_LIST.map(function (hrs) {
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Dropdown__WEBPACK_IMPORTED_MODULE_3__["default"].Item, {
           onClick: function onClick(a) {
-            return _this2.handleZoom(hrs);
+            // Is used to check when to scroll into view
+            _this2.didZoom = true;
+
+            _this2.handleZoom(hrs);
           },
           key: hrs
         }, hrs + " Hours");
@@ -82683,17 +82860,17 @@ function (_Component) {
 
       for (var i = 0; i <= this.props.scale; i++) {
         arr.push(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: _timeline_module_css__WEBPACK_IMPORTED_MODULE_18___default.a.timestamp,
+          className: _timeline_module_css__WEBPACK_IMPORTED_MODULE_19___default.a.timestamp,
           style: {
             left: i * 100 / this.props.scale + "%"
           },
           key: i,
           id: "timestamp" + i
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: _timeline_module_css__WEBPACK_IMPORTED_MODULE_18___default.a.line
+          className: _timeline_module_css__WEBPACK_IMPORTED_MODULE_19___default.a.line
         }, " "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           id: "hour" + i,
-          className: _timeline_module_css__WEBPACK_IMPORTED_MODULE_18___default.a.hour
+          className: _timeline_module_css__WEBPACK_IMPORTED_MODULE_19___default.a.hour
         }, 0)));
       }
 
@@ -82735,18 +82912,18 @@ function (_Component) {
           style: {
             marginRight: "10px"
           },
-          className: _timeline_module_css__WEBPACK_IMPORTED_MODULE_18___default.a.playerButton
+          className: _timeline_module_css__WEBPACK_IMPORTED_MODULE_19___default.a.playerButton
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Image__WEBPACK_IMPORTED_MODULE_9__["default"], {
           src: _images_baseline_skip_previous_white_18dp_png__WEBPACK_IMPORTED_MODULE_13__["default"],
-          className: _timeline_module_css__WEBPACK_IMPORTED_MODULE_18___default.a.playerIcon
+          className: _timeline_module_css__WEBPACK_IMPORTED_MODULE_19___default.a.playerIcon
         })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Button__WEBPACK_IMPORTED_MODULE_8__["default"], {
           key: "playPause",
           onClick: this.handlePlayPause,
           variant: "success",
-          className: _timeline_module_css__WEBPACK_IMPORTED_MODULE_18___default.a.playerButton
+          className: _timeline_module_css__WEBPACK_IMPORTED_MODULE_19___default.a.playerButton
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Image__WEBPACK_IMPORTED_MODULE_9__["default"], {
           src: this.props.playing ? _images_baseline_pause_white_18dp_png__WEBPACK_IMPORTED_MODULE_12__["default"] : _images_baseline_play_arrow_white_18dp_png__WEBPACK_IMPORTED_MODULE_11__["default"],
-          className: _timeline_module_css__WEBPACK_IMPORTED_MODULE_18___default.a.playerIcon
+          className: _timeline_module_css__WEBPACK_IMPORTED_MODULE_19___default.a.playerIcon
         })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Button__WEBPACK_IMPORTED_MODULE_8__["default"], {
           key: "jumpForward",
           onClick: function onClick(a) {
@@ -82756,18 +82933,12 @@ function (_Component) {
           style: {
             marginLeft: "10px"
           },
-          className: _timeline_module_css__WEBPACK_IMPORTED_MODULE_18___default.a.playerButton
+          className: _timeline_module_css__WEBPACK_IMPORTED_MODULE_19___default.a.playerButton
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Image__WEBPACK_IMPORTED_MODULE_9__["default"], {
           src: _images_baseline_skip_next_white_18dp_png__WEBPACK_IMPORTED_MODULE_14__["default"],
-          className: _timeline_module_css__WEBPACK_IMPORTED_MODULE_18___default.a.playerIcon
+          className: _timeline_module_css__WEBPACK_IMPORTED_MODULE_19___default.a.playerIcon
         })))
       );
-    }
-  }, {
-    key: "componentDidUpdate",
-    value: function componentDidUpdate() {
-      this.handleScroll(this.sliderBoxRef.scrollLeft);
-      this.scrollGlassboxIntoView();
     }
     /**
      * Render dateBoxes
@@ -82783,13 +82954,13 @@ function (_Component) {
         itemsToDraw.push(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           id: "dateBox" + i,
           key: i,
-          className: _timeline_module_css__WEBPACK_IMPORTED_MODULE_18___default.a.dateBox,
+          className: _timeline_module_css__WEBPACK_IMPORTED_MODULE_19___default.a.dateBox,
           style: {
             left: 200 * i + "px"
           }
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           id: "date" + i,
-          className: _timeline_module_css__WEBPACK_IMPORTED_MODULE_18___default.a.date
+          className: _timeline_module_css__WEBPACK_IMPORTED_MODULE_19___default.a.date
         }, " ", "datum", " ")));
       }
 
@@ -82827,6 +82998,45 @@ function (_Component) {
         this.props.pause();
       }
     }
+  }, {
+    key: "renderMapModeClips",
+    value: function renderMapModeClips() {
+      var _this4 = this;
+
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        style: {
+          width: "100%",
+          height: "100%"
+        }
+      }, Object.values(this.props.cameras).map(function (cam, i) {
+        var camCount = Object.values(_this4.props.cameras).length;
+        /* Render all clips for camera */
+
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          key: cam.id
+        }, cam.clips.map(function (clipID) {
+          var clip = _this4.props.clips[clipID];
+          if (!clip) return "";
+          /* Render single clip */
+
+          var CLIP_HEIGHT = 0.08;
+          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+            key: clipID,
+            className: _timeline_module_css__WEBPACK_IMPORTED_MODULE_19___default.a.mapModeClip,
+            style: {
+              top: ((i + 0.5) / camCount - CLIP_HEIGHT / 2) * 100 + "%",
+              height: CLIP_HEIGHT * 100 + "%",
+              left: (clip.startTime - _this4.props.startTime) / _this4.props.timeSpan * 100 + "%",
+              width: (clip.endTime - clip.startTime) / _this4.props.timeSpan * 100 + "%",
+              backgroundColor: _this4.props.filterClips.includes(clipID) ? "#ca4f26" : "#6c757d"
+            },
+            onClick: function onClick() {
+              return _this4.props.inspectClip(clipID);
+            }
+          });
+        }));
+      }));
+    }
     /**
      * Render slider content, either Map or Player depending on viewport mode
      */
@@ -82834,33 +83044,33 @@ function (_Component) {
   }, {
     key: "renderSliderContent",
     value: function renderSliderContent() {
-      var _this4 = this;
+      var _this5 = this;
 
       if (this.props.viewportMode) {
         // Map-mode
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           id: "sliderContentDIV",
-          className: _timeline_module_css__WEBPACK_IMPORTED_MODULE_18___default.a.slider,
+          className: _timeline_module_css__WEBPACK_IMPORTED_MODULE_19___default.a.slider,
           style: {
             width: this.getWidthOfTimeline() + "%"
           }
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        }, this.renderMapModeClips(), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           ref: function ref(c) {
-            return _this4.timestampsRef = c;
+            return _this5.timestampsRef = c;
           },
-          className: _timeline_module_css__WEBPACK_IMPORTED_MODULE_18___default.a.timestampBox,
+          className: _timeline_module_css__WEBPACK_IMPORTED_MODULE_19___default.a.timestampBox,
           style: {
             width: 100 / this.getWidthOfTimeline() * 100 + "%"
           }
         }, this.renderTimestamps()), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           id: "dateBoxDIV",
           ref: function ref(c) {
-            return _this4.dateBoxRef = c;
+            return _this5.dateBoxRef = c;
           },
-          className: _timeline_module_css__WEBPACK_IMPORTED_MODULE_18___default.a.dateBoxContainer
-        }, this.renderDateBoxes()), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_glassbox__WEBPACK_IMPORTED_MODULE_19__["default"], {
+          className: _timeline_module_css__WEBPACK_IMPORTED_MODULE_19___default.a.dateBoxContainer
+        }, this.renderDateBoxes()), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_glassbox__WEBPACK_IMPORTED_MODULE_20__["default"], {
           childRef: function childRef(c) {
-            return _this4.glassboxRef = c;
+            return _this5.glassboxRef = c;
           }
         }));
       } // Player-mode
@@ -82868,7 +83078,7 @@ function (_Component) {
 
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         id: "playerSliderDIV",
-        className: _timeline_module_css__WEBPACK_IMPORTED_MODULE_18___default.a.slider,
+        className: _timeline_module_css__WEBPACK_IMPORTED_MODULE_19___default.a.slider,
         style: {
           opacity: "0.7",
           width: this.getWidthOfTimeline() + "%"
@@ -82878,19 +83088,31 @@ function (_Component) {
         onMouseLeave: this.updateTimemarker
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         ref: function ref(c) {
-          return _this4.timestampsRef = c;
+          return _this5.timestampsRef = c;
         },
-        className: _timeline_module_css__WEBPACK_IMPORTED_MODULE_18___default.a.timestampBox,
+        className: _timeline_module_css__WEBPACK_IMPORTED_MODULE_19___default.a.timestampBox,
         style: {
           width: 100 / this.getWidthOfTimeline() * 100 + "%"
         }
       }, this.renderTimestamps()), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         id: "dateBoxDIV",
         ref: function ref(c) {
-          return _this4.dateBoxRef = c;
+          return _this5.dateBoxRef = c;
         },
-        className: _timeline_module_css__WEBPACK_IMPORTED_MODULE_18___default.a.dateBoxContainer
-      }, this.renderDateBoxes()), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_cliplines__WEBPACK_IMPORTED_MODULE_20__["default"], null), this.renderTimemarker());
+        className: _timeline_module_css__WEBPACK_IMPORTED_MODULE_19___default.a.dateBoxContainer
+      }, this.renderDateBoxes()), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_cliplines__WEBPACK_IMPORTED_MODULE_21__["default"], {
+        rerenderParentCallback: this.rerenderParentCallback
+      }), this.renderTimemarker());
+    }
+    /**
+     * Force update timeline
+     * Is used by cliplines when scrolling
+     */
+
+  }, {
+    key: "rerenderParentCallback",
+    value: function rerenderParentCallback() {
+      this.forceUpdate();
     }
     /**
      * Render timemarker
@@ -82901,21 +83123,21 @@ function (_Component) {
     value: function renderTimemarker() {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         id: "timemarkerDIV",
-        className: _timeline_module_css__WEBPACK_IMPORTED_MODULE_18___default.a.timemarker,
+        className: _timeline_module_css__WEBPACK_IMPORTED_MODULE_19___default.a.timemarker,
         style: {
           left: this.getTimemarkerPos() + "%"
         }
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         id: "iconDIV"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
-        className: _timeline_module_css__WEBPACK_IMPORTED_MODULE_18___default.a.markerIcon,
+        className: _timeline_module_css__WEBPACK_IMPORTED_MODULE_19___default.a.markerIcon,
         src: _images_timemarker_png__WEBPACK_IMPORTED_MODULE_10__["default"],
         alt: "markerIcon",
         draggable: "false",
         onMouseDown: this.grabTimemarker
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         id: "linemarkerDIV",
-        className: _timeline_module_css__WEBPACK_IMPORTED_MODULE_18___default.a.linemarker
+        className: _timeline_module_css__WEBPACK_IMPORTED_MODULE_19___default.a.linemarker
       }));
     }
     /**
@@ -82926,7 +83148,7 @@ function (_Component) {
   }, {
     key: "renderHourList",
     value: function renderHourList(start) {
-      var _this5 = this;
+      var _this6 = this;
 
       //Do this for start time
       if (start) {
@@ -82936,11 +83158,12 @@ function (_Component) {
           style: {}
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_DropdownButton__WEBPACK_IMPORTED_MODULE_4__["default"], {
           alignRight: true,
-          title: hour
+          title: hour,
+          drop: "up"
         }, HOUR_LIST.map(function (h) {
           return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Dropdown__WEBPACK_IMPORTED_MODULE_3__["default"].Item, {
             onClick: function onClick(a) {
-              return _this5.intervalChanged(_this5.hourToDate(h, true), undefined);
+              return _this6.intervalChanged(_this6.hourToDate(h, true), undefined);
             },
             key: h
           }, h);
@@ -82952,11 +83175,12 @@ function (_Component) {
       hour = HOUR_LIST[hour];
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_DropdownButton__WEBPACK_IMPORTED_MODULE_4__["default"], {
         alignRight: true,
-        title: hour
+        title: hour,
+        drop: "up"
       }, HOUR_LIST.map(function (h) {
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Dropdown__WEBPACK_IMPORTED_MODULE_3__["default"].Item, {
           onClick: function onClick(a) {
-            return _this5.intervalChanged(undefined, _this5.hourToDate(h, false));
+            return _this6.intervalChanged(undefined, _this6.hourToDate(h, false));
           },
           key: h
         }, h);
@@ -82970,7 +83194,7 @@ function (_Component) {
   }, {
     key: "renderMinList",
     value: function renderMinList(start) {
-      var _this6 = this;
+      var _this7 = this;
 
       //Do this for start time
       if (start) {
@@ -82982,11 +83206,12 @@ function (_Component) {
 
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_DropdownButton__WEBPACK_IMPORTED_MODULE_4__["default"], {
           alignRight: true,
-          title: min
+          title: min,
+          drop: "up"
         }, MIN_LIST.map(function (minute) {
           return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Dropdown__WEBPACK_IMPORTED_MODULE_3__["default"].Item, {
             onClick: function onClick(a) {
-              return _this6.intervalChanged(_this6.minToDate(minute, true), undefined);
+              return _this7.intervalChanged(_this7.minToDate(minute, true), undefined);
             },
             key: minute
           }, minute);
@@ -83002,11 +83227,12 @@ function (_Component) {
 
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_DropdownButton__WEBPACK_IMPORTED_MODULE_4__["default"], {
         alignRight: true,
-        title: min
+        title: min,
+        drop: "up"
       }, MIN_LIST.map(function (minute) {
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Dropdown__WEBPACK_IMPORTED_MODULE_3__["default"].Item, {
           onClick: function onClick(a) {
-            return _this6.intervalChanged(undefined, _this6.minToDate(minute, false));
+            return _this7.intervalChanged(undefined, _this7.minToDate(minute, false));
           },
           key: minute
         }, minute);
@@ -83021,7 +83247,7 @@ function (_Component) {
   }, {
     key: "renderCalendar",
     value: function renderCalendar(title) {
-      var _this7 = this;
+      var _this8 = this;
 
       //Do this for start time
       if (title == "start") {
@@ -83034,7 +83260,7 @@ function (_Component) {
           minDate: this.props.startTime,
           maxDate: this.props.glassbox.endTime,
           onChange: function onChange(date) {
-            return _this7.intervalChanged(_this7.getFullDate(date, true), undefined);
+            return _this8.intervalChanged(_this8.getFullDate(date, true), undefined);
           }
         })));
       } //Do this for end time
@@ -83049,7 +83275,7 @@ function (_Component) {
         minDate: this.props.glassbox.startTime,
         maxDate: this.props.endTime,
         onChange: function onChange(date) {
-          return _this7.intervalChanged(undefined, _this7.getFullDate(date, false));
+          return _this8.intervalChanged(undefined, _this8.getFullDate(date, false));
         }
       })));
     }
@@ -83066,7 +83292,7 @@ function (_Component) {
           display: "flex"
         }
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: _timeline_module_css__WEBPACK_IMPORTED_MODULE_18___default.a.filter,
+        className: _timeline_module_css__WEBPACK_IMPORTED_MODULE_19___default.a.filter,
         style: {
           marginRight: "5px"
         }
@@ -83101,7 +83327,7 @@ function (_Component) {
           margin: "5px"
         }
       }, " ", this.renderMinList(true), " ")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: _timeline_module_css__WEBPACK_IMPORTED_MODULE_18___default.a.filter,
+        className: _timeline_module_css__WEBPACK_IMPORTED_MODULE_19___default.a.filter,
         style: {
           marginLeft: "5px"
         }
@@ -83220,12 +83446,96 @@ function (_Component) {
   }, {
     key: "setTimemarker",
     value: function setTimemarker(e) {
+      var _this9 = this;
+
+      // Calculate time
       var mouseUpXPos = e.clientX;
       var totalWidth = playerSliderDIV.clientWidth;
       var deltaPos = mouseUpXPos - this.state.mouseDownXPos;
       var deltaPercent = deltaPos / totalWidth;
-      var timeDeltaSeconds = deltaPercent * (this.props.glassbox.timeSpan / 1000);
-      this.props.jump(timeDeltaSeconds);
+      var timeDeltaSeconds = deltaPercent * (this.props.glassbox.timeSpan / 1000); // Get current clip and camera
+
+      if (!(this.props.clipID in this.props.clips)) return;
+      var clip = this.props.clips[this.props.clipID];
+      if (!(clip.camera in this.props.cameras)) return;
+      var camera = this.props.cameras[clip.camera]; // Calculate release time
+
+      var time = clip.startTime.getTime() + (this.props.position + timeDeltaSeconds) * 1000; // Find closest clip in camera
+
+      var start = false;
+      var closestClip = undefined;
+      var closestDist = undefined;
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
+
+      try {
+        for (var _iterator = camera.clips[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var id = _step.value;
+
+          // Check if in filter
+          if (this.props.filterClips.includes(id)) {
+            // Get clip
+            if (!(id in this.props.clips)) return;
+            var c = this.props.clips[id]; // Check for intersection
+
+            if (c.startTime.getTime() <= time && time <= c.endTime.getTime()) {
+              closestDist = 0;
+              closestClip = c;
+              break;
+            } // If no intersection, check if start or end is closest
+
+
+            var startDist = Math.abs(time - c.startTime.getTime());
+            var endDist = Math.abs(time - c.endTime.getTime());
+            var tempDist = Math.min(startDist, endDist); // Check if closer than previous clip
+
+            if (closestClip == undefined || tempDist < closestDist) {
+              closestDist = tempDist;
+              closestClip = c;
+              start = startDist <= endDist;
+            }
+          }
+        } // Safety check
+
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator["return"] != null) {
+            _iterator["return"]();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
+        }
+      }
+
+      if (closestClip == undefined) return; // Should the same clip be played?
+
+      var sameClip = closestClip.id == this.props.clipID; // Change clip if applicable
+
+      if (!sameClip) {
+        this.props.playClip(closestClip.id);
+      } // Jump to correct position in clip
+
+
+      if (closestDist > 0) {
+        // Jump to bounds (there was no intersection)
+        if (start) this.props.jump((time - closestClip.startTime.getTime()) / 1000);else this.props.jump((time - closestClip.endTime.getTime()) / 1000);
+      } else if (sameClip) {
+        // Jump in same clip
+        this.props.jump(timeDeltaSeconds);
+      } else {
+        // Jump in other clip
+        setTimeout(function () {
+          _this9.props.play();
+
+          _this9.props.jump((time - closestClip.startTime.getTime()) / 1000);
+        }, 100);
+      }
     }
     /**
      * Calculates the position for timemarker.
@@ -83264,7 +83574,7 @@ function (_Component) {
   }, {
     key: "intervalChanged",
     value: function intervalChanged(start, end) {
-      var _this8 = this;
+      var _this10 = this;
 
       //TODO: dispatch modifyFilter action using start and end time
       var startTime, endTime;
@@ -83278,10 +83588,10 @@ function (_Component) {
       if (startTime.getTime() > endTime.getTime() || startTime.getTime() < this.props.startTime.getTime() || endTime.getTime() > this.props.endTime.getTime()) return;
       this.props.gbSetTimeLimits(startTime, endTime); // Send filter updates to server
 
-      Object(_util__WEBPACK_IMPORTED_MODULE_21__["doActionsInOrder"])([function () {
-        return _this8.props.modifyTimeFilter(startTime, endTime);
+      Object(_util__WEBPACK_IMPORTED_MODULE_22__["doActionsInOrder"])([function () {
+        return _this10.props.modifyTimeFilter(startTime, endTime);
       }, function () {
-        return _this8.props.updateFilter();
+        return _this10.props.updateFilter();
       }]);
     }
     /**
@@ -83360,28 +83670,6 @@ function (_Component) {
       return this.props.glassbox.timeSpan / (60 * 60 * 1000) / this.props.scale * 100;
     }
     /**
-     * Calculate the width of the box with number nr.
-     * The last box should have a shorter width
-     *
-     * @param {int} nr the number of the box
-     * @param {int} left position of the box
-     * @param {int} hourWidth width of one hour in pixels
-     * @param {int} nrOfBoxes total number of dateBoxes
-     */
-
-  }, {
-    key: "getWidthOfdateBox",
-    value: function getWidthOfdateBox(nr, left, hourWidth, nrOfBoxes) {
-      // Last box, with shorter width
-      if (nr == nrOfBoxes - 1) {
-        var widthOfTimeline = this.timestampsRef.clientWidth * this.getWidthOfTimeline() / 100; // Return the shortes of either width of client or the width thats left of timeline
-
-        return Math.min(this.timestampsRef.clientWidth, widthOfTimeline - left);
-      }
-
-      return hourWidth * 24;
-    }
-    /**
      * Updates the position, width and content of all divs that needs to update
      * when scrolling in the timeline.
      *
@@ -83400,7 +83688,8 @@ function (_Component) {
       this.calculateTimestampProperties(scrollLeft, hourWidth, hrsOffset); // DateboxDiv
 
       var left = this.calculateDateBoxOffset(scrollLeft, hourWidth) - this.getOffsetFromPrevDay(this.props.startTime, hourWidth);
-      this.dateBoxRef.style.left = left + "px"; // Dateboxes in DateboxDiv: set width, left, color, date
+      this.dateBoxRef.style.left = left + "px";
+      this.dateBoxRef.style.width = this.getWidthOfTimeline() + "%"; // Dateboxes in DateboxDiv: set width, left, color, date
 
       this.calculateDateProperties(scrollLeft, left, hourWidth, nrOfBoxes);
     }
@@ -83426,7 +83715,7 @@ function (_Component) {
         var dayOffset = Math.floor((scrollLeft + this.getOffsetFromPrevDay(this.props.startTime, hourWidth)) / dayWidth) + i; // Calculate dateBox css
 
         dateBox.style.left = dayWidth * i + "px";
-        dateBox.style.width = this.getWidthOfdateBox(i, dayWidth * i, hourWidth, nrOfBoxes) + "px"; // Set background color for each dateBox
+        dateBox.style.width = hourWidth * 24 + "px"; // Set background color for each dateBox
 
         var color = "rgba(185, 185, 185, 0.3)";
 
@@ -83514,20 +83803,20 @@ function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this9 = this;
+      var _this11 = this;
 
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: _timeline_module_css__WEBPACK_IMPORTED_MODULE_18___default.a.main
+        className: _timeline_module_css__WEBPACK_IMPORTED_MODULE_19___default.a.main
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: _timeline_module_css__WEBPACK_IMPORTED_MODULE_18___default.a.topbar
+        className: _timeline_module_css__WEBPACK_IMPORTED_MODULE_19___default.a.topbar
       }, this.renderContentOfTopbar(), this.renderScaleList()), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         id: "sliderBoxDIV",
-        className: _timeline_module_css__WEBPACK_IMPORTED_MODULE_18___default.a.sliderbox,
+        className: _timeline_module_css__WEBPACK_IMPORTED_MODULE_19___default.a.sliderbox,
         ref: function ref(c) {
-          return _this9.sliderBoxRef = c;
+          return _this11.sliderBoxRef = c;
         },
         onScroll: function onScroll(e) {
-          return _this9.handleScroll(e.target.scrollLeft);
+          return _this11.handleScroll(e.target.scrollLeft);
         }
       }, this.renderSliderContent()));
     }
@@ -83546,10 +83835,13 @@ var mapStateToProps = function mapStateToProps(state) {
     glassbox: state.timeline.glassbox,
     viewportMode: state.viewport.mode,
     clips: state.com.clips,
+    cameras: state.com.cameras,
     //Player
     clipID: state.player.clipID,
     position: state.player.position,
-    playing: state.player.playing
+    playing: state.player.playing,
+    // Filter
+    filterClips: state.com.filter.clips
   };
 }; //Forward Redux's dispatch function to React props
 
@@ -83568,17 +83860,24 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     pause: function pause() {
       return dispatch(Object(_state_statePlayer__WEBPACK_IMPORTED_MODULE_16__["pause"])());
     },
+    playClip: function playClip(id) {
+      return dispatch(Object(_state_statePlayer__WEBPACK_IMPORTED_MODULE_16__["playClip"])(id));
+    },
     gbSetTimeLimits: function gbSetTimeLimits(startDate, endDate) {
       return dispatch(Object(_state_stateTimeline__WEBPACK_IMPORTED_MODULE_15__["gbSetTimeLimits"])(startDate, endDate));
     },
     modifyTimeFilter: function modifyTimeFilter(s, e) {
       var _modifyFilter;
 
-      return dispatch(Object(_state_stateCommunication__WEBPACK_IMPORTED_MODULE_17__["modifyFilter"])((_modifyFilter = {}, _defineProperty(_modifyFilter, _util__WEBPACK_IMPORTED_MODULE_21__["START_TIME"], s), _defineProperty(_modifyFilter, _util__WEBPACK_IMPORTED_MODULE_21__["END_TIME"], e), _modifyFilter)));
+      return dispatch(Object(_state_stateCommunication__WEBPACK_IMPORTED_MODULE_18__["modifyFilter"])((_modifyFilter = {}, _defineProperty(_modifyFilter, _util__WEBPACK_IMPORTED_MODULE_22__["START_TIME"], s), _defineProperty(_modifyFilter, _util__WEBPACK_IMPORTED_MODULE_22__["END_TIME"], e), _modifyFilter)));
     },
     updateFilter: function updateFilter() {
-      dispatch(Object(_state_stateCommunication__WEBPACK_IMPORTED_MODULE_17__["getFilter"])());
-      dispatch(Object(_state_stateCommunication__WEBPACK_IMPORTED_MODULE_17__["getClipsMatchingFilter"])());
+      dispatch(Object(_state_stateCommunication__WEBPACK_IMPORTED_MODULE_18__["getFilter"])());
+      dispatch(Object(_state_stateCommunication__WEBPACK_IMPORTED_MODULE_18__["getClipsMatchingFilter"])());
+    },
+    inspectClip: function inspectClip(id) {
+      dispatch(Object(_state_stateBrowser__WEBPACK_IMPORTED_MODULE_17__["changeMode"])(_state_stateBrowser__WEBPACK_IMPORTED_MODULE_17__["INSPECTOR_MODE_CLIP"], id));
+      dispatch(Object(_state_stateBrowser__WEBPACK_IMPORTED_MODULE_17__["changeBrowserTab"])("inspectorBrowser"));
     }
   };
 }; //Connect Redux with React
@@ -83721,7 +84020,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _player_player__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../player/player */ "./src/components/player/player.js");
 /* harmony import */ var _map_map__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../map/map */ "./src/components/map/map.js");
 /* harmony import */ var _state_stateViewport__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../state/stateViewport */ "./src/state/stateViewport.js");
-/* harmony import */ var _images_baseline_import_export_white_18dp_png__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../images/baseline_import_export_white_18dp.png */ "./src/images/baseline_import_export_white_18dp.png");
+/* harmony import */ var _state_statePlayer__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../state/statePlayer */ "./src/state/statePlayer.js");
+/* harmony import */ var _images_baseline_import_export_white_18dp_png__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../images/baseline_import_export_white_18dp.png */ "./src/images/baseline_import_export_white_18dp.png");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -83750,6 +84050,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
  //import functions
 
+
  //import icons
 
 
@@ -83775,12 +84076,15 @@ function (_Component) {
         className: _viewport_module_css__WEBPACK_IMPORTED_MODULE_4___default.a.viewport
       }, this.props.viewportMode ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_map_map__WEBPACK_IMPORTED_MODULE_6__["default"], null) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_player_player__WEBPACK_IMPORTED_MODULE_5__["default"], null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Button__WEBPACK_IMPORTED_MODULE_2__["default"], {
         onClick: function onClick() {
-          return _this.props.switchMode();
+          _this.props.switchMode(); // The video is paused by the player so the play button must be updated.
+
+
+          _this.props.pauseVideo();
         },
         className: _viewport_module_css__WEBPACK_IMPORTED_MODULE_4___default.a.switchButton,
         variant: "primary"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_Image__WEBPACK_IMPORTED_MODULE_3__["default"], {
-        src: _images_baseline_import_export_white_18dp_png__WEBPACK_IMPORTED_MODULE_8__["default"],
+        src: _images_baseline_import_export_white_18dp_png__WEBPACK_IMPORTED_MODULE_9__["default"],
         className: _viewport_module_css__WEBPACK_IMPORTED_MODULE_4___default.a.switchIcon
       })));
     }
@@ -83801,6 +84105,9 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return {
     switchMode: function switchMode() {
       return dispatch(Object(_state_stateViewport__WEBPACK_IMPORTED_MODULE_7__["switchMode"])());
+    },
+    pauseVideo: function pauseVideo() {
+      return dispatch(Object(_state_statePlayer__WEBPACK_IMPORTED_MODULE_8__["pause"])());
     }
   };
 }; // Connect Redux with React
@@ -83942,6 +84249,32 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ("/static/frontend/6d4dcd6344199e0f62d7d1f3b4bb6d46.png");
+
+/***/ }),
+
+/***/ "./src/images/delete-icon.png":
+/*!************************************!*\
+  !*** ./src/images/delete-icon.png ***!
+  \************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ("/static/frontend/87a8e466bff11b22ab8ffe193f347119.png");
+
+/***/ }),
+
+/***/ "./src/images/info-icon.png":
+/*!**********************************!*\
+  !*** ./src/images/info-icon.png ***!
+  \**********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ("/static/frontend/b0721e7523466e21a4265798abf67a0b.png");
 
 /***/ }),
 
@@ -84099,7 +84432,7 @@ var store = Object(redux__WEBPACK_IMPORTED_MODULE_0__["createStore"])(rootReduce
 /*!***********************************!*\
   !*** ./src/state/stateBrowser.js ***!
   \***********************************/
-/*! exports provided: INSPECTOR_MODE_CAMERA, INSPECTOR_MODE_CLIP, INSPECTOR_MODE_EXLUDED_INCLUDED, INSPECTOR_MODE_AREA, CHANGE_MODE, CHANGE_BROWSER_TAB, UPDATE_LIST, initialState, changeMode, updateList, changeBrowserTab, browserReducer, default */
+/*! exports provided: INSPECTOR_MODE_CAMERA, INSPECTOR_MODE_CLIP, INSPECTOR_MODE_EXLUDED_INCLUDED, INSPECTOR_MODE_AREA, CHANGE_MODE, CHANGE_BROWSER_TAB, UPDATE_LIST, SET_BROWSER_EXC_INC_LISTS, initialState, setBrowserExcIncList, changeMode, updateList, changeBrowserTab, browserReducer, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -84111,7 +84444,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CHANGE_MODE", function() { return CHANGE_MODE; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CHANGE_BROWSER_TAB", function() { return CHANGE_BROWSER_TAB; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UPDATE_LIST", function() { return UPDATE_LIST; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SET_BROWSER_EXC_INC_LISTS", function() { return SET_BROWSER_EXC_INC_LISTS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "initialState", function() { return initialState; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setBrowserExcIncList", function() { return setBrowserExcIncList; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "changeMode", function() { return changeMode; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "updateList", function() { return updateList; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "changeBrowserTab", function() { return changeBrowserTab; });
@@ -84147,6 +84482,7 @@ var INSPECTOR_MODE_AREA = 3;
 var CHANGE_MODE = "CHANGE_MODE";
 var CHANGE_BROWSER_TAB = "CHANGE_BROWSER_TAB";
 var UPDATE_LIST = "UPDATE_LIST";
+var SET_BROWSER_EXC_INC_LISTS = "SET_BROWSER_EXC_INC_LISTS";
 /* -- INITIAL STATE -- */
 
 var initialState = {
@@ -84160,6 +84496,13 @@ var initialState = {
 };
 /* -- ACTION CREATORS -- */
 
+function setBrowserExcIncList(excList, incList) {
+  return {
+    type: SET_BROWSER_EXC_INC_LISTS,
+    excList: excList,
+    incList: incList
+  };
+}
 /**
  * This action is used to change the current mode in inspector.
  *
@@ -84259,6 +84602,12 @@ var browserReducer = function browserReducer() {
           return _objectSpread({}, state, (_objectSpread3 = {}, _defineProperty(_objectSpread3, action.include ? "incList" : "excList", _toConsumableArray(tempList)), _defineProperty(_objectSpread3, action.include ? "excList" : "incList", _toConsumableArray(otherList)), _objectSpread3));
         }
       }
+
+    case SET_BROWSER_EXC_INC_LISTS:
+      return _objectSpread({}, state, {
+        incList: _toConsumableArray(action.incList),
+        excList: _toConsumableArray(action.excList)
+      });
 
     default:
       return state;
@@ -86665,10 +87014,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _state_state__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./state/state */ "./src/state/state.js");
 /* harmony import */ var _state_stateCommunication__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./state/stateCommunication */ "./src/state/stateCommunication.js");
 /* harmony import */ var _state_stateTimeline__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./state/stateTimeline */ "./src/state/stateTimeline.js");
+/* harmony import */ var _state_stateBrowser__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./state/stateBrowser */ "./src/state/stateBrowser.js");
 /*
  * This file contains helper-functions to be
  * used throughout Mycroft.
  */
+
 
 
 
@@ -86681,7 +87032,7 @@ __webpack_require__.r(__webpack_exports__);
  *
  * @param {string} url The sub-URL to send the request to. Will be appended onto the host URL.
  * @param {JSON} opts The JSON data to send through the request.
- * @param {fucntion} onResponse The function to be called upon request response. Expects two parameters: (status: int, data: JSON). If the request failed, 'data' will be undefined.
+ * @param {function} onResponse The function to be called upon request response. Expects two parameters: (status: int, data: JSON). If the request failed, 'data' will be undefined.
  *
  */
 
@@ -86752,7 +87103,9 @@ function syncProject() {
     _state_state__WEBPACK_IMPORTED_MODULE_1__["default"].dispatch(Object(_state_stateCommunication__WEBPACK_IMPORTED_MODULE_2__["getFilter"])());
     _state_state__WEBPACK_IMPORTED_MODULE_1__["default"].dispatch(Object(_state_stateCommunication__WEBPACK_IMPORTED_MODULE_2__["getAreasInFilter"])());
     _state_state__WEBPACK_IMPORTED_MODULE_1__["default"].dispatch(Object(_state_stateCommunication__WEBPACK_IMPORTED_MODULE_2__["getClipsMatchingFilter"])());
-  }, setTimelineBounds]);
+  }, setTimelineBounds, function () {
+    _state_state__WEBPACK_IMPORTED_MODULE_1__["default"].dispatch(Object(_state_stateBrowser__WEBPACK_IMPORTED_MODULE_4__["setBrowserExcIncList"])(_state_state__WEBPACK_IMPORTED_MODULE_1__["default"].getState().com.filter.excludedClips, _state_state__WEBPACK_IMPORTED_MODULE_1__["default"].getState().com.filter.includedClips));
+  }]);
 }
 /**
  * Takes an array of JSON folders and parses to folder objects.

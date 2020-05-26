@@ -81,7 +81,11 @@ class FolderManager extends Component {
     );
 
     // Don't show button if there are no  warnings.
-    if (duplicates.length === 0 && overlapping.length === 0) {
+    if (
+      duplicates.length === 0 &&
+      overlapping.length === 0 &&
+      unplayable.length === 0
+    ) {
       return "";
     }
 

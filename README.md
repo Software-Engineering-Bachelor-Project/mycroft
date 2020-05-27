@@ -62,6 +62,9 @@ In the purpose of testing mycroft a script **genfakemetadata.py** has been provi
 ## Running mycroft
 First of all, make sure your virtual environment is activated and that you are in the root folder of mycroft.
 
+### Creating the database
+In order to create the database run `python manage.py migrate`. If this was succesful you should se a new file in the root folder called **db.sqlite3**. This is the database.
+
 ### Adding source folders
 To be able to use the videos you have prepared you will have to add your root folder with videos as an entry folder.
 * run `source setentryfolder <path to folder>` on **Linux**
